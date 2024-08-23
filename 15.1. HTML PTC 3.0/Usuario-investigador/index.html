@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agencia Privada - Investigador</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Menú del Investigador</h2>
+            <a href="investigador/chat-administrador.html">Chat con Administrador</a>
+            <a href="investigador/habilitar-opciones.html">Habilitar Opciones del Caso</a>
+            <a href="investigador/chat-cliente.html">Chat con Cliente</a>
+            <a href="investigador/historial-casos.html">Historial de Casos</a>
+            <a href="investigador/perfil.html">Perfil</a>
+            <button onclick="volverInicio()">Volver al Inicio</button>
+            <button onclick="cerrarSesion()">Cerrar Sesión</button>
+            <script>
+                function volverInicio() {
+                    window.location.href = "../index.html"; // Ajusta la ruta según sea necesario
+                }
+
+                function cerrarSesion() {
+                    window.location.href = "../login.html"; // Ajusta la ruta según sea necesario
+                }
+            </script>
+        </div>
+        <div class="content">
+            <h1>Bienvenido, Investigador</h1>
+            <p>Selecciona una opción del menú para comenzar.</p>
+        </div>
+    </div>
+</body>
+
+</html>

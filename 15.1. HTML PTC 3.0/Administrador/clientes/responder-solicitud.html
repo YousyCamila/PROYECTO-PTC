@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responder Solicitud de Cliente</title>
+    <link rel="stylesheet" href="clientes.css">
+</head>
+<body>
+    <div class="container">
+        <a href="solicitudes-clientes.html" class="back-button">Volver a Solicitudes de Clientes</a>
+        <h2>Responder Solicitud de Cliente</h2>
+        <form>
+            <div class="form-group">
+                <label for="client-name">Nombre del Cliente</label>
+                <input type="text" id="client-name" name="client-name" value="Maria Gómez" readonly>
+            </div>
+            <div class="form-group">
+                <label for="client-email">Correo Electrónico</label>
+                <input type="email" id="client-email" name="client-email" value="maria.gomez@example.com" readonly>
+            </div>
+            <div class="form-group">
+                <label for="client-phone">Teléfono</label>
+                <input type="text" id="client-phone" name="client-phone" value="123-456-7890" readonly>
+            </div>
+            <div class="form-group">
+                <label for="client-description">Descripción del Servicio</label>
+                <textarea id="client-description" name="client-description" readonly>Necesito investigar un caso de fraude.</textarea>
+            </div>
+            <div class="form-group">
+                <label for="response">Respuesta</label>
+                <textarea id="response" name="response"></textarea>
+            </div>
+            <div class="form-group">
+                <button type="submit">Enviar Respuesta</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

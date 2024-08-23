@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Casos Asignados</title>
+    <link rel="stylesheet" href="casos.css">
+</head>
+<body>
+    <div class="container">
+        <a href="gestion-casos.html" class="back-button">Volver a Gestión de Casos</a>
+        <h2>Ver Casos Asignados</h2>
+        <form>
+            <div class="form-group">
+                <label for="case-code">Código del Caso</label>
+                <input type="text" id="case-code" name="case-code">
+            </div>
+            <div class="form-group">
+                <button type="submit">Buscar Caso</button>
+            </div>
+        </form>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Investigador</th>
+                    <th>Cliente</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Ejemplo de datos -->
+                <tr>
+                    <td>CASE1234</td>
+                    <td>Juan Pérez</td>
+                    <td>Maria Gómez</td>
+                    <td>En Proceso</td>
+                    <td>
+                        <a href="ver-actividades.html?case=CASE1234" class="sub-menu-link">Ver Actividades</a>
+                    </td>
+                </tr>
+                <!-- Más datos aquí -->
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

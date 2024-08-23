@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contactanos</title>
+    <link rel="stylesheet" href="style2.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <h1>PTC</h1>
+        <ul>
+            <li><a href="index.html" target="_self">Inicio</a></li>
+            <li><a href="about.html" target="_self">Contactanos</a></li>
+            <li><a href="services.html" target="_self">Servicios</a></li>
+        </ul>
+
+        <form class="search-form" action="/search" method="get">
+            <input type="text" name="q" class="search-input" placeholder="Buscar..." />
+            <button type="submit" class="search-button">Buscar</button>
+        </form>
+        <a href="login.html" class="login-button">Inicia Sesion</a>
+    </nav>
+
+    <section class="contact-section">
+        <h1 class="contact-title">Contáctanos</h1>
+        <div class="contact-container">
+            <div class="contact-info">
+                <p><strong>Teléfono:</strong> +57 350 797 2131</p>
+                <p><strong>Dirección:</strong> Carrera 15 # 79-70</p>
+                <p><strong>Ciudad:</strong> Bogota</p>
+                <p><strong>País:</strong> Colombia</p>
+            </div>
+            <div class="contact-form">
+                <form action="#" method="post">
+                    <label for="name">Nombre:</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="message">Mensaje:</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+
+                    <button type="submit" class="submit-btn">Enviar</button>
+                </form>
+            </div>
+        </div>
+        <p class="info-text">Después de enviar sus datos, recibirá un correo de parte de la administración de la empresa
+            con un usuario y una contraseña para poder verificar su historial y sus casos, obtenido los datos puede
+            iniciar sesion normalmente.</p>
+    </section>
+</body>
+</html>

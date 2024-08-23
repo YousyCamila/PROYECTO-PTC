@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agencia de Detectives - Administración</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Menú Administrativo</h2>
+            <a href="blog/gestionar-blog.html" class="menu-link">Gestionar Blog</a>
+            <a href="investigadores/gestionar-investigadores.html" class="menu-link">Gestionar Investigadores</a>
+            <a href="clientes/gestionar-clientes.html" class="menu-link">Gestionar Clientes</a>
+            <a href="casos/gestion-casos.html" class="menu-link">Gestionar Casos</a>
+            <a href="comunicacion/comunicacion.html" class="menu-link">Comunicación</a>
+            <button onclick="volverInicio()">Volver al Inicio</button>
+<button onclick="cerrarSesion()">Cerrar Sesión</button>
+<script>
+    function volverInicio() {
+        window.location.href = "../index.html"; // Ajusta la ruta según sea necesario
+    }
+
+    function cerrarSesion() {
+        window.location.href = "../login.html"; // Ajusta la ruta según sea necesario
+    }
+</script>
+        </div>
+        <div class="content" id="content">
+            <h1>Bienvenido al Panel Administrativo</h1>
+            <p>Seleccione una opción del menú para comenzar.</p>
+        </div>
+    </div>
+    <script src="js/scripts.js"></script>
+</body>
+</html>
