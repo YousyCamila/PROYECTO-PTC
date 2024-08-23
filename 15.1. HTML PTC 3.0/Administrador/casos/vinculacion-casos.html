@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vinculación de Casos</title>
+    <link rel="stylesheet" href="casos.css">
+</head>
+<body>
+    <a href="gestion-casos.html" class="back-button">Volver a Gestión de Casos</a>
+    <div class="container">
+        <h2>Vinculación de Casos</h2>
+        <form id="vinculacion-form">
+            <div class="form-group">
+                <label for="case-investigator">Investigador</label>
+                <input type="text" id="case-investigator" name="case-investigator">
+            </div>
+            <div class="form-group">
+                <label for="case-client">Cliente</label>
+                <input type="text" id="case-client" name="case-client">
+            </div>
+            <div class="form-group">
+                <button type="button" id="generate-code-button">Iniciar Vinculación</button>
+            </div>
+            <div class="form-group">
+                <button type="button">Terminar Proceso</button>
+            </div>
+        </form>
+        <span id="generated-code"></span>
+    </div>
+    <script>
+        document.getElementById('generate-code-button').addEventListener('click', function() {
+            const code = 'CASE' + Math.floor(Math.random() * 10000);
+            document.getElementById('generated-code').textContent = 'Código de Vinculación: ' + code;
+        });
+    </script>
+</body>
+</html>

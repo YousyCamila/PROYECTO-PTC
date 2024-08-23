@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Investigadores</title>
+    <link rel="stylesheet" href="gestionar.css">
+    <link rel="stylesheet" href="agregar-investigador.css">
+
+</head>
+<body>
+    <a href="../index.html" class="back-button">Volver al Menú Principal</a>
+    <div class="container">
+        <h2>Gestionar Investigadores</h2>
+        <h3>Lista de Investigadores</h3>
+        <a href="#" class="agregar" id="agregarBtn">Agregar</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Usuario</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Ejemplo de datos -->
+                <tr>
+                    <td>John Doe</td>
+                    <td>john@example.com</td>
+                    <td>johndoe</td>
+                    <td>
+                        <a href="editar-investigador.html?id=1" class="edit">Editar</a>
+                        <a href="eliminar-investigador.html?id=1" class="delete">Eliminar</a>
+                    </td>
+                </tr>
+                <!-- Más datos aquí -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal para agregar investigador -->
+    <div id="agregarModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Agregar Investigador</h3>
+            <form>
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="usuario">Usuario:</label>
+                <input type="text" id="usuario" name="usuario" required>
+                <button type="submit">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Obtener elementos del DOM
+        var modal = document.getElementById("agregarModal");
+        var btn = document.getElementById("agregarBtn");
+        var span = document.getElementsByClassName("close")[0];
+
+        // Mostrar el modal al hacer clic en "Agregar"
+        btn.onclick = function() {
+            modal.style.display = "flex";
+        }
+
+        // Cerrar el modal al hacer clic en la "x"
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Cerrar el modal al hacer clic fuera de él
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

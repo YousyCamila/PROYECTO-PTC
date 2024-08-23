@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitudes de Clientes</title>
+    <link rel="stylesheet" href="clientes.css">
+</head>
+<body>
+    <div class="container">
+        <button class="back-button" onclick="window.location.href='gestionar-clientes.html'">Volver a Gestionar Clientes</button>
+        <h2>Solicitudes de Clientes</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Ejemplo de datos -->
+                <tr>
+                    <td>1</td>
+                    <td>Maria Gómez</td>
+                    <td>maria.gomez@example.com</td>
+                    <td>123-456-7890</td>
+                    <td>Necesito investigar un caso de fraude.</td>
+                    <td>
+                        <a href="responder-solicitud.html?id=1" class="sub-menu-link">Responder</a>
+                    </td>
+                </tr>
+                <!-- Más datos aquí -->
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

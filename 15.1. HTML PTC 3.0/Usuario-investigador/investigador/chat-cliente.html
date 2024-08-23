@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat con Cliente</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <a href="../index.html" class="back-button">Volver al Menú Principal</a>
+            <h2>Menú del Investigador</h2>
+            <a href="chat-cliente.html">Chat con Cliente</a>
+            <a href="habilitar-opciones.html">Habilitar Opciones del Caso</a>
+        </div>
+        <div class="content">
+            <h1>Chat con Cliente</h1>
+            <div class="form-group">
+                <label for="mensaje-cliente">Mensaje:</label>
+                <textarea id="mensaje-cliente" rows="5"></textarea>
+            </div>
+            <div class="form-group">
+                <button type="button" onclick="enviarMensajeCliente()">Enviar</button>
+            </div>
+        </div>
+    </div>
+    <script src="../assets/js/scripts.js"></script>
+    <script>
+        function enviarMensajeCliente() {
+            const mensaje = document.getElementById('mensaje-cliente').value;
+            alert('Mensaje enviado al cliente: ' + mensaje);
+        }
+    </script>
+</body>
+</html>
