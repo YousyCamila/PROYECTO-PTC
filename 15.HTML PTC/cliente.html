@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>client_dashboard</title>
+    <link rel="stylesheet" href="styleclient.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <ul>
+                <li><a href="#" id="navEstadoCaso">Estado del Caso</a></li>
+                <li><a href="#" id="navHistorialCaso">Historial del Caso</a></li>
+                <li><a href="#" id="navSubirEvidencia">Subir Evidencia</a></li>
+                <li><button id="logoutBtn">Cerrar Sesión</button></li>
+            </ul>
+        </nav>
+        <main>
+            <!-- Estado del Caso -->
+            <section id="estadoCaso" class="content-section">
+                <h2>Estado del Caso</h2>
+                <p><strong>ID del Cliente:</strong> 12345</p>
+                <p><strong>Progreso:</strong> 75%</p>
+                <p><strong>Detective Asignado:</strong> John Doe</p>
+                <p><strong>Seguimiento del Caso:</strong></p>
+                <ul>
+                    <li>20/06/2024: Entrevista con el cliente</li>
+                    <li>22/06/2024: Recopilación de pruebas iniciales</li>
+                    <li>25/06/2024: Revisión de las cámaras de seguridad</li>
+                </ul>
+            </section>
+            
+            <!-- Historial del Caso -->
+            <section id="historialCaso" class="content-section">
+                <h2>Historial del Caso</h2>
+                <p>Detalle del historial del caso...</p>
+            </section>
+            
+            <!-- Subir Evidencia -->
+            <section id="subirEvidencia" class="content-section">
+                <h2>Subir Evidencia</h2>
+                <form id="evidenciaForm">
+                    <label for="fecha">Fecha:</label>
+                    <input type="date" id="fecha" name="fecha" required>
+                    <br>
+                    <label for="tipoEvidencia">Tipo de Evidencia:</label>
+                    <input type="text" id="tipoEvidencia" name="tipoEvidencia" required>
+                    <br>
+                    <label for="descripcion">Descripción del Caso:</label><br>
+                    <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
+                    <br>
+                    <button type="submit">Subir Evidencia</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+
+        <script src="cliente.js"></script>
+</body>
+</html>

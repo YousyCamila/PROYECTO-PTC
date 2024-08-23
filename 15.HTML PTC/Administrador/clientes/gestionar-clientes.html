@@ -1,0 +1,36 @@
+  <link rel="stylesheet" href="clientes.css">
+  <a href="../index.html" class="back-button">Volver al Menú Principal</a>
+  <a href="solicitudes-clientes.html" class="ver-solicitudes">Ver Solicitudes Hoy</a>
+
+
+
+<div class="container">
+    <h2>Gestionar Clientes</h2>
+    <h3>Lista de Clientes</h3>
+    <button class="add-button" onclick="window.location.href='agregar-cliente.html'">Agregar Cliente</button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>N° de Identidad</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Ejemplo de datos -->
+            <tr>
+                <td>1</td>
+                <td>Maria Gómez</td>
+                <td>maria.gomez@example.com</td>
+                <td>31156565656</td>
+                <td>
+                    <a href="editar-cliente.html?id=1" class="edit">Editar</a>
+                    <a href="eliminar-cliente.html?id=1" class="delete">Eliminar</a>
+                </td>
+            </tr>
+            <!-- Más datos aquí -->
+        </tbody>
+    </table>
+</div>
