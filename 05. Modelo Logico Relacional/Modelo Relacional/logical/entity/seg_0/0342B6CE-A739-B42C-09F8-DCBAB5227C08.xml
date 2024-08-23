@@ -81,20 +81,6 @@
 <logicalDatatype>LOGDT011</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="ID_Reporte" id="C6DC6915-7C6E-CD91-9D34-418E8C61A6AF">
-<createdBy>ludwi</createdBy>
-<createdTime>2024-06-17 02:41:15 UTC</createdTime>
-<generatorID>EF48D3BE-F71E-A99C-C5FD-F7009AD91F38</generatorID>
-<ownerDesignName>Modelo Relacional</ownerDesignName>
-<engineerTo>
-<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
-</engineerTo>
-<referedAttribute>2B0B6F9E-019D-4216-C3BC-5789B64EB7E9</referedAttribute>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
-</Attribute>
 </attributes>
 <identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
 <identifier id="A4355E5B-B0C0-205F-4528-8AF71AB60C54" name="Tipo Aportante PK">
@@ -109,7 +95,6 @@
 <attributeRef>97806539-A7D4-46CB-B72E-FDF3F4391B1E</attributeRef>
 <attributeRef>AA4A399E-1D68-A098-E3E1-3265BDAE0BD7</attributeRef>
 <attributeRef>53F1A720-C329-2C9A-FB53-6F04CCA92951</attributeRef>
-<attributeRef>C6DC6915-7C6E-CD91-9D34-418E8C61A6AF</attributeRef>
 </usedAttributes>
 </identifier>
 </identifiers>

@@ -1,5 +1,5 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="309F23F2-31B1-1484-1B3D-EBCC07B42569" name="Historial de casos">
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="309F23F2-31B1-1484-1B3D-EBCC07B42569" name="Registro de casos">
 <createdBy>ludwi</createdBy>
 <createdTime>2024-06-17 02:18:10 UTC</createdTime>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
@@ -64,6 +64,31 @@
 <logicalDatatype>LOGDT011</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
+<Attribute name="Estado_Registro" id="BF0FF50D-F0C2-0C07-51A9-F72479AF2A28">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-23 22:26:02 UTC</createdTime>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<engineerTo>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT006</logicalDatatype>
+<dataTypeSize>1 BYTE</dataTypeSize>
+<ownDataTypeParameters>1 BYTE,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Seguimiento_porcentaje " id="DF7DFAC4-31CF-49AE-B568-2F05CB24CFB8">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-23 22:26:31 UTC</createdTime>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<engineerTo>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT021</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
 <Attribute name="ID" id="3F9C4AAE-1E12-6284-F8C3-CB5DEC353044">
 <createdBy>ludwi</createdBy>
 <createdTime>2024-06-17 02:36:40 UTC</createdTime>
@@ -75,7 +100,8 @@
 <referedAttribute>69B64051-9A70-C9AD-6A95-9DBB363BB554</referedAttribute>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
+<logicalDatatype>LOGDT035</logicalDatatype>
+<dataTypeSize>250</dataTypeSize>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 </attributes>

@@ -24,10 +24,11 @@
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT035</logicalDatatype>
+<dataTypeSize>250</dataTypeSize>
+<ownDataTypeParameters>250,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="FechaApertura" id="ABE7B060-7FAD-C0FC-EF42-C2499D273509">
+<Attribute name="Cadena de custodia" id="ABE7B060-7FAD-C0FC-EF42-C2499D273509">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-05-09 20:30:46 UTC</createdTime>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
@@ -36,23 +37,24 @@
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT007</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>250</dataTypeSize>
+<ownDataTypeParameters>250,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="FechaCierre" id="5CC83684-577E-F2DB-3AEE-876379823B75">
+<Attribute name="Investigación en extorsiones y secuestros" id="5CC83684-577E-F2DB-3AEE-876379823B75">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-05-09 20:31:11 UTC</createdTime>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <engineerTo>
 <item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
 </engineerTo>
-<nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT007</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>250</dataTypeSize>
+<ownDataTypeParameters>250,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="Descripcion" id="021B7A2F-CF93-552B-CF8F-1BAF1316A8CB">
+<Attribute name="Estudios de seguridad" id="021B7A2F-CF93-552B-CF8F-1BAF1316A8CB">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-05-09 20:31:41 UTC</createdTime>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
@@ -62,8 +64,59 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT037</logicalDatatype>
-<dataTypeSize>256</dataTypeSize>
-<ownDataTypeParameters>256,,</ownDataTypeParameters>
+<dataTypeSize>250</dataTypeSize>
+<ownDataTypeParameters>250,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Investigación de infidelidades" id="42117DF8-784D-E0F4-60A3-C144B531F8DA">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-23 22:19:12 UTC</createdTime>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<engineerTo>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>250</dataTypeSize>
+<ownDataTypeParameters>250,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Investigación en robos empresariales" id="FE53E086-D950-66D4-22ED-804DB1D1F81A">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-23 22:21:26 UTC</createdTime>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<engineerTo>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>250</dataTypeSize>
+<ownDataTypeParameters>250,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Antecedentes" id="09A87714-4D24-D457-CA6D-EBB0EC7E8BBD">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-23 22:21:53 UTC</createdTime>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<engineerTo>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Recuperación de vehículos" id="99111812-C48F-1A40-8CCA-C966722AC76E">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-23 22:22:09 UTC</createdTime>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<engineerTo>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>250</dataTypeSize>
+<ownDataTypeParameters>250,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="DNI" id="8B58A9DF-B83C-0A02-5201-ACBC1DE76D2F">
 <createdBy>Aprendiz</createdBy>
@@ -78,7 +131,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT037</logicalDatatype>
 <dataTypeSize>16 CHAR</dataTypeSize>
-<ownDataTypeParameters>16 CHAR,,</ownDataTypeParameters>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 </attributes>
 <identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
