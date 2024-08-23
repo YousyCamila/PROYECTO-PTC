@@ -1,5 +1,4 @@
 
-PTC Private Investigation Technology
 Bienvenido/a al repositorio oficial de PTC Private Investigation Technology. Somos una agencia de detectives privados especializada en la gestión de servicios de investigación avanzada y la administración de casos a través de nuestra plataforma web.
 
 Características Principales
