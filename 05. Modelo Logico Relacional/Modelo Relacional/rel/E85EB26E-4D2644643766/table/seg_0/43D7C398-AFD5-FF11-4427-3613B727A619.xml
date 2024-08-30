@@ -11,6 +11,7 @@
 <Column name="ID_Historial" id="2B5F4B7D-89E5-633E-4889-015FCE287286">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
+<commentInRDBMS><![CDATA[Contiene el historial de actividades y eventos relacionados con los clientes y sus casos]]></commentInRDBMS>
 <generatorID>37E9B7C0-AEE5-1CEA-76AF-494917143AFD</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
@@ -65,7 +66,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT037</logicalDatatype>
 <dataTypeSize>16 CHAR</dataTypeSize>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<ownDataTypeParameters>16 CHAR,,</ownDataTypeParameters>
 <previousColumn>false</previousColumn>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>

@@ -11,6 +11,7 @@
 <Column name="ID_Contrato" id="9F626D49-5B5D-7774-149B-DF1BB877C9D9">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
+<commentInRDBMS><![CDATA[Registra los contratos establecidos con los clientes, incluyendo detalles como fechas, tarifas y estado.]]></commentInRDBMS>
 <generatorID>0761070F-007E-27F1-EFBA-86E5DDA82288</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
@@ -100,7 +101,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT037</logicalDatatype>
 <dataTypeSize>16 CHAR</dataTypeSize>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<ownDataTypeParameters>16 CHAR,,</ownDataTypeParameters>
 <previousColumn>false</previousColumn>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>

@@ -65,12 +65,24 @@
 <use>1</use>
 <logicalDatatype>LOGDT037</logicalDatatype>
 <dataTypeSize>16 CHAR</dataTypeSize>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<ownDataTypeParameters>16 CHAR,,</ownDataTypeParameters>
 <previousColumn>false</previousColumn>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>
 <colAssociation fkAssociation="CEFB5CE6-29DD-1A39-1FB2-7940790E6BE8" referredColumn="C5F945B8-C390-6632-8144-5879CAE9F26B"/>
 </associations>
+</Column>
+<Column name="ID_Usuario" id="959F2E26-FB26-F0CB-5BA6-7AA239E72EEF">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-30 22:05:46 UTC</createdTime>
+<generatorID>8A671A70-6F2F-1DDB-586E-23869A212380</generatorID>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>258 CHAR</dataTypeSize>
+<ownDataTypeParameters>258 CHAR,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
@@ -82,6 +94,18 @@
 <pk>true</pk>
 <indexState>Primary Constraint</indexState>
 <isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="64E235B0-3BFC-F3A7-D12C-35F42120DBE7"/>
+<colUsage columnID="959F2E26-FB26-F0CB-5BA6-7AA239E72EEF"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="167C586E-E941-4A15-0E40-54D595C360CD" name="USUARIO__IDX">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-30 22:05:46 UTC</createdTime>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<relationGeneratorID>FBC8CEDC-6A40-4858-97FA-ADF010840C75</relationGeneratorID>
 <indexColumnUsage>
 <colUsage columnID="64E235B0-3BFC-F3A7-D12C-35F42120DBE7"/>
 </indexColumnUsage>

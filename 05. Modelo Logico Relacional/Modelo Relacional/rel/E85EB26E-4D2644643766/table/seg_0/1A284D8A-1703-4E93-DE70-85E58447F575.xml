@@ -29,7 +29,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT037</logicalDatatype>
 <dataTypeSize>16 CHAR</dataTypeSize>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<ownDataTypeParameters>16 CHAR,,</ownDataTypeParameters>
 <previousColumn>false</previousColumn>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>
@@ -62,6 +62,22 @@
 <autoIncrementCycle>false</autoIncrementCycle>
 <isRelationshipColumn>true</isRelationshipColumn>
 </Column>
+<Column name="USUARIO_ID_Usuario" id="2BD90787-5843-C9E0-5987-3FBDACF19951">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-30 22:05:46 UTC</createdTime>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>258 CHAR</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="1B0BCCF7-0F4A-DF38-EAC7-73790D32259B" referredColumn="959F2E26-FB26-F0CB-5BA6-7AA239E72EEF"/>
+</associations>
+</Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
 <ind_PK_UK id="874E46B9-B0F5-CE84-6D73-27814AB4CCFB" name="roles_usuarios_PK">
@@ -74,6 +90,7 @@
 <indexColumnUsage>
 <colUsage columnID="D6EA73B0-C773-8538-3242-87F81039306E"/>
 <colUsage columnID="B2390107-DD44-B35B-0308-B82F07C0A54A"/>
+<colUsage columnID="2BD90787-5843-C9E0-5987-3FBDACF19951"/>
 </indexColumnUsage>
 </ind_PK_UK>
 <ind_PK_UK id="431445AA-5839-B834-33C2-C64CEC41F1AB" name="roles_usuarios_ROLES_FK">
@@ -96,6 +113,7 @@
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
 <colUsage columnID="B2390107-DD44-B35B-0308-B82F07C0A54A"/>
+<colUsage columnID="2BD90787-5843-C9E0-5987-3FBDACF19951"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>

@@ -11,6 +11,7 @@
 <Column name="ID_Factura" id="9C5C210C-D49B-CDF0-E344-C9934BC2790C">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
+<commentInRDBMS><![CDATA[Registra las facturas emitidas para los servicios prestados en los casos.]]></commentInRDBMS>
 <generatorID>653C4F4C-7335-CC59-365D-C362FC9E1EEA</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
@@ -67,14 +68,15 @@
 <ownDataTypeParameters>128 CHAR,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="CASOS_ID" id="25FC1B28-D3F3-02D8-A736-E9CFB19C930F">
+<Column name="Casos_ID_Casos" id="25FC1B28-D3F3-02D8-A736-E9CFB19C930F">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
 <generatorID>A1BC246F-0199-89EE-D3FF-C04F54AF7805</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
+<logicalDatatype>LOGDT035</logicalDatatype>
+<dataTypeSize>250</dataTypeSize>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <previousColumn>false</previousColumn>
 <autoIncrementCycle>false</autoIncrementCycle>
@@ -107,7 +109,7 @@
 <colUsage columnID="25FC1B28-D3F3-02D8-A736-E9CFB19C930F"/>
 </indexColumnUsage>
 </ind_PK_UK>
-<ind_PK_UK id="B4A9143D-B21A-C01B-56E8-CB060547D351" name="Factura_CASOS_FK">
+<ind_PK_UK id="B4A9143D-B21A-C01B-56E8-CB060547D351" name="Factura_Casos_FK">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
 <generatorID>2E96DD7F-363B-AFCE-CCCD-069D3B6BD12E</generatorID>

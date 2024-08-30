@@ -18,6 +18,7 @@
 <Attribute name="ID_Auditoria" id="6F4CECBE-BA02-04C9-DD72-85954C5DC483">
 <createdBy>ludwi</createdBy>
 <createdTime>2024-05-13 16:52:13 UTC</createdTime>
+<commentInRDBMS><![CDATA[Registra las actividades y eventos importantes dentro del sistema para su revisión y seguimiento.]]></commentInRDBMS>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <engineerTo>
 <item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
@@ -116,10 +117,11 @@
 <item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
 </engineerTo>
 <referedAttribute>8A671A70-6F2F-1DDB-586E-23869A212380</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT037</logicalDatatype>
 <dataTypeSize>258 CHAR</dataTypeSize>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<ownDataTypeParameters>258 CHAR,,</ownDataTypeParameters>
 </Attribute>
 </attributes>
 <identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
@@ -127,8 +129,9 @@
 <createdBy>ludwi</createdBy>
 <createdTime>2024-05-13 16:52:44 UTC</createdTime>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
 <engineerTo>
-<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="false"/>
 </engineerTo>
 <pk>true</pk>
 <usedAttributes>

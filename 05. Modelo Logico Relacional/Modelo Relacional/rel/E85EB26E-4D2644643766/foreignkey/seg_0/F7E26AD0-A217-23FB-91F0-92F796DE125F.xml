@@ -1,8 +1,8 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="0CE0DC0C-2A25-B99F-3724-452431BCB496" containerWithKeyObject="72B40214-958A-C519-8F0F-38E8CC1E1946" localFKIndex="6CDA205B-BA29-C691-5F62-0F2F313C7D33" name="Casos_CLIENTE_FK">
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="F7E26AD0-A217-23FB-91F0-92F796DE125F" containerWithKeyObject="0A381860-7928-FA19-D71E-55DB8C618824" localFKIndex="524E773A-6B21-C32A-5C17-4E3BA6C91AB8" name="Evidencia_CLIENTE_FK">
 <createdBy>Aprendiz</createdBy>
-<createdTime>2024-06-24 22:21:22 UTC</createdTime>
-<generatorID>9A146580-0DB7-2296-C35C-FAB6D0D7BB82</generatorID>
+<createdTime>2024-08-30 22:05:46 UTC</createdTime>
+<generatorID>D149148B-8A94-F806-F00A-4BAEE782AA9D</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <referredTableLongName>CLIENTE</referredTableLongName>
 <deleteRule>NO ACTION</deleteRule>

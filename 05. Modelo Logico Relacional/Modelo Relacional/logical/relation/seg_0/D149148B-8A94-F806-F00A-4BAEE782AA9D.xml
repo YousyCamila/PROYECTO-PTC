@@ -1,18 +1,19 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="roles_usuarios" directorySegmentName="seg_0" id="89265F95-16E4-6B7B-80D2-E4045B06A07A">
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="Cliente-Evidencia" directorySegmentName="seg_0" id="D149148B-8A94-F806-F00A-4BAEE782AA9D">
 <createdBy>Aprendiz</createdBy>
-<createdTime>2024-05-09 20:27:21 UTC</createdTime>
+<createdTime>2024-08-23 22:30:40 UTC</createdTime>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <engineerTo>
 <item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
 </engineerTo>
+<sourcePk>933DADA0-E31E-0747-4C7F-30853AA2BE3F</sourcePk>
 <identifying>false</identifying>
 <optionalSource>true</optionalSource>
 <optionalTarget>false</optionalTarget>
-<sourceCardinality>*</sourceCardinality>
-<sourceEntity>8E42603F-E399-F322-C34E-0E2FC85E43B9</sourceEntity>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>BB4E92DD-2550-5B5B-2122-74F1D8028C6F</sourceEntity>
 <targetCardinalityString>*</targetCardinalityString>
-<targetEntity>95DA98BF-D922-4D69-06EB-43467191AD70</targetEntity>
+<targetEntity>717926FA-CB46-6CDC-BE31-B361CB825EC0</targetEntity>
 <transferable>true</transferable>
 <deleteRule>NO ACTION</deleteRule>
 </Relation>
