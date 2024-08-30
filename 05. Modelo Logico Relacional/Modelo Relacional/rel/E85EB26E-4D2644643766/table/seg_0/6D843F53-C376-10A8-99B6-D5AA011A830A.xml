@@ -11,6 +11,7 @@
 <Column name="ID_Auditoria" id="D250DB6F-AABD-48BE-C3FB-235CEC0F6C9C">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
+<commentInRDBMS><![CDATA[Registra las actividades y eventos importantes dentro del sistema para su revisión y seguimiento.]]></commentInRDBMS>
 <generatorID>6F4CECBE-BA02-04C9-DD72-85954C5DC483</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
@@ -79,7 +80,7 @@
 <ownDataTypeParameters>256 CHAR,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="USUARIO_DNI" id="7F35DF44-6046-98A1-7FC7-F6E913EEB656">
+<Column name="USUARIO_PERSONA_DNI" id="7F35DF44-6046-98A1-7FC7-F6E913EEB656">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
 <generatorID>AD4082DE-DD26-0C93-5148-3D91217E07F5</generatorID>
@@ -88,11 +89,27 @@
 <use>1</use>
 <logicalDatatype>LOGDT037</logicalDatatype>
 <dataTypeSize>16 CHAR</dataTypeSize>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<ownDataTypeParameters>16 CHAR,,</ownDataTypeParameters>
 <previousColumn>false</previousColumn>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>
 <colAssociation fkAssociation="C9A89FF9-E87D-D2EF-AC19-4B59B3B4E2AD" referredColumn="64E235B0-3BFC-F3A7-D12C-35F42120DBE7"/>
+</associations>
+</Column>
+<Column name="USUARIO_ID_Usuario" id="4CF62FE1-022E-B5D1-5DEE-354B2CB1F748">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-30 22:05:46 UTC</createdTime>
+<generatorID>BDDAF2C0-7087-AB3F-48A8-B54DE98AC3C2</generatorID>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>258 CHAR</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="C9A89FF9-E87D-D2EF-AC19-4B59B3B4E2AD" referredColumn="959F2E26-FB26-F0CB-5BA6-7AA239E72EEF"/>
 </associations>
 </Column>
 </columns>
@@ -120,6 +137,18 @@
 <colUsage columnID="7F35DF44-6046-98A1-7FC7-F6E913EEB656"/>
 </indexColumnUsage>
 </ind_PK_UK>
+<ind_PK_UK id="02166647-501C-07F1-EFDA-D9C6671AFC43" name="Auditoria__IDX">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-30 22:05:46 UTC</createdTime>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<relationGeneratorID>5BB83589-BE0B-8049-B8D0-FFE47E47C21D</relationGeneratorID>
+<indexColumnUsage>
+<colUsage columnID="7F35DF44-6046-98A1-7FC7-F6E913EEB656"/>
+<colUsage columnID="4CF62FE1-022E-B5D1-5DEE-354B2CB1F748"/>
+</indexColumnUsage>
+</ind_PK_UK>
 <ind_PK_UK id="CC237B3D-1DC1-91E3-888C-5316E7D02013" name="Auditoria_USUARIO_FK">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
@@ -129,6 +158,7 @@
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
 <colUsage columnID="7F35DF44-6046-98A1-7FC7-F6E913EEB656"/>
+<colUsage columnID="4CF62FE1-022E-B5D1-5DEE-354B2CB1F748"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>

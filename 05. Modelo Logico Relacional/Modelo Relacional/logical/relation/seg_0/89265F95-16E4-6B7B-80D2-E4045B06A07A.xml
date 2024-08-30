@@ -15,32 +15,4 @@
 <targetEntity>95DA98BF-D922-4D69-06EB-43467191AD70</targetEntity>
 <transferable>true</transferable>
 <deleteRule>NO ACTION</deleteRule>
-<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
-<attribute name="FI" id="C4866974-BA11-2937-A853-0251A0F24515">
-<createdBy>Aprendiz</createdBy>
-<createdTime>2024-05-09 20:28:24 UTC</createdTime>
-<ownerDesignName>Modelo Relacional</ownerDesignName>
-<engineerTo>
-<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
-</engineerTo>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT007</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
-</attribute>
-<attribute name="FF" id="D2B3664C-7ACC-56BB-C23E-908D389A59AE">
-<createdBy>Aprendiz</createdBy>
-<createdTime>2024-05-09 20:28:33 UTC</createdTime>
-<ownerDesignName>Modelo Relacional</ownerDesignName>
-<engineerTo>
-<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
-</engineerTo>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT007</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
-</attribute>
-</attributes>
 </Relation>

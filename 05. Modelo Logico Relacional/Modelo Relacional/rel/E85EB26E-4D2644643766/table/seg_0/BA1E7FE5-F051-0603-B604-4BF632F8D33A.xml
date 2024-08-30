@@ -26,9 +26,9 @@
 <Column name="Especialidad" id="24528B55-A1A6-693E-625A-E56C7661874E">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
+<commentInRDBMS><![CDATA[Almacena datos sobre los detectives que trabajan en los casos.]]></commentInRDBMS>
 <generatorID>A9A0B11F-00D6-6132-509A-89B32BEB902B</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT037</logicalDatatype>

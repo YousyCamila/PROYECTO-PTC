@@ -1,5 +1,5 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="8E42603F-E399-F322-C34E-0E2FC85E43B9" name="ROLES">
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="8E42603F-E399-F322-C34E-0E2FC85E43B9" name="Roles">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-05-09 20:24:03 UTC</createdTime>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
@@ -18,6 +18,7 @@
 <Attribute name="RolId" id="AF53C7D2-C848-1727-13CA-C084A3A755D7">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-05-09 20:24:08 UTC</createdTime>
+<commentInRDBMS><![CDATA[Define los roles disponibles en el sistema para la asignación a usuarios.]]></commentInRDBMS>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <engineerTo>
 <item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
@@ -60,8 +61,9 @@
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-05-09 20:24:32 UTC</createdTime>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
 <engineerTo>
-<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="false"/>
 </engineerTo>
 <pk>true</pk>
 <usedAttributes>

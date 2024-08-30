@@ -18,6 +18,7 @@
 <Attribute name="ID_Formulario" id="AE07BCB4-3E1B-2711-7709-574D57DD4A9D">
 <createdBy>ludwi</createdBy>
 <createdTime>2024-05-13 16:24:11 UTC</createdTime>
+<commentInRDBMS><![CDATA[Almacena información sobre formularios rellenados por los clientes.]]></commentInRDBMS>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <engineerTo>
 <item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
@@ -85,8 +86,9 @@
 <createdBy>ludwi</createdBy>
 <createdTime>2024-05-13 16:24:37 UTC</createdTime>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
 <engineerTo>
-<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="false"/>
 </engineerTo>
 <pk>true</pk>
 <usedAttributes>

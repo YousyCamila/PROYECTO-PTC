@@ -18,6 +18,7 @@
 <Attribute name="ID_historial" id="3C94AD5E-B0D1-9A59-C04F-1DCED0F56980">
 <createdBy>ludwi</createdBy>
 <createdTime>2024-06-17 02:18:29 UTC</createdTime>
+<commentInRDBMS><![CDATA[Contiene información detallada sobre el progreso y estado de los casos investigados.]]></commentInRDBMS>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <engineerTo>
 <item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
@@ -89,7 +90,7 @@
 <logicalDatatype>LOGDT021</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="ID" id="3F9C4AAE-1E12-6284-F8C3-CB5DEC353044">
+<Attribute name="ID_Casos" id="3F9C4AAE-1E12-6284-F8C3-CB5DEC353044">
 <createdBy>ludwi</createdBy>
 <createdTime>2024-06-17 02:36:40 UTC</createdTime>
 <generatorID>CF2BE2B0-4B2E-4F77-A7AE-DC4A0777F6F6</generatorID>
@@ -102,7 +103,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT035</logicalDatatype>
 <dataTypeSize>250</dataTypeSize>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<ownDataTypeParameters>250,,</ownDataTypeParameters>
 </Attribute>
 </attributes>
 <identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
@@ -110,8 +111,9 @@
 <createdBy>ludwi</createdBy>
 <createdTime>2024-06-17 02:18:53 UTC</createdTime>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
 <engineerTo>
-<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="false"/>
 </engineerTo>
 <pk>true</pk>
 <usedAttributes>
