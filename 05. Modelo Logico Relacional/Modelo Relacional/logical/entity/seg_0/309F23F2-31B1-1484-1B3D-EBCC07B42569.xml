@@ -50,7 +50,7 @@
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
+<logicalDatatype>LOGDT008</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="fecha_finalizacion" id="88620E76-4764-28EC-3573-70814166CA5F">
@@ -62,7 +62,7 @@
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
+<logicalDatatype>LOGDT008</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="Estado_Registro" id="BF0FF50D-F0C2-0C07-51A9-F72479AF2A28">

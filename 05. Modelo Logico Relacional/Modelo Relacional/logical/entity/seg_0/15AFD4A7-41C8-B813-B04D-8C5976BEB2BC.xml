@@ -50,9 +50,8 @@
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT037</logicalDatatype>
-<dataTypeSize>256 CHAR</dataTypeSize>
-<ownDataTypeParameters>256 CHAR,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="Descripcion_Serv" id="AFD511CA-C90D-F0BB-4102-CB5A08854C2F">
 <createdBy>ludwi</createdBy>

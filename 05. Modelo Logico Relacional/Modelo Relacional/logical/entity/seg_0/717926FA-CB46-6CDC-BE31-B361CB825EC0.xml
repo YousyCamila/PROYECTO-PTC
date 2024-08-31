@@ -37,7 +37,7 @@
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
+<logicalDatatype>LOGDT008</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="Descripcion " id="430BC016-5AD3-EC43-8939-61D925E25183">
