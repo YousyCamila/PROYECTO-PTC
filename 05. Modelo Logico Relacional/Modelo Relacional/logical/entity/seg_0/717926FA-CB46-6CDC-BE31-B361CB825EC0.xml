@@ -67,36 +67,6 @@
 <logicalDatatype>LOGDT011</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="DNI" id="14CC2C94-4130-1449-E305-00A441593DA4">
-<createdBy>Aprendiz</createdBy>
-<createdTime>2024-08-23 22:30:40 UTC</createdTime>
-<generatorID>D149148B-8A94-F806-F00A-4BAEE782AA9D</generatorID>
-<ownerDesignName>Modelo Relacional</ownerDesignName>
-<engineerTo>
-<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
-</engineerTo>
-<referedAttribute>A5247D5E-8A81-25F3-2E5A-20DCBB0C6AC5</referedAttribute>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT037</logicalDatatype>
-<dataTypeSize>16 CHAR</dataTypeSize>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
-</Attribute>
-<Attribute name="DNI1" id="047217E4-CCC5-7E75-3979-ECBA44DA85C5">
-<createdBy>Aprendiz</createdBy>
-<createdTime>2024-08-23 22:31:16 UTC</createdTime>
-<generatorID>D042993A-E4B4-06E6-849E-7E1ED83FB47C</generatorID>
-<ownerDesignName>Modelo Relacional</ownerDesignName>
-<engineerTo>
-<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
-</engineerTo>
-<referedAttribute>A5247D5E-8A81-25F3-2E5A-20DCBB0C6AC5</referedAttribute>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT037</logicalDatatype>
-<dataTypeSize>16 CHAR</dataTypeSize>
-<ownDataTypeParameters>16 CHAR,,</ownDataTypeParameters>
-</Attribute>
 </attributes>
 <identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
 <identifier id="029CFF6B-3B2B-E0BC-4564-C474C140C405" name="Evidencia PK">

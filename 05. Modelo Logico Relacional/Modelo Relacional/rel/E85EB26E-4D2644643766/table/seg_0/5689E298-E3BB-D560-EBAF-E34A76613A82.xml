@@ -75,6 +75,7 @@
 <Column name="ID_Usuario" id="959F2E26-FB26-F0CB-5BA6-7AA239E72EEF">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-08-30 22:05:46 UTC</createdTime>
+<commentInRDBMS><![CDATA[Contiene información sobre los usuarios del sistema, incluyendo credenciales de acceso.]]></commentInRDBMS>
 <generatorID>8A671A70-6F2F-1DDB-586E-23869A212380</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
