@@ -73,7 +73,7 @@ namespace DAL.Migrations
                     b.ToTable("AUDITORIA");
                 });
 
-            modelBuilder.Entity("DAL.Models.CASO", b =>
+            modelBuilder.Entity("DAL.Models.CASOS", b =>
                 {
                     b.Property<int>("ID_Casos")
                         .ValueGeneratedOnAdd()
@@ -94,6 +94,9 @@ namespace DAL.Migrations
                     b.Property<int>("ID_Cliente")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ID_Detective")
+                        .HasColumnType("int");
+
                     b.Property<string>("Investigacion_Extorsion")
                         .HasColumnType("nvarchar(max)");
 
@@ -110,6 +113,8 @@ namespace DAL.Migrations
                         .HasName("PK__CASOS__8D2EE0F8198FF510");
 
                     b.HasIndex("ID_Cliente");
+
+                    b.HasIndex("ID_Detective");
 
                     b.ToTable("CASOS");
                 });
@@ -158,6 +163,9 @@ namespace DAL.Migrations
                     b.Property<int>("ID_Cliente")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ID_Detective")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Tarifa")
                         .HasColumnType("decimal(10, 2)");
 
@@ -165,6 +173,8 @@ namespace DAL.Migrations
                         .HasName("PK__CONTRATO__B16B9C193079E2D4");
 
                     b.HasIndex("ID_Cliente");
+
+                    b.HasIndex("ID_Detective");
 
                     b.ToTable("CONTRATO");
                 });
@@ -520,13 +530,13 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Models.ADMINISTRADOR", b =>
                 {
-                    b.HasOne("DAL.Models.PERSONA", "Persona")
+                    b.HasOne("DAL.Models.PERSONA", "ID_AdministradorNavigation")
                         .WithOne("ADMINISTRADOR")
                         .HasForeignKey("DAL.Models.ADMINISTRADOR", "ID_Administrador")
                         .IsRequired()
                         .HasConstraintName("FK__ADMINISTR__ID_Ad__3E52440B");
 
-                    b.Navigation("Persona");
+                    b.Navigation("ID_AdministradorNavigation");
                 });
 
             modelBuilder.Entity("DAL.Models.AUDITORIA", b =>
@@ -540,7 +550,7 @@ namespace DAL.Migrations
                     b.Navigation("ID_UsuarioNavigation");
                 });
 
-            modelBuilder.Entity("DAL.Models.CASO", b =>
+            modelBuilder.Entity("DAL.Models.CASOS", b =>
                 {
                     b.HasOne("DAL.Models.CLIENTE", "ID_ClienteNavigation")
                         .WithMany("CASOS")
@@ -548,18 +558,25 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasConstraintName("FK__CASOS__ID_Client__5535A963");
 
+                    b.HasOne("DAL.Models.DETECTIVE", "ID_DetectiveNavigation")
+                        .WithMany("CASOS")
+                        .HasForeignKey("ID_Detective")
+                        .HasConstraintName("FK__CASOS__ID_Detective__5535A963");
+
                     b.Navigation("ID_ClienteNavigation");
+
+                    b.Navigation("ID_DetectiveNavigation");
                 });
 
             modelBuilder.Entity("DAL.Models.CLIENTE", b =>
                 {
-                    b.HasOne("DAL.Models.PERSONA", "Persona")
+                    b.HasOne("DAL.Models.PERSONA", "ID_ClienteNavigation")
                         .WithOne("CLIENTE")
                         .HasForeignKey("DAL.Models.CLIENTE", "ID_Cliente")
                         .IsRequired()
                         .HasConstraintName("FK__CLIENTE__ID_Clie__440B1D61");
 
-                    b.Navigation("Persona");
+                    b.Navigation("ID_ClienteNavigation");
                 });
 
             modelBuilder.Entity("DAL.Models.CONTRATO", b =>
@@ -570,23 +587,30 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasConstraintName("FK__CONTRATO__ID_Cli__52593CB8");
 
+                    b.HasOne("DAL.Models.DETECTIVE", "ID_DetectiveNavigation")
+                        .WithMany("CONTRATOS")
+                        .HasForeignKey("ID_Detective")
+                        .HasConstraintName("FK__CONTRATO__ID_Detective__52593CB8");
+
                     b.Navigation("ID_ClienteNavigation");
+
+                    b.Navigation("ID_DetectiveNavigation");
                 });
 
             modelBuilder.Entity("DAL.Models.DETECTIVE", b =>
                 {
-                    b.HasOne("DAL.Models.PERSONA", "Persona")
+                    b.HasOne("DAL.Models.PERSONA", "ID_DetectiveNavigation")
                         .WithOne("DETECTIVE")
                         .HasForeignKey("DAL.Models.DETECTIVE", "ID_Detective")
                         .IsRequired()
                         .HasConstraintName("FK__DETECTIVE__ID_De__412EB0B6");
 
-                    b.Navigation("Persona");
+                    b.Navigation("ID_DetectiveNavigation");
                 });
 
             modelBuilder.Entity("DAL.Models.EVIDENCIA", b =>
                 {
-                    b.HasOne("DAL.Models.CASO", "ID_CasosNavigation")
+                    b.HasOne("DAL.Models.CASOS", "ID_CasosNavigation")
                         .WithMany("EVIDENCIAS")
                         .HasForeignKey("ID_Casos")
                         .IsRequired()
@@ -630,7 +654,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Models.REGISTRO_CASO", b =>
                 {
-                    b.HasOne("DAL.Models.CASO", "ID_CasosNavigation")
+                    b.HasOne("DAL.Models.CASOS", "ID_CasosNavigation")
                         .WithMany("REGISTRO_CASOS")
                         .HasForeignKey("ID_Casos")
                         .IsRequired()
@@ -677,7 +701,7 @@ namespace DAL.Migrations
                     b.Navigation("REGISTRO_MANTENIMIENTOS");
                 });
 
-            modelBuilder.Entity("DAL.Models.CASO", b =>
+            modelBuilder.Entity("DAL.Models.CASOS", b =>
                 {
                     b.Navigation("EVIDENCIAS");
 
@@ -695,6 +719,13 @@ namespace DAL.Migrations
                     b.Navigation("FORMULARIOS");
 
                     b.Navigation("HISTORIALES");
+                });
+
+            modelBuilder.Entity("DAL.Models.DETECTIVE", b =>
+                {
+                    b.Navigation("CASOS");
+
+                    b.Navigation("CONTRATOS");
                 });
 
             modelBuilder.Entity("DAL.Models.EVIDENCIA", b =>

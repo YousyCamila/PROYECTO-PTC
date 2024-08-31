@@ -16,7 +16,15 @@ public partial class DETECTIVE
     [StringLength(100)]
     public string? Especialidad { get; set; }
 
+    // Propiedad de navegación para CASO
+    [InverseProperty("ID_DetectiveNavigation")]
+    public virtual ICollection<CASOS> CASOS { get; set; } = new List<CASOS>();
+
+    // Agregando la propiedad de navegación para CONTRATO
+    [InverseProperty("ID_DetectiveNavigation")]
+    public virtual ICollection<CONTRATO> CONTRATOS { get; set; } = new List<CONTRATO>();
+
     [ForeignKey("ID_Detective")]
     [InverseProperty("DETECTIVE")]
-    public virtual PERSONA Persona { get; set; } = null!; // Cambio de nombre para mayor claridad
+    public virtual PERSONA ID_DetectiveNavigation { get; set; } = null!;
 }

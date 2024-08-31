@@ -33,5 +33,5 @@ public partial class REGISTRO_CASO
 
     [ForeignKey("ID_Casos")]
     [InverseProperty("REGISTRO_CASOS")] // Corrige el nombre de la propiedad inversa en CASO
-    public virtual CASO ID_CasosNavigation { get; set; } = null!;
+    public virtual CASOS ID_CasosNavigation { get; set; } = null!;
 }

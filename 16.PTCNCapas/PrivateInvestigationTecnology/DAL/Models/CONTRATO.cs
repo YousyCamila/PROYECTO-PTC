@@ -32,7 +32,13 @@ public partial class CONTRATO
 
     public int ID_Cliente { get; set; }
 
+    public int? ID_Detective { get; set; }
+
     [ForeignKey("ID_Cliente")]
-    [InverseProperty("CONTRATOS")] // Corrige el nombre de la propiedad inversa en CLIENTE
+    [InverseProperty("CONTRATOS")]
     public virtual CLIENTE ID_ClienteNavigation { get; set; } = null!;
+
+    [ForeignKey("ID_Detective")]
+    [InverseProperty("CONTRATOS")]
+    public virtual DETECTIVE? ID_DetectiveNavigation { get; set; }
 }

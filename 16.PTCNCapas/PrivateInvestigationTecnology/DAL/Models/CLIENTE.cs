@@ -10,13 +10,14 @@ namespace DAL.Models;
 public partial class CLIENTE
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Asegura que es autoincrementable
     public int ID_Cliente { get; set; }
 
     [StringLength(255)]
     public string? Direccion { get; set; }
 
     [InverseProperty("ID_ClienteNavigation")]
-    public virtual ICollection<CASO> CASOS { get; set; } = new List<CASO>();
+    public virtual ICollection<CASOS> CASOS { get; set; } = new List<CASOS>();
 
     [InverseProperty("ID_ClienteNavigation")]
     public virtual ICollection<CONTRATO> CONTRATOS { get; set; } = new List<CONTRATO>();
@@ -32,5 +33,5 @@ public partial class CLIENTE
 
     [ForeignKey("ID_Cliente")]
     [InverseProperty("CLIENTE")]
-    public virtual PERSONA Persona { get; set; } = null!;  // Cambia el nombre a "Persona"
+    public virtual PERSONA ID_ClienteNavigation { get; set; } = null!;  // Asegura la relación uno a uno con PERSONA
 }

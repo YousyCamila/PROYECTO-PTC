@@ -32,12 +32,12 @@ public partial class PERSONA
     [Column(TypeName = "datetime")]
     public DateTime Fecha_Nacimiento { get; set; }
 
-    [InverseProperty("Persona")]
+    [InverseProperty("ID_AdministradorNavigation")]
     public virtual ADMINISTRADOR? ADMINISTRADOR { get; set; }
 
-    [InverseProperty("Persona")]
+    [InverseProperty("ID_ClienteNavigation")]
     public virtual CLIENTE? CLIENTE { get; set; }
 
-    [InverseProperty("Persona")]
+    [InverseProperty("ID_DetectiveNavigation")]
     public virtual DETECTIVE? DETECTIVE { get; set; }
 }

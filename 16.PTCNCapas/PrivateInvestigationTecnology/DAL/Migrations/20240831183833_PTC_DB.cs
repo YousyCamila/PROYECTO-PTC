@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class DB_PTC : Migration
+    public partial class PTC_DB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -138,55 +138,6 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CASOS",
-                columns: table => new
-                {
-                    ID_Casos = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Cadena_Custodia = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Investigacion_Extorsion = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Estudios_Seguridad = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Investigacion_Infidelidades = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Investigacion_Robos_Empresariales = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Antecedentes = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Recuperacion_Vehiculos = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ID_Cliente = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__CASOS__8D2EE0F8198FF510", x => x.ID_Casos);
-                    table.ForeignKey(
-                        name: "FK__CASOS__ID_Client__5535A963",
-                        column: x => x.ID_Cliente,
-                        principalTable: "CLIENTE",
-                        principalColumn: "ID_Cliente");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CONTRATO",
-                columns: table => new
-                {
-                    ID_Contrato = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Descrip_Servicio = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Fecha_Inicio = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Fecha_Cierre = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Clausulas = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Tarifa = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    Estado = table.Column<bool>(type: "bit", nullable: false),
-                    ID_Cliente = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__CONTRATO__B16B9C193079E2D4", x => x.ID_Contrato);
-                    table.ForeignKey(
-                        name: "FK__CONTRATO__ID_Cli__52593CB8",
-                        column: x => x.ID_Cliente,
-                        principalTable: "CLIENTE",
-                        principalColumn: "ID_Cliente");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "FACTURA",
                 columns: table => new
                 {
@@ -249,6 +200,67 @@ namespace DAL.Migrations
                         column: x => x.ID_Cliente,
                         principalTable: "CLIENTE",
                         principalColumn: "ID_Cliente");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CASOS",
+                columns: table => new
+                {
+                    ID_Casos = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Cadena_Custodia = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Investigacion_Extorsion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Estudios_Seguridad = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Investigacion_Infidelidades = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Investigacion_Robos_Empresariales = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Antecedentes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Recuperacion_Vehiculos = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ID_Cliente = table.Column<int>(type: "int", nullable: false),
+                    ID_Detective = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__CASOS__8D2EE0F8198FF510", x => x.ID_Casos);
+                    table.ForeignKey(
+                        name: "FK__CASOS__ID_Client__5535A963",
+                        column: x => x.ID_Cliente,
+                        principalTable: "CLIENTE",
+                        principalColumn: "ID_Cliente");
+                    table.ForeignKey(
+                        name: "FK__CASOS__ID_Detective__5535A963",
+                        column: x => x.ID_Detective,
+                        principalTable: "DETECTIVE",
+                        principalColumn: "ID_Detective");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CONTRATO",
+                columns: table => new
+                {
+                    ID_Contrato = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descrip_Servicio = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Fecha_Inicio = table.Column<DateTime>(type: "datetime", nullable: false),
+                    Fecha_Cierre = table.Column<DateTime>(type: "datetime", nullable: false),
+                    Clausulas = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Tarifa = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    Estado = table.Column<bool>(type: "bit", nullable: false),
+                    ID_Cliente = table.Column<int>(type: "int", nullable: false),
+                    ID_Detective = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__CONTRATO__B16B9C193079E2D4", x => x.ID_Contrato);
+                    table.ForeignKey(
+                        name: "FK__CONTRATO__ID_Cli__52593CB8",
+                        column: x => x.ID_Cliente,
+                        principalTable: "CLIENTE",
+                        principalColumn: "ID_Cliente");
+                    table.ForeignKey(
+                        name: "FK__CONTRATO__ID_Detective__52593CB8",
+                        column: x => x.ID_Detective,
+                        principalTable: "DETECTIVE",
+                        principalColumn: "ID_Detective");
                 });
 
             migrationBuilder.CreateTable(
@@ -351,9 +363,19 @@ namespace DAL.Migrations
                 column: "ID_Cliente");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CASOS_ID_Detective",
+                table: "CASOS",
+                column: "ID_Detective");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CONTRATO_ID_Cliente",
                 table: "CONTRATO",
                 column: "ID_Cliente");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CONTRATO_ID_Detective",
+                table: "CONTRATO",
+                column: "ID_Detective");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EVIDENCIA_ID_Casos",
@@ -406,9 +428,6 @@ namespace DAL.Migrations
                 name: "CONTRATO");
 
             migrationBuilder.DropTable(
-                name: "DETECTIVE");
-
-            migrationBuilder.DropTable(
                 name: "FACTURA");
 
             migrationBuilder.DropTable(
@@ -443,6 +462,9 @@ namespace DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "CLIENTE");
+
+            migrationBuilder.DropTable(
+                name: "DETECTIVE");
 
             migrationBuilder.DropTable(
                 name: "PERSONA");

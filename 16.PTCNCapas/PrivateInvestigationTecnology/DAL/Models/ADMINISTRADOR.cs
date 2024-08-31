@@ -18,7 +18,8 @@ public partial class ADMINISTRADOR
 
     [ForeignKey("ID_Administrador")]
     [InverseProperty("ADMINISTRADOR")]
-    public virtual PERSONA Persona { get; set; } = null!; // Cambio de nombre para mayor claridad
+    public virtual PERSONA ID_AdministradorNavigation { get; set; } = null!;
+
 
     [InverseProperty("ID_AdministradorNavigation")]
     public virtual ICollection<REGISTRO_MANTENIMIENTO> REGISTRO_MANTENIMIENTOS { get; set; } = new List<REGISTRO_MANTENIMIENTO>();

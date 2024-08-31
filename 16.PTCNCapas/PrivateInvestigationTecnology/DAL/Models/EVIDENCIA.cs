@@ -23,7 +23,7 @@ public partial class EVIDENCIA
 
     [ForeignKey("ID_Casos")]
     [InverseProperty("EVIDENCIAS")] // Corrige el nombre de la propiedad inversa en CASO
-    public virtual CASO ID_CasosNavigation { get; set; } = null!;
+    public virtual CASOS ID_CasosNavigation { get; set; } = null!;
 
     [InverseProperty("ID_EvidenciaNavigation")]
     public virtual ICollection<TIPO_EVIDENCIA> TIPO_EVIDENCIAS { get; set; } = new List<TIPO_EVIDENCIA>(); // Corrige el tipo de entidad

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Policy;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +18,7 @@ namespace DAL.Datos
 
         public virtual DbSet<ADMINISTRADOR> ADMINISTRADORES { get; set; }
         public virtual DbSet<AUDITORIA> AUDITORIAS { get; set; }
-        public virtual DbSet<CASO> CASOS { get; set; }
+        public virtual DbSet<CASOS> CASOS { get; set; }
         public virtual DbSet<CLIENTE> CLIENTES { get; set; }
         public virtual DbSet<CONTRATO> CONTRATOS { get; set; }
         public virtual DbSet<DETECTIVE> DETECTIVES { get; set; }
@@ -38,8 +37,7 @@ namespace DAL.Datos
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-MVC3TKQ\\SQLEXPRESS;Database=PTC_DB_M;User ID=JuanSebastian;Password=MyProyect2024; TrustServerCertificate=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-MVC3TKQ\\SQLEXPRESS;Database=PTC_PRUEBA;User ID=JuanSebastian;Password=MyProyect2024; TrustServerCertificate=True;");
             }
         }
 
@@ -51,7 +49,7 @@ namespace DAL.Datos
 
                 entity.Property(e => e.ID_Administrador).ValueGeneratedOnAdd(); // Auto incrementable
 
-                entity.HasOne(d => d.Persona)
+                entity.HasOne(d => d.ID_AdministradorNavigation)
                     .WithOne(p => p.ADMINISTRADOR)
                     .HasForeignKey<ADMINISTRADOR>(d => d.ID_Administrador)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -70,7 +68,7 @@ namespace DAL.Datos
                     .HasConstraintName("FK__AUDITORIA__ID_Us__656C112C");
             });
 
-            modelBuilder.Entity<CASO>(entity =>
+            modelBuilder.Entity<CASOS>(entity =>
             {
                 entity.HasKey(e => e.ID_Casos).HasName("PK__CASOS__8D2EE0F8198FF510");
 
@@ -80,6 +78,12 @@ namespace DAL.Datos
                     .WithMany(p => p.CASOS)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__CASOS__ID_Client__5535A963");
+
+                entity.HasOne(d => d.ID_DetectiveNavigation)
+                    .WithMany(p => p.CASOS)
+                    .HasForeignKey(d => d.ID_Detective)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__CASOS__ID_Detective__5535A963");
 
                 entity.HasMany(d => d.EVIDENCIAS)
                     .WithOne(p => p.ID_CasosNavigation)
@@ -93,7 +97,7 @@ namespace DAL.Datos
 
                 entity.Property(e => e.ID_Cliente).ValueGeneratedOnAdd(); // Auto incrementable
 
-                entity.HasOne(d => d.Persona)
+                entity.HasOne(d => d.ID_ClienteNavigation)
                     .WithOne(p => p.CLIENTE)
                     .HasForeignKey<CLIENTE>(d => d.ID_Cliente)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -110,6 +114,12 @@ namespace DAL.Datos
                     .WithMany(p => p.CONTRATOS)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__CONTRATO__ID_Cli__52593CB8");
+
+                entity.HasOne(d => d.ID_DetectiveNavigation)
+                    .WithMany(p => p.CONTRATOS)
+                    .HasForeignKey(d => d.ID_Detective)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__CONTRATO__ID_Detective__52593CB8");
             });
 
             modelBuilder.Entity<DETECTIVE>(entity =>
@@ -118,7 +128,7 @@ namespace DAL.Datos
 
                 entity.Property(e => e.ID_Detective).ValueGeneratedOnAdd(); // Auto incrementable
 
-                entity.HasOne(d => d.Persona)
+                entity.HasOne(d => d.ID_DetectiveNavigation)
                     .WithOne(p => p.DETECTIVE)
                     .HasForeignKey<DETECTIVE>(d => d.ID_Detective)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -186,17 +196,17 @@ namespace DAL.Datos
 
                 // Definición de las relaciones uno a uno
                 entity.HasOne(d => d.ADMINISTRADOR)
-                    .WithOne(p => p.Persona)
+                    .WithOne(p => p.ID_AdministradorNavigation)
                     .HasForeignKey<ADMINISTRADOR>(d => d.ID_Administrador)
                     .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.CLIENTE)
-                    .WithOne(p => p.Persona)
+                    .WithOne(p => p.ID_ClienteNavigation)
                     .HasForeignKey<CLIENTE>(d => d.ID_Cliente)
                     .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.DETECTIVE)
-                    .WithOne(p => p.Persona)
+                    .WithOne(p => p.ID_DetectiveNavigation)
                     .HasForeignKey<DETECTIVE>(d => d.ID_Detective)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });

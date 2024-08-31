@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Security.Policy;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models;
 
 [Table("CASOS")]
-public partial class CASO
+public partial class CASOS
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Autoincrementable
@@ -29,15 +28,28 @@ public partial class CASO
 
     public string? Recuperacion_Vehiculos { get; set; }
 
+    // Relación con Cliente
     public int ID_Cliente { get; set; }
 
+    // Relación con DETECTIVE
+    public int? ID_Detective { get; set; }  
+
     [ForeignKey("ID_Cliente")]
-    [InverseProperty("CASOS")] // Corrige el nombre de la propiedad inversa en CLIENTE
+    [InverseProperty("CASOS")]
     public virtual CLIENTE ID_ClienteNavigation { get; set; } = null!;
 
-    [InverseProperty("ID_CasosNavigation")]
-    public virtual ICollection<EVIDENCIA> EVIDENCIAS { get; set; } = new List<EVIDENCIA>(); // Corrige el tipo de entidad
+    // Relación con Detective
+ 
 
+    [ForeignKey("ID_Detective")]
+    [InverseProperty("CASOS")]
+    public virtual DETECTIVE? ID_DetectiveNavigation { get; set; }
+
+    // Relación con Evidencias
+    [InverseProperty("ID_CasosNavigation")]
+    public virtual ICollection<EVIDENCIA> EVIDENCIAS { get; set; } = new List<EVIDENCIA>();
+
+    // Relación con Registro de Casos
     [InverseProperty("ID_CasosNavigation")]
     public virtual ICollection<REGISTRO_CASO> REGISTRO_CASOS { get; set; } = new List<REGISTRO_CASO>();
 }
