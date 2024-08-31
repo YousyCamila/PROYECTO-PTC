@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace DAL.Datos
 {
     public partial class ApplicationDbContext : DbContext
