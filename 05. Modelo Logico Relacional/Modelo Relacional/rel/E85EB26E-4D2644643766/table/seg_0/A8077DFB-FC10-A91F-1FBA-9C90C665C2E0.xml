@@ -11,6 +11,7 @@
 <Column name="ID_Tipo_Evidencia" id="8D6C0F0E-5881-8694-A615-42665F0E48FD">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
+<commentInRDBMS><![CDATA[Almacena información sobre los diferentes tipos de evidencia, incluyendo su formato y detalles asociados.]]></commentInRDBMS>
 <generatorID>9FD45A71-D19C-8337-355B-66031FFEFC1C</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
