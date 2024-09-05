@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using DAL.Models;
+using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 
 
