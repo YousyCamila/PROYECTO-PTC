@@ -3,48 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F098F4C0-B10D-42C4-B9AF-C5A8B114545D}|Entities\\Entities.csproj|c:\\users\\sebastian\\repositorios\\repositorio ptc\\proyecto-ptc\\16.ptcncapas\\privateinvestigationtecnology\\entities\\models\\detective.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F098F4C0-B10D-42C4-B9AF-C5A8B114545D}|Entities\\Entities.csproj|solutionrelative:entities\\models\\detective.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{9BC911A7-B6C2-484D-937E-FD611526BFB3}|DAL\\DAL.csproj|c:\\users\\sebastian\\repositorios\\repositorio ptc\\proyecto-ptc\\16.ptcncapas\\privateinvestigationtecnology\\dal\\datos\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9BC911A7-B6C2-484D-937E-FD611526BFB3}|DAL\\DAL.csproj|solutionrelative:dal\\datos\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F098F4C0-B10D-42C4-B9AF-C5A8B114545D}|Entities\\Entities.csproj|c:\\users\\sebastian\\repositorios\\repositorio ptc\\proyecto-ptc\\16.ptcncapas\\privateinvestigationtecnology\\entities\\models\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F098F4C0-B10D-42C4-B9AF-C5A8B114545D}|Entities\\Entities.csproj|solutionrelative:entities\\models\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F098F4C0-B10D-42C4-B9AF-C5A8B114545D}|Entities\\Entities.csproj|c:\\users\\sebastian\\repositorios\\repositorio ptc\\proyecto-ptc\\16.ptcncapas\\privateinvestigationtecnology\\entities\\models\\tipo_evidencia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F098F4C0-B10D-42C4-B9AF-C5A8B114545D}|Entities\\Entities.csproj|solutionrelative:entities\\models\\tipo_evidencia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F098F4C0-B10D-42C4-B9AF-C5A8B114545D}|Entities\\Entities.csproj|c:\\users\\sebastian\\repositorios\\repositorio ptc\\proyecto-ptc\\16.ptcncapas\\privateinvestigationtecnology\\entities\\models\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F098F4C0-B10D-42C4-B9AF-C5A8B114545D}|Entities\\Entities.csproj|solutionrelative:entities\\models\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F098F4C0-B10D-42C4-B9AF-C5A8B114545D}|Entities\\Entities.csproj|c:\\users\\sebastian\\repositorios\\repositorio ptc\\proyecto-ptc\\16.ptcncapas\\privateinvestigationtecnology\\entities\\models\\registro_mantenimiento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F098F4C0-B10D-42C4-B9AF-C5A8B114545D}|Entities\\Entities.csproj|solutionrelative:entities\\models\\registro_mantenimiento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F098F4C0-B10D-42C4-B9AF-C5A8B114545D}|Entities\\Entities.csproj|c:\\users\\sebastian\\repositorios\\repositorio ptc\\proyecto-ptc\\16.ptcncapas\\privateinvestigationtecnology\\entities\\models\\registro_caso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F098F4C0-B10D-42C4-B9AF-C5A8B114545D}|Entities\\Entities.csproj|solutionrelative:entities\\models\\registro_caso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F098F4C0-B10D-42C4-B9AF-C5A8B114545D}|Entities\\Entities.csproj|c:\\users\\sebastian\\repositorios\\repositorio ptc\\proyecto-ptc\\16.ptcncapas\\privateinvestigationtecnology\\entities\\models\\persona.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F098F4C0-B10D-42C4-B9AF-C5A8B114545D}|Entities\\Entities.csproj|solutionrelative:entities\\models\\persona.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F098F4C0-B10D-42C4-B9AF-C5A8B114545D}|Entities\\Entities.csproj|c:\\users\\sebastian\\repositorios\\repositorio ptc\\proyecto-ptc\\16.ptcncapas\\privateinvestigationtecnology\\entities\\models\\historial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F098F4C0-B10D-42C4-B9AF-C5A8B114545D}|Entities\\Entities.csproj|solutionrelative:entities\\models\\historial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F098F4C0-B10D-42C4-B9AF-C5A8B114545D}|Entities\\Entities.csproj|c:\\users\\sebastian\\repositorios\\repositorio ptc\\proyecto-ptc\\16.ptcncapas\\privateinvestigationtecnology\\entities\\models\\formulario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F098F4C0-B10D-42C4-B9AF-C5A8B114545D}|Entities\\Entities.csproj|solutionrelative:entities\\models\\formulario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F098F4C0-B10D-42C4-B9AF-C5A8B114545D}|Entities\\Entities.csproj|c:\\users\\sebastian\\repositorios\\repositorio ptc\\proyecto-ptc\\16.ptcncapas\\privateinvestigationtecnology\\entities\\models\\evidencia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F098F4C0-B10D-42C4-B9AF-C5A8B114545D}|Entities\\Entities.csproj|solutionrelative:entities\\models\\evidencia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -59,142 +19,12 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "DETECTIVE.cs",
-              "DocumentMoniker": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\Entities\\Models\\DETECTIVE.cs",
-              "RelativeDocumentMoniker": "Entities\\Models\\DETECTIVE.cs",
-              "ToolTip": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\Entities\\Models\\DETECTIVE.cs",
-              "RelativeToolTip": "Entities\\Models\\DETECTIVE.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-04T23:54:24.793Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "USUARIO.cs",
-              "DocumentMoniker": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\Entities\\Models\\USUARIO.cs",
-              "RelativeDocumentMoniker": "Entities\\Models\\USUARIO.cs",
-              "ToolTip": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\Entities\\Models\\USUARIO.cs",
-              "RelativeToolTip": "Entities\\Models\\USUARIO.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-04T23:52:59.295Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "TIPO_EVIDENCIA.cs",
-              "DocumentMoniker": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\Entities\\Models\\TIPO_EVIDENCIA.cs",
-              "RelativeDocumentMoniker": "Entities\\Models\\TIPO_EVIDENCIA.cs",
-              "ToolTip": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\Entities\\Models\\TIPO_EVIDENCIA.cs",
-              "RelativeToolTip": "Entities\\Models\\TIPO_EVIDENCIA.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAaAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-04T23:52:51.256Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ROLE.cs",
-              "DocumentMoniker": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\Entities\\Models\\ROLE.cs",
-              "RelativeDocumentMoniker": "Entities\\Models\\ROLE.cs",
-              "ToolTip": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\Entities\\Models\\ROLE.cs",
-              "RelativeToolTip": "Entities\\Models\\ROLE.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAaAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-04T23:52:44.222Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "REGISTRO_MANTENIMIENTO.cs",
-              "DocumentMoniker": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\Entities\\Models\\REGISTRO_MANTENIMIENTO.cs",
-              "RelativeDocumentMoniker": "Entities\\Models\\REGISTRO_MANTENIMIENTO.cs",
-              "ToolTip": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\Entities\\Models\\REGISTRO_MANTENIMIENTO.cs",
-              "RelativeToolTip": "Entities\\Models\\REGISTRO_MANTENIMIENTO.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-04T23:52:23.989Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "REGISTRO_CASO.cs",
-              "DocumentMoniker": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\Entities\\Models\\REGISTRO_CASO.cs",
-              "RelativeDocumentMoniker": "Entities\\Models\\REGISTRO_CASO.cs",
-              "ToolTip": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\Entities\\Models\\REGISTRO_CASO.cs",
-              "RelativeToolTip": "Entities\\Models\\REGISTRO_CASO.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-04T23:52:16.05Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "PERSONA.cs",
-              "DocumentMoniker": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\Entities\\Models\\PERSONA.cs",
-              "RelativeDocumentMoniker": "Entities\\Models\\PERSONA.cs",
-              "ToolTip": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\Entities\\Models\\PERSONA.cs",
-              "RelativeToolTip": "Entities\\Models\\PERSONA.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAaAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-04T23:52:05.435Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "HISTORIAL.cs",
-              "DocumentMoniker": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\Entities\\Models\\HISTORIAL.cs",
-              "RelativeDocumentMoniker": "Entities\\Models\\HISTORIAL.cs",
-              "ToolTip": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\Entities\\Models\\HISTORIAL.cs",
-              "RelativeToolTip": "Entities\\Models\\HISTORIAL.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAaAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-04T23:51:54.535Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "FORMULARIO.cs",
-              "DocumentMoniker": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\Entities\\Models\\FORMULARIO.cs",
-              "RelativeDocumentMoniker": "Entities\\Models\\FORMULARIO.cs",
-              "ToolTip": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\Entities\\Models\\FORMULARIO.cs",
-              "RelativeToolTip": "Entities\\Models\\FORMULARIO.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAaAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-04T23:51:31.222Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "EVIDENCIA.cs",
-              "DocumentMoniker": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\Entities\\Models\\EVIDENCIA.cs",
-              "RelativeDocumentMoniker": "Entities\\Models\\EVIDENCIA.cs",
-              "ToolTip": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\Entities\\Models\\EVIDENCIA.cs",
-              "RelativeToolTip": "Entities\\Models\\EVIDENCIA.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAeAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-04T23:39:56.241Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "ApplicationDbContext.cs",
               "DocumentMoniker": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\DAL\\Datos\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "DAL\\Datos\\ApplicationDbContext.cs",
               "ToolTip": "C:\\Users\\Sebastian\\Repositorios\\Repositorio PTC\\PROYECTO-PTC\\16.PTCNCapas\\PrivateInvestigationTecnology\\DAL\\Datos\\ApplicationDbContext.cs",
               "RelativeToolTip": "DAL\\Datos\\ApplicationDbContext.cs",
-              "ViewState": "AQIAABgAAAAAAAAAAAAAAAIAAAAOAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAAOAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-31T18:12:39.907Z",
               "EditorCaption": ""
