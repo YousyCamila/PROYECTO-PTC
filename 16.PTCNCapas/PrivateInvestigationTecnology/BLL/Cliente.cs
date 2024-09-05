@@ -8,7 +8,7 @@ using Entities.Models;
 
 namespace BLL
 {
-    public class ClientesService
+    public class Clientes
     {
         public async Task<CLIENTE> CreateAsync(CLIENTE cliente)
         {
