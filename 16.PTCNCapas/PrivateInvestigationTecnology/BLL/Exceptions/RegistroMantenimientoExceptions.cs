@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace BLL
+namespace BLL.Exceptions
 {
     public class RegistroMantenimientoExceptions : Exception
     {

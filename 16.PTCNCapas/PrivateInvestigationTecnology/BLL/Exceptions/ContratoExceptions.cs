@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 
 
-namespace BLL
+namespace BLL.Exceptions
 {
     public class ContratoExceptions : Exception
     {

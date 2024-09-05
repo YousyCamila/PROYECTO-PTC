@@ -1,6 +1,7 @@
 ﻿using Entities.Models;
 using System.Linq.Expressions;
 using DAL;
+using BLL.Exceptions;
 
 
 namespace BLL

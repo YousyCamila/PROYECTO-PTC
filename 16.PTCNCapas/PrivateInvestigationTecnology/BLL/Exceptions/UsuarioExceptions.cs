@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using System;
 
-namespace BLL
+namespace BLL.Exceptions
 {
     public class UsuarioExceptions : Exception
     {
