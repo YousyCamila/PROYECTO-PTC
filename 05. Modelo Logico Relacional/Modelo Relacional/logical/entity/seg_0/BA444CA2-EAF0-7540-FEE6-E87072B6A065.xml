@@ -18,38 +18,14 @@
 <Attribute name="ID_Tipo_Evidencia" id="9FD45A71-D19C-8337-355B-66031FFEFC1C">
 <createdBy>ludwi</createdBy>
 <createdTime>2024-06-17 02:23:00 UTC</createdTime>
+<commentInRDBMS><![CDATA[Almacena información sobre los diferentes tipos de evidencia, incluyendo su formato y detalles asociados.]]></commentInRDBMS>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <engineerTo>
 <item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
-</Attribute>
-<Attribute name="Detective" id="0C3FF58F-D1AC-4A34-A1A3-75055759F1EF">
-<createdBy>ludwi</createdBy>
-<createdTime>2024-06-17 02:23:37 UTC</createdTime>
-<ownerDesignName>Modelo Relacional</ownerDesignName>
-<engineerTo>
-<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
-</engineerTo>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT037</logicalDatatype>
-<dataTypeSize>250 CHAR</dataTypeSize>
-<ownDataTypeParameters>250 CHAR,,</ownDataTypeParameters>
-</Attribute>
-<Attribute name="Cliente" id="FCCDE0A8-E819-4A92-4D8F-5A8868104DA0">
-<createdBy>ludwi</createdBy>
-<createdTime>2024-06-17 02:26:17 UTC</createdTime>
-<ownerDesignName>Modelo Relacional</ownerDesignName>
-<engineerTo>
-<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
-</engineerTo>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT037</logicalDatatype>
+<logicalDatatype>LOGDT024</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="ID_Evidencia" id="849FCE17-8F23-50AE-3322-D98E0DFCBB61">
@@ -66,14 +42,80 @@
 <logicalDatatype>LOGDT011</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
+<Attribute name="Documentos.pdf, .docx, .xlsx" id="77920C93-0522-3A82-C310-493F629145B5">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-30 21:59:01 UTC</createdTime>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<engineerTo>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT029</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Fotografia.jpg, .png, .gif" id="BE4992FD-A8DE-3439-2C02-D868EAEE5F16">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-30 21:59:45 UTC</createdTime>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<engineerTo>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT029</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Video.mp4, .avi, .mov" id="FB6DBAD0-E8BD-CAF0-9790-EFD2BABB26FD">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-30 22:00:30 UTC</createdTime>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<engineerTo>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT029</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Audio.mp3, .wav, .aac" id="8BA840BC-7C28-03B4-8F4A-83684884B8DE">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-30 22:01:39 UTC</createdTime>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<engineerTo>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT029</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Archivos_Digitales.txt, .csv, .xml" id="0D11E087-4D4B-CA5E-22BA-5BB533D14F41">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-30 22:01:56 UTC</createdTime>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<engineerTo>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT029</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
 </attributes>
 <identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
 <identifier id="9AA8C953-9135-3217-325E-6FCD39937C90" name="Tipo_Evidencia PK">
 <createdBy>ludwi</createdBy>
 <createdTime>2024-06-17 02:23:35 UTC</createdTime>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
 <engineerTo>
-<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="false"/>
 </engineerTo>
 <pk>true</pk>
 <usedAttributes>

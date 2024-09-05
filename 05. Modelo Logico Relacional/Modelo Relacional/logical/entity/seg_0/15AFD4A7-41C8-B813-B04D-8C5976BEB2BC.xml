@@ -18,6 +18,7 @@
 <Attribute name="ID_Factura" id="653C4F4C-7335-CC59-365D-C362FC9E1EEA">
 <createdBy>SENA</createdBy>
 <createdTime>2024-05-09 21:58:53 UTC</createdTime>
+<commentInRDBMS><![CDATA[Registra las facturas emitidas para los servicios prestados en los casos.]]></commentInRDBMS>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <engineerTo>
 <item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
@@ -49,9 +50,8 @@
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT037</logicalDatatype>
-<dataTypeSize>256 CHAR</dataTypeSize>
-<ownDataTypeParameters>256 CHAR,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="Descripcion_Serv" id="AFD511CA-C90D-F0BB-4102-CB5A08854C2F">
 <createdBy>ludwi</createdBy>
@@ -79,7 +79,7 @@
 <dataTypeSize>128 CHAR</dataTypeSize>
 <ownDataTypeParameters>128 CHAR,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="ID" id="A1BC246F-0199-89EE-D3FF-C04F54AF7805">
+<Attribute name="ID_Casos" id="A1BC246F-0199-89EE-D3FF-C04F54AF7805">
 <createdBy>ludwi</createdBy>
 <createdTime>2024-05-13 18:11:56 UTC</createdTime>
 <generatorID>2E96DD7F-363B-AFCE-CCCD-069D3B6BD12E</generatorID>
@@ -90,8 +90,9 @@
 <referedAttribute>69B64051-9A70-C9AD-6A95-9DBB363BB554</referedAttribute>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT035</logicalDatatype>
+<dataTypeSize>250</dataTypeSize>
+<ownDataTypeParameters>250,,</ownDataTypeParameters>
 </Attribute>
 </attributes>
 <identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
@@ -99,8 +100,9 @@
 <createdBy>SENA</createdBy>
 <createdTime>2024-05-09 22:01:12 UTC</createdTime>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
 <engineerTo>
-<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="false"/>
 </engineerTo>
 <pk>true</pk>
 <usedAttributes>

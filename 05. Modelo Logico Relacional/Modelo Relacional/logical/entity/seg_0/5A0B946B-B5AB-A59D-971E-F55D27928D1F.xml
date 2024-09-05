@@ -18,6 +18,7 @@
 <Attribute name="ID_Historial" id="37E9B7C0-AEE5-1CEA-76AF-494917143AFD">
 <createdBy>ludwi</createdBy>
 <createdTime>2024-05-13 16:27:13 UTC</createdTime>
+<commentInRDBMS><![CDATA[Contiene el historial de actividades y eventos relacionados con los clientes y sus casos]]></commentInRDBMS>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <engineerTo>
 <item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
@@ -50,9 +51,8 @@
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT037</logicalDatatype>
-<dataTypeSize>128 CHAR</dataTypeSize>
-<ownDataTypeParameters>128 CHAR,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="Fecha_Finali_Histo" id="46506F6C-0175-4796-DCD6-DB79B7603AF4">
 <createdBy>ludwi</createdBy>
@@ -63,9 +63,8 @@
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT037</logicalDatatype>
-<dataTypeSize>!28 CHAR</dataTypeSize>
-<ownDataTypeParameters>!28 CHAR,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="DNI" id="85C21A55-FD3F-627A-3A56-49C734E2FB45">
 <createdBy>ludwi</createdBy>
@@ -80,7 +79,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT037</logicalDatatype>
 <dataTypeSize>16 CHAR</dataTypeSize>
-<ownDataTypeParameters>16 CHAR,,</ownDataTypeParameters>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 </attributes>
 <identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
@@ -88,8 +87,9 @@
 <createdBy>ludwi</createdBy>
 <createdTime>2024-05-13 16:27:39 UTC</createdTime>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
 <engineerTo>
-<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="false"/>
 </engineerTo>
 <pk>true</pk>
 <usedAttributes>

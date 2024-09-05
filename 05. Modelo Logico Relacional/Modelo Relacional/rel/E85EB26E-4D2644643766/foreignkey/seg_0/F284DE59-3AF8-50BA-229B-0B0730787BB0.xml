@@ -1,10 +1,10 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="F284DE59-3AF8-50BA-229B-0B0730787BB0" containerWithKeyObject="0A381860-7928-FA19-D71E-55DB8C618824" localFKIndex="B4DF0E6E-346C-CD39-9184-21BBAAC6F33B" name="Evidencia_Historial_de_casos_FK">
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="F284DE59-3AF8-50BA-229B-0B0730787BB0" containerWithKeyObject="0A381860-7928-FA19-D71E-55DB8C618824" localFKIndex="B4DF0E6E-346C-CD39-9184-21BBAAC6F33B" name="Evidencia_Registro_de_casos_FK">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
 <generatorID>1944EDBD-9969-9AB6-657B-032CD4CA1D3A</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
-<referredTableLongName>Historial_de_casos</referredTableLongName>
+<referredTableLongName>Registro_de_casos</referredTableLongName>
 <deleteRule>NO ACTION</deleteRule>
 <referredTableID>1B3BD1EE-082F-3E57-720D-4D51EBEF3761</referredTableID>
 <keyObject>DB1D92C2-004A-0764-723C-88C69A6EDA08</keyObject>

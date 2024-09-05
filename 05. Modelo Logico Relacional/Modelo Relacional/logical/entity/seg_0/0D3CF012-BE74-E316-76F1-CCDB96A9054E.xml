@@ -18,14 +18,16 @@
 <Attribute name="ID_Mantenimiento" id="D46F5679-F798-9E27-5EB0-A05B74CC659E">
 <createdBy>ludwi</createdBy>
 <createdTime>2024-05-13 15:50:42 UTC</createdTime>
+<commentInRDBMS><![CDATA[Registra el mantenimiento realizado en el sistema por los administradores.]]></commentInRDBMS>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <engineerTo>
 <item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>200</dataTypeSize>
+<ownDataTypeParameters>200,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="Descripcion" id="9996489F-D00C-D515-CE7E-80A017F217C2">
 <createdBy>ludwi</createdBy>
@@ -49,9 +51,8 @@
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT037</logicalDatatype>
-<dataTypeSize>128 CHAR</dataTypeSize>
-<ownDataTypeParameters>128 CHAR,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="Fecha_Final" id="D9499B9E-31D1-E624-4096-8C95086D989F">
 <createdBy>ludwi</createdBy>
@@ -62,9 +63,8 @@
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT037</logicalDatatype>
-<dataTypeSize>128 CHAR</dataTypeSize>
-<ownDataTypeParameters>128 CHAR,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="Estado" id="1842BF3E-BC29-E503-771C-080B94985D26">
 <createdBy>ludwi</createdBy>
@@ -100,8 +100,9 @@
 <createdBy>ludwi</createdBy>
 <createdTime>2024-05-13 15:51:12 UTC</createdTime>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
 <engineerTo>
-<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="false"/>
 </engineerTo>
 <pk>true</pk>
 <usedAttributes>

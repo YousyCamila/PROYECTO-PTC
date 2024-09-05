@@ -1,16 +1,16 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="A78FBC7D-C3BD-A3E3-8295-DE486E85242D" containerWithKeyObject="1B3BD1EE-082F-3E57-720D-4D51EBEF3761" localFKIndex="CAC38A4D-7CC2-E45A-4CB2-5FFE240177E2" name="Historial_de_casos_CASOS_FK">
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="A78FBC7D-C3BD-A3E3-8295-DE486E85242D" containerWithKeyObject="1B3BD1EE-082F-3E57-720D-4D51EBEF3761" localFKIndex="CAC38A4D-7CC2-E45A-4CB2-5FFE240177E2" name="Registro_de_casos_Casos_FK">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
 <generatorID>CF2BE2B0-4B2E-4F77-A7AE-DC4A0777F6F6</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
-<referredTableLongName>CASOS</referredTableLongName>
+<referredTableLongName>Casos</referredTableLongName>
 <deleteRule>NO ACTION</deleteRule>
 <referredTableID>72B40214-958A-C519-8F0F-38E8CC1E1946</referredTableID>
 <keyObject>8A2BE268-226F-A0B1-5F18-EA61C9E8A29B</keyObject>
 <referredKeyID>8A2BE268-226F-A0B1-5F18-EA61C9E8A29B</referredKeyID>
 <mandatory>true</mandatory>
-<refColNames>ID</refColNames>
+<refColNames>ID_Casos</refColNames>
 <transferable>true</transferable>
 <rely>false</rely>
 <columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>

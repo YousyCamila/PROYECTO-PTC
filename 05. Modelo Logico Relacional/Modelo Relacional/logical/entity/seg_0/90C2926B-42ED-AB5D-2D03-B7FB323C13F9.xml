@@ -19,11 +19,11 @@
 <Attribute name="Especialidad" id="A9A0B11F-00D6-6132-509A-89B32BEB902B">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-05-09 20:14:19 UTC</createdTime>
+<commentInRDBMS><![CDATA[Almacena datos sobre los detectives que trabajan en los casos.]]></commentInRDBMS>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <engineerTo>
 <item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
 </engineerTo>
-<nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT037</logicalDatatype>

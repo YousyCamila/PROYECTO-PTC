@@ -11,6 +11,7 @@
 <Column name="DNI" id="C5F945B8-C390-6632-8144-5879CAE9F26B">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
+<commentInRDBMS><![CDATA[Guarda información personal de individuos, tanto clientes como detectives y administradores.]]></commentInRDBMS>
 <generatorID>A5247D5E-8A81-25F3-2E5A-20DCBB0C6AC5</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
@@ -61,7 +62,6 @@
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
 <generatorID>3B2B1D24-41D2-7D78-F9D9-A8BA301219BB</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT037</logicalDatatype>

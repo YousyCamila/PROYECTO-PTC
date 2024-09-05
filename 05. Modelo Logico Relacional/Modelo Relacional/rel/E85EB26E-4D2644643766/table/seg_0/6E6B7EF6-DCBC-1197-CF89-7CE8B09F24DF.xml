@@ -11,6 +11,7 @@
 <Column name="ID_Formulario" id="4C1C1DEE-3BB3-983D-926B-215373544949">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
+<commentInRDBMS><![CDATA[Almacena información sobre formularios rellenados por los clientes.]]></commentInRDBMS>
 <generatorID>AE07BCB4-3E1B-2711-7709-574D57DD4A9D</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>

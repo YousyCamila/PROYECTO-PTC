@@ -1,5 +1,5 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="72B40214-958A-C519-8F0F-38E8CC1E1946" name="CASOS">
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="72B40214-958A-C519-8F0F-38E8CC1E1946" name="Casos">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
 <generatorID>33D220EC-6DC2-ADE3-EFA7-39B562E94118</generatorID>
@@ -8,41 +8,44 @@
 <existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
 <parsed>true</parsed>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
-<Column name="ID" id="CCC40992-186E-53E7-21D9-DA490BED6C9F">
+<Column name="ID_Casos" id="CCC40992-186E-53E7-21D9-DA490BED6C9F">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
+<commentInRDBMS><![CDATA[Contiene detalles sobre los casos investigativos manejados por la entidad.]]></commentInRDBMS>
 <generatorID>69B64051-9A70-C9AD-6A95-9DBB363BB554</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT035</logicalDatatype>
+<dataTypeSize>250</dataTypeSize>
+<ownDataTypeParameters>250,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="FechaApertura" id="2D15CA27-269A-BB75-924E-E25C4959AD8E">
+<Column name="Cadena_de_custodia" id="2D15CA27-269A-BB75-924E-E25C4959AD8E">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
 <generatorID>ABE7B060-7FAD-C0FC-EF42-C2499D273509</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT007</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>250</dataTypeSize>
+<ownDataTypeParameters>250,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="FechaCierre" id="496A713A-B313-4F9F-9B20-6DF19829D557">
+<Column name="Investigación_en_extorsiones_y_secuestros" id="496A713A-B313-4F9F-9B20-6DF19829D557">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
 <generatorID>5CC83684-577E-F2DB-3AEE-876379823B75</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT007</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>250</dataTypeSize>
+<ownDataTypeParameters>250,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="Descripcion" id="5A5051ED-6887-13CB-738B-82CAD85CDE47">
+<Column name="Estudios_de_seguridad" id="5A5051ED-6887-13CB-738B-82CAD85CDE47">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
 <generatorID>021B7A2F-CF93-552B-CF8F-1BAF1316A8CB</generatorID>
@@ -50,8 +53,8 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT037</logicalDatatype>
-<dataTypeSize>256</dataTypeSize>
-<ownDataTypeParameters>256,,</ownDataTypeParameters>
+<dataTypeSize>250</dataTypeSize>
+<ownDataTypeParameters>250,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="CLIENTE_DNI" id="11BC12FE-D491-36EC-41D8-38868A743F7F">
@@ -63,12 +66,59 @@
 <use>1</use>
 <logicalDatatype>LOGDT037</logicalDatatype>
 <dataTypeSize>16 CHAR</dataTypeSize>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<ownDataTypeParameters>16 CHAR,,</ownDataTypeParameters>
 <previousColumn>false</previousColumn>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>
 <colAssociation fkAssociation="0CE0DC0C-2A25-B99F-3724-452431BCB496" referredColumn="98F63594-B3C3-9004-8E06-7DD50BE4C2BC"/>
 </associations>
+</Column>
+<Column name="Investigación_de_infidelidades" id="4B9A9F7D-CDE6-58D4-375F-FC56C771BE90">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-30 22:05:46 UTC</createdTime>
+<generatorID>42117DF8-784D-E0F4-60A3-C144B531F8DA</generatorID>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>250</dataTypeSize>
+<ownDataTypeParameters>250,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Investigación_en_robos_empresariales" id="A60D782A-DA6A-8057-2802-C0676D5A75C4">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-30 22:05:46 UTC</createdTime>
+<generatorID>FE53E086-D950-66D4-22ED-804DB1D1F81A</generatorID>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>250</dataTypeSize>
+<ownDataTypeParameters>250,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Antecedentes" id="3CBF3537-3353-BE9B-5690-5615A357FA12">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-30 22:05:46 UTC</createdTime>
+<generatorID>09A87714-4D24-D457-CA6D-EBB0EC7E8BBD</generatorID>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Recuperación_de_vehículos" id="399799C2-3DDD-9F12-13C9-E391A6942703">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-30 22:05:46 UTC</createdTime>
+<generatorID>99111812-C48F-1A40-8CCA-C966722AC76E</generatorID>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>250</dataTypeSize>
+<ownDataTypeParameters>250,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
@@ -84,7 +134,7 @@
 <colUsage columnID="CCC40992-186E-53E7-21D9-DA490BED6C9F"/>
 </indexColumnUsage>
 </ind_PK_UK>
-<ind_PK_UK id="6CDA205B-BA29-C691-5F62-0F2F313C7D33" name="CASOS_CLIENTE_FK">
+<ind_PK_UK id="6CDA205B-BA29-C691-5F62-0F2F313C7D33" name="Casos_CLIENTE_FK">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
 <generatorID>9A146580-0DB7-2296-C35C-FAB6D0D7BB82</generatorID>

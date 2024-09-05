@@ -11,6 +11,7 @@
 <Column name="ID_Evidencia" id="CF05CBCC-AC9B-6BE9-41B7-90EBFFE2EE78">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
+<commentInRDBMS><![CDATA[Guarda información sobre la evidencia recolectada en los casos, incluyendo descripciones y fechas.]]></commentInRDBMS>
 <generatorID>A9DF89D3-3450-839A-7C82-94D40B5C8909</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
@@ -42,7 +43,7 @@
 <ownDataTypeParameters>250 CHAR,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="Historial_de_casos_ID_historial" id="5E3B907F-C91F-0B19-487E-4666779C8893">
+<Column name="Registro_de_casos_ID_historial" id="5E3B907F-C91F-0B19-487E-4666779C8893">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
 <generatorID>F39A7400-13E6-CCAC-B238-458082CF04BB</generatorID>
@@ -55,6 +56,38 @@
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>
 <colAssociation fkAssociation="F284DE59-3AF8-50BA-229B-0B0730787BB0" referredColumn="C79B5E2D-11BB-2FD2-6544-891E1BA29D5A"/>
+</associations>
+</Column>
+<Column name="CLIENTE_DNI" id="F0F83AA1-1327-2C40-D0FA-9E0292C0F7BA">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-30 22:05:46 UTC</createdTime>
+<generatorID>14CC2C94-4130-1449-E305-00A441593DA4</generatorID>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>16 CHAR</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="F7E26AD0-A217-23FB-91F0-92F796DE125F" referredColumn="98F63594-B3C3-9004-8E06-7DD50BE4C2BC"/>
+</associations>
+</Column>
+<Column name="Detective_DNI" id="5DF974F8-3517-83E7-340F-2CD0320F3F3A">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-30 22:05:46 UTC</createdTime>
+<generatorID>047217E4-CCC5-7E75-3979-ECBA44DA85C5</generatorID>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>16 CHAR</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="58C63944-7216-3A12-0F08-24E0B7FFB083" referredColumn="C5382A63-F6CE-6897-BBEA-888930431E5E"/>
 </associations>
 </Column>
 </columns>
@@ -71,7 +104,7 @@
 <colUsage columnID="CF05CBCC-AC9B-6BE9-41B7-90EBFFE2EE78"/>
 </indexColumnUsage>
 </ind_PK_UK>
-<ind_PK_UK id="B4DF0E6E-346C-CD39-9184-21BBAAC6F33B" name="Evidencia_Historial_de_casos_FK">
+<ind_PK_UK id="B4DF0E6E-346C-CD39-9184-21BBAAC6F33B" name="Evidencia_Registro_de_casos_FK">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
 <generatorID>1944EDBD-9969-9AB6-657B-032CD4CA1D3A</generatorID>
@@ -80,6 +113,28 @@
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
 <colUsage columnID="5E3B907F-C91F-0B19-487E-4666779C8893"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="524E773A-6B21-C32A-5C17-4E3BA6C91AB8" name="Evidencia_CLIENTE_FK">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-30 22:05:46 UTC</createdTime>
+<generatorID>D149148B-8A94-F806-F00A-4BAEE782AA9D</generatorID>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="F0F83AA1-1327-2C40-D0FA-9E0292C0F7BA"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="EFE12E97-B384-EDED-FB53-22A6BA034197" name="Evidencia_Detective_FK">
+<createdBy>Aprendiz</createdBy>
+<createdTime>2024-08-30 22:05:46 UTC</createdTime>
+<generatorID>D042993A-E4B4-06E6-849E-7E1ED83FB47C</generatorID>
+<ownerDesignName>Modelo Relacional</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="5DF974F8-3517-83E7-340F-2CD0320F3F3A"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>
