@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace PrivateInvestigationTechnology.Controllers
 {
-    [Authorize(Roles = "Administrador,Detective,Cliente")] // Ajustar roles según necesidad
+    [Authorize(Roles = "Administrador")] // Ajustar roles según necesidad
     public class FormulariosController : Controller
     {
         private readonly ApplicationDbContext _context;
