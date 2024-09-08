@@ -1,14 +1,18 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PrivateInvestigationTechnology.Datos;
 using PrivateInvestigationTechnology.Models;
+using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
 namespace PrivateInvestigationTechnology.Controllers
-
 {
-    [Authorize] // Se asegura de que todos los métodos requieran estar autenticados
+    [Authorize] // Requiere autenticación en todos los métodos por defecto
     public class CasoController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,72 +22,54 @@ namespace PrivateInvestigationTechnology.Controllers
             _context = context;
         }
 
-        // Método para mostrar los casos del cliente o detective autenticado
-        [Authorize(Roles = "Cliente, Detective, Administrador")]
+        // GET: Caso
+        [Authorize(Roles = "Cliente,Detective,Administrador")]
         public async Task<IActionResult> Index()
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value); // ID del usuario autenticado
-            var userRole = User.FindFirst(ClaimTypes.Role)?.Value; // Rol del usuario
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
 
-            // Si es cliente, mostrar solo sus casos
+            IQueryable<Caso> casosQuery = _context.Casos
+                .Include(c => c.IdClienteNavigation)
+                .Include(c => c.IdDetectiveNavigation);
+
             if (userRole == "Cliente")
             {
-                var casosCliente = await _context.Casos
-                    .Include(c => c.IdClienteNavigation)
-                    .Include(c => c.IdDetectiveNavigation)
-                    .Where(c => c.IdCliente == userId)
-                    .ToListAsync();
-                return View(casosCliente);
+                casosQuery = casosQuery.Where(c => c.IdCliente == userId);
             }
-
-            // Si es detective, mostrar solo los casos asignados a él
-            if (userRole == "Detective")
+            else if (userRole == "Detective")
             {
-                var casosDetective = await _context.Casos
-                    .Include(c => c.IdClienteNavigation)
-                    .Include(c => c.IdDetectiveNavigation)
-                    .Where(c => c.IdDetective == userId)
-                    .ToListAsync();
-                return View(casosDetective);
+                casosQuery = casosQuery.Where(c => c.IdDetective == userId);
             }
 
-            // Si es administrador, mostrar todos los casos
-            if (userRole == "Administrador")
-            {
-                var todosLosCasos = await _context.Casos
-                    .Include(c => c.IdClienteNavigation)
-                    .Include(c => c.IdDetectiveNavigation)
-                    .ToListAsync();
-                return View(todosLosCasos);
-            }
-
-            return Unauthorized(); // Si el rol no es válido
+            return View(await casosQuery.ToListAsync());
         }
 
-        // Mostrar detalles del caso
-        [Authorize(Roles = "Cliente, Detective, Administrador")]
-        public async Task<IActionResult> Details(int id)
+        // GET: Caso/Details/5
+        [Authorize(Roles = "Cliente,Detective,Administrador")]
+        public async Task<IActionResult> Details(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             var caso = await _context.Casos
                 .Include(c => c.IdClienteNavigation)
                 .Include(c => c.IdDetectiveNavigation)
-                .FirstOrDefaultAsync(c => c.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (caso == null)
             {
                 return NotFound();
             }
 
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value); // ID del usuario autenticado
-            var userRole = User.FindFirst(ClaimTypes.Role)?.Value; // Rol del usuario
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
 
-            // Verificar si el usuario tiene acceso al caso
-            if (userRole == "Cliente" && caso.IdCliente != userId)
-            {
-                return Unauthorized();
-            }
-
-            if (userRole == "Detective" && caso.IdDetective != userId)
+            // Verificar que el cliente o detective solo vea su propio caso
+            if ((userRole == "Cliente" && caso.IdCliente != userId) ||
+                (userRole == "Detective" && caso.IdDetective != userId))
             {
                 return Unauthorized();
             }
@@ -91,7 +77,33 @@ namespace PrivateInvestigationTechnology.Controllers
             return View(caso);
         }
 
-        // Solo el administrador puede editar el caso
+        // GET: Caso/Create
+        [Authorize(Roles = "Administrador")]
+        public IActionResult Create()
+        {
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id");
+            ViewData["IdDetective"] = new SelectList(_context.Detectives, "Id", "Id");
+            return View();
+        }
+
+        // POST: Caso/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
+        public async Task<IActionResult> Create([Bind("Id,CadenaCustodia,InvestigacionExtorsion,EstudiosSeguridad,InvestigacionInfidelidades,InvestigacionRobosEmpresariales,Antecedentes,RecuperacionVehiculos,IdCliente,IdDetective")] Caso caso)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(caso);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id", caso.IdCliente);
+            ViewData["IdDetective"] = new SelectList(_context.Detectives, "Id", "Id", caso.IdDetective);
+            return View(caso);
+        }
+
+        // GET: Caso/Edit/5
         [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -105,12 +117,15 @@ namespace PrivateInvestigationTechnology.Controllers
             {
                 return NotFound();
             }
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id", caso.IdCliente);
+            ViewData["IdDetective"] = new SelectList(_context.Detectives, "Id", "Id", caso.IdDetective);
             return View(caso);
         }
 
+        // POST: Caso/Edit/5
         [HttpPost]
-        [Authorize(Roles = "Administrador")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,CadenaCustodia,InvestigacionExtorsion,EstudiosSeguridad,InvestigacionInfidelidades,InvestigacionRobosEmpresariales,Antecedentes,RecuperacionVehiculos,IdCliente,IdDetective")] Caso caso)
         {
             if (id != caso.Id)
@@ -138,14 +153,51 @@ namespace PrivateInvestigationTechnology.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id", caso.IdCliente);
+            ViewData["IdDetective"] = new SelectList(_context.Detectives, "Id", "Id", caso.IdDetective);
             return View(caso);
         }
 
-        // Método auxiliar para verificar si un caso existe
+        // GET: Caso/Delete/5
+        [Authorize(Roles = "Administrador")]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var caso = await _context.Casos
+                .Include(c => c.IdClienteNavigation)
+                .Include(c => c.IdDetectiveNavigation)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (caso == null)
+            {
+                return NotFound();
+            }
+
+            return View(caso);
+        }
+
+        // POST: Caso/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var caso = await _context.Casos.FindAsync(id);
+            if (caso != null)
+            {
+                _context.Casos.Remove(caso);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
         private bool CasoExists(int id)
         {
             return _context.Casos.Any(e => e.Id == id);
         }
     }
 }
-
