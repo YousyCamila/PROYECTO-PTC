@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace PrivateInvestigationTechnology.Models;
 
 [Index("IdEvidencia", Name = "IX_TIPO_EVIDENCIA_ID_Evidencia")]
-public partial class TipoEvidencium
+public partial class TipoEvidencia
 {
     [Key]
     public int Id { get; set; }
@@ -31,5 +31,5 @@ public partial class TipoEvidencium
 
     [ForeignKey("IdEvidencia")]
     [InverseProperty("TipoEvidencia")]
-    public virtual Evidencium IdEvidenciaNavigation { get; set; } = null!;
+    public virtual Evidencia IdEvidenciaNavigation { get; set; } = null!;
 }

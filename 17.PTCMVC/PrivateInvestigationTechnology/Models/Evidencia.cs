@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace PrivateInvestigationTechnology.Models;
 
 [Index("IdCasos", Name = "IX_EVIDENCIA_ID_Casos")]
-public partial class Evidencium
+public partial class Evidencia
 {
     [Key]
     public int Id { get; set; }
@@ -24,5 +24,5 @@ public partial class Evidencium
     public virtual Caso IdCasosNavigation { get; set; } = null!;
 
     [InverseProperty("IdEvidenciaNavigation")]
-    public virtual ICollection<TipoEvidencium> TipoEvidencia { get; set; } = new List<TipoEvidencium>();
+    public virtual ICollection<TipoEvidencia> TipoEvidencia { get; set; } = new List<TipoEvidencia>();
 }

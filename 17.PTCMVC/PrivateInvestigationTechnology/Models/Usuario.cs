@@ -28,7 +28,7 @@ public partial class Usuario
     public int RolId { get; set; }
 
     [InverseProperty("IdUsuarioNavigation")]
-    public virtual ICollection<Auditorium> Auditoria { get; set; } = new List<Auditorium>();
+    public virtual ICollection<Auditoria> Auditoria { get; set; } = new List<Auditoria>();
 
     [InverseProperty("IdUsuarioNavigation")]
     public virtual ICollection<Persona> Personas { get; set; } = new List<Persona>();

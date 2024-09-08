@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace PrivateInvestigationTechnology.Models;
 
 [Index("IdUsuario", Name = "IX_AUDITORIA_ID_Usuario")]
-public partial class Auditorium
+public partial class Auditoria
 {
     [Key]
     public int Id { get; set; }

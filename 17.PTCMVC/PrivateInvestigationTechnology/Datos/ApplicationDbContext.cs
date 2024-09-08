@@ -18,7 +18,7 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<Administrador> Administradors { get; set; }
 
-    public virtual DbSet<Auditorium> Auditoria { get; set; }
+    public virtual DbSet<Auditoria> Auditoria { get; set; }
 
     public virtual DbSet<Caso> Casos { get; set; }
 
@@ -28,7 +28,7 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<Detective> Detectives { get; set; }
 
-    public virtual DbSet<Evidencium> Evidencia { get; set; }
+    public virtual DbSet<Evidencia> Evidencia { get; set; }
 
     public virtual DbSet<Factura> Facturas { get; set; }
 
@@ -44,7 +44,7 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<Role> Roles { get; set; }
 
-    public virtual DbSet<TipoEvidencium> TipoEvidencia { get; set; }
+    public virtual DbSet<TipoEvidencia> TipoEvidencia { get; set; }
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
@@ -65,7 +65,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasConstraintName("FK__ADMINISTR__ID_Ad__3E52440B");
         });
 
-        modelBuilder.Entity<Auditorium>(entity =>
+        modelBuilder.Entity<Auditoria>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__AUDITORI__2C0A46DB57C0C4C3");
 
@@ -118,7 +118,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasConstraintName("FK__DETECTIVE__ID_De__412EB0B6");
         });
 
-        modelBuilder.Entity<Evidencium>(entity =>
+        modelBuilder.Entity<Evidencia>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__EVIDENCI__7E4E2469BB4D9A36");
 
@@ -184,7 +184,7 @@ public partial class ApplicationDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__ROLES__F92302F1CF88DF30");
         });
 
-        modelBuilder.Entity<TipoEvidencium>(entity =>
+        modelBuilder.Entity<TipoEvidencia>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__TIPO_EVI__EA1B819E989F9A41");
 

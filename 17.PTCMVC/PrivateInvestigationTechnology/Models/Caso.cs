@@ -32,7 +32,7 @@ public partial class Caso
     public int? IdDetective { get; set; }
 
     [InverseProperty("IdCasosNavigation")]
-    public virtual ICollection<Evidencium> Evidencia { get; set; } = new List<Evidencium>();
+    public virtual ICollection<Evidencia> Evidencia { get; set; } = new List<Evidencia>();
 
     [ForeignKey("IdCliente")]
     [InverseProperty("Casos")]
