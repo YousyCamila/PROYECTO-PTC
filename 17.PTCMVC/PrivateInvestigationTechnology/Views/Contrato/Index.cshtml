@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PrivateInvestigationTechnology.Models.Caso>
+﻿@model IEnumerable<PrivateInvestigationTechnology.Models.Contrato>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,25 +13,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CadenaCustodia)
+                @Html.DisplayNameFor(model => model.DescripcionServicio)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.InvestigacionExtorsion)
+                @Html.DisplayNameFor(model => model.FechaInicio)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EstudiosSeguridad)
+                @Html.DisplayNameFor(model => model.FechaCierre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.InvestigacionInfidelidades)
+                @Html.DisplayNameFor(model => model.Clausulas)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.InvestigacionRobosEmpresariales)
+                @Html.DisplayNameFor(model => model.Tarifa)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Antecedentes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RecuperacionVehiculos)
+                @Html.DisplayNameFor(model => model.Estado)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IdClienteNavigation)
@@ -46,25 +43,22 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.CadenaCustodia)
+                @Html.DisplayFor(modelItem => item.DescripcionServicio)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.InvestigacionExtorsion)
+                @Html.DisplayFor(modelItem => item.FechaInicio)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EstudiosSeguridad)
+                @Html.DisplayFor(modelItem => item.FechaCierre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.InvestigacionInfidelidades)
+                @Html.DisplayFor(modelItem => item.Clausulas)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.InvestigacionRobosEmpresariales)
+                @Html.DisplayFor(modelItem => item.Tarifa)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Antecedentes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RecuperacionVehiculos)
+                @Html.DisplayFor(modelItem => item.Estado)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IdClienteNavigation.Id)

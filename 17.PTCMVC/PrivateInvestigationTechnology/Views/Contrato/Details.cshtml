@@ -1,4 +1,4 @@
-﻿@model PrivateInvestigationTechnology.Models.Caso
+﻿@model PrivateInvestigationTechnology.Models.Contrato
 
 @{
     ViewData["Title"] = "Details";
@@ -7,50 +7,44 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Caso</h4>
+    <h4>Contrato</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CadenaCustodia)
+            @Html.DisplayNameFor(model => model.DescripcionServicio)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CadenaCustodia)
+            @Html.DisplayFor(model => model.DescripcionServicio)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InvestigacionExtorsion)
+            @Html.DisplayNameFor(model => model.FechaInicio)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.InvestigacionExtorsion)
+            @Html.DisplayFor(model => model.FechaInicio)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EstudiosSeguridad)
+            @Html.DisplayNameFor(model => model.FechaCierre)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EstudiosSeguridad)
+            @Html.DisplayFor(model => model.FechaCierre)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InvestigacionInfidelidades)
+            @Html.DisplayNameFor(model => model.Clausulas)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.InvestigacionInfidelidades)
+            @Html.DisplayFor(model => model.Clausulas)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InvestigacionRobosEmpresariales)
+            @Html.DisplayNameFor(model => model.Tarifa)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.InvestigacionRobosEmpresariales)
+            @Html.DisplayFor(model => model.Tarifa)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Antecedentes)
+            @Html.DisplayNameFor(model => model.Estado)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Antecedentes)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RecuperacionVehiculos)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RecuperacionVehiculos)
+            @Html.DisplayFor(model => model.Estado)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.IdClienteNavigation)
