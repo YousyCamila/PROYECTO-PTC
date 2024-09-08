@@ -26,14 +26,13 @@ namespace PrivateInvestigationTechnology.Controllers
         public async Task<IActionResult> Index()
         {
             var evidencias = _context.Evidencia.Include(e => e.IdCasosNavigation);
-            // Solo los administradores pueden ver el CRUD completo
+
             if (User.IsInRole("Administrador"))
             {
                 return View(await evidencias.ToListAsync());
             }
             else
             {
-                // Para clientes y detectives, filtrar solo las evidencias asociadas
                 var userId = GetCurrentUserId();
                 var evidenciasAccesibles = await evidencias
                     .Where(e => e.IdCasosNavigation.IdClienteNavigation.IdNavigation.Id == userId ||
@@ -60,7 +59,6 @@ namespace PrivateInvestigationTechnology.Controllers
                 return NotFound();
             }
 
-            // Solo permitir a los administradores ver los detalles completos
             if (User.IsInRole("Administrador") ||
                 evidencia.IdCasosNavigation.IdClienteNavigation.IdNavigation.Id == GetCurrentUserId() ||
                 evidencia.IdCasosNavigation.IdDetectiveNavigation.IdNavigation.Id == GetCurrentUserId())
@@ -96,7 +94,7 @@ namespace PrivateInvestigationTechnology.Controllers
         }
 
         // GET: Evidencias/Edit/5
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Cliente,Detective")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Evidencia == null)
@@ -109,12 +107,19 @@ namespace PrivateInvestigationTechnology.Controllers
             {
                 return NotFound();
             }
+            // Verificar si el usuario tiene permiso para editar
+            var userId = GetCurrentUserId();
+            if (evidencia.IdCasosNavigation.IdClienteNavigation.IdNavigation.Id != userId &&
+                evidencia.IdCasosNavigation.IdDetectiveNavigation.IdNavigation.Id != userId)
+            {
+                return Forbid(); // Denegar acceso si el usuario no tiene permiso
+            }
             ViewData["IdCasos"] = new SelectList(_context.Casos, "Id", "Id", evidencia.IdCasos);
             return View(evidencia);
         }
 
         // POST: Evidencias/Edit/5
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Cliente,Detective")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FechaEvidencia,Descripcion,IdCasos")] Evidencia evidencia)
