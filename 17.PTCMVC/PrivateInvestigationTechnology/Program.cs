@@ -2,11 +2,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PrivateInvestigationTechnology.Data;
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("PrivateInvestigationTechnologyContextConnection") ?? throw new InvalidOperationException("Connection string 'PrivateInvestigationTechnologyContextConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-builder.Services.AddDbContext<PrivateInvestigationTechnologyContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<PrivateInvestigationTechnologyContext>();
+builder.Services.AddDbContext<PrivateInvestigationTechnologyContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<PrivateInvestigationTechnologyContext>();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
