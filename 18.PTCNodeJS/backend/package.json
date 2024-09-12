@@ -1,0 +1,41 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Creacion del backend para la empresa ptc ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+     "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YousyCamila/PROYECTO-PTC.git"
+  },
+  "keywords": [
+    "[\"ptc\"",
+    "\"backend\"",
+    "\"nodeJS\"]"
+  ],
+  "author": "Danna Camila Guerra Rincon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YousyCamila/PROYECTO-PTC/issues"
+  },
+  "homepage": "https://github.com/YousyCamila/PROYECTO-PTC#readme",
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "joi": "^17.13.3",
+    "mongodb": "^6.8.1",
+    "mongoose": "^8.6.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui": "^5.17.14",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
