@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using _17.PrivateInvestigationTechnology_PTC.Models;
 
 namespace _17.PrivateInvestigationTechnology_PTC.Data
 {
@@ -9,5 +10,6 @@ namespace _17.PrivateInvestigationTechnology_PTC.Data
             : base(options)
         {
         }
+        public DbSet<_17.PrivateInvestigationTechnology_PTC.Models.Administrador> Administrador { get; set; } = default!;
     }
 }
