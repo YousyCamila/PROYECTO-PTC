@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using _17.PrivateInvestigationTechnology_PTC.Data; // Cambia 'Data' por 'Models'
+using ApplicationDbContext__17.PrivateInvestigationTechnology_PTC;
 
 
 var builder = WebApplication.CreateBuilder(args);
