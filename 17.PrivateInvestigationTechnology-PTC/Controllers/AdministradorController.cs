@@ -3,7 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using _17.PrivateInvestigationTechnology_PTC.Models; // Asegúrate de que sea 'Models'
+using _17.PrivateInvestigationTechnology_PTC.Models;
+using _17.PrivateInvestigationTechnology_PTC.Data; // Asegúrate de que sea 'Models'
 
 
 namespace _17.PrivateInvestigationTechnology_PTC.Controllers
