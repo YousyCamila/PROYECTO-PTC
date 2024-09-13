@@ -1,22 +1,126 @@
+<!DOCTYPE html >
+<html lang="en" >
+<head >
+<meta charset="UTF-8" >
+<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+<title > Home Page</title >
+<style >
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+@media (min-width: 600px) {
+    html {
+        font-size: 18px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    font-family: Arial, Helvetica, sans-serif;
 }
+
+/* General styles for the navbar */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    top: 0;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(to left, rgba(12, 94, 218, 0.836), rgba(0, 0, 0, 0.711), rgba(12, 94, 218, 0.836));
+    /* background-color: rgba(7, 7, 7, 0.712);*/
+    position: fixed;
+    z-index: 10;
+}
+
+.navbar-container {
+    display: flex;
+    align-items: center;
+    width: 90%;
+}
+
+.navbar-link {
+    font-size: 24px;
+    color: #333; /* Text color */
+    text-decoration: none;
+    margin-right: auto; /* Pushes other items to the right */
+}
+
+/* Style for the toggler button */
+.custom-navbar-toggler {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    position: relative;
+}
+
+    /* Style for the bars in the toggler button */
+    .custom-navbar-toggler .bar {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background-color: #333;
+        margin: 5px 0;
+        transition: all 0.3s ease;
+    }
+
+    /* Active state of the toggler button */
+    .custom-navbar-toggler.active .bar:nth-child(1) {
+        transform: rotate(45deg);
+        margin-top: 0;
+    }
+
+    .custom-navbar-toggler.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .custom-navbar-toggler.active .bar:nth-child(3) {
+        transform: rotate(-45deg);
+
+
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 12px;
+    margin: 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+    .navbar ul li {
+        display: inline-block;
+        padding: 0px 20px;
+    }
+
+
+        .navbar ul li a {
+            color: rgb(255, 255, 255);
+            text-decoration: none;
+            display: block;
+            padding: 20px 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+            .navbar ul li a:hover {
+                background-color: rgba(255, 254, 254, 0.164);
+                color: rgb(208, 194, 194);
+                border-radius: 30%;
+            }
+
+
+
+
+
