@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const registroCasoController = require('../controller/registroCasoController');
+const registroCasoController = require('../controllers/registroCasoController');
 
 // Crear un nuevo registro de caso
 /**

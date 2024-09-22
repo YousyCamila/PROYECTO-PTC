@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const detectiveController = require('../controller/detectiveController');
+const detectiveController = require('../controllers/detectiveController');
 
 // Crear un nuevo detective
 /**
@@ -63,7 +63,7 @@ router.post('/', detectiveController.crearDetective);
  *                     type: string
  *                     example: "555-6789"
  */
-router.get('/', detectiveController.obtenerDetectives);
+router.get('/', detectiveController.listarDetectives);
 
 // Obtener un detective por ID
 /**
@@ -85,7 +85,7 @@ router.get('/', detectiveController.obtenerDetectives);
  *       404:
  *         description: Detective no encontrado
  */
-router.get('/:id', detectiveController.obtenerDetectivePorId);
+router.get('/:id', detectiveController.obtenerDetectivePorEmail);
 
 // Actualizar un detective por ID
 /**

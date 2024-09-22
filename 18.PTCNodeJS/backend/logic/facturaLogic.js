@@ -1,5 +1,5 @@
-const Factura = require('../models/facturaModels');
-const Cliente = require('../models/clienteModels'); // Asegúrate de importar el modelo de Cliente si es necesario
+const Factura = require('../models/facturaModel');
+const Cliente = require('../models/clienteModel'); // Asegúrate de importar el modelo de Cliente si es necesario
 
 // Función para crear una nueva factura
 async function crearFactura(body) {

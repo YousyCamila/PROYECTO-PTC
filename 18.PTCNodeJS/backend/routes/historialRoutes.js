@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const historialController = require('../controller/historialController');
+const historialController = require('../controllers/historialController');
 
 // Crear un nuevo historial
 /**
@@ -65,7 +65,7 @@ router.post('/', historialController.crearHistorial);
  *                     format: date
  *                     example: "2024-09-01"
  */
-router.get('/', historialController.obtenerHistoriales);
+router.get('/', historialController.listarHistoriales);
 
 // Obtener un historial por ID
 /**

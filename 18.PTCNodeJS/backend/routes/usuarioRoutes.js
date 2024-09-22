@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const usuarioController = require('../controller/usuarioController');
+const usuarioController = require('../controllers/usuarioController');
 
-// Crear un nuevo usuario
+// Registro de usuario
 /**
  * @swagger
- * /usuarios:
+ * /usuarios/registro:
  *   post:
- *     summary: Crear un nuevo usuario
+ *     summary: Registrar un nuevo usuario
  *     tags: ["Usuarios"]
  *     requestBody:
  *       required: true
@@ -16,88 +16,38 @@ const usuarioController = require('../controller/usuarioController');
  *           schema:
  *             type: object
  *             properties:
- *               nombre:
+ *               username:
  *                 type: string
  *                 example: "Juan Pérez"
  *               email:
  *                 type: string
  *                 example: "juan.perez@example.com"
+ *               telefono:
+ *                 type: string
+ *                 example: "555-1234"
+ *               password:
+ *                 type: string
+ *                 example: "ContraseñaSegura"
  *               rolId:
  *                 type: string
  *                 example: "651edc5565bfc2a7f8e98345"
  *     responses:
  *       201:
- *         description: Usuario creado exitosamente
+ *         description: Usuario registrado con éxito
  *       400:
  *         description: Error en la solicitud
+ *       500:
+ *         description: Error interno del servidor
  */
-router.post('/', usuarioController.crearUsuario);
+router.post('/registro', usuarioController.registrarUsuario);
 
-// Obtener todos los usuarios
+// Autenticación de usuario
 /**
  * @swagger
- * /usuarios:
- *   get:
- *     summary: Listar todos los usuarios
+ * /usuarios/autenticacion:
+ *   post:
+ *     summary: Autenticar un usuario
  *     tags: ["Usuarios"]
- *     responses:
- *       200:
- *         description: Lista de usuarios
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                     example: "651edc5565bfc2a7f8e98345"
- *                   nombre:
- *                     type: string
- *                     example: "Juan Pérez"
- *                   email:
- *                     type: string
- *                     example: "juan.perez@example.com"
- */
-router.get('/', usuarioController.obtenerUsuarios);
-
-// Obtener un usuario por ID
-/**
- * @swagger
- * /usuarios/{id}:
- *   get:
- *     summary: Obtener un usuario por ID
- *     tags: ["Usuarios"]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: Identificador único del usuario.
- *     responses:
- *       200:
- *         description: Usuario encontrado
- *       404:
- *         description: Usuario no encontrado
- */
-router.get('/:id', usuarioController.obtenerUsuarioPorId);
-
-// Actualizar un usuario por ID
-/**
- * @swagger
- * /usuarios/{id}:
- *   put:
- *     summary: Actualizar un usuario por ID
- *     tags: ["Usuarios"]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: Identificador único del usuario.
  *     requestBody:
  *       required: true
  *       content:
@@ -105,40 +55,20 @@ router.get('/:id', usuarioController.obtenerUsuarioPorId);
  *           schema:
  *             type: object
  *             properties:
- *               nombre:
- *                 type: string
  *               email:
  *                 type: string
- *               rolId:
+ *                 example: "juan.perez@example.com"
+ *               password:
  *                 type: string
+ *                 example: "ContraseñaSegura"
  *     responses:
  *       200:
- *         description: Usuario actualizado exitosamente
- *       404:
- *         description: Usuario no encontrado
+ *         description: Usuario autenticado
+ *       401:
+ *         description: Credenciales inválidas
+ *       500:
+ *         description: Error interno del servidor
  */
-router.put('/:id', usuarioController.actualizarUsuario);
-
-// Eliminar un usuario por ID
-/**
- * @swagger
- * /usuarios/{id}:
- *   delete:
- *     summary: Eliminar un usuario por ID
- *     tags: ["Usuarios"]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: Identificador único del usuario.
- *     responses:
- *       200:
- *         description: Usuario eliminado exitosamente
- *       404:
- *         description: Usuario no encontrado
- */
-router.delete('/:id', usuarioController.eliminarUsuario);
+router.post('/autenticacion', usuarioController.autenticarUsuario);
 
 module.exports = router;

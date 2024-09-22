@@ -1,5 +1,5 @@
-const Detective = require('../models/detectiveModels');
-const Persona = require('../models/personaModels'); // Asegúrate de importar el modelo de Persona
+const Detective = require('../models/detectiveModel');
+const Persona = require('../models/personaModel'); // Asegúrate de importar el modelo de Persona
 
 // Función para crear un nuevo detective
 async function crearDetective(body) {

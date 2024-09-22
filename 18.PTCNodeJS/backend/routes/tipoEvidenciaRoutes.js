@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const tipoEvidenciaController = require('../controller/tipoEvidenciaController');
+const tipoEvidenciaController = require('../controllers/tipoEvidenciaController');
 
 // Crear un nuevo tipo de evidencia
 /**

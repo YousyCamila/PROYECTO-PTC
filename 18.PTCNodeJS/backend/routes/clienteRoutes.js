@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const clienteController = require('../controller/clienteController');
+const clienteController = require('../controllers/clienteController');
 
 // Crear un nuevo cliente
 /**
@@ -63,7 +63,7 @@ router.post('/', clienteController.crearCliente);
  *                     type: string
  *                     example: "555-1234"
  */
-router.get('/', clienteController.obtenerClientes);
+router.get('/', clienteController.listarClientes);
 
 // Obtener un cliente por ID
 /**
@@ -85,7 +85,7 @@ router.get('/', clienteController.obtenerClientes);
  *       404:
  *         description: Cliente no encontrado
  */
-router.get('/:id', clienteController.obtenerClientePorId);
+router.get('/:id', clienteController.obtenerClientePorEmail);
 
 // Actualizar un cliente por ID
 /**

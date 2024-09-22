@@ -1,5 +1,5 @@
-const Historial = require('../models/historialModels');
-const Cliente = require('../models/clienteModels'); // Asegúrate de importar el modelo de Cliente si es necesario
+const Historial = require('../models/historialModel');
+const Cliente = require('../models/clienteModel'); // Asegúrate de importar el modelo de Cliente si es necesario
 
 // Función para crear un nuevo historial
 async function crearHistorial(body) {

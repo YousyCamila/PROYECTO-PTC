@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const registroMantenimientoController = require('../controller/registroMantenimientoController');
+const registroMantenimientoController = require('../controllers/registroMantenimientoController');
 
 // Crear un nuevo registro de mantenimiento
 /**

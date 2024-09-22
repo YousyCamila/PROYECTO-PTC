@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const rolController = require('../controller/rolController');
+const rolController = require('../controllers/rolController');
 
 // Crear un nuevo rol
 /**

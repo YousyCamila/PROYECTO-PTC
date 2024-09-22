@@ -1,5 +1,5 @@
-const Formulario = require('../models/formularioModels');
-const Cliente = require('../models/clienteModels'); // Asegúrate de importar el modelo de Cliente si es necesario
+const Formulario = require('../models/formularioModel');
+const Cliente = require('../models/clienteModel'); // Asegúrate de importar el modelo de Cliente si es necesario
 
 // Función para crear un nuevo formulario
 async function crearFormulario(body) {

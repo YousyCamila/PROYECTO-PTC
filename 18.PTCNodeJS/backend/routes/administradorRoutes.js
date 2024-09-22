@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const administradorController = require('../controller/administradorController');
+const administradorController = require('../controllers/administradorController');
 
 // Crear un nuevo administrador
 /**
@@ -66,7 +66,7 @@ router.post('/', administradorController.crearAdministrador);
  *                     type: string
  *                     example: "555-9876"
  */
-router.get('/', administradorController.obtenerAdministradores);
+router.get('/', administradorController.listarAdministradores);
 
 // Obtener un administrador por ID
 /**
@@ -88,7 +88,7 @@ router.get('/', administradorController.obtenerAdministradores);
  *       404:
  *         description: Administrador no encontrado
  */
-router.get('/:id', administradorController.obtenerAdministradorPorId);
+router.get('/:id', administradorController.obtenerAdministradorPorEmail);
 
 // Actualizar un administrador por ID
 /**

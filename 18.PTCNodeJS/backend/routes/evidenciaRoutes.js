@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const evidenciaController = require('../controller/evidenciaController');
+const evidenciaController = require('../controllers/evidenciaController');
 
 // Crear una nueva evidencia
 /**
@@ -65,7 +65,7 @@ router.post('/', evidenciaController.crearEvidencia);
  *                     type: string
  *                     example: "ruta/a/la/evidencia.jpg"
  */
-router.get('/', evidenciaController.obtenerEvidencias);
+router.get('/', evidenciaController.listarEvidencias);
 
 // Obtener una evidencia por ID
 /**

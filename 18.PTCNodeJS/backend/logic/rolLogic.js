@@ -1,5 +1,5 @@
-const Rol = require('../models/roleModels');
-const Usuario = require('../models/usuarioModels'); // Asegúrate de importar el modelo de Usuario si es necesario
+const Rol = require('../models/rolModel');
+const Usuario = require('../models/usuarioModel'); // Asegúrate de importar el modelo de Usuario si es necesario
 
 // Función para crear un nuevo rol
 async function crearRol(body) {

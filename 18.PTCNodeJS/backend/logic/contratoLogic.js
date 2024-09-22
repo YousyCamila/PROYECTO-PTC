@@ -1,4 +1,4 @@
-const Contrato = require('../models/contratoModels');
+const Contrato = require('../models/contratoModel');
 
 // Función para crear un nuevo contrato
 async function crearContrato(body) {

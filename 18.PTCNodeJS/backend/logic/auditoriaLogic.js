@@ -1,4 +1,4 @@
-const Auditoria = require('../models/auditoriaModels');
+const Auditoria = require('../models/auditoriaModel');
 
 // Función para crear una nueva auditoría
 async function crearAuditoria(body) {

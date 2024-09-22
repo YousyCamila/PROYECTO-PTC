@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const formularioController = require('../controller/formularioController');
+const formularioController = require('../controllers/formularioController');
 
 // Crear un nuevo formulario
 /**
@@ -65,7 +65,7 @@ router.post('/', formularioController.crearFormulario);
  *                     format: date
  *                     example: "2024-09-01"
  */
-router.get('/', formularioController.obtenerFormularios);
+router.get('/', formularioController.listarFormularios);
 
 // Obtener un formulario por ID
 /**

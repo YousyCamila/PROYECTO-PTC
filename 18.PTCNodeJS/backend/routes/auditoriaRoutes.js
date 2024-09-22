@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const auditoriaController = require('../controller/auditoriaController');
+const auditoriaController = require('../controllers/auditoriaController');
 
 // Crear un nuevo registro de auditoría
 /**
@@ -65,7 +65,7 @@ router.post('/', auditoriaController.crearAuditoria);
  *                     format: date-time
  *                     example: "2024-09-22T14:00:00Z"
  */
-router.get('/', auditoriaController.obtenerAuditorias);
+router.get('/', auditoriaController.listarAuditorias);
 
 // Obtener un registro de auditoría por ID
 /**

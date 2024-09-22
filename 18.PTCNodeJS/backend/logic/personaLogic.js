@@ -1,4 +1,4 @@
-const Persona = require('../models/personaModels');
+const Persona = require('../models/personaModel');
 
 // Función para crear una nueva persona
 async function crearPersona(body) {

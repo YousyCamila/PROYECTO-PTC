@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const personaController = require('../controller/personaController');
+const personaController = require('../controllers/personaController');
 
 // Crear una nueva persona
 /**
@@ -69,7 +69,7 @@ router.post('/', personaController.crearPersona);
  *                     type: string
  *                     example: "555-1234"
  */
-router.get('/', personaController.obtenerPersonas);
+router.get('/', personaController.listarPersonas);
 
 // Obtener una persona por correo electrónico
 /**

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const facturaController = require('../controller/facturaController');
+const facturaController = require('../controllers/facturaController');
 
 // Crear una nueva factura
 /**
@@ -65,7 +65,7 @@ router.post('/', facturaController.crearFactura);
  *                     type: number
  *                     example: 1500.00
  */
-router.get('/', facturaController.obtenerFacturas);
+router.get('/', facturaController.listarFacturas);
 
 // Obtener una factura por ID
 /**

@@ -1,5 +1,5 @@
-const Evidencia = require('../models/evidenciaModels');
-const Caso = require('../models/casoModels'); // Asegúrate de importar el modelo de Caso si es necesario
+const Evidencia = require('../models/evidenciaModel');
+const Caso = require('../models/casoModel'); // Asegúrate de importar el modelo de Caso si es necesario
 
 // Función para crear una nueva evidencia
 async function crearEvidencia(body) {

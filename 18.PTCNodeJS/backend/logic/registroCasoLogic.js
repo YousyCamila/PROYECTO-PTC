@@ -1,5 +1,5 @@
-const RegistroCaso = require('../models/registroCasoModels');
-const Caso = require('../models/casoModels'); // Asegúrate de importar el modelo de Caso si es necesario
+const RegistroCaso = require('../models/registroCasoModel');
+const Caso = require('../models/casoModel'); // Asegúrate de importar el modelo de Caso si es necesario
 
 // Función para crear un nuevo registro de caso
 async function crearRegistroCaso(body) {

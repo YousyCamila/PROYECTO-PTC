@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const contratoController = require('../controller/contratoController');
+const contratoController = require('../controllers/contratoController');
 
 // Crear un nuevo contrato
 /**
@@ -73,7 +73,7 @@ router.post('/', contratoController.crearContrato);
  *                     type: number
  *                     example: 5000.00
  */
-router.get('/', contratoController.obtenerContratos);
+router.get('/', contratoController.listarContratos);
 
 // Obtener un contrato por ID
 /**

@@ -1,5 +1,5 @@
-const RegistroMantenimiento = require('../models/registroMantenimientoModels');
-const Administrador = require('../models/administradorModels'); // Asegúrate de importar el modelo de Administrador si es necesario
+const RegistroMantenimiento = require('../models/registroMantenimientoModel');
+const Administrador = require('../models/administradorModel'); // Asegúrate de importar el modelo de Administrador si es necesario
 
 // Función para crear un nuevo registro de mantenimiento
 async function crearRegistroMantenimiento(body) {

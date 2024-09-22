@@ -1,5 +1,5 @@
-const TipoEvidencia = require('../models/tipoEvidenciaModels');
-const Evidencia = require('../models/evidenciaModels'); // Asegúrate de importar el modelo de Evidencia si es necesario
+const TipoEvidencia = require('../models/tipoEvidenciaModel');
+const Evidencia = require('../models/evidenciaModel'); // Asegúrate de importar el modelo de Evidencia si es necesario
 
 // Función para crear un nuevo tipo de evidencia
 async function crearTipoEvidencia(body) {

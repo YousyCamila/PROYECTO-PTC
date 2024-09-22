@@ -1,5 +1,5 @@
-const Administrador = require('../models/administradorModels');
-const Persona = require('../models/personaModels'); // Asegúrate de importar el modelo de Persona
+const Administrador = require('../models/administradorModel');
+const Persona = require('../models/personaModel'); // Asegúrate de importar el modelo de Persona
 
 // Función para crear un nuevo administrador
 async function crearAdministrador(body) {

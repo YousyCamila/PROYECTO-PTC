@@ -1,5 +1,5 @@
-const Cliente = require('../models/clienteModels');
-const Persona = require('../models/personaModels'); // Asegúrate de importar el modelo de Persona
+const Cliente = require('../models/clienteModel');
+const Persona = require('../models/personaModel'); // Asegúrate de importar el modelo de Persona
 
 // Función para crear un nuevo cliente
 async function crearCliente(body) {
