@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const usuarioSchema = new mongoose.Schema({
   username: {
@@ -9,7 +11,8 @@ const usuarioSchema = new mongoose.Schema({
   email: {
     type: String,
     maxlength: 100,
-    required: true
+    required: true,
+    match: /.+\@.+\..+/ // Validación básica
   },
   telefono: {
     type: String,
@@ -36,4 +39,24 @@ const usuarioSchema = new mongoose.Schema({
   }]
 });
 
+// Hash de la contraseña antes de guardar
+usuarioSchema.pre('save', async function (next) {
+  if (this.isModified('password')) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+  next();
+});
+
+// Método para comparar contraseñas
+usuarioSchema.methods.comparePassword = function (password) {
+  return bcrypt.compare(password, this.password);
+};
+
+// Método para generar JWT
+usuarioSchema.methods.generateAuthToken = function () {
+  const token = jwt.sign({ _id: this._id, rolId: this.rolId }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  return token;
+};
+
 module.exports = mongoose.model('Usuario', usuarioSchema);
+
