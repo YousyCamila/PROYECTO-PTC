@@ -1,36 +1,46 @@
 ﻿@model IEnumerable<_17.PrivateInvestigationTechnology_PTC.Models.Cliente>
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Lista de Clientes";
 }
 
-<h1>Index</h1>
+<h2>Lista de Clientes</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table id="clientesTable" class="table table-striped">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th></th>
+            <th>Nombre</th>
+            <th>Número de Identidad</th>
+            <th>Número de Celular</th>
+            <th>Fecha de Nacimiento</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var cliente in Model)
+        {
+            <tr>
+                <td>@cliente.Nombre</td>
+                <td>@cliente.NumeroIdentidad</td>
+                <td>@cliente.NumeroCelular</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@cliente.Id" class="btn btn-info">Detalles</a>
+                    <a asp-action="Edit" asp-route-id="@cliente.Id" class="btn btn-primary">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@cliente.Id" class="btn btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<a href="@Url.Action("Index", "AdministradorLogin")" class="btn btn-secondary">Volver al Menú</a>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#clientesTable').DataTable();
+        });
+    </script>
+}

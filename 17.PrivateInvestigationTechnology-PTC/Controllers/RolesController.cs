@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 {
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador, SuperUsuario")]
     public class RolesController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -33,6 +33,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // POST: RolesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador, SuperUsuario")]
         public async Task<IActionResult> Create(RoleViewModel model)
         {
             if (ModelState.IsValid)
@@ -49,6 +50,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         }
 
         // GET: RolesController/Edit/5
+        [Authorize(Roles = "SuperUsuario")]
         public async Task<IActionResult> Edit(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);

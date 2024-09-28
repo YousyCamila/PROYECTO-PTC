@@ -18,11 +18,15 @@ namespace _17.PrivateInvestigationTechnology_PTC.Data
             await EnsureRoleAsync(roleManager, "Cliente");
             await EnsureRoleAsync(roleManager, "Administrador");
             await EnsureRoleAsync(roleManager, "Detective");
+            await EnsureRoleAsync(roleManager, "Superusuario"); // Añadido el rol de Superusuario
 
             // Crear usuarios predeterminados y asignarlos a roles
             await EnsureUserAsync(userManager, roleManager, context, "admin@example.com", "Admin@123", "Administrador", "Admin Nombre", "123456789", "3001234567", new DateTime(1990, 1, 1), "admin_cv.pdf");
             await EnsureUserAsync(userManager, roleManager, context, "cliente@example.com", "Cliente@123", "Cliente", "Cliente Nombre", "987654321", "3009876543", new DateTime(1985, 5, 5), null);
             await EnsureUserAsync(userManager, roleManager, context, "detective@example.com", "Detective@123", "Detective", "Detective Nombre", "567890123", "3005678901", new DateTime(1992, 2, 2), "detective_cv.pdf");
+
+            // Crear Superusuario predeterminado
+            await EnsureSuperUserAsync(userManager, roleManager);
         }
 
         private static async Task EnsureRoleAsync(RoleManager<IdentityRole> roleManager, string roleName)
@@ -82,6 +86,30 @@ namespace _17.PrivateInvestigationTechnology_PTC.Data
                     }
 
                     await context.SaveChangesAsync();  // Guardar los cambios en la base de datos
+                }
+            }
+        }
+
+        // Método para asegurar la creación del Superusuario
+        private static async Task EnsureSuperUserAsync(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            var superUserEmail = "SuperUsuario@SuperPTC.com";
+            var password = "!5?Yp*F95PYQtAt";
+
+            var superUser = await userManager.FindByEmailAsync(superUserEmail);
+            if (superUser == null)
+            {
+                superUser = new IdentityUser
+                {
+                    UserName = superUserEmail,
+                    Email = superUserEmail,
+                    EmailConfirmed = true
+                };
+
+                var result = await userManager.CreateAsync(superUser, password);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(superUser, "Superusuario");
                 }
             }
         }

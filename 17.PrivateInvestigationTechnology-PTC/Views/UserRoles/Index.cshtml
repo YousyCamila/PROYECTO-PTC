@@ -1,9 +1,19 @@
 ﻿@model IEnumerable<_17.PrivateInvestigationTechnology_PTC.Models.ViewModels.UserRolesViewModel>
 
-<h2>Usuarios y Roles</h2>
+@{
+    ViewData["Title"] = "Usuarios y Roles";
+}
 
-<table class="table table-striped">
-    <thead>
+<h2 class="text-center">Usuarios y Roles</h2>
+
+<!-- Botón para volver al menú -->
+<div class="text-right mb-3">
+    <a href="/AdministradorLogin/Index" class="btn btn-secondary">Volver al Menú</a>
+</div>
+
+<!-- Tabla de usuarios y roles con DataTables y estilo Bootstrap -->
+<table id="userRolesTable" class="table table-striped table-bordered">
+    <thead class="thead-dark">
         <tr>
             <th>Email</th>
             <th>Roles</th>
@@ -26,9 +36,28 @@
                     }
                 </td>
                 <td>
-                    <a asp-action="Manage" asp-route-userId="@user.UserId" class="btn btn-sm btn-primary">Gestionar Roles</a>
+                    <a asp-action="Manage" asp-route-userId="@user.UserId" class="btn btn-primary btn-sm">Gestionar Roles</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<!-- Scripts de DataTables -->
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#userRolesTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/Spanish.json"
+                }
+            });
+        });
+    </script>
+}
+
+<!-- Enlaces a los estilos de DataTables y Bootstrap -->
+<link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css" rel="stylesheet" />

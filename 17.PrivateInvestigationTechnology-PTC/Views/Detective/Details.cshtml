@@ -4,39 +4,38 @@
     ViewData["Title"] = "Detalles del Detective";
 }
 
-<h2>Detalles del Detective</h2>
+<h2 class="text-center">Detalles del Detective</h2>
 
-<div>
-    <h4>Detective</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">Nombre</dt>
-        <dd class="col-sm-10">@Model.Nombre</dd>
+<div class="card mb-3">
+    <div class="card-header bg-primary text-white">
+        <h3>@Model.Nombre</h3>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Número de Identidad</dt>
+            <dd class="col-sm-9">@Model.NumeroIdentidad</dd>
 
-        <dt class="col-sm-2">Número de Identidad</dt>
-        <dd class="col-sm-10">@Model.NumeroIdentidad</dd>
+            <dt class="col-sm-3">Número de Celular</dt>
+            <dd class="col-sm-9">@Model.NumeroCelular</dd>
 
-        <dt class="col-sm-2">Número de Celular</dt>
-        <dd class="col-sm-10">@Model.NumeroCelular</dd>
+            <dt class="col-sm-3">Fecha de Nacimiento</dt>
+            <dd class="col-sm-9">@Model.FechaNacimiento?.ToString("dd/MM/yyyy")</dd>
 
-        <dt class="col-sm-2">Fecha de Nacimiento</dt>
-        <dd class="col-sm-10">@Model.FechaNacimiento?.ToString("dd/MM/yyyy")</dd>
-
-        <dt class="col-sm-2">Hoja de Vida</dt>
-        <dd class="col-sm-10">
-            @if (Model.HojaDeVida != null)
-            {
-                <a href="@Url.Action("DownloadHojaDeVida", new { id = Model.Id })">Descargar Hoja de Vida</a>
-            }
-            else
-            {
-                <span>No disponible</span>
-            }
-        </dd>
-    </dl>
+            <dt class="col-sm-3">Hoja de Vida</dt>
+            <dd class="col-sm-9">
+                @if (Model.HojaDeVida != null)
+                {
+                    <a href="@Url.Action("DownloadCV", "Detective", new { id = Model.Id })" class="btn btn-success btn-sm">Descargar Hoja de Vida</a>
+                }
+                else
+                {
+                    <span>No disponible</span>
+                }
+            </dd>
+        </dl>
+    </div>
 </div>
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
-    <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+<div class="text-right">
+    <a href="@Url.Action("Index", "Detective")" class="btn btn-secondary">Volver al Listado</a>
 </div>

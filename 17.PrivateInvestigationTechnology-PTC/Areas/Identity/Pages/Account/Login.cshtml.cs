@@ -134,6 +134,10 @@ namespace _17.PrivateInvestigationTechnology_PTC.Areas.Identity.Pages.Account
                     {
                         return LocalRedirect("~/ClienteLogin"); // Redirigir a la vista de ClienteLogin
                     }
+                    else if (roles.Contains("SuperUsuario"))
+                    {
+                        return LocalRedirect("~/SuperUsuarioLogin"); // Redirigir a la vista de SuperUsuarioLogin
+                    }
 
                     // Si no hay roles especiales, redirigir a la URL original
                     return LocalRedirect(returnUrl);

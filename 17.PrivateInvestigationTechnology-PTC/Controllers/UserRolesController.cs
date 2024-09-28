@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 {
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador, SuperUsuario")]
     public class UserRolesController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;

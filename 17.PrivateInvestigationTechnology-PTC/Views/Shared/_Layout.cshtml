@@ -43,12 +43,13 @@
                             if (user != null)
                             {
                                 var isAdmin = await UserManager.IsInRoleAsync(user, "Administrador");
+                                var isSuper = await UserManager.IsInRoleAsync(user, "SuperUsuario");
 
                                 <li class="nav-item">   
                                     <a class="nav-link text-light" href="#">Hola, @user.Email</a>
                                 </li>
 
-                                if (isAdmin)
+                                if (isAdmin && isSuper)
                                 {
                                     
                                 }

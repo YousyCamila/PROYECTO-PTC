@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 {
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador, SuperUsuario")]
     public class DetectiveController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -27,6 +27,26 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         {
             var detectives = await _context.Detectives.Include(d => d.IdentityUser).ToListAsync();
             return View(detectives);
+        }
+
+        // GET: Detective/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var detective = await _context.Detectives
+                .Include(d => d.IdentityUser)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (detective == null)
+            {
+                return NotFound();
+            }
+
+            return View(detective);
         }
 
         // GET: Detective/Create
@@ -146,6 +166,21 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        // Método para descargar la hoja de vida
+        [HttpGet]
+        public IActionResult DownloadCV(int id)
+        {
+            var detective = _context.Detectives.Find(id);
+
+            if (detective == null || detective.HojaDeVida == null)
+            {
+                return NotFound();
+            }
+
+            // Devuelve el archivo de hoja de vida como una descarga
+            return File(detective.HojaDeVida, "application/pdf", $"{detective.Nombre}_CV.pdf");
         }
 
         private bool DetectiveExists(int id)

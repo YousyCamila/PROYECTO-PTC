@@ -1,14 +1,15 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using _17.PrivateInvestigationTechnology_PTC.Data;
 using _17.PrivateInvestigationTechnology_PTC.Models;
-using _17.PrivateInvestigationTechnology_PTC.Data; // Asegúrate de que sea 'Models'
-
+using System.IO;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 {
+    [Authorize(Roles = "SuperUsuario")]
     public class AdministradorController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,46 +19,46 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
             _context = context;
         }
 
-        // Verificación de contraseña antes de acceder al CRUD
-        private bool VerificarContraseña(string password)
+        // GET: Administrador
+        public async Task<IActionResult> Index()
         {
-            return password == "123456"; // Contraseña definida
+            var administradores = await _context.Administradores.ToListAsync();
+            return View(administradores);
         }
 
-        // GET: Administrador/Password
-        public IActionResult IngresarContraseña()
+        // GET: Administrador/Create
+        public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Administrador/Password
+        // POST: Administrador/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult IngresarContraseña(string password)
+        public async Task<IActionResult> Create([Bind("Nombre,NumeroIdentidad,NumeroCelular")] Administrador administrador, IFormFile HojaDeVidaFile)
         {
-            if (VerificarContraseña(password))
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index)); // Si la contraseña es correcta, se redirige al listado
-            }
+                if (HojaDeVidaFile != null && HojaDeVidaFile.Length > 0)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await HojaDeVidaFile.CopyToAsync(memoryStream);
+                        administrador.HojaDeVida = memoryStream.ToArray(); // Convertir el archivo a byte[]
+                    }
+                }
 
-            ModelState.AddModelError(string.Empty, "Contraseña incorrecta.");
-            return View(); // Si la contraseña es incorrecta, vuelve a solicitarla
-        }
-
-        // GET: Administrador
-        public async Task<IActionResult> Index()
-        {
-            if (_context.Administradores == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Administradors' is null.");
+                _context.Add(administrador);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            return View(await _context.Administradores.ToListAsync());
+            return View(administrador);
         }
 
         // GET: Administrador/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Administradores == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -72,30 +73,10 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
             return View(administrador);
         }
 
-        // GET: Administrador/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Administrador/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre")] Administrador administrador)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(administrador);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(administrador);
-        }
-
         // GET: Administrador/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Administradores == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -111,7 +92,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // POST: Administrador/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre")] Administrador administrador)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,NumeroIdentidad,NumeroCelular")] Administrador administrador, IFormFile HojaDeVidaFile)
         {
             if (id != administrador.Id)
             {
@@ -122,6 +103,15 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
             {
                 try
                 {
+                    if (HojaDeVidaFile != null && HojaDeVidaFile.Length > 0)
+                    {
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            await HojaDeVidaFile.CopyToAsync(memoryStream);
+                            administrador.HojaDeVida = memoryStream.ToArray(); // Convertir el archivo a byte[]
+                        }
+                    }
+
                     _context.Update(administrador);
                     await _context.SaveChangesAsync();
                 }
@@ -144,7 +134,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // GET: Administrador/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Administradores == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -164,10 +154,6 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Administradores == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Administradors' is null.");
-            }
             var administrador = await _context.Administradores.FindAsync(id);
             if (administrador != null)
             {
@@ -179,7 +165,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 
         private bool AdministradorExists(int id)
         {
-            return (_context.Administradores?.Any(e => e.Id == id)).GetValueOrDefault();
+            return _context.Administradores.Any(e => e.Id == id);
         }
     }
 }
