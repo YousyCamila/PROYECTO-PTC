@@ -1,36 +1,32 @@
 ﻿@model IEnumerable<_17.PrivateInvestigationTechnology_PTC.Models.ViewModels.UserRolesViewModel>
 
-<h2>Manage User Roles</h2>
+<h2>Usuarios y Roles</h2>
 
-<table class="table table-striped table-hover">
+<table class="table table-striped">
     <thead>
         <tr>
-            <th class="text-left">Email</th>
-            <th class="text-left">Roles</th>
-            <th>Actions</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var user in Model)
         {
             <tr>
-                <td class="text-left">@user.Email</td>
-                <td class="text-left">
-                    @if (user.Roles.Any())
+                <td>@user.Email</td>
+                <td>
+                    @if (user.Roles != null && user.Roles.Count > 0)
                     {
-                        @foreach (var role in user.Roles)
-                        {
-                            @role
-                            <br />
-                        }
+                        @string.Join(", ", user.Roles)
                     }
                     else
                     {
-                        @: No Roles Assigned
+                        <span>No tiene roles asignados</span>
                     }
                 </td>
                 <td>
-                    <a asp-action="Manage" asp-route-userId="@user.UserId" class="btn btn-info me-2">Manage Roles</a>
+                    <a asp-action="Manage" asp-route-userId="@user.UserId" class="btn btn-sm btn-primary">Gestionar Roles</a>
                 </td>
             </tr>
         }

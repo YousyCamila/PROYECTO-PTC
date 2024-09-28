@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject UserManager<IdentityUser> UserManager
-﻿
+@inject SignInManager<IdentityUser> SignInManager
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,63 +14,73 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">
-                    PTC
-                </a>
+                <a class="navbar-brand" href="#">PTC</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"  
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav justify-content-center">
-                        <li class="nav-item">
-                            <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Services">Servicios</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Contáctanos</a>
-
-                        </li>
+                    <ul class="navbar-nav">
+                        @if (!SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Services">Servicios</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Contáctanos</a>
+                            </li>
+                        }
                     </ul>
-                    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Iniciar sesión</a>
+                    <ul class="navbar-nav ms-auto">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            var user = await UserManager.GetUserAsync(User);
+                            if (user != null)
+                            {
+                                var isAdmin = await UserManager.IsInRoleAsync(user, "Administrador");
+
+                                <li class="nav-item">   
+                                    <a class="nav-link text-light" href="#">Hola, @user.Email</a>
+                                </li>
+
+                                if (isAdmin)
+                                {
+                                    
+                                }
+
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Identity" asp-page="/Account/Logout">Cerrar Sesión</a>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Iniciar Sesión</a>
+                            </li>
+                        }
+                    </ul>
                 </div>
             </div>
         </nav>
-        </li>
-        @if (User.Identity.IsAuthenticated)
-        {
-            var user = await UserManager.GetUserAsync(User);
-            if (user != null)
-            {
-                var isAdmin = await UserManager.IsInRoleAsync(user, "Administrador");
-                var isDetective = await UserManager.IsInRoleAsync(user, "Detective");
-                var isCliente = await UserManager.IsInRoleAsync(user, "Cliente");
-
-                if (isCliente || isAdmin)
-                {
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Administrar Roles y Usuarios
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" asp-area="" asp-controller="Roles" asp-action="Index">Roles</a></li>
-                            <li><a class="dropdown-item" asp-area="" asp-controller="UserRoles" asp-action="Index">Usuarios Roles</a></li>
-                        </ul>
-                    </li>
-                }
-            }
-        }
-
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - PrivateInvestigationTechnology - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

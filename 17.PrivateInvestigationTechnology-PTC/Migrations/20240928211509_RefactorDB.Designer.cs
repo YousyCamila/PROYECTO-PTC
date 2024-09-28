@@ -12,8 +12,8 @@ using _17.PrivateInvestigationTechnology_PTC.Data;
 namespace _17.PrivateInvestigationTechnology_PTC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240927200758_PRC_DB")]
-    partial class PRC_DB
+    [Migration("20240928211509_RefactorDB")]
+    partial class RefactorDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -231,8 +231,10 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<byte[]>("HojaDeVida")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("IdentityUserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Nombre")
@@ -240,9 +242,17 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("NumeroCelular")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NumeroIdentidad")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("IdentityUserId");
+                    b.HasIndex("IdentityUserId")
+                        .IsUnique()
+                        .HasFilter("[IdentityUserId] IS NOT NULL");
 
                     b.ToTable("Administradores");
                 });
@@ -309,7 +319,6 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("IdentityUserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Nombre")
@@ -317,9 +326,17 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("NumeroCelular")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NumeroIdentidad")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("IdentityUserId");
+                    b.HasIndex("IdentityUserId")
+                        .IsUnique()
+                        .HasFilter("[IdentityUserId] IS NOT NULL");
 
                     b.ToTable("Clientes");
                 });
@@ -360,8 +377,13 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime?>("FechaNacimiento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("HojaDeVida")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("IdentityUserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Nombre")
@@ -369,9 +391,17 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("NumeroCelular")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NumeroIdentidad")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("IdentityUserId");
+                    b.HasIndex("IdentityUserId")
+                        .IsUnique()
+                        .HasFilter("[IdentityUserId] IS NOT NULL");
 
                     b.ToTable("Detectives");
                 });
@@ -599,10 +629,8 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Administrador", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
-                        .WithMany()
-                        .HasForeignKey("IdentityUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithOne()
+                        .HasForeignKey("_17.PrivateInvestigationTechnology_PTC.Models.Administrador", "IdentityUserId");
 
                     b.Navigation("IdentityUser");
                 });
@@ -640,10 +668,8 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Cliente", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
-                        .WithMany()
-                        .HasForeignKey("IdentityUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithOne()
+                        .HasForeignKey("_17.PrivateInvestigationTechnology_PTC.Models.Cliente", "IdentityUserId");
 
                     b.Navigation("IdentityUser");
                 });
@@ -670,10 +696,8 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Detective", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
-                        .WithMany()
-                        .HasForeignKey("IdentityUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithOne()
+                        .HasForeignKey("_17.PrivateInvestigationTechnology_PTC.Models.Detective", "IdentityUserId");
 
                     b.Navigation("IdentityUser");
                 });

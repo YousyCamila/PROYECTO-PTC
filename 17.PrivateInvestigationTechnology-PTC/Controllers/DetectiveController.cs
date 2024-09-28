@@ -1,48 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using _17.PrivateInvestigationTechnology_PTC.Data;
 using _17.PrivateInvestigationTechnology_PTC.Models;
+using System.IO;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class DetectiveController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public DetectiveController(ApplicationDbContext context)
+        public DetectiveController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Detective
         public async Task<IActionResult> Index()
         {
-              return _context.Detectives != null ? 
-                          View(await _context.Detectives.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Detectives'  is null.");
-        }
-
-        // GET: Detective/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Detectives == null)
-            {
-                return NotFound();
-            }
-
-            var detective = await _context.Detectives
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (detective == null)
-            {
-                return NotFound();
-            }
-
-            return View(detective);
+            var detectives = await _context.Detectives.Include(d => d.IdentityUser).ToListAsync();
+            return View(detectives);
         }
 
         // GET: Detective/Create
@@ -52,14 +36,21 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         }
 
         // POST: Detective/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre")] Detective detective)
+        public async Task<IActionResult> Create([Bind("Nombre,NumeroIdentidad,NumeroCelular,FechaNacimiento")] Detective detective, IFormFile HojaDeVidaFile)
         {
             if (ModelState.IsValid)
             {
+                if (HojaDeVidaFile != null && HojaDeVidaFile.Length > 0)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await HojaDeVidaFile.CopyToAsync(memoryStream);
+                        detective.HojaDeVida = memoryStream.ToArray(); // Convertir el archivo a byte[]
+                    }
+                }
+
                 _context.Add(detective);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -70,7 +61,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // GET: Detective/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Detectives == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -84,11 +75,9 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         }
 
         // POST: Detective/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre")] Detective detective)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,NumeroIdentidad,NumeroCelular,FechaNacimiento")] Detective detective, IFormFile HojaDeVidaFile)
         {
             if (id != detective.Id)
             {
@@ -99,6 +88,15 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
             {
                 try
                 {
+                    if (HojaDeVidaFile != null && HojaDeVidaFile.Length > 0)
+                    {
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            await HojaDeVidaFile.CopyToAsync(memoryStream);
+                            detective.HojaDeVida = memoryStream.ToArray(); // Convertir el archivo a byte[]
+                        }
+                    }
+
                     _context.Update(detective);
                     await _context.SaveChangesAsync();
                 }
@@ -121,7 +119,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // GET: Detective/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Detectives == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -141,23 +139,18 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Detectives == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Detectives'  is null.");
-            }
             var detective = await _context.Detectives.FindAsync(id);
             if (detective != null)
             {
                 _context.Detectives.Remove(detective);
+                await _context.SaveChangesAsync();
             }
-            
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool DetectiveExists(int id)
         {
-          return (_context.Detectives?.Any(e => e.Id == id)).GetValueOrDefault();
+            return _context.Detectives.Any(e => e.Id == id);
         }
     }
 }

@@ -2,25 +2,29 @@
 using System;
 using System.Collections.Generic;
 
-namespace _17.PrivateInvestigationTechnology_PTC.Models;
-
-public partial class Cliente
+namespace _17.PrivateInvestigationTechnology_PTC.Models
 {
-    public int Id { get; set; }
+    public partial class Cliente
+    {
+        public int Id { get; set; }
 
-    public string Nombre { get; set; } = null!;
+        public string Nombre { get; set; } = null!;  // Este campo es obligatorio
 
-    // Relación con IdentityUser
-    public string IdentityUserId { get; set; } // FK a IdentityUser
-    public IdentityUser IdentityUser { get; set; } // Navegación hacia IdentityUser
+        // Número de identidad opcional
+        public string? NumeroIdentidad { get; set; }
 
-    public virtual ICollection<Caso> Casos { get; set; } = new List<Caso>();
+        // Número de celular opcional
+        public string? NumeroCelular { get; set; }
 
-    public virtual ICollection<Contrato> Contratos { get; set; } = new List<Contrato>();
+        // Relación opcional con IdentityUser
+        public string? IdentityUserId { get; set; } // FK a IdentityUser
+        public IdentityUser? IdentityUser { get; set; } // Relación opcional hacia IdentityUser
 
-    public virtual ICollection<Factura> Facturas { get; set; } = new List<Factura>();
-
-    public virtual ICollection<Formulario> Formularios { get; set; } = new List<Formulario>();
-
-    public virtual ICollection<Historial> Historials { get; set; } = new List<Historial>();
+        // Relaciones opcionales con otras entidades
+        public virtual ICollection<Caso> Casos { get; set; } = new List<Caso>();
+        public virtual ICollection<Contrato> Contratos { get; set; } = new List<Contrato>();
+        public virtual ICollection<Factura> Facturas { get; set; } = new List<Factura>();
+        public virtual ICollection<Formulario> Formularios { get; set; } = new List<Formulario>();
+        public virtual ICollection<Historial> Historials { get; set; } = new List<Historial>();
+    }
 }

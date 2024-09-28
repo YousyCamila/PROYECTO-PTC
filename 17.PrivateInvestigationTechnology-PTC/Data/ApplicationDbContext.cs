@@ -27,6 +27,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Data
         public DbSet<RegistroCaso> RegistroCasos { get; set; }
         public DbSet<RegistroMantenimiento> RegistroMantenimientos { get; set; }
         public DbSet<TipoEvidencium> TipoEvidencias { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             // Llamar al OnModelCreating de IdentityDbContext para configurar las tablas de ASP.NET Identity
@@ -39,10 +40,10 @@ namespace _17.PrivateInvestigationTechnology_PTC.Data
                 entity.Property(e => e.Descripcion).HasMaxLength(255);
 
                 // Relacionar Auditorium con IdentityUser
-                entity.HasOne(a => a.IdentityUser) // Propiedad de navegación
-                    .WithMany() // No definimos relación inversa en IdentityUser
-                    .HasForeignKey(a => a.IdentityUserId) // Clave foránea
-                    .OnDelete(DeleteBehavior.ClientSetNull) // Restricción de eliminación
+                entity.HasOne(a => a.IdentityUser)
+                    .WithMany()
+                    .HasForeignKey(a => a.IdentityUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Auditorium_IdentityUser");
             });
 
@@ -50,18 +51,52 @@ namespace _17.PrivateInvestigationTechnology_PTC.Data
             builder.Entity<Administrador>(entity =>
             {
                 entity.Property(e => e.Nombre).HasMaxLength(100);
+
+                // Hacer opcional el número de identidad y el número de celular
+                entity.Property(e => e.NumeroIdentidad).IsRequired(false);
+                entity.Property(e => e.NumeroCelular).IsRequired(false);
+                entity.Property(e => e.HojaDeVida).IsRequired(false);
+
+                // Relación opcional con IdentityUser
+                entity.HasOne(d => d.IdentityUser)
+                      .WithOne()
+                      .HasForeignKey<Administrador>(d => d.IdentityUserId)
+                      .IsRequired(false); // Relación opcional
             });
 
             // Configuración para la entidad Cliente
             builder.Entity<Cliente>(entity =>
             {
                 entity.Property(e => e.Nombre).HasMaxLength(100);
+
+                // Hacer opcional el número de identidad y el número de celular
+                entity.Property(e => e.NumeroIdentidad).IsRequired(false);
+                entity.Property(e => e.NumeroCelular).IsRequired(false);
+
+                // Relación opcional con IdentityUser
+                entity.HasOne(d => d.IdentityUser)
+                      .WithOne()
+                      .HasForeignKey<Cliente>(d => d.IdentityUserId)
+                      .IsRequired(false); // Relación opcional
             });
 
             // Configuración para la entidad Detective
             builder.Entity<Detective>(entity =>
             {
+                // Configurar la propiedad Nombre con una longitud máxima
                 entity.Property(e => e.Nombre).HasMaxLength(100);
+
+                // Hacer opcional el número de identidad y el número de celular
+                entity.Property(e => e.NumeroIdentidad).IsRequired(false);
+                entity.Property(e => e.NumeroCelular).IsRequired(false);
+                entity.Property(e => e.FechaNacimiento).IsRequired(false);
+                entity.Property(e => e.HojaDeVida).IsRequired(false);
+
+                // Relación uno a uno con IdentityUser
+                entity.HasOne(d => d.IdentityUser)
+                      .WithOne()
+                      .HasForeignKey<Detective>(d => d.IdentityUserId)
+                      .IsRequired(false); // Relación opcional
             });
 
             // Configuración para Caso
@@ -182,7 +217,6 @@ namespace _17.PrivateInvestigationTechnology_PTC.Data
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_TipoEvidencia_Evidencia");
             });
-            // Eliminar cualquier rastro de la entidad Usuario que se eliminó
         }
     }
 }

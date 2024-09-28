@@ -1,25 +1,42 @@
 ﻿@model _17.PrivateInvestigationTechnology_PTC.Models.Detective
 
 @{
-    ViewData["Title"] = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Detalles del Detective";
 }
 
-<h1>Details</h1>
+<h2>Detalles del Detective</h2>
 
 <div>
     <h4>Detective</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
+        <dt class="col-sm-2">Nombre</dt>
+        <dd class="col-sm-10">@Model.Nombre</dd>
+
+        <dt class="col-sm-2">Número de Identidad</dt>
+        <dd class="col-sm-10">@Model.NumeroIdentidad</dd>
+
+        <dt class="col-sm-2">Número de Celular</dt>
+        <dd class="col-sm-10">@Model.NumeroCelular</dd>
+
+        <dt class="col-sm-2">Fecha de Nacimiento</dt>
+        <dd class="col-sm-10">@Model.FechaNacimiento?.ToString("dd/MM/yyyy")</dd>
+
+        <dt class="col-sm-2">Hoja de Vida</dt>
+        <dd class="col-sm-10">
+            @if (Model.HojaDeVida != null)
+            {
+                <a href="@Url.Action("DownloadHojaDeVida", new { id = Model.Id })">Descargar Hoja de Vida</a>
+            }
+            else
+            {
+                <span>No disponible</span>
+            }
         </dd>
     </dl>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
+    <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
 </div>

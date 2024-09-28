@@ -1,39 +1,35 @@
 ﻿@model _17.PrivateInvestigationTechnology_PTC.Models.Detective
 
 @{
-    ViewData["Title"] = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Create Detective";
 }
 
-<h1>Create</h1>
+<h2>Create Detective</h2>
 
-<h4>Detective</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<form asp-action="Create" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Nombre" class="control-label"></label>
+        <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    <div class="form-group">
+        <label asp-for="NumeroIdentidad" class="control-label"></label>
+        <input asp-for="NumeroIdentidad" class="form-control" />
+        <span asp-validation-for="NumeroIdentidad" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="NumeroCelular" class="control-label"></label>
+        <input asp-for="NumeroCelular" class="form-control" />
+        <span asp-validation-for="NumeroCelular" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FechaNacimiento" class="control-label"></label>
+        <input asp-for="FechaNacimiento" class="form-control" />
+        <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="HojaDeVidaFile">Hoja de Vida</label>
+        <input type="file" class="form-control-file" name="HojaDeVidaFile" />
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

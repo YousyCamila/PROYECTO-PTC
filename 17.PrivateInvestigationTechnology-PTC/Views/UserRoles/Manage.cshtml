@@ -1,20 +1,32 @@
-﻿@model IEnumerable<_17.PrivateInvestigationTechnology_PTC.Models.ViewModels.ManageUserRolesViewModel>
+﻿@model List<_17.PrivateInvestigationTechnology_PTC.Models.ViewModels.ManageUserRolesViewModel>
 
-<h2>Manage Roles for User</h2>
+<h2>Gestionar Roles para @ViewBag.UserName</h2>
 
-<form asp-controller="UserRoles" asp-action="Manage" method="post">
+<form asp-action="Manage" method="post">
     <input type="hidden" name="userId" value="@ViewBag.UserId" />
 
-    @for (int i = 0; i < Model.Count(); i++)
-    {
-        var role = Model.ElementAt(i);
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" name="roles[@i].IsSelected" value="true" @(role.IsSelected ? "checked" : "") />
-            <input type="hidden" name="roles[@i].RoleId" value="@role.RoleId" />
-            <input type="hidden" name="roles[@i].RoleName" value="@role.RoleName" />
-            <label class="form-check-label">@role.RoleName</label>
-        </div>
-    }
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Rol</th>
+                <th>Asignar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                var role = Model[i];
+                <tr>
+                    <td>@role.RoleName</td>
+                    <td>
+                        <input type="hidden" name="roles[@i].RoleId" value="@role.RoleId" />
+                        <input type="hidden" name="roles[@i].RoleName" value="@role.RoleName" />
+                        <input type="checkbox" name="roles[@i].IsSelected" value="true" @(role.IsSelected ? "checked" : "") />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-    <button type="submit" class="btn btn-success">Update Roles</button>
+    <button type="submit" class="btn btn-success">Actualizar Roles</button>
 </form>

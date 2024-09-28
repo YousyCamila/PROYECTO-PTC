@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+<!-- Vinculación del archivo CSS específico -->
+<link rel="stylesheet" href="~/css/AdministradorLogin.css" asp-append-version="true" />
+
+<div class="admin-panel">
+    <div class="sidebar">
+        <h3>Menú Administrativo</h3>
+        <a asp-controller="Blog" asp-action="Index">Gestionar Blog</a>
+        <a asp-controller="Detective" asp-action="Index">Gestionar Detectives</a>
+        <a asp-controller="Cliente" asp-action="Index">Gestionar Clientes</a>
+        <a asp-controller="Caso" asp-action="Index">Gestionar Casos</a>
+        <a asp-controller="Comunicacion" asp-action="Index">Comunicación</a>
+
+        <!-- Añadido: Enlaces para Roles y UsuariosRoles -->
+        <a asp-controller="Roles" asp-action="Index">Gestionar Roles</a>
+        <a asp-controller="UserRoles" asp-action="Index">Gestionar Usuarios y Roles</a>
+    </div>
+
+    <div class="main-content">
+        <h1>Bienvenido al Panel Administrativo</h1>
+        <p>Seleccione una opción del menú para comenzar.</p>
+    </div>
+</div>
+
+<footer>
+    &copy; 2024 - PrivateInvestigationTechnology
+</footer>

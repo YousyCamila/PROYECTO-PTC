@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace _17.PrivateInvestigationTechnology_PTC.Migrations
 {
     /// <inheritdoc />
-    public partial class PRC_DB : Migration
+    public partial class RefactorDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -78,7 +78,10 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    NumeroIdentidad = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NumeroCelular = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HojaDeVida = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -87,8 +90,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                         name: "FK_Administradores_AspNetUsers_IdentityUserId",
                         column: x => x.IdentityUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -202,7 +204,9 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    NumeroIdentidad = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NumeroCelular = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -211,8 +215,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                         name: "FK_Clientes_AspNetUsers_IdentityUserId",
                         column: x => x.IdentityUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -222,7 +225,11 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    NumeroIdentidad = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NumeroCelular = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FechaNacimiento = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    HojaDeVida = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -231,8 +238,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                         name: "FK_Detectives_AspNetUsers_IdentityUserId",
                         column: x => x.IdentityUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -424,7 +430,9 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Administradores_IdentityUserId",
                 table: "Administradores",
-                column: "IdentityUserId");
+                column: "IdentityUserId",
+                unique: true,
+                filter: "[IdentityUserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -483,7 +491,9 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Clientes_IdentityUserId",
                 table: "Clientes",
-                column: "IdentityUserId");
+                column: "IdentityUserId",
+                unique: true,
+                filter: "[IdentityUserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Contratos_IdCliente",
@@ -498,7 +508,9 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Detectives_IdentityUserId",
                 table: "Detectives",
-                column: "IdentityUserId");
+                column: "IdentityUserId",
+                unique: true,
+                filter: "[IdentityUserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Evidencias_IdCaso",

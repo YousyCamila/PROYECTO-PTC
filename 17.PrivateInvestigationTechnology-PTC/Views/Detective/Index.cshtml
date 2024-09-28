@@ -1,36 +1,35 @@
 ﻿@model IEnumerable<_17.PrivateInvestigationTechnology_PTC.Models.Detective>
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Lista de Detectives";
 }
 
-<h1>Index</h1>
+<h2>Lista de Detectives</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th></th>
+            <th>Nombre</th>
+            <th>Número de Identidad</th>
+            <th>Número de Celular</th>
+            <th>Fecha de Nacimiento</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var detective in Model)
+        {
+            <tr>
+                <td>@detective.Nombre</td>
+                <td>@detective.NumeroIdentidad</td>
+                <td>@detective.NumeroCelular</td>
+                <td>@detective.FechaNacimiento?.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@detective.Id" class="btn btn-info">Detalles</a>
+                    <a asp-action="Edit" asp-route-id="@detective.Id" class="btn btn-primary">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@detective.Id" class="btn btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

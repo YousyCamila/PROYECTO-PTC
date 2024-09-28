@@ -1,10 +1,10 @@
-﻿using _17.PrivateInvestigationTechnology_PTC.Models.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Data;
+using _17.PrivateInvestigationTechnology_PTC.Models.ViewModels;
+using _17.PrivateInvestigationTechnology_PTC.Data;
+using _17.PrivateInvestigationTechnology_PTC.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 {
@@ -13,17 +13,19 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ApplicationDbContext _context;
 
-        public UserRolesController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UserRolesController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
         {
-            this._userManager = userManager;
-            this._roleManager = roleManager;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _context = context;
         }
 
-        //GET : UserRolesController
+        // Index para mostrar todos los usuarios y sus roles
         public async Task<IActionResult> Index()
         {
-            var users = _userManager.Users.ToList();
+            var users = await _userManager.Users.ToListAsync();
             var userRolesViewModel = new List<UserRolesViewModel>();
 
             foreach (var user in users)
@@ -32,36 +34,26 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
                 {
                     UserId = user.Id,
                     Email = user.Email,
-                    Roles = await GetUserRoles(user)
+                    Roles = new List<string>(await _userManager.GetRolesAsync(user))
                 };
                 userRolesViewModel.Add(thisViewModel);
             }
 
             return View(userRolesViewModel);
         }
-        private async Task<List<string>> GetUserRoles(IdentityUser user)
-        {
-            return new List<string>(await _userManager.GetRolesAsync(user));
-        }
 
-
-        // GET: UserRolesController/Manage
+        // GET: Manage para mostrar los roles asignados a un usuario
         public async Task<IActionResult> Manage(string userId)
         {
-            ViewBag.UserId = userId;
             var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
             {
-                ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
-                return View("NotFound");
+                return NotFound();
             }
 
-            ViewBag.UserName = user.UserName;
-
             var model = new List<ManageUserRolesViewModel>();
-
-            foreach (var role in _roleManager.Roles.ToList())
+            foreach (var role in _roleManager.Roles)
             {
                 var userRolesViewModel = new ManageUserRolesViewModel
                 {
@@ -72,43 +64,104 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
                 model.Add(userRolesViewModel);
             }
 
+            ViewBag.UserId = user.Id;
+            ViewBag.UserName = user.UserName;
+
             return View(model);
         }
 
-
-        //POST: UserRolesController/Manage
+        // POST: Asignar roles a un usuario y añadirlo a la tabla correspondiente
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Manage(List<ManageUserRolesViewModel> roles, string userId)
+        public async Task<IActionResult> Manage(string userId, List<ManageUserRolesViewModel> roles)
         {
             var user = await _userManager.FindByIdAsync(userId);
-
             if (user == null)
             {
-                return View("NotFound");
+                return NotFound();
             }
 
+            // Obtener los roles actuales del usuario
             var currentRoles = await _userManager.GetRolesAsync(user);
 
-            var rolesToAdd = roles.Where(x => x.IsSelected && !currentRoles.Contains(x.RoleName)).Select(x => x.RoleName);
-            var rolesToRemove = currentRoles.Where(role => roles.Any(x => x.RoleName == role && !x.IsSelected));
+            // Roles seleccionados en el formulario
+            var selectedRoles = roles.Where(r => r.IsSelected).Select(r => r.RoleName).ToList();
 
-            var removeResult = await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
-            if (!removeResult.Succeeded)
+            // Agregar nuevos roles seleccionados
+            var result = await _userManager.AddToRolesAsync(user, selectedRoles.Except(currentRoles).ToList());
+            if (!result.Succeeded)
             {
-                ModelState.AddModelError("", "Cannot remove user existing roles: " + string.Join(", ", removeResult.Errors.Select(e => e.Description)));
+                ModelState.AddModelError("", "No se pudo agregar los roles.");
                 return View(roles);
             }
 
-            var addResult = await _userManager.AddToRolesAsync(user, rolesToAdd);
-            if (!addResult.Succeeded)
+            // Remover roles no seleccionados
+            result = await _userManager.RemoveFromRolesAsync(user, currentRoles.Except(selectedRoles).ToList());
+            if (!result.Succeeded)
             {
-                ModelState.AddModelError("", "Cannot add selected roles to user: " + string.Join(", ", addResult.Errors.Select(e => e.Description)));
+                ModelState.AddModelError("", "No se pudo remover los roles.");
                 return View(roles);
             }
+
+            // Asignar el usuario a la entidad correspondiente (Administrador, Cliente o Detective) dependiendo del rol asignado
+            await AssignToEntityAsync(user, selectedRoles);
 
             return RedirectToAction("Index");
         }
 
+        // Método para asignar el usuario a la entidad correspondiente según el rol seleccionado
+        private async Task AssignToEntityAsync(IdentityUser user, List<string> selectedRoles)
+        {
+            foreach (var role in selectedRoles)
+            {
+                if (role == "Administrador")
+                {
+                    // Verificar si ya existe el administrador
+                    if (!_context.Administradores.Any(a => a.IdentityUserId == user.Id))
+                    {
+                        var admin = new Administrador
+                        {
+                            Nombre = user.UserName, // Puedes asignar otros campos como Nombre, etc.
+                            NumeroIdentidad = "123456789", // Ajustar según sea necesario
+                            NumeroCelular = "3001234567",  // Ajustar según sea necesario
+                            HojaDeVida = null, // O asignar si existe un archivo
+                            IdentityUserId = user.Id
+                        };
+                        _context.Administradores.Add(admin);
+                    }
+                }
+                else if (role == "Cliente")
+                {
+                    if (!_context.Clientes.Any(c => c.IdentityUserId == user.Id))
+                    {
+                        var cliente = new Cliente
+                        {
+                            Nombre = user.UserName,
+                            NumeroIdentidad = "987654321",  // Ajustar según sea necesario
+                            NumeroCelular = "3007654321",   // Ajustar según sea necesario
+                            IdentityUserId = user.Id
+                        };
+                        _context.Clientes.Add(cliente);
+                    }
+                }
+                else if (role == "Detective")
+                {
+                    if (!_context.Detectives.Any(d => d.IdentityUserId == user.Id))
+                    {
+                        var detective = new Detective
+                        {
+                            Nombre = user.UserName,
+                            NumeroIdentidad = "654987321",  // Ajustar según sea necesario
+                            NumeroCelular = "3001239876",   // Ajustar según sea necesario
+                            FechaNacimiento = DateTime.Parse("1990-01-01"), // Ajustar según sea necesario
+                            HojaDeVida = null, // O asignar si existe un archivo
+                            IdentityUserId = user.Id
+                        };
+                        _context.Detectives.Add(detective);
+                    }
+                }
+            }
+
+            await _context.SaveChangesAsync(); // Guardar cambios en la base de datos
+        }
     }
 }
