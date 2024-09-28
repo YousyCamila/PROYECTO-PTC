@@ -59,7 +59,7 @@ app.use('/api/registros-caso', registroCasoRoutes);
 app.use('/api/registros-mantenimiento', registroMantenimientoRoutes);
 app.use('/api/roles', rolRoutes);
 app.use('/api/tipos-evidencia', tipoEvidenciaRoutes);
-app.use('/api/usuarios', usuarioRoutes);
+app.use('/api/usuario', usuarioRoutes);
 
 const port = 3000; // Establece el puerto directamente en el código
 

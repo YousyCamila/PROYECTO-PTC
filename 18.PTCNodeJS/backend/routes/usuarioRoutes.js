@@ -1,14 +1,20 @@
 const express = require('express');
+const { register, login } = require('../controllers/usuarioController');
 const router = express.Router();
-const usuarioController = require('../controllers/usuarioController');
 
-// Registro de usuario
 /**
  * @swagger
- * /usuarios/registro:
+ * tags:
+ *   name: Autenticación
+ *   description: Registro e inicio de sesión
+ */
+
+/**
+ * @swagger
+ * /usuario/register:
  *   post:
  *     summary: Registrar un nuevo usuario
- *     tags: ["Usuarios"]
+ *     tags: [Autenticación]
  *     requestBody:
  *       required: true
  *       content:
@@ -18,36 +24,32 @@ const usuarioController = require('../controllers/usuarioController');
  *             properties:
  *               username:
  *                 type: string
- *                 example: "Juan Pérez"
+ *                 example: "nuevoUsuario"
  *               email:
  *                 type: string
- *                 example: "juan.perez@example.com"
- *               telefono:
- *                 type: string
- *                 example: "555-1234"
+ *                 example: "usuario@example.com"
  *               password:
  *                 type: string
- *                 example: "ContraseñaSegura"
- *               rolId:
+ *                 example: "miContraseñaSegura"
+ *               role:
  *                 type: string
- *                 example: "651edc5565bfc2a7f8e98345"
+ *                 example: "cliente"
  *     responses:
  *       201:
  *         description: Usuario registrado con éxito
  *       400:
- *         description: Error en la solicitud
+ *         description: El usuario o correo ya existen
  *       500:
- *         description: Error interno del servidor
+ *         description: Error en el servidor
  */
-router.post('/registro', usuarioController.registrarUsuario);
+router.post('/register', register);
 
-// Autenticación de usuario
 /**
  * @swagger
- * /usuarios/autenticacion:
+ * /usuario/login:
  *   post:
- *     summary: Autenticar un usuario
- *     tags: ["Usuarios"]
+ *     summary: Iniciar sesión de un usuario
+ *     tags: [Autenticación]
  *     requestBody:
  *       required: true
  *       content:
@@ -57,18 +59,29 @@ router.post('/registro', usuarioController.registrarUsuario);
  *             properties:
  *               email:
  *                 type: string
- *                 example: "juan.perez@example.com"
+ *                 example: "usuario@example.com"
  *               password:
  *                 type: string
- *                 example: "ContraseñaSegura"
+ *                 example: "contraseña123"
+ *               role:
+ *                 type: string
+ *                 example: "cliente"
  *     responses:
  *       200:
- *         description: Usuario autenticado
- *       401:
- *         description: Credenciales inválidas
+ *         description: Inicio de sesión exitoso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   example: "eyJhbGciOiJIUzI1NiIsInR...token"
+ *       400:
+ *         description: Usuario, rol o contraseña incorrectos
  *       500:
- *         description: Error interno del servidor
+ *         description: Error en el servidor
  */
-router.post('/autenticacion', usuarioController.autenticarUsuario);
+router.post('/login', login);
 
 module.exports = router;
