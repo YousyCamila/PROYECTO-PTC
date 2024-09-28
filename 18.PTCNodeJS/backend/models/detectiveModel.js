@@ -21,7 +21,7 @@ const detectiveSchema = new mongoose.Schema({
 },
  {timestamps: true});
 
- personaSchema.add(Persona.schema);
+ detectiveSchema.add(Persona.schema);
 
 
 

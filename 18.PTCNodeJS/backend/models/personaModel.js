@@ -25,10 +25,7 @@ const personaSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
-  Usuario: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Usuario'
-  },
+ 
 });
 
 

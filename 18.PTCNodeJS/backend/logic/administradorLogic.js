@@ -1,45 +1,62 @@
 const Administrador = require('../models/administradorModel');
-const Persona = require('../models/personaModel'); // Asegúrate de importar el modelo de Persona
+const Persona = require('../models/personaModel');
+const { personaSchemaValidation } = require('../validations/personaValidations');
 
-// Función para crear un nuevo administrador
 async function crearAdministrador(body) {
-    const administradorExistente = await Administrador.findOne({ idPersona: body.idPersona });
+    const { usuarioId, especialidad, dni, nombres, apellidos, correo, fechaNacimiento } = body;
 
-    if (administradorExistente) {
-        throw new Error('Ya existe un administrador con la persona especificada.');
+    const personaData = { dni, nombres, apellidos, correo, fechaNacimiento };
+
+    // Validar los datos de la persona
+    const { error: personaError } = personaSchemaValidation.validate(personaData);
+    if (personaError) {
+        throw new Error(personaError.details[0].message);
     }
 
-    const administrador = new Administrador(body);
-    return await administrador.save();
+    // Verificar si ya existe una persona con el mismo DNI
+    const personaExistente = await Persona.findOne({ dni });
+    if (personaExistente) {
+        throw new Error('Ya existe una persona con ese DNI.');
+    }
+
+    // Crear y guardar la nueva persona
+    const nuevaPersona = new Persona(personaData);
+    await nuevaPersona.save();
+
+    // Crear el nuevo administrador y asociar la persona
+    const nuevoAdministrador = new Administrador({
+        usuarioId,
+        especialidad,
+        // Aquí debes incluir la referencia a la persona
+        personaId: nuevaPersona._id // Asegúrate de que el modelo de Administrador tenga un campo para esto
+    });
+    await nuevoAdministrador.save();
+
+    return nuevoAdministrador;
 }
 
-// Función para obtener todos los administradores
+
+// Función para obtener todas las administradores
 async function obtenerAdministradores() {
-    return await Administrador.find().populate('idPersona registroMantenimientos');
+    return await Administrador.find().populate('usuarioId');
 }
 
 // Función para obtener un administrador por email
 async function obtenerAdministradorPorEmail(email) {
-    // Busca la persona por el email
-    const persona = await Persona.findOne({ email });
-
-    if (!persona) {
-        throw new Error('No se encontró ninguna persona con el email especificado');
-    }
-
-    // Busca el administrador utilizando el `idPersona`
-    const administrador = await Administrador.findOne({ idPersona: persona._id }).populate('idPersona registroMantenimientos');
-
+    const administrador = await Administrador.findOne({ 'usuarioId.email': email }).populate('usuarioId');
     if (!administrador) {
         throw new Error('Administrador no encontrado');
     }
-
     return administrador;
 }
 
-// Función para actualizar un administrador por ID
-async function actualizarAdministrador(id, body) {
-    const administrador = await Administrador.findByIdAndUpdate(id, body, { new: true }).populate('idPersona registroMantenimientos');
+// Función para actualizar un administrador por email
+async function actualizarAdministrador(email, body) {
+    const administrador = await Administrador.findOneAndUpdate(
+        { 'usuarioId.email': email },
+        body,
+        { new: true }
+    ).populate('usuarioId');
 
     if (!administrador) {
         throw new Error('Administrador no encontrado');
@@ -47,14 +64,19 @@ async function actualizarAdministrador(id, body) {
     return administrador;
 }
 
-// Función para eliminar un administrador por ID
-async function eliminarAdministrador(id) {
-    const administrador = await Administrador.findByIdAndDelete(id);
+// Función para desactivar un administrador por email
+async function desactivarAdministrador(email) {
+    const administrador = await Administrador.findOneAndUpdate(
+        { 'usuarioId.email': email },
+        { activo: false },
+        { new: true }
+    );
 
     if (!administrador) {
         throw new Error('Administrador no encontrado');
     }
-    return { message: 'Administrador eliminado' };
+
+    return { message: 'Administrador desactivado', administrador };
 }
 
 module.exports = {
@@ -62,5 +84,5 @@ module.exports = {
     obtenerAdministradores,
     obtenerAdministradorPorEmail,
     actualizarAdministrador,
-    eliminarAdministrador,
+    desactivarAdministrador,
 };

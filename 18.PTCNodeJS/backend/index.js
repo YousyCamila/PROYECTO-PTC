@@ -17,7 +17,7 @@ const evidenciaRoutes = require('./routes/evidenciaRoutes');
 const facturaRoutes = require('./routes/facturaRoutes');
 const formularioRoutes = require('./routes/formularioRoutes');
 const historialRoutes = require('./routes/historialRoutes');
-const personaRoutes = require('./routes/personaRoutes');
+
 const registroCasoRoutes = require('./routes/registroCasoRoutes');
 const registroMantenimientoRoutes = require('./routes/registroMantenimientoRoutes');
 const rolRoutes = require('./routes/rolRoutes');
@@ -45,7 +45,7 @@ app.use(cors(corsOptions));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Configurar rutas de API
-app.use('/api/administradores', administradorRoutes);
+app.use('/api/administradors', administradorRoutes);
 app.use('/api/auditorias', auditoriaRoutes);
 app.use('/api/clientes', clienteRoutes);
 app.use('/api/contratos', contratoRoutes);
@@ -54,7 +54,7 @@ app.use('/api/evidencias', evidenciaRoutes);
 app.use('/api/facturas', facturaRoutes);
 app.use('/api/formularios', formularioRoutes);
 app.use('/api/historiales', historialRoutes);
-app.use('/api/personas', personaRoutes);
+
 app.use('/api/registros-caso', registroCasoRoutes);
 app.use('/api/registros-mantenimiento', registroMantenimientoRoutes);
 app.use('/api/roles', rolRoutes);

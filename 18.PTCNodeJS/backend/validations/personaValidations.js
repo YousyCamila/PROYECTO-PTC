@@ -1,5 +1,5 @@
 const Joi = require('@hapi/joi');
-const mongoose = require('mongoose');
+
 
 // Validaciones para el objeto Persona
 const personaSchemaValidation = Joi.object({
@@ -49,42 +49,6 @@ const personaSchemaValidation = Joi.object({
       'date.iso': 'La fecha de nacimiento debe estar en formato ISO',
       'any.required': 'La fecha de nacimiento es un campo requerido',
     }),
-
-  idUsuario: Joi.string()
-    .custom((value, helpers) => {
-      if (value && !mongoose.Types.ObjectId.isValid(value)) {
-        return helpers.message('idUsuario debe ser un ID válido de MongoDB');
-      }
-      return value;
-    })
-    .optional(),
-
-  administrador: Joi.string()
-    .custom((value, helpers) => {
-      if (value && !mongoose.Types.ObjectId.isValid(value)) {
-        return helpers.message('administrador debe ser un ID válido de MongoDB');
-      }
-      return value;
-    })
-    .optional(),
-
-  cliente: Joi.string()
-    .custom((value, helpers) => {
-      if (value && !mongoose.Types.ObjectId.isValid(value)) {
-        return helpers.message('cliente debe ser un ID válido de MongoDB');
-      }
-      return value;
-    })
-    .optional(),
-
-  detective: Joi.string()
-    .custom((value, helpers) => {
-      if (value && !mongoose.Types.ObjectId.isValid(value)) {
-        return helpers.message('detective debe ser un ID válido de MongoDB');
-      }
-      return value;
-    })
-    .optional(),
 });
 
 // Exportar validaciones

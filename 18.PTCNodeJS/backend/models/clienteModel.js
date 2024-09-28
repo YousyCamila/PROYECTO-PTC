@@ -29,7 +29,7 @@ const clienteSchema = new mongoose.Schema({
 },
   { timestamps: true });
 
-  personaSchema.add(Persona.schema);
+  clienteSchema.add(Persona.schema);
 
 
 module.exports = mongoose.model('Cliente', clienteSchema);
