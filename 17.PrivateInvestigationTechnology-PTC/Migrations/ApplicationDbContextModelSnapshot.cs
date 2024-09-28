@@ -22,38 +22,249 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Administrador", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("IdentityUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("Id")
-                        .HasName("PK__Administ__3214EC07DD24900F");
+                    b.HasKey("Id");
 
-                    b.ToTable("Administrador", (string)null);
+                    b.HasIndex("IdentityUserId");
+
+                    b.ToTable("Administradores");
                 });
 
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Auditorium", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<string>("Descripcion")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("IdUsuario")
-                        .HasColumnType("int");
+                    b.Property<string>("IdentityUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id")
-                        .HasName("PK__Auditori__3214EC072E59CF31");
+                        .HasName("PK_Auditorium");
 
-                    b.HasIndex("IdUsuario");
+                    b.HasIndex("IdentityUserId");
 
                     b.ToTable("Auditoria");
                 });
@@ -61,7 +272,10 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Caso", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Descripcion")
                         .HasMaxLength(255)
@@ -74,35 +288,46 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id")
-                        .HasName("PK__Caso__3214EC0733CC1955");
+                        .HasName("PK_Caso");
 
                     b.HasIndex("IdCliente");
 
                     b.HasIndex("IdDetective");
 
-                    b.ToTable("Caso", (string)null);
+                    b.ToTable("Casos");
                 });
 
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Cliente", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("IdentityUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("Id")
-                        .HasName("PK__Cliente__3214EC075361933A");
+                    b.HasKey("Id");
 
-                    b.ToTable("Cliente", (string)null);
+                    b.HasIndex("IdentityUserId");
+
+                    b.ToTable("Clientes");
                 });
 
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Contrato", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Detalles")
                         .HasMaxLength(255)
@@ -115,35 +340,46 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id")
-                        .HasName("PK__Contrato__3214EC07B43553BC");
+                        .HasName("PK_Contrato");
 
                     b.HasIndex("IdCliente");
 
                     b.HasIndex("IdDetective");
 
-                    b.ToTable("Contrato", (string)null);
+                    b.ToTable("Contratos");
                 });
 
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Detective", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("IdentityUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("Id")
-                        .HasName("PK__Detectiv__3214EC07FA53F2E0");
+                    b.HasKey("Id");
 
-                    b.ToTable("Detective", (string)null);
+                    b.HasIndex("IdentityUserId");
+
+                    b.ToTable("Detectives");
                 });
 
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Evidencium", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Descripcion")
                         .HasMaxLength(255)
@@ -153,17 +389,20 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id")
-                        .HasName("PK__Evidenci__3214EC0782111570");
+                        .HasName("PK_Evidencium");
 
                     b.HasIndex("IdCaso");
 
-                    b.ToTable("Evidencia");
+                    b.ToTable("Evidencias");
                 });
 
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Factura", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("IdCliente")
                         .HasColumnType("int");
@@ -172,17 +411,20 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                         .HasColumnType("decimal(18, 2)");
 
                     b.HasKey("Id")
-                        .HasName("PK__Factura__3214EC07423EC717");
+                        .HasName("PK_Factura");
 
                     b.HasIndex("IdCliente");
 
-                    b.ToTable("Factura", (string)null);
+                    b.ToTable("Facturas");
                 });
 
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Formulario", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Detalles")
                         .HasMaxLength(255)
@@ -192,17 +434,20 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id")
-                        .HasName("PK__Formular__3214EC074C3444E2");
+                        .HasName("PK_Formulario");
 
                     b.HasIndex("IdCliente");
 
-                    b.ToTable("Formulario", (string)null);
+                    b.ToTable("Formularios");
                 });
 
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Historial", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Descripcion")
                         .HasMaxLength(255)
@@ -212,53 +457,20 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id")
-                        .HasName("PK__Historia__3214EC075A9340F3");
+                        .HasName("PK_Historial");
 
                     b.HasIndex("IdCliente");
 
-                    b.ToTable("Historial", (string)null);
-                });
-
-            modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Persona", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdAdministrador")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdCliente")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdDetective")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdUsuario")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id")
-                        .HasName("PK__Persona__3214EC07729008E3");
-
-                    b.HasIndex("IdAdministrador");
-
-                    b.HasIndex("IdCliente");
-
-                    b.HasIndex("IdDetective");
-
-                    b.HasIndex("IdUsuario");
-
-                    b.ToTable("Persona", (string)null);
+                    b.ToTable("Historiales");
                 });
 
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.RegistroCaso", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Descripcion")
                         .HasMaxLength(255)
@@ -268,11 +480,11 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id")
-                        .HasName("PK__Registro__3214EC07897CCA72");
+                        .HasName("PK_RegistroCaso");
 
                     b.HasIndex("IdCaso");
 
-                    b.ToTable("RegistroCaso", (string)null);
+                    b.ToTable("RegistroCasos");
                 });
 
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.RegistroMantenimiento", b =>
@@ -300,33 +512,20 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id")
-                        .HasName("PK__Registro__3214EC070A3023DE");
+                        .HasName("PK_RegistroMantenimiento");
 
-                    b.HasIndex(new[] { "IdAdministrador" }, "IX_REGISTRO_MANTENIMIENTO_ID_Administrador");
+                    b.HasIndex("IdAdministrador");
 
-                    b.ToTable("RegistroMantenimiento", (string)null);
-                });
-
-            modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id")
-                        .HasName("PK__Role__3214EC07D3CA7512");
-
-                    b.ToTable("Role", (string)null);
+                    b.ToTable("RegistroMantenimientos");
                 });
 
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.TipoEvidencium", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Descripcion")
                         .HasMaxLength(255)
@@ -336,43 +535,84 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id")
-                        .HasName("PK__TipoEvid__3214EC07B4945479");
+                        .HasName("PK_TipoEvidencium");
 
                     b.HasIndex("IdEvidencia");
 
-                    b.ToTable("TipoEvidencia");
+                    b.ToTable("TipoEvidencias");
                 });
 
-            modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Usuario", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Property<int>("RolId")
-                        .HasColumnType("int");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.HasKey("Id")
-                        .HasName("PK__Usuario__3214EC07FFA5209D");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasIndex("RolId");
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.ToTable("Usuario", (string)null);
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Administrador", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("IdentityUser");
                 });
 
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Auditorium", b =>
                 {
-                    b.HasOne("_17.PrivateInvestigationTechnology_PTC.Models.Usuario", "IdUsuarioNavigation")
-                        .WithMany("Auditoria")
-                        .HasForeignKey("IdUsuario")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId")
                         .IsRequired()
-                        .HasConstraintName("FK_Auditoria_Usuario");
+                        .HasConstraintName("FK_Auditorium_IdentityUser");
 
-                    b.Navigation("IdUsuarioNavigation");
+                    b.Navigation("IdentityUser");
                 });
 
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Caso", b =>
@@ -394,6 +634,17 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                     b.Navigation("IdDetectiveNavigation");
                 });
 
+            modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Cliente", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("IdentityUser");
+                });
+
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Contrato", b =>
                 {
                     b.HasOne("_17.PrivateInvestigationTechnology_PTC.Models.Cliente", "IdClienteNavigation")
@@ -411,6 +662,17 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                     b.Navigation("IdClienteNavigation");
 
                     b.Navigation("IdDetectiveNavigation");
+                });
+
+            modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Detective", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("IdentityUser");
                 });
 
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Evidencium", b =>
@@ -457,38 +719,6 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                     b.Navigation("IdClienteNavigation");
                 });
 
-            modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Persona", b =>
-                {
-                    b.HasOne("_17.PrivateInvestigationTechnology_PTC.Models.Administrador", "IdAdministradorNavigation")
-                        .WithMany("Personas")
-                        .HasForeignKey("IdAdministrador")
-                        .HasConstraintName("FK_Persona_Administrador");
-
-                    b.HasOne("_17.PrivateInvestigationTechnology_PTC.Models.Cliente", "IdClienteNavigation")
-                        .WithMany("Personas")
-                        .HasForeignKey("IdCliente")
-                        .HasConstraintName("FK_Persona_Cliente");
-
-                    b.HasOne("_17.PrivateInvestigationTechnology_PTC.Models.Detective", "IdDetectiveNavigation")
-                        .WithMany("Personas")
-                        .HasForeignKey("IdDetective")
-                        .HasConstraintName("FK_Persona_Detective");
-
-                    b.HasOne("_17.PrivateInvestigationTechnology_PTC.Models.Usuario", "IdUsuarioNavigation")
-                        .WithMany("Personas")
-                        .HasForeignKey("IdUsuario")
-                        .IsRequired()
-                        .HasConstraintName("FK_Persona_Usuario");
-
-                    b.Navigation("IdAdministradorNavigation");
-
-                    b.Navigation("IdClienteNavigation");
-
-                    b.Navigation("IdDetectiveNavigation");
-
-                    b.Navigation("IdUsuarioNavigation");
-                });
-
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.RegistroCaso", b =>
                 {
                     b.HasOne("_17.PrivateInvestigationTechnology_PTC.Models.Caso", "IdCasoNavigation")
@@ -522,21 +752,8 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                     b.Navigation("IdEvidenciaNavigation");
                 });
 
-            modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Usuario", b =>
-                {
-                    b.HasOne("_17.PrivateInvestigationTechnology_PTC.Models.Role", "Rol")
-                        .WithMany("Usuarios")
-                        .HasForeignKey("RolId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Usuario_Role");
-
-                    b.Navigation("Rol");
-                });
-
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Administrador", b =>
                 {
-                    b.Navigation("Personas");
-
                     b.Navigation("RegistroMantenimientos");
                 });
 
@@ -558,8 +775,6 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                     b.Navigation("Formularios");
 
                     b.Navigation("Historials");
-
-                    b.Navigation("Personas");
                 });
 
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Detective", b =>
@@ -567,25 +782,11 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                     b.Navigation("Casos");
 
                     b.Navigation("Contratos");
-
-                    b.Navigation("Personas");
                 });
 
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Evidencium", b =>
                 {
                     b.Navigation("TipoEvidencia");
-                });
-
-            modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Role", b =>
-                {
-                    b.Navigation("Usuarios");
-                });
-
-            modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Usuario", b =>
-                {
-                    b.Navigation("Auditoria");
-
-                    b.Navigation("Personas");
                 });
 #pragma warning restore 612, 618
         }

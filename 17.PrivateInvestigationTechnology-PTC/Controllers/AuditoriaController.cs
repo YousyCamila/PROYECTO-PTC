@@ -1,29 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using _17.PrivateInvestigationTechnology_PTC.Models;
 using _17.PrivateInvestigationTechnology_PTC.Data;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 {
     public class AuditoriaController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;  // UserManager para manejar los usuarios de Identity
 
-        public AuditoriaController(ApplicationDbContext context)
+        public AuditoriaController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Auditoria
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Auditoria.Include(a => a.IdUsuarioNavigation);
-            return View(await applicationDbContext.ToListAsync());
+            var auditoria = _context.Auditoria.Include(a => a.IdentityUser);
+            return View(await auditoria.ToListAsync());
         }
 
         // GET: Auditoria/Details/5
@@ -35,7 +35,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
             }
 
             var auditorium = await _context.Auditoria
-                .Include(a => a.IdUsuarioNavigation)
+                .Include(a => a.IdentityUser)  // Relacionar con IdentityUser
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (auditorium == null)
             {
@@ -48,16 +48,14 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // GET: Auditoria/Create
         public IActionResult Create()
         {
-            ViewData["IdUsuario"] = new SelectList(_context.Usuarios, "Id", "Id");
+            ViewData["IdentityUserId"] = new SelectList(_userManager.Users, "Id", "UserName");  // Utilizar UserManager para obtener usuarios
             return View();
         }
 
         // POST: Auditoria/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IdUsuario,Descripcion")] Auditorium auditorium)
+        public async Task<IActionResult> Create([Bind("Id,IdentityUserId,Descripcion")] Auditorium auditorium)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +63,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdUsuario"] = new SelectList(_context.Usuarios, "Id", "Id", auditorium.IdUsuario);
+            ViewData["IdentityUserId"] = new SelectList(_userManager.Users, "Id", "UserName", auditorium.IdentityUserId);
             return View(auditorium);
         }
 
@@ -82,16 +80,14 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdUsuario"] = new SelectList(_context.Usuarios, "Id", "Id", auditorium.IdUsuario);
+            ViewData["IdentityUserId"] = new SelectList(_userManager.Users, "Id", "UserName", auditorium.IdentityUserId);
             return View(auditorium);
         }
 
         // POST: Auditoria/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,IdUsuario,Descripcion")] Auditorium auditorium)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,IdentityUserId,Descripcion")] Auditorium auditorium)
         {
             if (id != auditorium.Id)
             {
@@ -118,7 +114,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdUsuario"] = new SelectList(_context.Usuarios, "Id", "Id", auditorium.IdUsuario);
+            ViewData["IdentityUserId"] = new SelectList(_userManager.Users, "Id", "UserName", auditorium.IdentityUserId);
             return View(auditorium);
         }
 
@@ -131,7 +127,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
             }
 
             var auditorium = await _context.Auditoria
-                .Include(a => a.IdUsuarioNavigation)
+                .Include(a => a.IdentityUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (auditorium == null)
             {
@@ -155,14 +151,14 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
             {
                 _context.Auditoria.Remove(auditorium);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool AuditoriumExists(int id)
         {
-          return (_context.Auditoria?.Any(e => e.Id == id)).GetValueOrDefault();
+            return _context.Auditoria?.Any(e => e.Id == id) ?? false;
         }
     }
 }

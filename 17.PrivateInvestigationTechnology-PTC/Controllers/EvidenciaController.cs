@@ -22,19 +22,19 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // GET: Evidencia
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Evidencia.Include(e => e.IdCasoNavigation);
+            var applicationDbContext = _context.Evidencias.Include(e => e.IdCasoNavigation);
             return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Evidencia/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Evidencia == null)
+            if (id == null || _context.Evidencias == null)
             {
                 return NotFound();
             }
 
-            var evidencium = await _context.Evidencia
+            var evidencium = await _context.Evidencias
                 .Include(e => e.IdCasoNavigation)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (evidencium == null)
@@ -72,12 +72,12 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // GET: Evidencia/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Evidencia == null)
+            if (id == null || _context.Evidencias == null)
             {
                 return NotFound();
             }
 
-            var evidencium = await _context.Evidencia.FindAsync(id);
+            var evidencium = await _context.Evidencias.FindAsync(id);
             if (evidencium == null)
             {
                 return NotFound();
@@ -125,12 +125,12 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // GET: Evidencia/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Evidencia == null)
+            if (id == null || _context.Evidencias == null)
             {
                 return NotFound();
             }
 
-            var evidencium = await _context.Evidencia
+            var evidencium = await _context.Evidencias
                 .Include(e => e.IdCasoNavigation)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (evidencium == null)
@@ -146,14 +146,14 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Evidencia == null)
+            if (_context.Evidencias == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Evidencia'  is null.");
             }
-            var evidencium = await _context.Evidencia.FindAsync(id);
+            var evidencium = await _context.Evidencias.FindAsync(id);
             if (evidencium != null)
             {
-                _context.Evidencia.Remove(evidencium);
+                _context.Evidencias.Remove(evidencium);
             }
             
             await _context.SaveChangesAsync();
@@ -162,7 +162,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 
         private bool EvidenciumExists(int id)
         {
-          return (_context.Evidencia?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Evidencias?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

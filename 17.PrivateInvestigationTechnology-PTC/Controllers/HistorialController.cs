@@ -22,19 +22,19 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // GET: Historial
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Historials.Include(h => h.IdClienteNavigation);
+            var applicationDbContext = _context.Historiales.Include(h => h.IdClienteNavigation);
             return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Historial/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Historials == null)
+            if (id == null || _context.Historiales == null)
             {
                 return NotFound();
             }
 
-            var historial = await _context.Historials
+            var historial = await _context.Historiales
                 .Include(h => h.IdClienteNavigation)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (historial == null)
@@ -72,12 +72,12 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // GET: Historial/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Historials == null)
+            if (id == null || _context.Historiales == null)
             {
                 return NotFound();
             }
 
-            var historial = await _context.Historials.FindAsync(id);
+            var historial = await _context.Historiales.FindAsync(id);
             if (historial == null)
             {
                 return NotFound();
@@ -125,12 +125,12 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // GET: Historial/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Historials == null)
+            if (id == null || _context.Historiales == null)
             {
                 return NotFound();
             }
 
-            var historial = await _context.Historials
+            var historial = await _context.Historiales
                 .Include(h => h.IdClienteNavigation)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (historial == null)
@@ -146,14 +146,14 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Historials == null)
+            if (_context.Historiales == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Historials'  is null.");
             }
-            var historial = await _context.Historials.FindAsync(id);
+            var historial = await _context.Historiales.FindAsync(id);
             if (historial != null)
             {
-                _context.Historials.Remove(historial);
+                _context.Historiales.Remove(historial);
             }
             
             await _context.SaveChangesAsync();
@@ -162,7 +162,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 
         private bool HistorialExists(int id)
         {
-          return (_context.Historials?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Historiales?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

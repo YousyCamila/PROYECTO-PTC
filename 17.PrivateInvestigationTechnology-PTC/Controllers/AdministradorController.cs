@@ -47,22 +47,22 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // GET: Administrador
         public async Task<IActionResult> Index()
         {
-            if (_context.Administradors == null)
+            if (_context.Administradores == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Administradors' is null.");
             }
-            return View(await _context.Administradors.ToListAsync());
+            return View(await _context.Administradores.ToListAsync());
         }
 
         // GET: Administrador/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Administradors == null)
+            if (id == null || _context.Administradores == null)
             {
                 return NotFound();
             }
 
-            var administrador = await _context.Administradors
+            var administrador = await _context.Administradores
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (administrador == null)
             {
@@ -95,12 +95,12 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // GET: Administrador/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Administradors == null)
+            if (id == null || _context.Administradores == null)
             {
                 return NotFound();
             }
 
-            var administrador = await _context.Administradors.FindAsync(id);
+            var administrador = await _context.Administradores.FindAsync(id);
             if (administrador == null)
             {
                 return NotFound();
@@ -144,12 +144,12 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // GET: Administrador/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Administradors == null)
+            if (id == null || _context.Administradores == null)
             {
                 return NotFound();
             }
 
-            var administrador = await _context.Administradors
+            var administrador = await _context.Administradores
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (administrador == null)
             {
@@ -164,14 +164,14 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Administradors == null)
+            if (_context.Administradores == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Administradors' is null.");
             }
-            var administrador = await _context.Administradors.FindAsync(id);
+            var administrador = await _context.Administradores.FindAsync(id);
             if (administrador != null)
             {
-                _context.Administradors.Remove(administrador);
+                _context.Administradores.Remove(administrador);
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
@@ -179,7 +179,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 
         private bool AdministradorExists(int id)
         {
-            return (_context.Administradors?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Administradores?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

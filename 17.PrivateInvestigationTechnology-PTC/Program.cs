@@ -1,9 +1,9 @@
-
+using _17.PrivateInvestigationTechnology_PTC.Data;
+using _17.PrivateInvestigationTechnology_PTC.Services;
+using _17.PrivateInvestigationTechnology_PTC.Models.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
-using _17.PrivateInvestigationTechnology_PTC.Data; // Cambia 'Data' por 'Models'
-using ApplicationDbContext__17.PrivateInvestigationTechnology_PTC;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +13,19 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+// Cambiar de AddDefaultIdentity a AddIdentity para manejar tanto usuarios como roles
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();  // Habilita los proveedores de token predeterminados
+
+// Agrega Razor Pages
+builder.Services.AddRazorPages();
+
 builder.Services.AddControllersWithViews();
+
+// Configuración del EmailSender
+builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration.GetSection("AuthMessageSenderOptions"));
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 
@@ -27,7 +37,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -36,11 +45,13 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
+app.UseAuthentication();  // Habilitar autenticación
+app.UseAuthorization();   // Habilitar autorización
+
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
 
 app.Run();
