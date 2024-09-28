@@ -17,7 +17,8 @@ const evidenciaSchema = new mongoose.Schema({
   tipoEvidencia: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'TipoEvidencia'
-  }]
-});
+  }],
+},
+{timestamps: true});
 
 module.exports = mongoose.model('Evidencia', evidenciaSchema);

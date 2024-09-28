@@ -12,7 +12,7 @@ const usuarioSchema = new mongoose.Schema({
     type: String,
     maxlength: 100,
     required: true,
-    match: /.+\@.+\..+/ // Validación básica
+    match: /.+\@.+\..+/ 
   },
   telefono: {
     type: String,
@@ -24,19 +24,12 @@ const usuarioSchema = new mongoose.Schema({
     maxlength: 255,
     required: true
   },
-  rolId: {
+  rol: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Role',
     required: true
   },
-  auditoria: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Auditoria'
-  }],
-  personas: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Persona'
-  }]
+
 });
 
 // Hash de la contraseña antes de guardar

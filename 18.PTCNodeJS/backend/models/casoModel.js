@@ -39,7 +39,8 @@ const casoSchema = new mongoose.Schema({
   registroCasos: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'RegistroCaso'
-  }]
-});
+  }],
+},
+{timestamps: true});
 
 module.exports = mongoose.model('Caso', casoSchema);

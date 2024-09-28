@@ -18,13 +18,14 @@ const registroCasoSchema = new mongoose.Schema({
     required: true
   },
   seguimientoPorcentaje: {
-    type: mongoose.Types.Decimal128
+    type: mongoose.Types.Decimal128.fromString('0.00')
   },
   idCasos: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Caso',
     required: true
   }
-});
+},
+{timestamps: true});
 
 module.exports = mongoose.model('RegistroCaso', registroCasoSchema);

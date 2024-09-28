@@ -25,22 +25,11 @@ const personaSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
-  idUsuario: {
+  Usuario: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Usuario'
   },
-  administrador: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Administrador'
-  },
-  cliente: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Cliente'
-  },
-  detective: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Detective'
-  }
 });
+
 
 module.exports = mongoose.model('Persona', personaSchema);

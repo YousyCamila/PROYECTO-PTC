@@ -1,14 +1,10 @@
 const mongoose = require('mongoose');
+const Persona = require('./personaModel');
 
 const detectiveSchema = new mongoose.Schema({
   especialidad: {
     type: String,
     maxlength: 100
-  },
-  idPersona: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Persona',
-    required: true
   },
   casos: [{
     type: mongoose.Schema.Types.ObjectId,
@@ -17,7 +13,16 @@ const detectiveSchema = new mongoose.Schema({
   contratos: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Contrato'
-  }]
-});
+  }],
+  registroCaso: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'RegistroCaso'
+  }],
+},
+ {timestamps: true});
+
+ personaSchema.add(Persona.schema);
+
+
 
 module.exports = mongoose.model('Detective', detectiveSchema);

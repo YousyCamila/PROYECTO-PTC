@@ -33,7 +33,8 @@ const contratoSchema = new mongoose.Schema({
   idDetective: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Detective'
-  }
-});
+  },
+},
+  {timestamps:true});
 
 module.exports = mongoose.model('Contrato', contratoSchema);

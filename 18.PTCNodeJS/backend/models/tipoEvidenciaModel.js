@@ -27,6 +27,7 @@ const tipoEvidenciaSchema = new mongoose.Schema({
     ref: 'Evidencia',
     required: true
   }
-});
+},
+{timestamps: true});
 
 module.exports = mongoose.model('TipoEvidencia', tipoEvidenciaSchema);
