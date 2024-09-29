@@ -1,4 +1,5 @@
 const Caso = require('../models/casoModel');
+const Cliente = require('../models/clienteModel'); // Asegúrate de importar el modelo Cliente
 const Detective = require('../models/detectiveModel');
 
 async function crearCaso(datos) {

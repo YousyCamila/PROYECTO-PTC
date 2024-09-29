@@ -1,12 +1,7 @@
 const casosService = require('../logic/casoLogic');
-const { casoSchemaValidation } = require('../validations/casoValidations');
 
 // Crear un nuevo caso
 const crearCaso = async (req, res) => {
-  // Validar los datos de entrada
-  const { error } = casoSchemaValidation(req.body);
-  if (error) return res.status(400).json({ message: error.details[0].message });
-
   try {
     const caso = await casosService.crearCaso(req.body);
     res.status(201).json(caso);

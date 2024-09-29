@@ -66,5 +66,4 @@ const casoSchemaValidation = Joi.object({
     }),
 });
 
-// Exportar validaciones
 module.exports = { casoSchemaValidation };

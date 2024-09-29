@@ -2,7 +2,6 @@
 const express = require('express');
 const router = express.Router();
 const casoController = require('../controllers/casoController');
-//const { validarAdministrador } = require('../middleware/validarAdministrador');
 
 /**
  * @swagger
@@ -11,15 +10,12 @@ const casoController = require('../controllers/casoController');
  *   description: API para gestionar casos.
  */
 
-
 /**
  * @swagger
  * /caso:
  *   post:
  *     summary: Crear un nuevo caso
  *     tags: [Casos]
- *     security:
- *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -41,8 +37,6 @@ const casoController = require('../controllers/casoController');
  *     responses:
  *       201:
  *         description: Caso creado exitosamente.
- *         content:
- *           
  *       400:
  *         description: Error en la solicitud.
  *       500:
@@ -56,8 +50,6 @@ router.post('/', casoController.crearCaso);
  *   get:
  *     summary: Listar todos los casos
  *     tags: [Casos]
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de casos.
@@ -72,8 +64,6 @@ router.get('/', casoController.listarCasos);
  *   get:
  *     summary: Buscar un caso por ID
  *     tags: [Casos]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -97,8 +87,6 @@ router.get('/:id', casoController.buscarCasoPorId);
  *   put:
  *     summary: Actualizar un caso por ID
  *     tags: [Casos]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -143,8 +131,6 @@ router.put('/:id', casoController.actualizarCaso);
  *   delete:
  *     summary: Desactivar un caso por ID
  *     tags: [Casos]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
