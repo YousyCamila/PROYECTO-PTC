@@ -1,66 +1,81 @@
+// services/clienteService.js
 const Cliente = require('../models/clienteModel');
-const Persona = require('../models/personaModel'); // Asegúrate de importar el modelo de Persona
 
-// Función para crear un nuevo cliente
-async function crearCliente(body) {
-    const clienteExistente = await Cliente.findOne({ idPersona: body.idPersona });
+async function crearCliente(datos) {
+  // Verificar si el correo ya existe
+  const clienteExistenteCorreo = await Cliente.findOne({ correo: datos.correo });
+  if (clienteExistenteCorreo) {
+    throw new Error(`El correo ${datos.correo} ya está registrado.`);
+  }
 
-    if (clienteExistente) {
-        throw new Error('Ya existe un cliente asociado a la persona especificada.');
-    }
+  // Verificar si el número de documento ya existe
+  const clienteExistenteDocumento = await Cliente.findOne({ numeroDocumento: datos.numeroDocumento });
+  if (clienteExistenteDocumento) {
+    throw new Error(`El número de documento ${datos.numeroDocumento} ya está registrado.`);
+  }
 
-    const cliente = new Cliente(body);
-    return await cliente.save();
+  // Crear el cliente
+  const cliente = new Cliente(datos);
+  return await cliente.save();
 }
 
-// Función para obtener todos los clientes
-async function obtenerClientes() {
-    return await Cliente.find().populate('idPersona casos contratos facturas formularios historials');
+async function listarClientes() {
+  const clientes = await Cliente.find({ activo: true });
+  if (clientes.length === 0) {
+    throw new Error('No hay clientes registrados actualmente.');
+  }
+  return clientes;
 }
 
-// Función para obtener un cliente por email de la persona asociada
-async function obtenerClientePorEmail(email) {
-    // Buscar la persona por email
-    const persona = await Persona.findOne({ email });
-
-    if (!persona) {
-        throw new Error('No se encontró ninguna persona con el email especificado');
-    }
-
-    // Buscar el cliente utilizando el `idPersona`
-    const cliente = await Cliente.findOne({ idPersona: persona._id }).populate('idPersona casos contratos facturas formularios historials');
-
-    if (!cliente) {
-        throw new Error('Cliente no encontrado');
-    }
-
-    return cliente;
+async function buscarClientePorCorreo(correo) {
+  const cliente = await Cliente.findOne({ correo, activo: true });
+  if (!cliente) {
+    throw new Error(`No se encontró un cliente con el correo: ${correo}`);
+  }
+  return cliente;
 }
 
-// Función para actualizar un cliente por ID
-async function actualizarCliente(id, body) {
-    const cliente = await Cliente.findByIdAndUpdate(id, body, { new: true }).populate('idPersona casos contratos facturas formularios historials');
+async function actualizarCliente(id, datos) {
+  const cliente = await Cliente.findById(id);
 
-    if (!cliente) {
-        throw new Error('Cliente no encontrado');
+  if (!cliente || !cliente.activo) {
+    throw new Error('El cliente que intenta actualizar no existe o ha sido desactivado.');
+  }
+
+  // Verificar si el correo ya está en uso por otro cliente
+  if (datos.correo && datos.correo !== cliente.correo) {
+    const correoExistente = await Cliente.findOne({ correo: datos.correo });
+    if (correoExistente) {
+      throw new Error(`El correo ${datos.correo} ya está en uso por otro cliente.`);
     }
-    return cliente;
+  }
+
+  // Verificar si el número de documento ya está en uso por otro cliente
+  if (datos.numeroDocumento && datos.numeroDocumento !== cliente.numeroDocumento) {
+    const documentoExistente = await Cliente.findOne({ numeroDocumento: datos.numeroDocumento });
+    if (documentoExistente) {
+      throw new Error(`El número de documento ${datos.numeroDocumento} ya está en uso por otro cliente.`);
+    }
+  }
+
+  Object.assign(cliente, datos); // Actualizar los datos del cliente
+  return await cliente.save();
 }
 
-// Función para eliminar un cliente por ID
-async function eliminarCliente(id) {
-    const cliente = await Cliente.findByIdAndDelete(id);
+async function desactivarCliente(id) {
+  const administrador = await Administrador.findById(id);
+  if (!administrador || !administrador.activo) {
+    throw new Error('El administrador que intenta desactivar no existe o ya ha sido desactivado.');
+  }
 
-    if (!cliente) {
-        throw new Error('Cliente no encontrado');
-    }
-    return { message: 'Cliente eliminado' };
+  administrador.activo = false; // Cambia el estado a inactivo
+  return await administrador.save();
 }
 
 module.exports = {
-    crearCliente,
-    obtenerClientes,
-    obtenerClientePorEmail,
-    actualizarCliente,
-    eliminarCliente,
+  crearCliente,
+  listarClientes,
+  buscarClientePorCorreo,
+  actualizarCliente,
+  desactivarCliente
 };

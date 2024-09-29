@@ -1,28 +1,19 @@
+// models/Detective.js
+const personaSchema = require('./personaModel');
 const mongoose = require('mongoose');
-const Persona = require('./personaModel');
 
-const detectiveSchema = new mongoose.Schema({
+const DetectiveSchema = new mongoose.Schema({
   especialidad: {
     type: String,
-    maxlength: 100
+    required: true
   },
-  casos: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Caso'
-  }],
-  contratos: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Contrato'
-  }],
-  registroCaso: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'RegistroCaso'
-  }],
+  activo: { type: Boolean, default: true },
 },
- {timestamps: true});
+{timestamps: true});
 
- detectiveSchema.add(Persona.schema);
+DetectiveSchema.add(personaSchema);
 
+// Crea el modelo de Administrador
+const Detective = mongoose.model('Detective', DetectiveSchema);
+  module.exports = Detective;
 
-
-module.exports = mongoose.model('Detective', detectiveSchema);

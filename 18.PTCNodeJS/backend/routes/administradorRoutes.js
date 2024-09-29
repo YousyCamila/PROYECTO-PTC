@@ -7,7 +7,7 @@ const administradorController = require('../controllers/administradorController'
  * /administradors:
  *   post:
  *     summary: Crear un nuevo administrador
- *     tags: ["Administradores"]
+ *     tags: [Administradores]
  *     requestBody:
  *       required: true
  *       content:
@@ -15,9 +15,12 @@ const administradorController = require('../controllers/administradorController'
  *           schema:
  *             type: object
  *             properties:
- *               dni:
+ *               tipoDocumento:
  *                 type: string
- *                 example: "12345678"
+ *                 example: "C.C."
+ *               numeroDocumento:
+ *                 type: string
+ *                 example: "123456789"
  *               nombres:
  *                 type: string
  *                 example: "Juan"
@@ -31,82 +34,65 @@ const administradorController = require('../controllers/administradorController'
  *                 type: string
  *                 format: date
  *                 example: "1990-01-01"
- *               especialidad:
- *                 type: string
- *                 example: "Gestión"
+ *               activo:
+ *                 type: boolean
+ *                 example: true
  *     responses:
  *       201:
- *         description: Administrador creado exitosamente
+ *         description: Administrador creado con éxito
  *       400:
  *         description: Error en la solicitud
- *       409:
- *         description: Ya existe una persona con ese DNI
  */
-
 router.post('/', administradorController.crearAdministrador);
 
 /**
  * @swagger
  * /administradors:
  *   get:
- *     summary: Listar todos los administradores
- *     tags: ["Administradores"]
+ *     summary: Obtener la lista de administradores
+ *     tags: [Administradores]
  *     responses:
  *       200:
  *         description: Lista de administradores
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                     example: "651edc5565bfc2a7f8e98345"
- *                   username:
- *                     type: string
- *                     example: "admin123"
- *                   email:
- *                     type: string
- *                     example: "admin@example.com"
+ *       404:
+ *         description: No se encontraron administradores
  */
 router.get('/', administradorController.listarAdministradores);
 
 /**
  * @swagger
- * /administradors/{email}:
+ * /administradors/{correo}:
  *   get:
- *     summary: Obtener un administrador por email
- *     tags: ["Administradores"]
+ *     summary: Buscar un administrador por correo
+ *     tags: [Administradores]
  *     parameters:
  *       - in: path
- *         name: email
- *         required: true
+ *         name: correo
  *         schema:
  *           type: string
- *         description: Email del administrador
+ *         required: true
+ *         description: Correo del administrador
  *     responses:
  *       200:
  *         description: Administrador encontrado
  *       404:
  *         description: Administrador no encontrado
  */
-router.get('/:email', administradorController.obtenerAdministradorPorEmail);
+router.get('/:correo', administradorController.buscarAdministradorPorCorreo);
 
 /**
  * @swagger
- * /administradors/{email}:
+ * /administradors/{id}:
  *   put:
- *     summary: Actualizar un administrador por email
- *     tags: ["Administradores"]
+ *     summary: Actualizar un administrador
+ *     tags: [Administradores]
  *     parameters:
  *       - in: path
- *         name: email
- *         required: true
+ *         name: id
  *         schema:
  *           type: string
- *         description: Email del administrador
+ *         required: true
+ *         description: ID del administrador
  *     requestBody:
  *       required: true
  *       content:
@@ -114,39 +100,49 @@ router.get('/:email', administradorController.obtenerAdministradorPorEmail);
  *           schema:
  *             type: object
  *             properties:
- *               username:
+ *               nombres:
  *                 type: string
- *               email:
+ *                 example: "Juan Carlos"
+ *               apellidos:
  *                 type: string
- *               telefono:
+ *                 example: "Pérez López"
+ *               correo:
  *                 type: string
+ *                 example: "juancarlos.perez@example.com"
+ *               fechaNacimiento:
+ *                 type: string
+ *                 format: date
+ *                 example: "1990-01-01"
+ *               activo:
+ *                 type: boolean
+ *                 example: true
  *     responses:
  *       200:
- *         description: Administrador actualizado exitosamente
- *       404:
- *         description: Administrador no encontrado
+ *         description: Administrador actualizado con éxito
+ *       400:
+ *         description: Error en la solicitud
  */
-router.put('/:email', administradorController.actualizarAdministrador);
+router.put('/:id', administradorController.actualizarAdministrador);
 
 /**
  * @swagger
- * /administradors/{email}:
+ * /administradors/{id}:
  *   delete:
- *     summary: Desactivar un administrador por email
- *     tags: ["Administradores"]
+ *     summary: Desactivar un administrador
+ *     tags: [Administradores]
  *     parameters:
  *       - in: path
- *         name: email
- *         required: true
+ *         name: id
  *         schema:
  *           type: string
- *         description: Email del administrador
+ *         required: true
+ *         description: ID del administrador
  *     responses:
  *       200:
- *         description: Administrador desactivado exitosamente
+ *         description: Administrador desactivado con éxito
  *       404:
  *         description: Administrador no encontrado
  */
-router.delete('/:email', administradorController.desactivarAdministrador);
+router.delete('/:id', administradorController.desactivarAdministrador);
 
 module.exports = router;

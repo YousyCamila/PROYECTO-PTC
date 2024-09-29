@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Persona = require ('./personaModel');
+const personaSchema = require('./personaModel');
 
 const clienteSchema = new mongoose.Schema({
   direccion: {
@@ -26,10 +26,13 @@ const clienteSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'RegistroCaso'
   }],
+  activo: { type: Boolean, default: true },
 },
   { timestamps: true });
 
-  clienteSchema.add(Persona.schema);
+  clienteSchema.add(personaSchema);
 
+// Crea el modelo de Administrador
+const Cliente = mongoose.model('Cliente', clienteSchema);
+  module.exports = Cliente;
 
-module.exports = mongoose.model('Cliente', clienteSchema);

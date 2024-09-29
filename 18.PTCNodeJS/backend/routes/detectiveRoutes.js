@@ -1,14 +1,14 @@
+// routes/detectiveRoutes.js
 const express = require('express');
 const router = express.Router();
 const detectiveController = require('../controllers/detectiveController');
 
-// Crear un nuevo detective
 /**
  * @swagger
  * /detectives:
  *   post:
  *     summary: Crear un nuevo detective
- *     tags: ["Detectives"]
+ *     tags: [Detectives]
  *     requestBody:
  *       required: true
  *       content:
@@ -16,91 +16,80 @@ const detectiveController = require('../controllers/detectiveController');
  *           schema:
  *             type: object
  *             properties:
- *               nombre:
+ *               tipoDocumento:
  *                 type: string
- *                 example: "Carlos Detective"
+ *               numeroDocumento:
+ *                 type: string
+ *               nombres:
+ *                 type: string
+ *               apellidos:
+ *                 type: string
+ *               correo:
+ *                 type: string
+ *               fechaNacimiento:
+ *                 type: string
+ *                 format: date
  *               especialidad:
  *                 type: string
- *                 example: "Investigación criminal"
- *               telefono:
- *                 type: string
- *                 example: "555-6789"
+ *               activo:
+ *                 type: boolean
+ *                 example: true
  *     responses:
  *       201:
- *         description: Detective creado exitosamente
+ *         description: Detective creado con éxito
  *       400:
  *         description: Error en la solicitud
  */
 router.post('/', detectiveController.crearDetective);
 
-// Obtener todos los detectives
 /**
  * @swagger
  * /detectives:
  *   get:
- *     summary: Listar todos los detectives
- *     tags: ["Detectives"]
+ *     summary: Obtener la lista de detectives
+ *     tags: [Detectives]
  *     responses:
  *       200:
  *         description: Lista de detectives
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                     example: "651edc5565bfc2a7f8e98345"
- *                   nombre:
- *                     type: string
- *                     example: "Carlos Detective"
- *                   especialidad:
- *                     type: string
- *                     example: "Investigación criminal"
- *                   telefono:
- *                     type: string
- *                     example: "555-6789"
+ *       404:
+ *         description: No se encontraron detectives
  */
 router.get('/', detectiveController.listarDetectives);
 
-// Obtener un detective por ID
 /**
  * @swagger
- * /detectives/{id}:
+ * /detectives/{correo}:
  *   get:
- *     summary: Obtener un detective por ID
- *     tags: ["Detectives"]
+ *     summary: Buscar un detective por correo
+ *     tags: [Detectives]
  *     parameters:
  *       - in: path
- *         name: id
- *         required: true
+ *         name: correo
  *         schema:
  *           type: string
- *         description: Identificador único del detective.
+ *         required: true
+ *         description: Correo del detective
  *     responses:
  *       200:
  *         description: Detective encontrado
  *       404:
  *         description: Detective no encontrado
  */
-router.get('/:id', detectiveController.obtenerDetectivePorEmail);
+router.get('/:correo', detectiveController.buscarDetectivePorCorreo);
 
-// Actualizar un detective por ID
 /**
  * @swagger
  * /detectives/{id}:
  *   put:
- *     summary: Actualizar un detective por ID
- *     tags: ["Detectives"]
+ *     summary: Actualizar un detective
+ *     tags: [Detectives]
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
  *         schema:
  *           type: string
- *         description: Identificador único del detective.
+ *         required: true
+ *         description: ID del detective
  *     requestBody:
  *       required: true
  *       content:
@@ -108,37 +97,44 @@ router.get('/:id', detectiveController.obtenerDetectivePorEmail);
  *           schema:
  *             type: object
  *             properties:
- *               nombre:
+ *               nombres:
  *                 type: string
+ *               apellidos:
+ *                 type: string
+ *               correo:
+ *                 type: string
+ *               fechaNacimiento:
+ *                 type: string
+ *                 format: date
  *               especialidad:
  *                 type: string
- *               telefono:
- *                 type: string
+ *               activo:
+ *                 type: boolean
+ *                 example: true
  *     responses:
  *       200:
- *         description: Detective actualizado exitosamente
- *       404:
- *         description: Detective no encontrado
+ *         description: Detective actualizado con éxito
+ *       400:
+ *         description: Error en la solicitud
  */
 router.put('/:id', detectiveController.actualizarDetective);
 
-// Eliminar un detective por ID
 /**
  * @swagger
  * /detectives/{id}:
  *   delete:
- *     summary: Eliminar un detective por ID
- *     tags: ["Detectives"]
+ *     summary: Desactivar un detective
+ *     tags: [Detectives]
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
  *         schema:
  *           type: string
- *         description: Identificador único del detective.
+ *         required: true
+ *         description: ID del detective
  *     responses:
  *       200:
- *         description: Detective eliminado exitosamente
+ *         description: Detective desactivado con éxito
  *       404:
  *         description: Detective no encontrado
  */

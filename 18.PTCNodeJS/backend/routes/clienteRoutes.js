@@ -1,14 +1,14 @@
+// routes/clienteRoutes.js
 const express = require('express');
 const router = express.Router();
 const clienteController = require('../controllers/clienteController');
 
-// Crear un nuevo cliente
 /**
  * @swagger
  * /clientes:
  *   post:
  *     summary: Crear un nuevo cliente
- *     tags: ["Clientes"]
+ *     tags: [Clientes]
  *     requestBody:
  *       required: true
  *       content:
@@ -16,91 +16,78 @@ const clienteController = require('../controllers/clienteController');
  *           schema:
  *             type: object
  *             properties:
- *               nombre:
+ *               tipoDocumento:
  *                 type: string
- *                 example: "Juan Pérez"
+ *               numeroDocumento:
+ *                 type: string
+ *               nombres:
+ *                 type: string
+ *               apellidos:
+ *                 type: string
  *               correo:
  *                 type: string
- *                 example: "juan.perez@example.com"
- *               telefono:
+ *               fechaNacimiento:
  *                 type: string
- *                 example: "555-1234"
+ *                 format: date
+ *               activo:
+ *                 type: boolean
+ *                 example: true
  *     responses:
  *       201:
- *         description: Cliente creado exitosamente
+ *         description: Cliente creado con éxito
  *       400:
  *         description: Error en la solicitud
  */
 router.post('/', clienteController.crearCliente);
 
-// Obtener todos los clientes
 /**
  * @swagger
  * /clientes:
  *   get:
- *     summary: Listar todos los clientes
- *     tags: ["Clientes"]
+ *     summary: Obtener la lista de clientes
+ *     tags: [Clientes]
  *     responses:
  *       200:
  *         description: Lista de clientes
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                     example: "651edc5565bfc2a7f8e98345"
- *                   nombre:
- *                     type: string
- *                     example: "Juan Pérez"
- *                   correo:
- *                     type: string
- *                     example: "juan.perez@example.com"
- *                   telefono:
- *                     type: string
- *                     example: "555-1234"
+ *       404:
+ *         description: No se encontraron clientes
  */
 router.get('/', clienteController.listarClientes);
 
-// Obtener un cliente por ID
 /**
  * @swagger
- * /clientes/{id}:
+ * /clientes/{correo}:
  *   get:
- *     summary: Obtener un cliente por ID
- *     tags: ["Clientes"]
+ *     summary: Buscar un cliente por correo
+ *     tags: [Clientes]
  *     parameters:
  *       - in: path
- *         name: id
- *         required: true
+ *         name: correo
  *         schema:
  *           type: string
- *         description: Identificador único del cliente.
+ *         required: true
+ *         description: Correo del cliente
  *     responses:
  *       200:
  *         description: Cliente encontrado
  *       404:
  *         description: Cliente no encontrado
  */
-router.get('/:id', clienteController.obtenerClientePorEmail);
+router.get('/:correo', clienteController.buscarClientePorCorreo);
 
-// Actualizar un cliente por ID
 /**
  * @swagger
  * /clientes/{id}:
  *   put:
- *     summary: Actualizar un cliente por ID
- *     tags: ["Clientes"]
+ *     summary: Actualizar un cliente
+ *     tags: [Clientes]
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
  *         schema:
  *           type: string
- *         description: Identificador único del cliente.
+ *         required: true
+ *         description: ID del cliente
  *     requestBody:
  *       required: true
  *       content:
@@ -108,37 +95,42 @@ router.get('/:id', clienteController.obtenerClientePorEmail);
  *           schema:
  *             type: object
  *             properties:
- *               nombre:
+ *               nombres:
+ *                 type: string
+ *               apellidos:
  *                 type: string
  *               correo:
  *                 type: string
- *               telefono:
+ *               fechaNacimiento:
  *                 type: string
+ *                 format: date
+ *               activo:
+ *                 type: boolean
+ *                 example: true
  *     responses:
  *       200:
- *         description: Cliente actualizado exitosamente
- *       404:
- *         description: Cliente no encontrado
+ *         description: Cliente actualizado con éxito
+ *       400:
+ *         description: Error en la solicitud
  */
 router.put('/:id', clienteController.actualizarCliente);
 
-// Eliminar un cliente por ID
 /**
  * @swagger
  * /clientes/{id}:
  *   delete:
- *     summary: Eliminar un cliente por ID
- *     tags: ["Clientes"]
+ *     summary: Desactivar un cliente
+ *     tags: [Clientes]
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
  *         schema:
  *           type: string
- *         description: Identificador único del cliente.
+ *         required: true
+ *         description: ID del cliente
  *     responses:
  *       200:
- *         description: Cliente eliminado exitosamente
+ *         description: Cliente desactivado con éxito
  *       404:
  *         description: Cliente no encontrado
  */

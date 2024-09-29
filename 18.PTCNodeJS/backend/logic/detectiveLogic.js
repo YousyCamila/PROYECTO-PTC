@@ -1,67 +1,80 @@
+// services/detectiveService.js
 const Detective = require('../models/detectiveModel');
-const Persona = require('../models/personaModel'); // Asegúrate de importar el modelo de Persona
 
-// Función para crear un nuevo detective
-async function crearDetective(body) {
-    // Verifica si ya existe un detective asociado a la persona especificada
-    const detectiveExistente = await Detective.findOne({ idPersona: body.idPersona });
+async function crearDetective(datos) {
+  // Verificar si el correo ya existe
+  const detectiveExistenteCorreo = await Detective.findOne({ correo: datos.correo });
+  if (detectiveExistenteCorreo) {
+    throw new Error(`El correo ${datos.correo} ya está registrado.`);
+  }
 
-    if (detectiveExistente) {
-        throw new Error('Ya existe un detective asociado a la persona especificada.');
-    }
+  // Verificar si el número de documento ya existe
+  const detectiveExistenteDocumento = await Detective.findOne({ numeroDocumento: datos.numeroDocumento });
+  if (detectiveExistenteDocumento) {
+    throw new Error(`El número de documento ${datos.numeroDocumento} ya está registrado.`);
+  }
 
-    const detective = new Detective(body);
-    return await detective.save();
+  const detective = new Detective(datos);
+  return await detective.save();
 }
 
-// Función para obtener todos los detectives
-async function obtenerDetectives() {
-    return await Detective.find().populate('idPersona casos contratos');
+async function listarDetectives() {
+  const detectives = await Detective.find({ activo: true });
+  if (detectives.length === 0) {
+    throw new Error('No hay detectives registrados actualmente.');
+  }
+  return detectives;
 }
 
-// Función para obtener un detective por email de la persona asociada
-async function obtenerDetectivePorEmail(email) {
-    // Buscar la persona por email
-    const persona = await Persona.findOne({ email });
-
-    if (!persona) {
-        throw new Error('No se encontró ninguna persona con el email especificado');
-    }
-
-    // Buscar el detective utilizando el `idPersona`
-    const detective = await Detective.findOne({ idPersona: persona._id }).populate('idPersona casos contratos');
-
-    if (!detective) {
-        throw new Error('Detective no encontrado');
-    }
-
-    return detective;
+async function buscarDetectivePorCorreo(correo) {
+  const detective = await Detective.findOne({ correo, activo: true });
+  if (!detective) {
+    throw new Error(`No se encontró un detective con el correo: ${correo}`);
+  }
+  return detective;
 }
 
-// Función para actualizar un detective por ID
-async function actualizarDetective(id, body) {
-    const detective = await Detective.findByIdAndUpdate(id, body, { new: true }).populate('idPersona casos contratos');
+async function actualizarDetective(id, datos) {
+  const detective = await Detective.findById(id);
 
-    if (!detective) {
-        throw new Error('Detective no encontrado');
+  if (!detective || !detective.activo) {
+    throw new Error('El detective que intenta actualizar no existe o ha sido desactivado.');
+  }
+
+  // Verificar si el correo ya está en uso por otro detective
+  if (datos.correo && datos.correo !== detective.correo) {
+    const correoExistente = await Detective.findOne({ correo: datos.correo });
+    if (correoExistente) {
+      throw new Error(`El correo ${datos.correo} ya está en uso por otro detective.`);
     }
-    return detective;
+  }
+
+  // Verificar si el número de documento ya está en uso por otro detective
+  if (datos.numeroDocumento && datos.numeroDocumento !== detective.numeroDocumento) {
+    const documentoExistente = await Detective.findOne({ numeroDocumento: datos.numeroDocumento });
+    if (documentoExistente) {
+      throw new Error(`El número de documento ${datos.numeroDocumento} ya está en uso por otro detective.`);
+    }
+  }
+
+  Object.assign(detective, datos);
+  return await detective.save();
 }
 
-// Función para eliminar un detective por ID
-async function eliminarDetective(id) {
-    const detective = await Detective.findByIdAndDelete(id);
+async function desactivarDetective(id) {
+  const administrador = await Administrador.findById(id);
+  if (!administrador || !administrador.activo) {
+    throw new Error('El administrador que intenta desactivar no existe o ya ha sido desactivado.');
+  }
 
-    if (!detective) {
-        throw new Error('Detective no encontrado');
-    }
-    return { message: 'Detective eliminado' };
+  administrador.activo = false; // Cambia el estado a inactivo
+  return await administrador.save();
 }
 
 module.exports = {
-    crearDetective,
-    obtenerDetectives,
-    obtenerDetectivePorEmail,
-    actualizarDetective,
-    eliminarDetective,
+  crearDetective,
+  listarDetectives,
+  buscarDetectivePorCorreo,
+  actualizarDetective,
+  desactivarDetective
 };

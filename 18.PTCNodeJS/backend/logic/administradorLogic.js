@@ -1,88 +1,77 @@
+// services/administradorService.js
 const Administrador = require('../models/administradorModel');
-const Persona = require('../models/personaModel');
-const { personaSchemaValidation } = require('../validations/personaValidations');
 
-async function crearAdministrador(body) {
-    const { usuarioId, especialidad, dni, nombres, apellidos, correo, fechaNacimiento } = body;
+async function crearAdministrador(datos) {
+  // Verificar si el correo ya existe
+  const adminExistenteCorreo = await Administrador.findOne({ correo: datos.correo });
+  if (adminExistenteCorreo) {
+    throw new Error(`El correo ${datos.correo} ya está registrado.`);
+  }
 
-    const personaData = { dni, nombres, apellidos, correo, fechaNacimiento };
+  // Verificar si el número de documento ya existe
+  const adminExistenteDocumento = await Administrador.findOne({ numeroDocumento: datos.numeroDocumento });
+  if (adminExistenteDocumento) {
+    throw new Error(`El número de documento ${datos.numeroDocumento} ya está registrado.`);
+  }
 
-    // Validar los datos de la persona
-    const { error: personaError } = personaSchemaValidation.validate(personaData);
-    if (personaError) {
-        throw new Error(personaError.details[0].message);
-    }
-
-    // Verificar si ya existe una persona con el mismo DNI
-    const personaExistente = await Persona.findOne({ dni });
-    if (personaExistente) {
-        throw new Error('Ya existe una persona con ese DNI.');
-    }
-
-    // Crear y guardar la nueva persona
-    const nuevaPersona = new Persona(personaData);
-    await nuevaPersona.save();
-
-    // Crear el nuevo administrador y asociar la persona
-    const nuevoAdministrador = new Administrador({
-        usuarioId,
-        especialidad,
-        // Aquí debes incluir la referencia a la persona
-        personaId: nuevaPersona._id // Asegúrate de que el modelo de Administrador tenga un campo para esto
-    });
-    await nuevoAdministrador.save();
-
-    return nuevoAdministrador;
+  const administrador = new Administrador(datos);
+  return await administrador.save();
 }
 
-
-// Función para obtener todas las administradores
-async function obtenerAdministradores() {
-    return await Administrador.find().populate('usuarioId');
+async function listarAdministradores() {
+  const administradores = await Administrador.find({ activo: true });
+  return administradores; // Retornamos la lista aunque esté vacía
 }
 
-// Función para obtener un administrador por email
-async function obtenerAdministradorPorEmail(email) {
-    const administrador = await Administrador.findOne({ 'usuarioId.email': email }).populate('usuarioId');
-    if (!administrador) {
-        throw new Error('Administrador no encontrado');
-    }
-    return administrador;
+async function buscarAdministradorPorCorreo(correo) {
+  const administrador = await Administrador.findOne({ correo, activo: true });
+  if (!administrador) {
+    throw new Error(`No se encontró un administrador con el correo: ${correo}`);
+  }
+  return administrador;
 }
 
-// Función para actualizar un administrador por email
-async function actualizarAdministrador(email, body) {
-    const administrador = await Administrador.findOneAndUpdate(
-        { 'usuarioId.email': email },
-        body,
-        { new: true }
-    ).populate('usuarioId');
+async function actualizarAdministrador(id, datos) {
+  const administrador = await Administrador.findById(id);
 
-    if (!administrador) {
-        throw new Error('Administrador no encontrado');
+  if (!administrador || !administrador.activo) {
+    throw new Error('El administrador que intenta actualizar no existe o ha sido desactivado.');
+  }
+
+  // Verificar si el correo ya está en uso por otro administrador
+  if (datos.correo && datos.correo !== administrador.correo) {
+    const correoExistente = await Administrador.findOne({ correo: datos.correo });
+    if (correoExistente) {
+      throw new Error(`El correo ${datos.correo} ya está en uso por otro administrador.`);
     }
-    return administrador;
+  }
+
+  // Verificar si el número de documento ya está en uso por otro administrador
+  if (datos.numeroDocumento && datos.numeroDocumento !== administrador.numeroDocumento) {
+    const documentoExistente = await Administrador.findOne({ numeroDocumento: datos.numeroDocumento });
+    if (documentoExistente) {
+      throw new Error(`El número de documento ${datos.numeroDocumento} ya está en uso por otro administrador.`);
+    }
+  }
+
+  Object.assign(administrador, datos);
+  return await administrador.save();
 }
 
-// Función para desactivar un administrador por email
-async function desactivarAdministrador(email) {
-    const administrador = await Administrador.findOneAndUpdate(
-        { 'usuarioId.email': email },
-        { activo: false },
-        { new: true }
-    );
+async function desactivarAdministrador(id) {
+  const administrador = await Administrador.findById(id);
+  if (!administrador || !administrador.activo) {
+    throw new Error('El administrador que intenta desactivar no existe o ya ha sido desactivado.');
+  }
 
-    if (!administrador) {
-        throw new Error('Administrador no encontrado');
-    }
-
-    return { message: 'Administrador desactivado', administrador };
+  administrador.activo = false; // Cambia el estado a inactivo
+  return await administrador.save();
 }
 
 module.exports = {
-    crearAdministrador,
-    obtenerAdministradores,
-    obtenerAdministradorPorEmail,
-    actualizarAdministrador,
-    desactivarAdministrador,
+  crearAdministrador,
+  listarAdministradores,
+  buscarAdministradorPorCorreo,
+  actualizarAdministrador,
+  desactivarAdministrador // Cambiado aquí
 };

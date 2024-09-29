@@ -1,10 +1,15 @@
+// models/Persona.js
 const mongoose = require('mongoose');
 
-const personaSchema = new mongoose.Schema({
-  dni: {
+const PersonaSchema = new mongoose.Schema({
+  tipoDocumento: {
     type: String,
-    maxlength: 20,
-    required: true
+    required: true,
+  },
+  numeroDocumento: {
+    type: String,
+    required: true,
+    unique: true
   },
   nombres: {
     type: String,
@@ -24,9 +29,8 @@ const personaSchema = new mongoose.Schema({
   fechaNacimiento: {
     type: Date,
     required: true
-  },
- 
-});
+  }
+}, 
+{timestamps: true});
 
-
-module.exports = mongoose.model('Persona', personaSchema);
+module.exports =  PersonaSchema;

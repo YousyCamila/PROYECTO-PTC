@@ -1,10 +1,14 @@
 const mongoose = require('mongoose');
+const personaSchema = require('./personaModel');
 
 const administradorSchema = new mongoose.Schema({
-    usuarioId: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true },
-    especialidad: { type: String, maxlength: 100 },
-    personaId: { type: mongoose.Schema.Types.ObjectId, ref: 'Persona', required: true }, // Nuevo campo
-    registroMantenimientos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'RegistroMantenimiento' }]
-}, { timestamps: true });
+    
+    activo: { type: Boolean, default: true },
+  
+},
+{timestamps : true});
+administradorSchema.add(personaSchema);
 
-module.exports = mongoose.model('Administrador', administradorSchema);
+// Crea el modelo de Administrador
+const Administrador = mongoose.model('Administrador', administradorSchema);
+module.exports = Administrador;
