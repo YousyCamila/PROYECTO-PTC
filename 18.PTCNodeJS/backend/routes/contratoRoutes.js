@@ -1,159 +1,147 @@
+// routes/contratoRoutes.js
 const express = require('express');
 const router = express.Router();
 const contratoController = require('../controllers/contratoController');
 
-// Crear un nuevo contrato
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Contrato:
+ *       type: object
+ *       required:
+ *         - descripcionServicio
+ *         - fechaInicio
+ *         - fechaCierre
+ *         - tarifa
+ *         - idCliente
+ *       properties:
+ *         descripcionServicio:
+ *           type: string
+ *           description: Descripción del servicio
+ *         fechaInicio:
+ *           type: string
+ *           format: date
+ *           description: Fecha de inicio del contrato
+ *         fechaCierre:
+ *           type: string
+ *           format: date
+ *           description: Fecha de cierre del contrato
+ *         clausulas:
+ *           type: string
+ *           description: Cláusulas del contrato
+ *         tarifa:
+ *           type: number
+ *           format: decimal
+ *           description: Tarifa del servicio
+ *         estado:
+ *           type: boolean
+ *           description: Estado del contrato (activo/inactivo)
+ *         idCliente:
+ *           type: string
+ *           description: ID del cliente asociado
+ *         idDetective:
+ *           type: string
+ *           description: ID del detective asociado
+ *         historial:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               fechaDesactivacion:
+ *                 type: string
+ *                 format: date
+ *                 description: Fecha de desactivación del contrato
+ *               motivo:
+ *                 type: string
+ *                 description: Motivo de la desactivación
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Contratos
+ *   description: API para manejar contratos
+ */
+
 /**
  * @swagger
  * /contratos:
  *   post:
  *     summary: Crear un nuevo contrato
- *     tags: ["Contratos"]
+ *     tags: [Contratos]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               clienteId:
- *                 type: string
- *                 example: "651edc5565bfc2a7f8e98345"
- *               fechaInicio:
- *                 type: string
- *                 format: date
- *                 example: "2024-09-01"
- *               fechaFin:
- *                 type: string
- *                 format: date
- *                 example: "2025-09-01"
- *               monto:
- *                 type: number
- *                 example: 5000.00
+ *             $ref: '#/components/schemas/Contrato'
  *     responses:
  *       201:
- *         description: Contrato creado exitosamente
- *       400:
- *         description: Error en la solicitud
+ *         description: El contrato ha sido creado exitosamente.
+ *       500:
+ *         description: Error interno del servidor.
  */
 router.post('/', contratoController.crearContrato);
 
-// Obtener todos los contratos
 /**
  * @swagger
  * /contratos:
  *   get:
  *     summary: Listar todos los contratos
- *     tags: ["Contratos"]
+ *     tags: [Contratos]
  *     responses:
  *       200:
- *         description: Lista de contratos
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                     example: "651edc5565bfc2a7f8e98345"
- *                   clienteId:
- *                     type: string
- *                     example: "651edc5565bfc2a7f8e98345"
- *                   fechaInicio:
- *                     type: string
- *                     format: date
- *                     example: "2024-09-01"
- *                   fechaFin:
- *                     type: string
- *                     format: date
- *                     example: "2025-09-01"
- *                   monto:
- *                     type: number
- *                     example: 5000.00
+ *         description: Lista de todos los contratos.
+ *       500:
+ *         description: Error interno del servidor.
  */
 router.get('/', contratoController.listarContratos);
 
-// Obtener un contrato por ID
 /**
  * @swagger
  * /contratos/{id}:
  *   get:
  *     summary: Obtener un contrato por ID
- *     tags: ["Contratos"]
+ *     tags: [Contratos]
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
  *         schema:
  *           type: string
- *         description: Identificador único del contrato.
+ *         required: true
+ *         description: ID del contrato
  *     responses:
  *       200:
- *         description: Contrato encontrado
+ *         description: Detalles del contrato.
  *       404:
- *         description: Contrato no encontrado
+ *         description: Contrato no encontrado.
+ *       500:
+ *         description: Error interno del servidor.
  */
-router.get('/:id', contratoController.obtenerContratoPorId);
+router.get('/:id', contratoController.buscarContratoPorId);
 
-// Actualizar un contrato por ID
 /**
  * @swagger
- * /contratos/{id}:
+ * /contratos/{id}/desactivar:
  *   put:
- *     summary: Actualizar un contrato por ID
- *     tags: ["Contratos"]
+ *     summary: Desactivar un contrato por ID
+ *     tags: [Contratos]
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
  *         schema:
  *           type: string
- *         description: Identificador único del contrato.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               fechaInicio:
- *                 type: string
- *                 format: date
- *               fechaFin:
- *                 type: string
- *                 format: date
- *               monto:
- *                 type: number
- *     responses:
- *       200:
- *         description: Contrato actualizado exitosamente
- *       404:
- *         description: Contrato no encontrado
- */
-router.put('/:id', contratoController.actualizarContrato);
-
-// Eliminar un contrato por ID
-/**
- * @swagger
- * /contratos/{id}:
- *   delete:
- *     summary: Eliminar un contrato por ID
- *     tags: ["Contratos"]
- *     parameters:
- *       - in: path
- *         name: id
  *         required: true
- *         schema:
- *           type: string
- *         description: Identificador único del contrato.
+ *         description: ID del contrato
  *     responses:
  *       200:
- *         description: Contrato eliminado exitosamente
+ *         description: Contrato desactivado exitosamente.
  *       404:
- *         description: Contrato no encontrado
+ *         description: Contrato no encontrado.
+ *       500:
+ *         description: Error interno del servidor.
  */
-router.delete('/:id', contratoController.eliminarContrato);
+router.put('/:id/desactivar', contratoController.desactivarContrato);
 
 module.exports = router;

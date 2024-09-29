@@ -39,6 +39,10 @@ const DetectiveSchema = new mongoose.Schema({
       required: true
     }
   }],
+  contratos: [{ // Este campo ya está presente
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Contrato'
+  }],
   activo: { type: Boolean, default: true },
 }, { timestamps: true });
 

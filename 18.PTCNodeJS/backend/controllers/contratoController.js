@@ -1,102 +1,46 @@
-const contratoLogic = require('../logic/contratoLogic');
-const { contratoSchemaValidation } = require('../validations/contratoValidations');
+// controllers/contratoController.js
+const contratoService = require('../logic/contratoLogic');
 
-// Controlador para listar todos los contratos
+const crearContrato = async (req, res) => {
+  try {
+    const contrato = await contratoService.crearContrato(req.body);
+    res.status(201).json(contrato);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const listarContratos = async (req, res) => {
   try {
-    const contratos = await contratoLogic.obtenerContratos();
-    if (contratos.length === 0) {
-      return res.status(204).send(); // 204 No Content
-    }
-    res.json(contratos);
-  } catch (err) {
-    res.status(500).json({ error: 'Error interno del servidor' });
+    const contratos = await contratoService.listarContratos();
+    res.status(200).json(contratos);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
-// Controlador para crear un nuevo contrato
-const crearContrato = async (req, res) => {
-  const body = req.body;
-  const { error, value } = contratoSchemaValidation.validate({
-    idCliente: body.idCliente,
-    idDetective: body.idDetective,
-    // Otras propiedades del contrato que necesites validar
-  });
-
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
-  }
-
+const buscarContratoPorId = async (req, res) => {
   try {
-    const nuevoContrato = await contratoLogic.crearContrato(value);
-    res.status(201).json(nuevoContrato);
-  } catch (err) {
-    if (err.message === 'Ya existe un contrato activo para el cliente y detective especificados.') {
-      return res.status(409).json({ error: err.message });
-    }
-    res.status(500).json({ error: 'Error interno del servidor' });
+    const contrato = await contratoService.buscarContratoPorId(req.params.id);
+    res.status(200).json(contrato);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
   }
 };
 
-// Controlador para obtener un contrato por ID
-const obtenerContratoPorId = async (req, res) => {
-  const { id } = req.params;
+const desactivarContrato = async (req, res) => {
   try {
-    const contrato = await contratoLogic.obtenerContratoPorId(id);
-    res.json(contrato);
-  } catch (err) {
-    if (err.message === 'Contrato no encontrado') {
-      return res.status(404).json({ error: err.message });
-    }
-    res.status(500).json({ error: 'Error interno del servidor' });
+    const { motivo } = req.body; // Obtener motivo de desactivación del cuerpo de la solicitud
+    const response = await contratoService.desactivarContrato(req.params.id, motivo);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
   }
 };
 
-// Controlador para actualizar un contrato por ID
-const actualizarContrato = async (req, res) => {
-  const { id } = req.params;
-  const body = req.body;
-  const { error, value } = contratoSchemaValidation.validate({
-    idCliente: body.idCliente,
-    idDetective: body.idDetective,
-    // Otras propiedades del contrato que necesites validar
-  });
-
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
-  }
-
-  try {
-    const contratoActualizado = await contratoLogic.actualizarContrato(id, value);
-    res.json(contratoActualizado);
-  } catch (err) {
-    if (err.message === 'Contrato no encontrado') {
-      return res.status(404).json({ error: err.message });
-    }
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
-};
-
-// Controlador para eliminar un contrato por ID
-const eliminarContrato = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const resultado = await contratoLogic.eliminarContrato(id);
-    res.json(resultado);
-  } catch (err) {
-    if (err.message === 'Contrato no encontrado') {
-      return res.status(404).json({ error: err.message });
-    }
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
-};
-
-// Exportar los controladores
 module.exports = {
-  listarContratos,
   crearContrato,
-  obtenerContratoPorId,
-  actualizarContrato,
-  eliminarContrato,
+  listarContratos,
+  buscarContratoPorId,
+  desactivarContrato
 };
-

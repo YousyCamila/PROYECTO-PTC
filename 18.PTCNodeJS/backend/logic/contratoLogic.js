@@ -1,61 +1,62 @@
+// layers/contratoService.js
 const Contrato = require('../models/contratoModel');
+const Cliente = require('../models/clienteModel');
+const Detective = require('../models/detectiveModel');
 
-// Función para crear un nuevo contrato
-async function crearContrato(body) {
-    // Verifica si ya existe un contrato activo para el mismo cliente y detective
-    const contratoExistente = await Contrato.findOne({ 
-        idCliente: body.idCliente, 
-        idDetective: body.idDetective, 
-        estado: true 
+async function crearContrato(data) {
+  const contrato = new Contrato(data);
+  await contrato.save();
+
+  // Actualizar el cliente para agregar el contrato
+  await Cliente.findByIdAndUpdate(data.idCliente, {
+    $push: { contratos: contrato._id } // Agrega el ID del contrato al cliente
+  });
+
+  // Si hay un detective, actualizar también
+  if (data.idDetective) {
+    await Detective.findByIdAndUpdate(data.idDetective, {
+      $push: { casos: { id: contrato._id, nombre: contrato.descripcionServicio } } // Agrega el ID y nombre del contrato al detective
     });
+  }
 
-    if (contratoExistente) {
-        throw new Error('Ya existe un contrato activo para el cliente y detective especificados.');
-    }
-
-    const contrato = new Contrato(body);
-    return await contrato.save();
+  return contrato;
 }
 
-// Función para obtener todos los contratos
-async function obtenerContratos() {
-    return await Contrato.find().populate('idCliente idDetective');
+async function listarContratos() {
+  return await Contrato.find();
 }
 
-// Función para obtener un contrato por ID
-async function obtenerContratoPorId(id) {
-    const contrato = await Contrato.findById(id).populate('idCliente idDetective');
-
-    if (!contrato) {
-        throw new Error('Contrato no encontrado');
-    }
-    return contrato;
+async function buscarContratoPorId(id) {
+  const contrato = await Contrato.findById(id);
+  if (!contrato) throw new Error('Contrato no encontrado');
+  return contrato;
 }
 
-// Función para actualizar un contrato por ID
-async function actualizarContrato(id, body) {
-    const contrato = await Contrato.findByIdAndUpdate(id, body, { new: true }).populate('idCliente idDetective');
+async function desactivarContrato(id, motivo) {
+  const contrato = await Contrato.findById(id);
+  if (!contrato) throw new Error('Contrato no encontrado');
 
-    if (!contrato) {
-        throw new Error('Contrato no encontrado');
-    }
-    return contrato;
-}
+  contrato.estado = false; // Desactivar contrato
+  contrato.historial.push({ fechaDesactivacion: new Date(), motivo }); // Agrega al historial de desactivación
+  await contrato.save();
 
-// Función para eliminar un contrato por ID
-async function eliminarContrato(id) {
-    const contrato = await Contrato.findByIdAndDelete(id);
+  // Actualizar historiales del cliente y detective
+  await Cliente.findByIdAndUpdate(contrato.idCliente, {
+    $push: { historials: contrato._id } // Agregar al historial del cliente
+  });
 
-    if (!contrato) {
-        throw new Error('Contrato no encontrado');
-    }
-    return { message: 'Contrato eliminado' };
+  if (contrato.idDetective) {
+    await Detective.findByIdAndUpdate(contrato.idDetective, {
+      $push: { historialCasos: contrato._id } // Agregar al historial del detective
+    });
+  }
+
+  return { message: 'Contrato desactivado exitosamente' };
 }
 
 module.exports = {
-    crearContrato,
-    obtenerContratos,
-    obtenerContratoPorId,
-    actualizarContrato,
-    eliminarContrato,
+  crearContrato,
+  listarContratos,
+  buscarContratoPorId,
+  desactivarContrato
 };
