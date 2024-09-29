@@ -1,51 +1,92 @@
-const RegistroCaso = require('../models/registroCasoModel');
-const Caso = require('../models/casoModel'); // Asegúrate de importar el modelo de Caso si es necesario
+const RegistroCaso = require('../models/RegistroCasoModel');
+const Cliente = require('../models/ClienteModel');
+const Detective = require('../models/detectiveModel');
+const HistorialCaso = require('../models/HistorialModel');
 
-// Función para crear un nuevo registro de caso
-async function crearRegistroCaso(body) {
-    const registroCaso = new RegistroCaso(body);
-    return await registroCaso.save();
+// Crear un nuevo registro de caso
+async function crearRegistroCaso(data) {
+  const registroCaso = new RegistroCaso(data);
+  
+  await registroCaso.save();
+  
+  // Vincular el caso con cliente y detective
+  await Cliente.findByIdAndUpdate(data.idCliente, { $push: { casos: registroCaso._id } });
+  await Detective.findByIdAndUpdate(data.idDetective, { $push: { casos: registroCaso._id } });
+  
+  return registroCaso;
 }
 
-// Función para obtener todos los registros de caso
-async function obtenerRegistrosCasos() {
-    return await RegistroCaso.find().populate('idCasos');
+// Finalizar el contrato del registro de caso y moverlo al historial
+async function finalizarRegistroCaso(idRegistro) {
+  const registroCaso = await RegistroCaso.findById(idRegistro);
+
+  if (!registroCaso) {
+    throw new Error('Registro no encontrado');
+  }
+
+  // Mover al historial del cliente y detective
+  await Cliente.findByIdAndUpdate(registroCaso.idCliente, { 
+    $pull: { casos: idRegistro }, 
+    $push: { historialCasos: idRegistro } 
+  });
+  await Detective.findByIdAndUpdate(registroCaso.idDetective, { 
+    $pull: { casos: idRegistro }, 
+    $push: { historialCasos: idRegistro } 
+  });
+
+  // Guardar en el historial
+  const historialCaso = new HistorialCaso(registroCaso.toObject());
+  await historialCaso.save();
+
+  // Eliminar el registro de caso
+  await RegistroCaso.findByIdAndDelete(idRegistro);
+
+  return historialCaso;
 }
 
-// Función para obtener un registro de caso por ID
-async function obtenerRegistroCasoPorId(id) {
-    const registroCaso = await RegistroCaso.findById(id).populate('idCasos');
-
-    if (!registroCaso) {
-        throw new Error('Registro de caso no encontrado');
-    }
-    return registroCaso;
+// Listar todos los registros de casos
+async function listarRegistroCasos() {
+  return await RegistroCaso.find().populate('idCasos');
 }
 
-// Función para actualizar un registro de caso por ID
-async function actualizarRegistroCaso(id, body) {
-    const registroCaso = await RegistroCaso.findByIdAndUpdate(id, body, { new: true }).populate('idCasos');
+// Buscar un registro de caso por ID
+async function buscarRegistroCasoPorId(idRegistro) {
+  const registroCaso = await RegistroCaso.findById(idRegistro).populate('idCasos');
 
-    if (!registroCaso) {
-        throw new Error('Registro de caso no encontrado');
-    }
-    return registroCaso;
+  if (!registroCaso) {
+    throw new Error('Registro no encontrado');
+  }
+
+  return registroCaso;
 }
 
-// Función para eliminar un registro de caso por ID
-async function eliminarRegistroCaso(id) {
-    const registroCaso = await RegistroCaso.findByIdAndDelete(id);
+// Actualizar un registro de caso
+async function actualizarRegistroCaso(idRegistro, data) {
+  const registroActualizado = await RegistroCaso.findByIdAndUpdate(idRegistro, data, { new: true });
 
-    if (!registroCaso) {
-        throw new Error('Registro de caso no encontrado');
-    }
-    return { message: 'Registro de caso eliminado' };
+  if (!registroActualizado) {
+    throw new Error('Registro no encontrado para actualizar');
+  }
+
+  return registroActualizado;
+}
+
+// Desactivar un registro de caso
+async function desactivarRegistroCaso(idRegistro) {
+  const registroDesactivado = await RegistroCaso.findByIdAndUpdate(idRegistro, { estadoRegistro: 'Desactivado' }, { new: true });
+
+  if (!registroDesactivado) {
+    throw new Error('Registro no encontrado para desactivar');
+  }
+
+  return registroDesactivado;
 }
 
 module.exports = {
-    crearRegistroCaso,
-    obtenerRegistrosCasos,
-    obtenerRegistroCasoPorId,
-    actualizarRegistroCaso,
-    eliminarRegistroCaso,
+  crearRegistroCaso,
+  finalizarRegistroCaso,
+  listarRegistroCasos,
+  buscarRegistroCasoPorId,
+  actualizarRegistroCaso,
+  desactivarRegistroCaso,
 };

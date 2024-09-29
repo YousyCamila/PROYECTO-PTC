@@ -11,31 +11,78 @@ const clienteSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Caso'
     },
-    nombre: String
+    nombre: {
+      type: String,
+      required: true
+    }
   }],
   contratos: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Contrato'
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Contrato'
+    },
+    descripcion: {
+      type: String,
+      required: true
+    },
+    estado: {
+      type: String,
+      maxlength: 50,
+      required: true
+    }
   }],
   facturas: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Factura'
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Factura'
+    },
+    total: {
+      type: Number,
+      required: true
+    },
+    estado: {
+      type: String,
+      maxlength: 50,
+      required: true
+    }
   }],
   historials: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Historial'
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Historial'
+    },
+    fecha: {
+      type: Date,
+      required: true
+    },
+    detalle: {
+      type: String,
+      required: true
+    }
   }],
-  registroCaso:[{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'RegistroCaso'
+  registroCaso: [{
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'RegistroCaso'
+    },
+    descripcion: {
+      type: String,
+      required: true
+    },
+    estadoRegistro: {
+      type: String,
+      maxlength: 50,
+      required: true
+    }
   }],
-  activo: { type: Boolean, default: true },
-},
-  { timestamps: true });
+  activo: { 
+    type: Boolean, 
+    default: true 
+  }
+}, { timestamps: true });
 
-  clienteSchema.add(personaSchema);
+clienteSchema.add(personaSchema);
 
-// Crea el modelo de Administrador
-const Cliente = mongoose.model('Cliente', clienteSchema);
-  module.exports = Cliente;
-
+// Crea el modelo de Cliente
+const Cliente = mongoose.models.Cliente || mongoose.model('Cliente', clienteSchema);
+module.exports = Cliente;

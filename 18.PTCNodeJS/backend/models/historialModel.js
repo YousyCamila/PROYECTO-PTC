@@ -17,7 +17,14 @@ const historialSchema = new mongoose.Schema({
     ref: 'Cliente',
     required: true
   },
-},
-{timestamps: true});
+  idDetective: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Detective',
+    required: true
+  }
+}, 
+{ timestamps: true });
 
-module.exports = mongoose.model('Historial', historialSchema);
+const Historial = mongoose.models.Historial || mongoose.model('Historial', historialSchema);
+
+module.exports = Historial;

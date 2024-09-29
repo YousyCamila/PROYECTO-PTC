@@ -1,90 +1,74 @@
-const registroCasoLogic = require('../logic/registroCasoLogic');
-const { registroCasoSchemaValidation } = require('../validations/registroCasoValidations');
+const registroCasoService = require('../logic/registroCasoLogic');
 
-// Controlador para crear un nuevo registro de caso
+// Crear un nuevo registro de caso
 const crearRegistroCaso = async (req, res) => {
-    const body = req.body;
-    const { error, value } = registroCasoSchemaValidation.validate(body);
-
-    if (error) {
-        return res.status(400).json({ error: error.details[0].message });
-    }
-
-    try {
-        const nuevoRegistro = await registroCasoLogic.crearRegistroCaso(value);
-        res.status(201).json(nuevoRegistro);
-    } catch (err) {
-        res.status(500).json({ error: 'Error interno del servidor' });
-    }
+  try {
+    const registroCaso = await registroCasoService.crearRegistroCaso(req.body);
+    res.status(201).json(registroCaso);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al crear el registro de caso', error: error.message });
+  }
 };
 
-// Controlador para obtener todos los registros de caso
-const obtenerRegistrosCasos = async (req, res) => {
-    try {
-        const registros = await registroCasoLogic.obtenerRegistrosCasos();
-        if (registros.length === 0) {
-            return res.status(204).send(); // 204 No Content
-        }
-        res.json(registros);
-    } catch (err) {
-        res.status(500).json({ error: 'Error interno del servidor' });
-    }
+// Listar todos los registros de caso
+const listarRegistroCasos = async (req, res) => {
+  try {
+    const registrosCasos = await registroCasoService.listarRegistroCasos();
+    res.status(200).json(registrosCasos);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al listar los registros de caso', error });
+  }
 };
 
-// Controlador para obtener un registro de caso por ID
-const obtenerRegistroCasoPorId = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const registroCaso = await registroCasoLogic.obtenerRegistroCasoPorId(id);
-        res.json(registroCaso);
-    } catch (err) {
-        if (err.message === 'Registro de caso no encontrado') {
-            return res.status(404).json({ error: err.message });
-        }
-        res.status(500).json({ error: 'Error interno del servidor' });
-    }
+// Buscar registro de caso por ID
+const buscarRegistroCasoPorId = async (req, res) => {
+  try {
+    const registroCaso = await registroCasoService.buscarRegistroCasoPorId(req.params.id);
+    if (!registroCaso) return res.status(404).json({ message: 'Registro de caso no encontrado' });
+    res.status(200).json(registroCaso);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al buscar el registro de caso', error });
+  }
 };
 
-// Controlador para actualizar un registro de caso por ID
+// Actualizar un registro de caso
 const actualizarRegistroCaso = async (req, res) => {
-    const { id } = req.params;
-    const body = req.body;
-    const { error, value } = registroCasoSchemaValidation.validate(body);
-
-    if (error) {
-        return res.status(400).json({ error: error.details[0].message });
-    }
-
-    try {
-        const registroActualizado = await registroCasoLogic.actualizarRegistroCaso(id, value);
-        res.json(registroActualizado);
-    } catch (err) {
-        if (err.message === 'Registro de caso no encontrado') {
-            return res.status(404).json({ error: err.message });
-        }
-        res.status(500).json({ error: 'Error interno del servidor' });
-    }
+  try {
+    const registroCasoActualizado = await registroCasoService.actualizarRegistroCaso(req.params.id, req.body);
+    if (!registroCasoActualizado) return res.status(404).json({ message: 'Registro de caso no encontrado' });
+    res.status(200).json(registroCasoActualizado);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al actualizar el registro de caso', error });
+  }
 };
 
-// Controlador para eliminar un registro de caso por ID
-const eliminarRegistroCaso = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const resultado = await registroCasoLogic.eliminarRegistroCaso(id);
-        res.json(resultado);
-    } catch (err) {
-        if (err.message === 'Registro de caso no encontrado') {
-            return res.status(404).json({ error: err.message });
-        }
-        res.status(500).json({ error: 'Error interno del servidor' });
-    }
+// Desactivar un registro de caso
+const desactivarRegistroCaso = async (req, res) => {
+  try {
+    const registroCasoDesactivado = await registroCasoService.desactivarRegistroCaso(req.params.id);
+    if (!registroCasoDesactivado) return res.status(404).json({ message: 'Registro de caso no encontrado' });
+    res.status(200).json({ message: 'Registro de caso desactivado exitosamente', registroCaso: registroCasoDesactivado });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al desactivar el registro de caso', error });
+  }
 };
 
-// Exportar los controladores
+// Finalizar un registro de caso
+const finalizarRegistroCaso = async (req, res) => {
+  try {
+    const registroCasoFinalizado = await registroCasoService.finalizarRegistroCaso(req.params.id);
+    if (!registroCasoFinalizado) return res.status(404).json({ message: 'Registro de caso no encontrado' });
+    res.status(200).json({ message: 'Registro de caso finalizado exitosamente', registroCaso: registroCasoFinalizado });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al finalizar el registro de caso', error });
+  }
+};
+
 module.exports = {
-    crearRegistroCaso,
-    obtenerRegistrosCasos,
-    obtenerRegistroCasoPorId,
-    actualizarRegistroCaso,
-    eliminarRegistroCaso,
+  crearRegistroCaso,
+  listarRegistroCasos,
+  buscarRegistroCasoPorId,
+  actualizarRegistroCaso,
+  desactivarRegistroCaso,
+  finalizarRegistroCaso,
 };
