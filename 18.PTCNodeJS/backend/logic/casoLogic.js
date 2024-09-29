@@ -1,50 +1,94 @@
 const Caso = require('../models/casoModel');
+const Detective = require('../models/detectiveModel');
 
-// Función para crear un nuevo caso
-async function crearCaso(body) {
-    const caso = new Caso(body);
-    return await caso.save();
+async function crearCaso(datos) {
+  // Verificar que el nombre del caso esté permitido
+  const nombresPermitidos = [
+    'cadenaCustodia',
+    'investigacionExtorsion',
+    'estudiosSeguridad',
+    'investigacionInfidelidades',
+    'investigacionRobosEmpresariales',
+    'antecedentes',
+    'recuperacionVehiculos'
+  ];
+  
+  if (!nombresPermitidos.includes(datos.nombreCaso)) {
+    throw new Error(`El nombre del caso "${datos.nombreCaso}" no está permitido.`);
+  }
+
+  // Verificar si ya existe un caso para el mismo cliente y detective
+  const casoExistente = await Caso.findOne({
+    idCliente: datos.idCliente,
+    idDetective: datos.idDetective,
+    nombreCaso: datos.nombreCaso
+  });
+  
+  if (casoExistente) {
+    throw new Error(`Ya existe un caso con el nombre "${datos.nombreCaso}" para este cliente y detective.`);
+  }
+
+  // Crear el nuevo caso
+  const caso = new Caso(datos);
+  await caso.save();
+
+  // Actualizar el registro del cliente
+  await Cliente.findByIdAndUpdate(datos.idCliente, {
+    $push: { casos: { id: caso._id, nombre: caso.nombreCaso } } // Asumiendo que hay un campo 'casos' en el modelo Cliente
+  });
+
+  // Actualizar el registro del detective
+  await Detective.findByIdAndUpdate(datos.idDetective, {
+    $push: { casos: { id: caso._id, nombre: caso.nombreCaso } } // Asumiendo que hay un campo 'casos' en el modelo Detective
+  });
+
+  return caso;
 }
 
-// Función para obtener todos los casos
-async function obtenerCasos() {
-    return await Caso.find().populate('idCliente idDetective evidencias registroCasos');
+// Listar Casos
+async function listarCasos() {
+  const casos = await Caso.find().populate('idCliente idDetective evidencias registroCasos');
+  if (casos.length === 0) {
+    throw new Error('No hay casos registrados actualmente.');
+  }
+  return casos;
 }
 
-// Función para obtener un caso por ID
-async function obtenerCasoPorId(id) {
-    const caso = await Caso.findById(id).populate('idCliente idDetective evidencias registroCasos');
-
-    if (!caso) {
-        throw new Error('Caso no encontrado');
-    }
-    return caso;
+// Buscar Caso por ID
+async function buscarCasoPorId(id) {
+  const caso = await Caso.findById(id).populate('idCliente idDetective evidencias registroCasos');
+  if (!caso) {
+    throw new Error('Caso no encontrado');
+  }
+  return caso;
 }
 
-// Función para actualizar un caso por ID
-async function actualizarCaso(id, body) {
-    const caso = await Caso.findByIdAndUpdate(id, body, { new: true }).populate('idCliente idDetective evidencias registroCasos');
+// Actualizar Caso
+async function actualizarCaso(id, datos) {
+  const caso = await Caso.findById(id);
 
-    if (!caso) {
-        throw new Error('Caso no encontrado');
-    }
-    return caso;
+  if (!caso) {
+    throw new Error('El caso que intenta actualizar no existe.');
+  }
+
+  // Actualizar los datos del caso
+  Object.assign(caso, datos);
+  return await caso.save();
 }
 
-// Función para eliminar un caso por ID
-async function eliminarCaso(id) {
-    const caso = await Caso.findByIdAndDelete(id);
-
-    if (!caso) {
-        throw new Error('Caso no encontrado');
-    }
-    return { message: 'Caso eliminado' };
+// Desactivar Caso
+async function desactivarCaso(id) {
+  const casoDesactivado = await Caso.findByIdAndUpdate(id, { activo: false }, { new: true });
+  if (!casoDesactivado) {
+    throw new Error('Caso no encontrado');
+  }
+  return casoDesactivado;
 }
 
 module.exports = {
-    crearCaso,
-    obtenerCasos,
-    obtenerCasoPorId,
-    actualizarCaso,
-    eliminarCaso,
+  crearCaso,
+  listarCasos,
+  buscarCasoPorId,
+  actualizarCaso,
+  desactivarCaso,
 };

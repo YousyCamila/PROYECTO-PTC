@@ -41,16 +41,19 @@ const login = async (req, res) => {
   const { email, password, role } = req.body;
 
   try {
+    // Buscar al usuario por email y rol
     const user = await User.findOne({ email, role });
     if (!user) {
       return res.status(400).json({ error: 'Usuario, rol o contraseña incorrectos' });
     }
 
+    // Comparar la contraseña
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ error: 'Usuario, rol o contraseña incorrectos' });
     }
 
+    // Generar el token
     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.json({ token });
   } catch (error) {
@@ -58,5 +61,6 @@ const login = async (req, res) => {
     res.status(500).json({ error: 'Error al iniciar sesión' });
   }
 };
+
 
 module.exports = { register, login };

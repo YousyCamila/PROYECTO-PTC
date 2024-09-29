@@ -1,16 +1,21 @@
+
 const jwt = require('jsonwebtoken');
 
-function autenticar(req, res, next) {
-  const token = req.header('Authorization')?.replace('Bearer ', '');
-  if (!token) return res.status(403).send('Acceso denegado.');
+const autenticar = (req, res, next) => {
+  const token = req.headers['authorization']?.split(' ')[1]; // Suponiendo que el token se envía en el header Authorization
 
-  try {
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
-    req.usuario = verified; // Puedes acceder a los datos del usuario a través de req.usuario
-    next();
-  } catch (error) {
-    res.status(400).send('Token no válido.');
+  if (!token) {
+    return res.status(401).json({ message: 'No se proporcionó token.' });
   }
-}
+
+  jwt.verify(token, 'tu_clave_secreta', (err, decoded) => {
+    if (err) {
+      return res.status(403).json({ message: 'Token inválido.' });
+    }
+    req.usuario = decoded; // Asegúrate de que 'decoded' contenga la información del usuario
+    next();
+  });
+};
 
 module.exports = autenticar;
+

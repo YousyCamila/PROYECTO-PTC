@@ -3,54 +3,20 @@ const mongoose = require('mongoose');
 
 // Validaciones para el objeto Caso
 const casoSchemaValidation = Joi.object({
-  cadenaCustodia: Joi.string()
+  nombreCaso: Joi.string()
+    .valid(
+      'cadenaCustodia',
+      'investigacionExtorsion',
+      'estudiosSeguridad',
+      'investigacionInfidelidades',
+      'investigacionRobosEmpresariales',
+      'antecedentes',
+      'recuperacionVehiculos'
+    )
     .required()
     .messages({
-      'string.base': 'La cadena de custodia debe ser un texto',
-      'string.empty': 'La cadena de custodia no puede estar vacía',
-      'any.required': 'La cadena de custodia es un campo requerido',
-    }),
-
-  investigacionExtorsion: Joi.string()
-    .max(200)
-    .messages({
-      'string.base': 'La investigación de extorsión debe ser un texto',
-      'string.max': 'La investigación de extorsión no debe exceder los 200 caracteres',
-    }),
-
-  estudiosSeguridad: Joi.string()
-    .max(200)
-    .messages({
-      'string.base': 'Los estudios de seguridad deben ser un texto',
-      'string.max': 'Los estudios de seguridad no deben exceder los 200 caracteres',
-    }),
-
-  investigacionInfidelidades: Joi.string()
-    .max(200)
-    .messages({
-      'string.base': 'La investigación de infidelidades debe ser un texto',
-      'string.max': 'La investigación de infidelidades no debe exceder los 200 caracteres',
-    }),
-
-  investigacionRobosEmpresariales: Joi.string()
-    .max(200)
-    .messages({
-      'string.base': 'La investigación de robos empresariales debe ser un texto',
-      'string.max': 'La investigación de robos empresariales no debe exceder los 200 caracteres',
-    }),
-
-  antecedentes: Joi.string()
-    .max(200)
-    .messages({
-      'string.base': 'Los antecedentes deben ser un texto',
-      'string.max': 'Los antecedentes no deben exceder los 200 caracteres',
-    }),
-
-  recuperacionVehiculos: Joi.string()
-    .max(200)
-    .messages({
-      'string.base': 'La recuperación de vehículos debe ser un texto',
-      'string.max': 'La recuperación de vehículos no debe exceder los 200 caracteres',
+      'any.only': 'nombreCaso debe ser uno de los siguientes valores: cadenaCustodia, investigacionExtorsion, estudiosSeguridad, investigacionInfidelidades, investigacionRobosEmpresariales, antecedentes, recuperacionVehiculos',
+      'any.required': 'nombreCaso es un campo requerido',
     }),
 
   idCliente: Joi.string()

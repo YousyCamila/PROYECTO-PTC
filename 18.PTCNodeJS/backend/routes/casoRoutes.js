@@ -1,14 +1,25 @@
+// routes/casoRoutes.js
 const express = require('express');
 const router = express.Router();
-const registroCasoController = require('../controllers/registroCasoController');
+const casoController = require('../controllers/casoController');
+//const { validarAdministrador } = require('../middleware/validarAdministrador');
 
-// Crear un nuevo registro de caso
 /**
  * @swagger
- * /registros-casos:
+ * tags:
+ *   name: Casos
+ *   description: API para gestionar casos.
+ */
+
+
+/**
+ * @swagger
+ * /caso:
  *   post:
- *     summary: Crear un nuevo registro de caso
- *     tags: ["Registros Casos"]
+ *     summary: Crear un nuevo caso
+ *     tags: [Casos]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -16,82 +27,85 @@ const registroCasoController = require('../controllers/registroCasoController');
  *           schema:
  *             type: object
  *             properties:
- *               descripcion:
+ *               cadenaCustodia:
  *                 type: string
- *                 example: "Descripción del caso"
- *               idCasos:
+ *               idCliente:
  *                 type: string
- *                 example: "651edc5565bfc2a7f8e98345"
+ *               idDetective:
+ *                 type: string
+ *               nombreCaso:
+ *                 type: string
+ *               activo:
+ *                 type: boolean
+ *                 example: true
  *     responses:
  *       201:
- *         description: Registro de caso creado exitosamente
- *       400:
- *         description: Error en la solicitud
- */
-router.post('/', registroCasoController.crearRegistroCaso);
-
-// Obtener todos los registros de caso
-/**
- * @swagger
- * /registros-casos:
- *   get:
- *     summary: Listar todos los registros de caso
- *     tags: ["Registros Casos"]
- *     responses:
- *       200:
- *         description: Lista de registros de caso
+ *         description: Caso creado exitosamente.
  *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                     example: "651edc5565bfc2a7f8e98345"
- *                   descripcion:
- *                     type: string
- *                     example: "Descripción del caso"
+ *           
+ *       400:
+ *         description: Error en la solicitud.
+ *       500:
+ *         description: Error al crear el caso.
  */
-router.get('/', registroCasoController.obtenerRegistrosCasos);
+router.post('/', casoController.crearCaso);
 
-// Obtener un registro de caso por ID
 /**
  * @swagger
- * /registros-casos/{id}:
+ * /caso:
  *   get:
- *     summary: Obtener un registro de caso por ID
- *     tags: ["Registros Casos"]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: Identificador único del registro de caso.
+ *     summary: Listar todos los casos
+ *     tags: [Casos]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Registro de caso encontrado
- *       404:
- *         description: Registro de caso no encontrado
+ *         description: Lista de casos.
+ *       500:
+ *         description: Error al listar los casos.
  */
-router.get('/:id', registroCasoController.obtenerRegistroCasoPorId);
+router.get('/', casoController.listarCasos);
 
-// Actualizar un registro de caso por ID
 /**
  * @swagger
- * /registros-casos/{id}:
- *   put:
- *     summary: Actualizar un registro de caso por ID
- *     tags: ["Registros Casos"]
+ * /caso/{id}:
+ *   get:
+ *     summary: Buscar un caso por ID
+ *     tags: [Casos]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
+ *         description: ID del caso a buscar.
  *         schema:
  *           type: string
- *         description: Identificador único del registro de caso.
+ *     responses:
+ *       200:
+ *         description: Caso encontrado.
+ *       404:
+ *         description: Caso no encontrado.
+ *       500:
+ *         description: Error al buscar el caso.
+ */
+router.get('/:id', casoController.buscarCasoPorId);
+
+/**
+ * @swagger
+ * /caso/{id}:
+ *   put:
+ *     summary: Actualizar un caso por ID
+ *     tags: [Casos]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del caso a actualizar.
+ *         schema:
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -99,38 +113,53 @@ router.get('/:id', registroCasoController.obtenerRegistroCasoPorId);
  *           schema:
  *             type: object
  *             properties:
- *               descripcion:
+ *               cadenaCustodia:
  *                 type: string
- *               idCasos:
+ *               investigacionExtorsion:
+ *                 type: string
+ *               estudiosSeguridad:
+ *                 type: string
+ *               investigacionInfidelidades:
+ *                 type: string
+ *               investigacionRobosEmpresariales:
+ *                 type: string
+ *               antecedentes:
+ *                 type: string
+ *               recuperacionVehiculos:
  *                 type: string
  *     responses:
  *       200:
- *         description: Registro de caso actualizado exitosamente
+ *         description: Caso actualizado exitosamente.
  *       404:
- *         description: Registro de caso no encontrado
+ *         description: Caso no encontrado.
+ *       500:
+ *         description: Error al actualizar el caso.
  */
-router.put('/:id', registroCasoController.actualizarRegistroCaso);
+router.put('/:id', casoController.actualizarCaso);
 
-// Eliminar un registro de caso por ID
 /**
  * @swagger
- * /registros-casos/{id}:
+ * /caso/{id}:
  *   delete:
- *     summary: Eliminar un registro de caso por ID
- *     tags: ["Registros Casos"]
+ *     summary: Desactivar un caso por ID
+ *     tags: [Casos]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
+ *         description: ID del caso a desactivar.
  *         schema:
  *           type: string
- *         description: Identificador único del registro de caso.
  *     responses:
  *       200:
- *         description: Registro de caso eliminado exitosamente
+ *         description: Caso desactivado exitosamente.
  *       404:
- *         description: Registro de caso no encontrado
+ *         description: Caso no encontrado.
+ *       500:
+ *         description: Error al desactivar el caso.
  */
-router.delete('/:id', registroCasoController.eliminarRegistroCaso);
+router.delete('/:id', casoController.desactivarCaso);
 
 module.exports = router;

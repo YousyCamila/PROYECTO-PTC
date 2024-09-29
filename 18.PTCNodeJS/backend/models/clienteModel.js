@@ -7,8 +7,11 @@ const clienteSchema = new mongoose.Schema({
     maxlength: 255
   },
   casos: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Caso'
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Caso'
+    },
+    nombre: String
   }],
   contratos: [{
     type: mongoose.Schema.Types.ObjectId,

@@ -7,6 +7,13 @@ const DetectiveSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  casos: [{
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Caso'
+    },
+    nombre: String
+  }],
   activo: { type: Boolean, default: true },
 },
 {timestamps: true});

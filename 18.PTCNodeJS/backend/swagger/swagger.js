@@ -33,6 +33,10 @@ const swaggerDefinition = {
       description: 'Operaciones relacionadas con los contratos',
     },
     {
+      name: 'Casos',
+      description: 'Operaciones relacionadas con los casos',
+    },
+    {
       name: 'Detectives',
       description: 'Operaciones relacionadas con los detectives',
     },
@@ -77,6 +81,15 @@ const swaggerDefinition = {
       description: 'Operaciones relacionadas con los usuarios',
     },
   ],
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+    },
+  },
 };
 
 const options = {

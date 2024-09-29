@@ -17,7 +17,7 @@ const evidenciaRoutes = require('./routes/evidenciaRoutes');
 const facturaRoutes = require('./routes/facturaRoutes');
 const formularioRoutes = require('./routes/formularioRoutes');
 const historialRoutes = require('./routes/historialRoutes');
-
+const casoRoutes = require ('./routes/casoRoutes');
 const registroCasoRoutes = require('./routes/registroCasoRoutes');
 const registroMantenimientoRoutes = require('./routes/registroMantenimientoRoutes');
 const rolRoutes = require('./routes/rolRoutes');
@@ -54,7 +54,7 @@ app.use('/api/evidencias', evidenciaRoutes);
 app.use('/api/facturas', facturaRoutes);
 app.use('/api/formularios', formularioRoutes);
 app.use('/api/historiales', historialRoutes);
-
+app.use('/api/caso', casoRoutes);
 app.use('/api/registros-caso', registroCasoRoutes);
 app.use('/api/registros-mantenimiento', registroMantenimientoRoutes);
 app.use('/api/roles', rolRoutes);
