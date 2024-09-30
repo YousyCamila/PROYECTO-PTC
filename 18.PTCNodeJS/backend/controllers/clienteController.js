@@ -37,9 +37,9 @@ const actualizarCliente = async (req, res) => {
   }
 };
 
-const eliminarCliente = async (req, res) => {
+const desactivarCliente = async (req, res) => {
   try {
-    const clienteEliminado = await clienteService.eliminarCliente(req.params.id);
+    await clienteService.desactivarCliente(req.params.id); // Llama a la función de desactivación
     res.status(200).json({ message: "Cliente desactivado correctamente" });
   } catch (error) {
     res.status(404).json({ error: error.message });
@@ -51,5 +51,5 @@ module.exports = {
   listarClientes,
   buscarClientePorCorreo,
   actualizarCliente,
-  eliminarCliente
+  desactivarCliente,
 };

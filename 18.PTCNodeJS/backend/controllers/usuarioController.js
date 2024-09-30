@@ -7,10 +7,16 @@ const register = async (req, res) => {
   const { username, email, password, role } = req.body;
 
   try {
-    // Verificar si el usuario o el correo ya existen
+    // Verificar si el correo ya existe
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ error: 'El usuario o el correo ya existen' });
+      return res.status(400).json({ error: 'El correo ya está registrado.' });
+    }
+
+    // Verificar si el nombre de usuario ya existe
+    const existingUsername = await User.findOne({ username });
+    if (existingUsername) {
+      return res.status(400).json({ error: 'El nombre de usuario ya está en uso.' });
     }
 
     // Hashear la contraseña
@@ -29,12 +35,13 @@ const register = async (req, res) => {
     // Generar el token JWT
     const token = jwt.sign({ id: newUser._id, role: newUser.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    res.status(201).json({ token });
+    res.status(201).json({ token, message: 'Usuario registrado con éxito' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al registrar el usuario' });
   }
 };
+
 
 // Login de usuario
 const login = async (req, res) => {
