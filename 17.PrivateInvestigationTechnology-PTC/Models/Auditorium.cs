@@ -8,8 +8,8 @@ namespace _17.PrivateInvestigationTechnology_PTC.Models
 
         public string Descripcion { get; set; }
 
-        // Nueva relación con IdentityUser
-        public string IdentityUserId { get; set; } // Foreign key a IdentityUser
-        public IdentityUser IdentityUser { get; set; } // Propiedad de navegación hacia IdentityUser
+        // Relación con ApplicationUser
+        public string IdentityUserId { get; set; } // Foreign key a ApplicationUser
+        public ApplicationUser IdentityUser { get; set; } // Propiedad de navegación hacia ApplicationUser
     }
 }

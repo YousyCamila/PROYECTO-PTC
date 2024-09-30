@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace _17.PrivateInvestigationTechnology_PTC.Models
@@ -8,17 +7,9 @@ namespace _17.PrivateInvestigationTechnology_PTC.Models
     {
         public int Id { get; set; }
 
-        public string Nombre { get; set; } = null!;  // Este campo es obligatorio
-
-        // Número de identidad opcional
-        public string? NumeroIdentidad { get; set; }
-
-        // Número de celular opcional
-        public string? NumeroCelular { get; set; }
-
-        // Relación opcional con IdentityUser
-        public string? IdentityUserId { get; set; } // FK a IdentityUser
-        public IdentityUser? IdentityUser { get; set; } // Relación opcional hacia IdentityUser
+        // Relación opcional con ApplicationUser
+        public string? IdentityUserId { get; set; } // FK a ApplicationUser
+        public ApplicationUser? IdentityUser { get; set; } // Relación opcional hacia ApplicationUser
 
         // Relaciones opcionales con otras entidades
         public virtual ICollection<Caso> Casos { get; set; } = new List<Caso>();

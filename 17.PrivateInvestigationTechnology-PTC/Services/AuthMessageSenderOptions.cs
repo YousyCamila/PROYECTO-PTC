@@ -1,4 +1,4 @@
-﻿namespace _17.PrivateInvestigationTechnology_PTC.Models.Services
+﻿namespace _17.PrivateInvestigationTechnology_PTC.Services
 {
     public class AuthMessageSenderOptions
     {

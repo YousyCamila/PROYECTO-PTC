@@ -2,11 +2,10 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using _17.PrivateInvestigationTechnology_PTC.Models;
-using _17.PrivateInvestigationTechnology_PTC.Models.ViewModels;
 
 namespace _17.PrivateInvestigationTechnology_PTC.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -33,70 +32,68 @@ namespace _17.PrivateInvestigationTechnology_PTC.Data
             // Llamar al OnModelCreating de IdentityDbContext para configurar las tablas de ASP.NET Identity
             base.OnModelCreating(builder);
 
-            // Configuración para la entidad Auditorium, relacionada con IdentityUser
+            // Configuración para ApplicationUser (Personalizado)
+            builder.Entity<ApplicationUser>(entity =>
+            {
+                entity.ToTable("AspNetUsers");
+                entity.Property(e => e.FullName).HasMaxLength(256);
+                entity.Property(e => e.Sexo).HasMaxLength(10);
+            });
+
+            // Configuración para la entidad Auditorium, relacionada con ApplicationUser
             builder.Entity<Auditorium>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("PK_Auditorium");
                 entity.Property(e => e.Descripcion).HasMaxLength(255);
 
-                // Relacionar Auditorium con IdentityUser
+                // Relacionar Auditorium con ApplicationUser
                 entity.HasOne(a => a.IdentityUser)
                     .WithMany()
                     .HasForeignKey(a => a.IdentityUserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Auditorium_IdentityUser");
+                    .HasConstraintName("FK_Auditorium_ApplicationUser");
             });
 
             // Configuración para la entidad Administrador
             builder.Entity<Administrador>(entity =>
             {
-                entity.Property(e => e.Nombre).HasMaxLength(100);
-
-                // Hacer opcional el número de identidad y el número de celular
+                entity.HasKey(a => a.Id);
                 entity.Property(e => e.NumeroIdentidad).IsRequired(false);
-                entity.Property(e => e.NumeroCelular).IsRequired(false);
                 entity.Property(e => e.HojaDeVida).IsRequired(false);
+                entity.Property(e => e.FotoPerfil).IsRequired(false);
 
-                // Relación opcional con IdentityUser
-                entity.HasOne(d => d.IdentityUser)
-                      .WithOne()
-                      .HasForeignKey<Administrador>(d => d.IdentityUserId)
-                      .IsRequired(false); // Relación opcional
+                // Relación opcional con ApplicationUser
+                entity.HasOne(a => a.IdentityUser)
+                    .WithOne()
+                    .HasForeignKey<Administrador>(a => a.IdentityUserId)
+                    .IsRequired(false);
             });
 
             // Configuración para la entidad Cliente
             builder.Entity<Cliente>(entity =>
             {
-                entity.Property(e => e.Nombre).HasMaxLength(100);
+                entity.HasKey(c => c.Id);
 
-                // Hacer opcional el número de identidad y el número de celular
-                entity.Property(e => e.NumeroIdentidad).IsRequired(false);
-                entity.Property(e => e.NumeroCelular).IsRequired(false);
-
-                // Relación opcional con IdentityUser
-                entity.HasOne(d => d.IdentityUser)
-                      .WithOne()
-                      .HasForeignKey<Cliente>(d => d.IdentityUserId)
-                      .IsRequired(false); // Relación opcional
+                // Relación opcional con ApplicationUser
+                entity.HasOne(c => c.IdentityUser)
+                    .WithOne()
+                    .HasForeignKey<Cliente>(c => c.IdentityUserId)
+                    .IsRequired(false);
             });
 
             // Configuración para la entidad Detective
             builder.Entity<Detective>(entity =>
             {
-                // Configurar la propiedad Nombre con una longitud máxima
-                entity.Property(e => e.Nombre).HasMaxLength(100);
-
-                // Hacer opcional el número de identidad y el número de celular
+                entity.HasKey(d => d.Id);
                 entity.Property(e => e.NumeroIdentidad).IsRequired(false);
-                entity.Property(e => e.NumeroCelular).IsRequired(false);
-                entity.Property(e => e.FechaNacimiento).IsRequired(false);
                 entity.Property(e => e.HojaDeVida).IsRequired(false);
+                entity.Property(e => e.FotoPerfil).IsRequired(false);
 
-                // Relación uno a uno con IdentityUser
+                // Relación opcional con ApplicationUser
                 entity.HasOne(d => d.IdentityUser)
-                      .WithOne()
-                      .HasForeignKey<Detective>(d => d.IdentityUserId)
-                      .IsRequired(false); // Relación opcional
+                    .WithOne()
+                    .HasForeignKey<Detective>(d => d.IdentityUserId)
+                    .IsRequired(false);
             });
 
             // Configuración para Caso
@@ -109,6 +106,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Data
                     .HasForeignKey(d => d.IdCliente)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Caso_Cliente");
+
                 entity.HasOne(d => d.IdDetectiveNavigation)
                     .WithMany(p => p.Casos)
                     .HasForeignKey(d => d.IdDetective)
@@ -126,6 +124,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Data
                     .HasForeignKey(d => d.IdCliente)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Contrato_Cliente");
+
                 entity.HasOne(d => d.IdDetectiveNavigation)
                     .WithMany(p => p.Contratos)
                     .HasForeignKey(d => d.IdDetective)

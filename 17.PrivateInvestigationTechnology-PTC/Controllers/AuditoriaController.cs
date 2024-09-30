@@ -11,9 +11,9 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
     public class AuditoriaController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;  // UserManager para manejar los usuarios de Identity
+        private readonly UserManager<ApplicationUser> _userManager;  // UserManager para manejar los usuarios de Identity
 
-        public AuditoriaController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public AuditoriaController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;

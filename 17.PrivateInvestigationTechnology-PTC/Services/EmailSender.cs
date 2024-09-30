@@ -4,8 +4,6 @@ using Microsoft.Extensions.Options;
 using SendGrid.Helpers.Mail;
 using SendGrid; 
 
-using _17.PrivateInvestigationTechnology_PTC.Models.Services;
-
 namespace _17.PrivateInvestigationTechnology_PTC.Services
 {
     public class EmailSender : IEmailSender

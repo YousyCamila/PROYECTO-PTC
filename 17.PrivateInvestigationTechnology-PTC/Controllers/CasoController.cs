@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using _17.PrivateInvestigationTechnology_PTC.Data;
 using _17.PrivateInvestigationTechnology_PTC.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 {
@@ -22,22 +19,28 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // GET: Caso
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Casos.Include(c => c.IdClienteNavigation).Include(c => c.IdDetectiveNavigation);
-            return View(await applicationDbContext.ToListAsync());
+            // Incluir Cliente y Detective (ApplicationUser) en la consulta
+            var casos = await _context.Casos
+                .Include(c => c.IdClienteNavigation).ThenInclude(c => c.IdentityUser)
+                .Include(c => c.IdDetectiveNavigation).ThenInclude(d => d.IdentityUser)
+                .ToListAsync();
+
+            return View(casos);
         }
 
         // GET: Caso/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Casos == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var caso = await _context.Casos
-                .Include(c => c.IdClienteNavigation)
-                .Include(c => c.IdDetectiveNavigation)
+                .Include(c => c.IdClienteNavigation).ThenInclude(c => c.IdentityUser)
+                .Include(c => c.IdDetectiveNavigation).ThenInclude(d => d.IdentityUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (caso == null)
             {
                 return NotFound();
@@ -49,17 +52,16 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // GET: Caso/Create
         public IActionResult Create()
         {
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id");
-            ViewData["IdDetective"] = new SelectList(_context.Detectives, "Id", "Id");
+            // Cargar las listas de clientes y detectives (ApplicationUser)
+            ViewData["Clientes"] = _context.Clientes.Include(c => c.IdentityUser).ToList();
+            ViewData["Detectives"] = _context.Detectives.Include(d => d.IdentityUser).ToList();
             return View();
         }
 
         // POST: Caso/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IdCliente,IdDetective,Descripcion")] Caso caso)
+        public async Task<IActionResult> Create([Bind("Descripcion,IdCliente,IdDetective")] Caso caso)
         {
             if (ModelState.IsValid)
             {
@@ -67,15 +69,17 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id", caso.IdCliente);
-            ViewData["IdDetective"] = new SelectList(_context.Detectives, "Id", "Id", caso.IdDetective);
+
+            // Si ocurre un error, cargar nuevamente las listas de clientes y detectives
+            ViewData["Clientes"] = _context.Clientes.Include(c => c.IdentityUser).ToList();
+            ViewData["Detectives"] = _context.Detectives.Include(d => d.IdentityUser).ToList();
             return View(caso);
         }
 
         // GET: Caso/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Casos == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -85,17 +89,18 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id", caso.IdCliente);
-            ViewData["IdDetective"] = new SelectList(_context.Detectives, "Id", "Id", caso.IdDetective);
+
+            // Cargar las listas de clientes y detectives (ApplicationUser)
+            ViewData["Clientes"] = _context.Clientes.Include(c => c.IdentityUser).ToList();
+            ViewData["Detectives"] = _context.Detectives.Include(d => d.IdentityUser).ToList();
+
             return View(caso);
         }
 
         // POST: Caso/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,IdCliente,IdDetective,Descripcion")] Caso caso)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Descripcion,IdCliente,IdDetective")] Caso caso)
         {
             if (id != caso.Id)
             {
@@ -122,23 +127,26 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id", caso.IdCliente);
-            ViewData["IdDetective"] = new SelectList(_context.Detectives, "Id", "Id", caso.IdDetective);
+
+            // Si ocurre un error, cargar nuevamente las listas de clientes y detectives
+            ViewData["Clientes"] = _context.Clientes.Include(c => c.IdentityUser).ToList();
+            ViewData["Detectives"] = _context.Detectives.Include(d => d.IdentityUser).ToList();
             return View(caso);
         }
 
         // GET: Caso/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Casos == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var caso = await _context.Casos
-                .Include(c => c.IdClienteNavigation)
-                .Include(c => c.IdDetectiveNavigation)
+                .Include(c => c.IdClienteNavigation).ThenInclude(c => c.IdentityUser)
+                .Include(c => c.IdDetectiveNavigation).ThenInclude(d => d.IdentityUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (caso == null)
             {
                 return NotFound();
@@ -152,23 +160,18 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Casos == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Casos'  is null.");
-            }
             var caso = await _context.Casos.FindAsync(id);
             if (caso != null)
             {
                 _context.Casos.Remove(caso);
+                await _context.SaveChangesAsync();
             }
-            
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CasoExists(int id)
         {
-          return (_context.Casos?.Any(e => e.Id == id)).GetValueOrDefault();
+            return _context.Casos.Any(e => e.Id == id);
         }
     }
 }
