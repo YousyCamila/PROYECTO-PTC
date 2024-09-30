@@ -1,23 +1,53 @@
+const personaSchema = require('./personaModel');
 const mongoose = require('mongoose');
 
-const detectiveSchema = new mongoose.Schema({
+const DetectiveSchema = new mongoose.Schema({
   especialidad: {
     type: String,
-    maxlength: 100
-  },
-  idPersona: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Persona',
     required: true
   },
   casos: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Caso'
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Caso'
+    },
+    nombre: {
+      type: String,
+      required: true
+    },
+    descripcion: {
+      type: String,
+      required: true
+    },
+    estado: {
+      type: String,
+      maxlength: 50,
+      required: true
+    }
   }],
-  contratos: [{
+  historialCasos: [{
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'HistorialCaso'
+    },
+    fecha: {
+      type: Date,
+      required: true
+    },
+    detalle: {
+      type: String,
+      required: true
+    }
+  }],
+  contratos: [{ // Este campo ya está presente
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Contrato'
-  }]
-});
+  }],
+  activo: { type: Boolean, default: true },
+}, { timestamps: true });
 
-module.exports = mongoose.model('Detective', detectiveSchema);
+DetectiveSchema.add(personaSchema);
+
+// Crea el modelo de Detective
+const Detective = mongoose.model('Detective', DetectiveSchema);
+module.exports = Detective;

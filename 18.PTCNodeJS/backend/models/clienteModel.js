@@ -1,35 +1,88 @@
 const mongoose = require('mongoose');
+const personaSchema = require('./personaModel');
 
 const clienteSchema = new mongoose.Schema({
   direccion: {
     type: String,
     maxlength: 255
   },
-  idPersona: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Persona',
-    required: true
-  },
   casos: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Caso'
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Caso'
+    },
+    nombre: {
+      type: String,
+      required: true
+    }
   }],
   contratos: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Contrato'
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Contrato'
+    },
+    descripcionServicio: {
+      type: String,
+      required: true
+    },
+    estado: {
+      type: String,
+      maxlength: 50,
+      required: true
+    }
   }],
   facturas: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Factura'
-  }],
-  formularios: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Formulario'
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Factura'
+    },
+    total: {
+      type: Number,
+      required: true
+    },
+    estado: {
+      type: String,
+      maxlength: 50,
+      required: true
+    }
   }],
   historials: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Historial'
-  }]
-});
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Historial'
+    },
+    fecha: {
+      type: Date,
+      required: true
+    },
+    detalle: {
+      type: String,
+      required: true
+    }
+  }],
+  registroCaso: [{
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'RegistroCaso'
+    },
+    descripcion: {
+      type: String,
+      required: true
+    },
+    estadoRegistro: {
+      type: String,
+      maxlength: 50,
+      required: true
+    }
+  }],
+  activo: { 
+    type: Boolean, 
+    default: true 
+  }
+}, { timestamps: true });
 
-module.exports = mongoose.model('Cliente', clienteSchema);
+clienteSchema.add(personaSchema);
+
+// Crea el modelo de Cliente
+const Cliente = mongoose.models.Cliente || mongoose.model('Cliente', clienteSchema);
+module.exports = Cliente;
