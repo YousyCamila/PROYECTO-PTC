@@ -1,14 +1,15 @@
+// routes/facturaRoutes.js
 const express = require('express');
-const router = express.Router();
 const facturaController = require('../controllers/facturaController');
 
-// Crear una nueva factura
+const router = express.Router();
+
 /**
  * @swagger
  * /facturas:
  *   post:
- *     summary: Crear una nueva factura
- *     tags: ["Facturas"]
+ *     summary: Crea una nueva factura
+ *     tags: [Facturas]
  *     requestBody:
  *       required: true
  *       content:
@@ -16,93 +17,92 @@ const facturaController = require('../controllers/facturaController');
  *           schema:
  *             type: object
  *             properties:
- *               clienteId:
- *                 type: string
- *                 example: "651edc5565bfc2a7f8e98345"
- *               fecha:
+ *               fechaEmision:
  *                 type: string
  *                 format: date
- *                 example: "2024-09-01"
- *               montoTotal:
+ *               estadoPago:
+ *                 type: string
+ *               descripcionServicio:
+ *                 type: string
+ *               totalPagar:
  *                 type: number
- *                 example: 1500.00
+ *               idCliente:
+ *                 type: string
+ *                 format: objectId
  *     responses:
  *       201:
  *         description: Factura creada exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                 factura:
+ *                   type: object
  *       400:
- *         description: Error en la solicitud
+ *         description: Error al crear la factura
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
  */
 router.post('/', facturaController.crearFactura);
 
-// Obtener todas las facturas
 /**
  * @swagger
  * /facturas:
  *   get:
  *     summary: Listar todas las facturas
- *     tags: ["Facturas"]
+ *     tags: [Factura]
  *     responses:
  *       200:
  *         description: Lista de facturas
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                     example: "651edc5565bfc2a7f8e98345"
- *                   clienteId:
- *                     type: string
- *                     example: "651edc5565bfc2a7f8e98345"
- *                   fecha:
- *                     type: string
- *                     format: date
- *                     example: "2024-09-01"
- *                   montoTotal:
- *                     type: number
- *                     example: 1500.00
+ *       400:
+ *         description: No se encontraron facturas
  */
 router.get('/', facturaController.listarFacturas);
 
-// Obtener una factura por ID
 /**
  * @swagger
  * /facturas/{id}:
  *   get:
- *     summary: Obtener una factura por ID
- *     tags: ["Facturas"]
+ *     summary: Buscar factura por ID
+ *     tags: [Factura]
  *     parameters:
- *       - in: path
- *         name: id
+ *       - name: id
+ *         in: path
  *         required: true
+ *         description: ID de la factura
  *         schema:
  *           type: string
- *         description: Identificador único de la factura.
+ *           format: objectId
  *     responses:
  *       200:
- *         description: Factura encontrada
+ *         description: Detalles de la factura
  *       404:
  *         description: Factura no encontrada
  */
-router.get('/:id', facturaController.obtenerFacturaPorId);
+router.get('/:id', facturaController.buscarFacturaPorId);
 
-// Actualizar una factura por ID
 /**
  * @swagger
  * /facturas/{id}:
  *   put:
- *     summary: Actualizar una factura por ID
- *     tags: ["Facturas"]
+ *     summary: Actualizar una factura existente
+ *     tags: [Factura]
  *     parameters:
- *       - in: path
- *         name: id
+ *       - name: id
+ *         in: path
  *         required: true
+ *         description: ID de la factura
  *         schema:
  *           type: string
- *         description: Identificador único de la factura.
+ *           format: objectId
  *     requestBody:
  *       required: true
  *       content:
@@ -110,39 +110,51 @@ router.get('/:id', facturaController.obtenerFacturaPorId);
  *           schema:
  *             type: object
  *             properties:
- *               fecha:
+ *               fechaEmision:
  *                 type: string
  *                 format: date
- *               montoTotal:
+ *               estadoPago:
+ *                 type: string
+ *                 maxLength: 50
+ *               descripcionServicio:
+ *                 type: string
+ *                 maxLength: 255
+ *               totalPagar:
  *                 type: number
+ *                 format: decimal
+ *               idCliente:
+ *                 type: string
+ *                 format: objectId
  *     responses:
  *       200:
  *         description: Factura actualizada exitosamente
+ *       400:
+ *         description: Error de validación
  *       404:
  *         description: Factura no encontrada
  */
 router.put('/:id', facturaController.actualizarFactura);
 
-// Eliminar una factura por ID
 /**
  * @swagger
- * /facturas/{id}:
- *   delete:
- *     summary: Eliminar una factura por ID
- *     tags: ["Facturas"]
+ * /facturas/{id}/desactivar:
+ *   patch:
+ *     summary: Desactivar una factura
+ *     tags: [Factura]
  *     parameters:
- *       - in: path
- *         name: id
+ *       - name: id
+ *         in: path
  *         required: true
+ *         description: ID de la factura
  *         schema:
  *           type: string
- *         description: Identificador único de la factura.
+ *           format: objectId
  *     responses:
  *       200:
- *         description: Factura eliminada exitosamente
- *       404:
- *         description: Factura no encontrada
+ *         description: Factura desactivada exitosamente
+ *       400:
+ *         description: Error al desactivar la factura
  */
-router.delete('/:id', facturaController.eliminarFactura);
+router.patch('/:id/desactivar', facturaController.desactivarFactura);
 
 module.exports = router;

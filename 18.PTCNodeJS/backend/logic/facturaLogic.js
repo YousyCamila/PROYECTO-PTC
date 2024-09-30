@@ -1,61 +1,63 @@
+// services/facturaService.js
 const Factura = require('../models/facturaModel');
-const Cliente = require('../models/clienteModel'); // Asegúrate de importar el modelo de Cliente si es necesario
+const Cliente = require('../models/clienteModel'); // Asegúrate de tener el modelo de Cliente importado
 
-// Función para crear una nueva factura
-async function crearFactura(body) {
-    // Verificar si ya existe una factura para el mismo cliente con la misma fecha de emisión
-    const facturaExistente = await Factura.findOne({ 
-        fechaEmision: body.fechaEmision, 
-        idCliente: body.idCliente 
-    });
-
-    if (facturaExistente) {
-        throw new Error('Ya existe una factura para el cliente en la fecha de emisión especificada.');
-    }
-
-    const factura = new Factura(body);
-    return await factura.save();
+async function crearFactura(datos) {
+    const factura = new Factura(datos);
+    
+    // Guardar la factura en la base de datos
+    await factura.save();
+  
+    // Actualizar la factura en el cliente relacionado
+    await Cliente.findByIdAndUpdate(
+      factura.idCliente,
+      {
+        $push: { facturas: { estado: factura.estadoPago, total: factura.totalPagar } } // Agrega la nueva factura
+      },
+      { new: true }
+    );
+  
+    return factura; // Retorna la factura creada
+  }
+// Otras funciones no cambiaron
+async function listarFacturas() {
+  const facturas = await Factura.find();
+  if (facturas.length === 0) {
+    throw new Error('No hay facturas registradas actualmente.');
+  }
+  return facturas;
 }
 
-// Función para obtener todas las facturas
-async function obtenerFacturas() {
-    return await Factura.find().populate('idCliente');
+async function buscarFacturaPorId(id) {
+  const factura = await Factura.findById(id);
+  if (!factura) {
+    throw new Error(`No se encontró la factura con ID: ${id}`);
+  }
+  return factura;
 }
 
-// Función para obtener una factura por ID
-async function obtenerFacturaPorId(id) {
-    const factura = await Factura.findById(id).populate('idCliente');
-
-    if (!factura) {
-        throw new Error('Factura no encontrada');
-    }
-    return factura;
+async function actualizarFactura(id, datos) {
+  const factura = await Factura.findById(id);
+  if (!factura) {
+    throw new Error('La factura que intenta actualizar no existe.');
+  }
+  Object.assign(factura, datos);
+  return await factura.save();
 }
 
-// Función para actualizar una factura por ID
-async function actualizarFactura(id, body) {
-    const factura = await Factura.findByIdAndUpdate(id, body, { new: true }).populate('idCliente');
-
-    if (!factura) {
-        throw new Error('Factura no encontrada');
-    }
-    return factura;
-}
-
-// Función para eliminar una factura por ID
-async function eliminarFactura(id) {
-    const factura = await Factura.findByIdAndDelete(id);
-
-    if (!factura) {
-        throw new Error('Factura no encontrada');
-    }
-    return { message: 'Factura eliminada' };
+async function desactivarFactura(id) {
+  const factura = await Factura.findById(id);
+  if (!factura) {
+    throw new Error('La factura que intenta desactivar no existe.');
+  }
+  factura.estadoPago = 'Desactivada'; // Cambia el estado de pago
+  return await factura.save();
 }
 
 module.exports = {
-    crearFactura,
-    obtenerFacturas,
-    obtenerFacturaPorId,
-    actualizarFactura,
-    eliminarFactura,
+  crearFactura,
+  listarFacturas,
+  buscarFacturaPorId,
+  actualizarFactura,
+  desactivarFactura,
 };
