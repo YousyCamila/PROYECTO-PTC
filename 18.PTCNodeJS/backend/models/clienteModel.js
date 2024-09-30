@@ -21,7 +21,7 @@ const clienteSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Contrato'
     },
-    descripcion: {
+    descripcionServicio: {
       type: String,
       required: true
     },
