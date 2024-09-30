@@ -1,62 +1,85 @@
 const Evidencia = require('../models/evidenciaModel');
-const Caso = require('../models/casoModel'); // Asegúrate de importar el modelo de Caso si es necesario
 
-// Función para crear una nueva evidencia
-async function crearEvidencia(body) {
-    // Verificar si ya existe evidencia en el mismo caso con la misma descripción y fecha
-    const evidenciaExistente = await Evidencia.findOne({ 
-        idCasos: body.idCasos, 
-        descripcion: body.descripcion, 
-        fechaEvidencia: body.fechaEvidencia 
-    });
+// Lista de tipos de evidencia permitidos
+const tiposEvidenciaPermitidos = [
+  'tipoDocumento', 
+  'tipoFotografia', 
+  'tipoVideo', 
+  'tipoAudio', 
+  'archivosDigitales'
+];
 
-    if (evidenciaExistente) {
-        throw new Error('Ya existe una evidencia con la misma descripción y fecha para el caso especificado.');
-    }
+// Función para validar tipos de evidencia
+function validarTiposEvidencia(tiposEvidenciaRecibidos) {
+  const tiposEvidenciaComoArreglo = Array.isArray(tiposEvidenciaRecibidos) 
+    ? tiposEvidenciaRecibidos 
+    : [tiposEvidenciaRecibidos];
 
-    const evidencia = new Evidencia(body);
-    return await evidencia.save();
+  const tiposNoPermitidos = tiposEvidenciaComoArreglo.filter(tipo => !tiposEvidenciaPermitidos.includes(tipo));
+
+  if (tiposNoPermitidos.length > 0) {
+    throw new Error(`Tipo(s) de evidencia no válido(s): ${tiposNoPermitidos.join(', ')}. Deben ser uno de los tipos especificados: ${tiposEvidenciaPermitidos.join(', ')}`);
+  }
 }
 
-// Función para obtener todas las evidencias
-async function obtenerEvidencias() {
-    return await Evidencia.find().populate('idCasos tipoEvidencia');
+// Crear evidencia
+async function crearEvidencia(datos) {
+  // Verificar que el tipo de evidencia esté en la lista permitida
+  validarTiposEvidencia(datos.tipoEvidencia);
+
+  const nuevaEvidencia = new Evidencia(datos);
+  return await nuevaEvidencia.save();
 }
 
-// Función para obtener una evidencia por ID
-async function obtenerEvidenciaPorId(id) {
-    const evidencia = await Evidencia.findById(id).populate('idCasos tipoEvidencia');
-
-    if (!evidencia) {
-        throw new Error('Evidencia no encontrada');
-    }
-    return evidencia;
+// Listar evidencias
+async function listarEvidencias() {
+  const evidencias = await Evidencia.find({ activo: true });
+  if (evidencias.length === 0) {
+    throw new Error('No hay evidencias registradas actualmente.');
+  }
+  return evidencias;
 }
 
-// Función para actualizar una evidencia por ID
-async function actualizarEvidencia(id, body) {
-    const evidencia = await Evidencia.findByIdAndUpdate(id, body, { new: true }).populate('idCasos tipoEvidencia');
-
-    if (!evidencia) {
-        throw new Error('Evidencia no encontrada');
-    }
-    return evidencia;
+// Buscar evidencia por ID
+async function buscarEvidenciaPorId(id) {
+  const evidencia = await Evidencia.findById(id);
+  if (!evidencia || !evidencia.activo) {
+    throw new Error(`No se encontró una evidencia con el ID: ${id}`);
+  }
+  return evidencia;
 }
 
-// Función para eliminar una evidencia por ID
-async function eliminarEvidencia(id) {
-    const evidencia = await Evidencia.findByIdAndDelete(id);
+// Actualizar evidencia
+async function actualizarEvidencia(id, datos) {
+  const evidencia = await Evidencia.findById(id);
+  if (!evidencia || !evidencia.activo) {
+    throw new Error('La evidencia que intenta actualizar no existe o ha sido desactivada.');
+  }
 
-    if (!evidencia) {
-        throw new Error('Evidencia no encontrada');
-    }
-    return { message: 'Evidencia eliminada' };
+  // Verificar si el tipo de evidencia es válido en caso de ser actualizado
+  if (datos.tipoEvidencia) {
+    validarTiposEvidencia(datos.tipoEvidencia);
+  }
+
+  Object.assign(evidencia, datos);
+  return await evidencia.save();
+}
+
+// Desactivar evidencia
+async function desactivarEvidencia(id) {
+  const evidencia = await Evidencia.findById(id);
+  if (!evidencia || !evidencia.activo) {
+    throw new Error('La evidencia que intenta desactivar no existe o ya ha sido desactivada.');
+  }
+
+  evidencia.activo = false; // Cambia el estado a inactivo
+  return await evidencia.save();
 }
 
 module.exports = {
-    crearEvidencia,
-    obtenerEvidencias,
-    obtenerEvidenciaPorId,
-    actualizarEvidencia,
-    eliminarEvidencia,
+  crearEvidencia,
+  listarEvidencias,
+  buscarEvidenciaPorId,
+  actualizarEvidencia,
+  desactivarEvidencia
 };

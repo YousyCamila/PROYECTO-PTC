@@ -3,22 +3,24 @@ const mongoose = require('mongoose');
 const evidenciaSchema = new mongoose.Schema({
   fechaEvidencia: {
     type: Date,
-    required: true
+    required: true,
   },
   descripcion: {
     type: String,
-    required: true
+    required: true,
   },
   idCasos: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Caso',
-    required: true
+    required: true,
   },
-  tipoEvidencia: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'TipoEvidencia'
-  }],
-},
-{timestamps: true});
+  tipoEvidencia: {
+    type: [String], // Aquí aseguramos que sea un array de strings
+    enum: ['tipoDocumento', 'tipoFotografia', 'tipoVideo', 'tipoAudio', 'archivosDigitales'],
+    required: true,
+  },
+  // otros campos según sea necesario
+}, { timestamps: true });
 
-module.exports = mongoose.model('Evidencia', evidenciaSchema);
+const Evidencia = mongoose.model('Evidencia', evidenciaSchema);
+module.exports = Evidencia;

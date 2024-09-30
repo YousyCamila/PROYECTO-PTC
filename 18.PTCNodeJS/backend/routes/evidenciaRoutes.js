@@ -1,14 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const evidenciaController = require('../controllers/evidenciaController');
+const evidenciaControlador = require('../controllers/evidenciaController');
 
-// Crear una nueva evidencia
+/**
+ * @swagger
+ * tags:
+ *   name: Evidencias
+ *   description: API para manejar evidencias
+ */
+
 /**
  * @swagger
  * /evidencias:
  *   post:
- *     summary: Crear una nueva evidencia
- *     tags: ["Evidencias"]
+ *     summary: Crear evidencia
+ *     tags: [Evidencias]
  *     requestBody:
  *       required: true
  *       content:
@@ -16,34 +22,42 @@ const evidenciaController = require('../controllers/evidenciaController');
  *           schema:
  *             type: object
  *             properties:
+ *               fechaEvidencia:
+ *                 type: string
+ *                 format: date-time
+ *                 description: Fecha y hora de la evidencia
  *               descripcion:
  *                 type: string
- *                 example: "Fotografía del lugar del crimen"
- *               fecha:
+ *                 description: Descripción de la evidencia
+ *               idCasos:
  *                 type: string
- *                 format: date
- *                 example: "2024-09-01"
- *               archivo:
- *                 type: string
- *                 example: "ruta/a/la/evidencia.jpg"
+ *                 description: ID del caso asociado
+ *                 format: objectId
+ *               tipoEvidencia:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   enum: ['tipoDocumento', 'tipoFotografia', 'tipoVideo', 'tipoAudio', 'archivosDigitales']
+ *                   description: Tipos de evidencia permitidos
  *     responses:
  *       201:
  *         description: Evidencia creada exitosamente
  *       400:
- *         description: Error en la solicitud
+ *         description: Error de validación
+ *       500:
+ *         description: Error interno del servidor
  */
-router.post('/', evidenciaController.crearEvidencia);
+router.post('/', evidenciaControlador.crearEvidencia);
 
-// Obtener todas las evidencias
 /**
  * @swagger
  * /evidencias:
  *   get:
- *     summary: Listar todas las evidencias
- *     tags: ["Evidencias"]
+ *     summary: Listar evidencias
+ *     tags: [Evidencias]
  *     responses:
  *       200:
- *         description: Lista de evidencias
+ *         description: Lista de evidencias activas
  *         content:
  *           application/json:
  *             schema:
@@ -51,58 +65,78 @@ router.post('/', evidenciaController.crearEvidencia);
  *               items:
  *                 type: object
  *                 properties:
- *                   id:
+ *                   fechaEvidencia:
  *                     type: string
- *                     example: "651edc5565bfc2a7f8e98345"
+ *                     format: date-time
  *                   descripcion:
  *                     type: string
- *                     example: "Fotografía del lugar del crimen"
- *                   fecha:
+ *                   idCasos:
  *                     type: string
- *                     format: date
- *                     example: "2024-09-01"
- *                   archivo:
- *                     type: string
- *                     example: "ruta/a/la/evidencia.jpg"
+ *                     format: objectId
+ *                   tipoEvidencia:
+ *                     type: array
+ *                     items:
+ *                       type: string
+ *       500:
+ *         description: Error al obtener evidencias
  */
-router.get('/', evidenciaController.listarEvidencias);
+router.get('/', evidenciaControlador.listarEvidencias);
 
-// Obtener una evidencia por ID
 /**
  * @swagger
  * /evidencias/{id}:
  *   get:
- *     summary: Obtener una evidencia por ID
- *     tags: ["Evidencias"]
+ *     summary: Buscar evidencia por ID
+ *     tags: [Evidencias]
  *     parameters:
- *       - in: path
- *         name: id
+ *       - name: id
+ *         in: path
  *         required: true
+ *         description: ID de la evidencia
  *         schema:
  *           type: string
- *         description: Identificador único de la evidencia.
+ *           format: objectId
  *     responses:
  *       200:
  *         description: Evidencia encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 fechaEvidencia:
+ *                   type: string
+ *                   format: date-time
+ *                 descripcion:
+ *                   type: string
+ *                 idCasos:
+ *                   type: string
+ *                   format: objectId
+ *                 tipoEvidencia:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *       404:
  *         description: Evidencia no encontrada
+ *       500:
+ *         description: Error al obtener la evidencia
  */
-router.get('/:id', evidenciaController.obtenerEvidenciaPorId);
+router.get('/:id', evidenciaControlador.buscarEvidenciaPorId);
 
-// Actualizar una evidencia por ID
 /**
  * @swagger
  * /evidencias/{id}:
  *   put:
- *     summary: Actualizar una evidencia por ID
- *     tags: ["Evidencias"]
+ *     summary: Actualizar evidencia
+ *     tags: [Evidencias]
  *     parameters:
- *       - in: path
- *         name: id
+ *       - name: id
+ *         in: path
  *         required: true
+ *         description: ID de la evidencia
  *         schema:
  *           type: string
- *         description: Identificador único de la evidencia.
+ *           format: objectId
  *     requestBody:
  *       required: true
  *       content:
@@ -110,41 +144,51 @@ router.get('/:id', evidenciaController.obtenerEvidenciaPorId);
  *           schema:
  *             type: object
  *             properties:
+ *               fechaEvidencia:
+ *                 type: string
+ *                 format: date-time
  *               descripcion:
  *                 type: string
- *               fecha:
+ *               idCasos:
  *                 type: string
- *                 format: date
- *               archivo:
- *                 type: string
+ *                 format: objectId
+ *               tipoEvidencia:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   enum: ['tipoDocumento', 'tipoFotografia', 'tipoVideo', 'tipoAudio', 'archivosDigitales']
  *     responses:
  *       200:
  *         description: Evidencia actualizada exitosamente
  *       404:
  *         description: Evidencia no encontrada
+ *       500:
+ *         description: Error al actualizar la evidencia
  */
-router.put('/:id', evidenciaController.actualizarEvidencia);
+router.put('/:id', evidenciaControlador.actualizarEvidencia);
 
-// Eliminar una evidencia por ID
 /**
  * @swagger
- * /evidencias/{id}:
- *   delete:
- *     summary: Eliminar una evidencia por ID
- *     tags: ["Evidencias"]
+ * /evidencias/{id}/desactivar:
+ *   patch:
+ *     summary: Desactivar evidencia
+ *     tags: [Evidencias]
  *     parameters:
- *       - in: path
- *         name: id
+ *       - name: id
+ *         in: path
  *         required: true
+ *         description: ID de la evidencia
  *         schema:
  *           type: string
- *         description: Identificador único de la evidencia.
+ *           format: objectId
  *     responses:
  *       200:
- *         description: Evidencia eliminada exitosamente
+ *         description: Evidencia desactivada exitosamente
  *       404:
  *         description: Evidencia no encontrada
+ *       500:
+ *         description: Error al desactivar la evidencia
  */
-router.delete('/:id', evidenciaController.eliminarEvidencia);
+router.patch('/:id/desactivar', evidenciaControlador.desactivarEvidencia);
 
 module.exports = router;
