@@ -1,6 +1,45 @@
 ﻿@model _17.PrivateInvestigationTechnology_PTC.Models.Formulario
 
-<h2>Confirmación de Solicitud</h2>
-<p>Gracias, @Model.FullName, hemos recibido tu solicitud con la siguiente descripción:</p>
-<p>@Model.Descripcion</p>
-<p>Te contactaremos a través de tu correo electrónico: @Model.Email</p>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Envío</title>
+    <link rel="stylesheet" href="~/css/Confirmacion.css"> <!-- Enlaza tu archivo CSS -->
+    <script src="~/js/Confirmacion.js"></script>
+</head>
+<body>
+    <!-- Modal de confirmación -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>¡Formulario Enviado Exitosamente!</h2>
+            <p>Gracias por tu solicitud. PTC se comunicará contigo a través del correo electrónico que proporcionaste.</p>
+            <a class="back-btn" href="/Formulario/Index">Volver al formulario</a>
+        </div>
+    </div>
+
+    <script src="~/js/modal.js"></script> <!-- Enlaza tu archivo JavaScript -->
+    <script>
+        // Mostrar el modal al cargar la página
+        document.addEventListener("DOMContentLoaded", function () {
+            const modal = document.getElementById("confirmationModal");
+            modal.style.display = "block";
+
+            // Cerrar el modal al hacer clic en el botón de cerrar
+            const closeButton = document.querySelector(".close");
+            closeButton.onclick = function () {
+                modal.style.display = "none";
+            }
+
+            // Cerrar el modal si se hace clic fuera de él
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        });
+    </script>
+</body>
+</html>

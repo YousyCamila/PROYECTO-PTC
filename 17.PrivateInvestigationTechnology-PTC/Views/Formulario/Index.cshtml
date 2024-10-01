@@ -1,6 +1,12 @@
 ﻿@model _17.PrivateInvestigationTechnology_PTC.Models.Formulario
 
-<h2>Formulario de Solicitud</h2>
+@{
+ ViewData["Title"] = "Contactanos"; 
+ }
+
+<h2>Contactate con Nosotros</h2>
+
+<link rel="stylesheet" href="~/css/site.css">
 
 <form asp-action="Index" method="post">
     <div class="form-group">
@@ -23,6 +29,14 @@
 
     <button type="submit" class="btn btn-primary">Enviar</button>
 </form>
+
+<div class="contact-info">
+    <h3>Información de Contacto</h3>
+    <p><strong>Teléfono:</strong> +57 350 797 2131</p>
+    <p><strong>Dirección:</strong> Carrera 15 # 79-70</p>
+    <p><strong>Ciudad:</strong> Bogotá</p>
+    <p><strong>País:</strong> Colombia</p>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

@@ -36,24 +36,20 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
                 _context.Formularios.Add(formulario);
                 await _context.SaveChangesAsync();
 
-                // Redirigir a una página de confirmación
-                return RedirectToAction("Confirmacion");
-            }
+				// Redirigir a una página de confirmación
+				return RedirectToAction("Confirmacion");
+			}
 
             // Si el modelo no es válido, volver a mostrar el formulario con los errores
             return View(formulario);
         }
 
-        // Acción para mostrar la confirmación
-        public IActionResult Confirmacion()
-        {
-            return View();
-        }
+       
 
 		[HttpGet]
-		public IActionResult Confirmacion(Formulario formulario)
+		public IActionResult Confirmacion()
 		{
-			return View(formulario);
+			return View();
 		}
 	}
 
