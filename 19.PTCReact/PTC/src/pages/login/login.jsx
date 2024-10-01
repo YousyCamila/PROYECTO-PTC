@@ -27,14 +27,13 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password, role }), // Asegúrate de que estos valores sean correctos
+        body: JSON.stringify({ email, password, role }),
       });
 
       const data = await response.json();
 
-      // Log de las credenciales y la respuesta
-      console.log({ email, password, role }); // Para depuración
-      console.log(data); // Para depuración
+      console.log({ email, password, role });
+      console.log(data);
 
       if (response.ok) {
         localStorage.setItem("token", data.token);
@@ -44,11 +43,12 @@ const Login = () => {
           text: 'Bienvenido de nuevo!',
         });
 
-        // Verificar el rol del usuario para redirigir
         if (role === 'administrador') {
-          navigate('/admin-menu'); // Redirigir al menú administrativo
-        } else {
-          navigate("/dashboard"); // Redirigir a una página protegida para otros roles
+          navigate('/admin-menu');
+        } else if (role === 'cliente') {
+          navigate('/cliente-menu');
+        } else if (role === 'detective') {
+          navigate('/detective-menu');
         }
       } else {
         Swal.fire({
@@ -70,9 +70,9 @@ const Login = () => {
   return (
     <Box
       sx={{
-        width: "100vw", // Usar toda la pantalla horizontalmente
-        height: "100vh", // Usar toda la pantalla verticalmente
-        background: "linear-gradient(to right, #0077b6, #00b4d8)", // Degradado en toda la pantalla
+        width: "100vw",
+        height: "100vh",
+        background: "linear-gradient(to right, #0077b6, #00b4d8)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -93,8 +93,8 @@ const Login = () => {
             top: 16,
             right: 16,
             fontWeight: "bold",
-            fontSize: 48, // Aumentar tamaño de fuente
-            color: "#0056b3", // Azul más prominente
+            fontSize: 48,
+            color: "#0056b3",
           }}
         >
           PTC
@@ -113,7 +113,7 @@ const Login = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
             variant="outlined"
-            sx={{ backgroundColor: "white" }} // Fondo blanco para el input
+            sx={{ backgroundColor: "white" }}
           />
           <TextField
             fullWidth
@@ -124,7 +124,7 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
             variant="outlined"
-            sx={{ backgroundColor: "white" }} // Fondo blanco para el input
+            sx={{ backgroundColor: "white" }}
           />
           <FormControl fullWidth margin="normal">
             <InputLabel id="role-label" sx={{ color: "black" }}>Rol</InputLabel>
@@ -133,7 +133,7 @@ const Login = () => {
               value={role}
               onChange={(e) => setRole(e.target.value)}
               required
-              sx={{ backgroundColor: "white" }} // Fondo blanco para el select
+              sx={{ backgroundColor: "white" }}
             >
               <MenuItem value="cliente">Cliente</MenuItem>
               <MenuItem value="administrador">Administrador</MenuItem>
@@ -149,7 +149,7 @@ const Login = () => {
             Iniciar Sesión
           </Button>
         </form>
-        {/* Botón para redirigir a la vista de registro */}
+
         <Button
           fullWidth
           variant="outlined"
@@ -157,6 +157,16 @@ const Login = () => {
           sx={{ mt: 2, color: "#0077b6", borderColor: "#0077b6", "&:hover": { backgroundColor: "#e0e0e0" } }}
         >
           Registrarse
+        </Button>
+
+        {/* Botón para volver a la página de inicio */}
+        <Button
+          fullWidth
+          variant="outlined"
+          onClick={() => navigate("/")}
+          sx={{ mt: 2, color: "#0077b6", borderColor: "#0077b6", "&:hover": { backgroundColor: "#e0e0e0" } }}
+        >
+          Volver a Inicio
         </Button>
       </Container>
     </Box>

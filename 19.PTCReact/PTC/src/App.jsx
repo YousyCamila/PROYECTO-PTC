@@ -23,6 +23,9 @@ import GestionarContratos from './pages/administrador/gestionContrato/gestionarC
 import CrearContrato from './pages/administrador/gestionContrato/crearContrato';
 import DetallesContrato from './pages/administrador/gestionContrato/detallesContrato';
 import EditarContrato from './pages/administrador/gestionContrato/editarContrato';
+import MenuCliente from './pages/cliente/clienteMenu';
+import AgregarEvidencia from './pages/cliente/agregarEvidencia';
+import DetectiveMenu from './pages/detective/detectiveMenu';
 
 function App() {
   const [email, setEmail] = useState(''); // Define el estado para el email
@@ -86,6 +89,12 @@ function App() {
         <Route path="/detalles-contrato/:id" element={<DetallesContrato />} />
 
         <Route path="/editar-contrato/:id" element={<EditarContrato />} />
+
+        <Route path="/cliente-menu" element={<MenuCliente />} /> 
+
+        <Route path="/detective-menu" element={<DetectiveMenu />} /> 
+
+        <Route path="/agregar-evidencia/:casoId" element={<AgregarEvidencia />} />
 
       </Routes>
     </Router>
