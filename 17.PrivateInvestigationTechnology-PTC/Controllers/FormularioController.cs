@@ -44,12 +44,68 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
             return View(formulario);
         }
 
-       
-
 		[HttpGet]
 		public IActionResult Confirmacion()
 		{
 			return View();
 		}
-	}
+
+
+
+        public async Task<IActionResult> IndexAdministracion()
+        {
+            var formularios = await _context.Formularios.ToListAsync();
+            return View(formularios);
+        }
+
+        // GET: Formulario/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var formulario = await _context.Formularios
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (formulario == null)
+            {
+                return NotFound();
+            }
+
+            return View(formulario);
+        }
+
+        // POST: Formulario/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var formulario = await _context.Formularios.FindAsync(id);
+            if (formulario != null)
+            {
+                _context.Formularios.Remove(formulario);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(IndexAdministracion));
+        }
+
+        // GET: Formulario/Delete/5 (optional, if you want to show a confirmation page)
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var formulario = await _context.Formularios
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (formulario == null)
+            {
+                return NotFound();
+            }
+
+            return View(formulario);
+        }
+    }
 }
