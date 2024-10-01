@@ -148,4 +148,30 @@ router.put('/:id', casoController.actualizarCaso);
  */
 router.delete('/:id', casoController.desactivarCaso);
 
+
+/**
+ * @swagger
+ * /caso/cliente-casos/{id}:
+ *   get:
+ *     summary: Obtener casos por ID del cliente
+ *     tags: [Casos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID del cliente
+ *     responses:
+ *       200:
+ *         description: Casos encontrados
+ *       404:
+ *         description: No se encontraron casos
+ *       500:
+ *         description: Error interno del servidor
+ */
+router.get('/cliente-casos/:id', casoController.obtenerCasosPorClienteId);
+
+
+
 module.exports = router;

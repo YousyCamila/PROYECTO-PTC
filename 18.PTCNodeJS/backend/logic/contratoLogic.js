@@ -1,4 +1,3 @@
-// layers/contratoService.js
 const Contrato = require('../models/contratoModel');
 const Cliente = require('../models/clienteModel');
 const Detective = require('../models/detectiveModel');
@@ -59,9 +58,17 @@ async function desactivarContrato(id, motivo) {
   return { message: 'Contrato desactivado exitosamente' };
 }
 
+// Nueva función para listar contratos por detective
+async function listarContratosPorDetective(idDetective) {
+  return await Contrato.find({ idDetective })
+    .populate('idCliente', 'nombres apellidos') // Población de Cliente
+    .populate('idDetective', 'nombres apellidos'); // Población de Detective
+}
+
 module.exports = {
   crearContrato,
   listarContratos,
   buscarContratoPorId,
-  desactivarContrato
+  desactivarContrato,
+  listarContratosPorDetective // Exportar la nueva función
 };

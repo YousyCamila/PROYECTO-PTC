@@ -1,4 +1,5 @@
 const Evidencia = require('../models/evidenciaModel');
+const Caso = require ('../models/casoModel');
 
 // Lista de tipos de evidencia permitidos
 const tiposEvidenciaPermitidos = [
@@ -22,14 +23,24 @@ function validarTiposEvidencia(tiposEvidenciaRecibidos) {
   }
 }
 
-// Crear evidencia
+// Crear evidencia y asociarla con un caso
 async function crearEvidencia(datos) {
   // Verificar que el tipo de evidencia esté en la lista permitida
   validarTiposEvidencia(datos.tipoEvidencia);
 
   const nuevaEvidencia = new Evidencia(datos);
-  return await nuevaEvidencia.save();
+  
+  // Guardar la nueva evidencia
+  const evidenciaGuardada = await nuevaEvidencia.save();
+
+  // Asociar la evidencia al caso correspondiente
+  await Caso.findByIdAndUpdate(datos.idCasos, {
+    $push: { evidencias: evidenciaGuardada._id }
+  });
+
+  return evidenciaGuardada;
 }
+
 
 // Listar evidencias
 async function listarEvidencias() {

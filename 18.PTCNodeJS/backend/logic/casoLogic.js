@@ -46,6 +46,17 @@ async function crearCaso(datos) {
   return caso;
 }
 
+async function obtenerCasosPorClienteId(idCliente) {
+  try {
+      const casos = await Caso.find({ idCliente }); // Busca los casos asociados al cliente
+      return casos; // Devuelve los casos encontrados
+  } catch (error) {
+      throw new Error('Error al obtener los casos: ' + error.message); // Manejo de errores
+  }
+}
+
+
+
 // Listar Casos
 async function listarCasos() {
   const casos = await Caso.find().populate('idCliente idDetective evidencias registroCasos');
@@ -92,4 +103,5 @@ module.exports = {
   buscarCasoPorId,
   actualizarCaso,
   desactivarCaso,
+  obtenerCasosPorClienteId,
 };

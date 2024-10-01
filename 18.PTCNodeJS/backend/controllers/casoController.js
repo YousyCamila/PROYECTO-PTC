@@ -1,4 +1,5 @@
 const casosService = require('../logic/casoLogic');
+const clienteLogic = require ('../logic/clienteLogic');
 
 // Crear un nuevo caso
 const crearCaso = async (req, res) => {
@@ -9,6 +10,23 @@ const crearCaso = async (req, res) => {
     res.status(500).json({ message: 'Error al crear el caso', error: error.message });
   }
 };
+
+const obtenerCasosPorClienteId = async (req, res) => {
+  const idCliente = req.params.id; // Obtén el ID del cliente de los parámetros de la ruta
+  try {
+      const casos = await clienteLogic.obtenerCasosPorClienteId(idCliente); // Llama a la función del servicio
+      if (!casos || casos.length === 0) {
+          return res.status(404).json({ message: 'No se encontraron casos para este cliente.' });
+      }
+      res.status(200).json(casos); // Devuelve los casos encontrados
+  } catch (error) {
+      console.error('Error al obtener los casos:', error); // Log para depuración
+      res.status(500).json({ error: 'Error interno del servidor: ' + error.message });
+  }
+};
+
+
+
 
 // Listar todos los casos
 const listarCasos = async (req, res) => {
@@ -60,4 +78,5 @@ module.exports = {
   buscarCasoPorId,
   actualizarCaso,
   desactivarCaso,
+  obtenerCasosPorClienteId,
 };

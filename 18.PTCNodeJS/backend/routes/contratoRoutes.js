@@ -1,4 +1,3 @@
-// routes/contratoRoutes.js
 const express = require('express');
 const router = express.Router();
 const contratoController = require('../controllers/contratoController');
@@ -143,5 +142,28 @@ router.get('/:id', contratoController.buscarContratoPorId);
  *         description: Error interno del servidor.
  */
 router.put('/:id/desactivar', contratoController.desactivarContrato);
+
+/**
+ * @swagger
+ * /contratos/detective/{id}:
+ *   get:
+ *     summary: Listar contratos de un detective por ID
+ *     tags: [Contratos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID del detective
+ *     responses:
+ *       200:
+ *         description: Lista de contratos del detective.
+ *       404:
+ *         description: Detective no encontrado.
+ *       500:
+ *         description: Error interno del servidor.
+ */
+router.get('/detective/:id', contratoController.listarContratosPorDetective);
 
 module.exports = router;

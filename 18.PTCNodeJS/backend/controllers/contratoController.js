@@ -1,4 +1,3 @@
-// controllers/contratoController.js
 const contratoService = require('../logic/contratoLogic');
 
 const crearContrato = async (req, res) => {
@@ -9,7 +8,6 @@ const crearContrato = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 const listarContratos = async (req, res) => {
   try {
@@ -30,8 +28,6 @@ const buscarContratoPorId = async (req, res) => {
   }
 };
 
-
-
 const desactivarContrato = async (req, res) => {
   try {
     const { motivo } = req.body; // Obtener motivo de desactivación del cuerpo de la solicitud
@@ -42,9 +38,20 @@ const desactivarContrato = async (req, res) => {
   }
 };
 
+// Nuevo controlador para listar contratos por detective
+const listarContratosPorDetective = async (req, res) => {
+  try {
+    const contratos = await contratoService.listarContratosPorDetective(req.params.id);
+    res.status(200).json(contratos);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   crearContrato,
   listarContratos,
   buscarContratoPorId,
-  desactivarContrato
+  desactivarContrato,
+  listarContratosPorDetective // Exportar el nuevo controlador
 };

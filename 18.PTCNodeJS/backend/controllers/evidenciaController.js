@@ -3,12 +3,23 @@ const evidenciaService = require('../logic/evidenciaLogic');
 // Crear evidencia
 const crearEvidencia = async (req, res) => {
   try {
+    // Llamar a la lógica de crear evidencia
     const nuevaEvidencia = await evidenciaService.crearEvidencia(req.body);
-    return res.status(201).json({ message: "Evidencia creada exitosamente", evidencia: nuevaEvidencia });
+
+    // Retornar la respuesta exitosa
+    return res.status(201).json({
+      message: "Evidencia creada exitosamente",
+      evidencia: nuevaEvidencia
+    });
   } catch (error) {
-    return res.status(400).json({ message: error.message });
+    // Retornar un mensaje de error detallado
+    return res.status(400).json({
+      message: "Error al crear la evidencia",
+      error: error.message
+    });
   }
 };
+
 
 // Listar evidencias
 const listarEvidencias = async (req, res) => {
