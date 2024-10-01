@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.IO;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 using _17.PrivateInvestigationTechnology_PTC.Models;
+using _17.PrivateInvestigationTechnology_PTC.Data;
 
-namespace _17.PrivateInvestigationTechnology_PTC.Data
+namespace _17.PrivateInvestigationTechnology_PTC.Seeds
 {
     public static class IdentityDataInitializer
     {
@@ -23,15 +23,14 @@ namespace _17.PrivateInvestigationTechnology_PTC.Data
             await EnsureRoleAsync(roleManager, "Superusuario");
 
             // Crear usuarios predeterminados y asignarlos a roles
-            await EnsureUserAsync(userManager, roleManager, context, "admin@example.com", "Admin@123", "Administrador", "Admin Nombre", "123456789", "3001234567", new DateTime(1990, 1, 1), "admin_cv.pdf");
-            await EnsureUserAsync(userManager, roleManager, context, "cliente@example.com", "Cliente@123", "Cliente", "Cliente Nombre", null, "3009876543", new DateTime(1985, 5, 5), null);
-            await EnsureUserAsync(userManager, roleManager, context, "detective@example.com", "Detective@123", "Detective", "Detective Nombre", "567890123", "3005678901", new DateTime(1992, 2, 2), "detective_cv.pdf");
+            await EnsureUserAsync(userManager, roleManager, context, "admin@example.com", "Admin@123", "Administrador", "Admin Nombre", "123456789", "3001234567");
+            await EnsureUserAsync(userManager, roleManager, context, "cliente@example.com", "Cliente@123", "Cliente", "Cliente Nombre", null, "3009876543");
+            await EnsureUserAsync(userManager, roleManager, context, "detective@example.com", "Detective@123", "Detective", "Detective Nombre", "567890123", "3005678901");
 
             // Crear Superusuario predeterminado
             await EnsureSuperUserAsync(userManager, roleManager);
         }
 
-        // Método para asegurar la creación de roles
         private static async Task EnsureRoleAsync(RoleManager<IdentityRole> roleManager, string roleName)
         {
             if (!await roleManager.RoleExistsAsync(roleName))
@@ -44,93 +43,75 @@ namespace _17.PrivateInvestigationTechnology_PTC.Data
             }
         }
 
-        // Método para asegurar la creación de usuarios
         private static async Task EnsureUserAsync(
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
             ApplicationDbContext context,
             string email, string password, string roleName, string fullName,
-            string numeroIdentidad, string phoneNumber, DateTime fechaNacimiento, string hojaDeVidaFilePath)
+            string numeroIdentidad, string phoneNumber)
         {
-            try
+            // Verificar si el usuario ya existe
+            var user = await userManager.FindByEmailAsync(email);
+            if (user == null)
             {
-                var user = await userManager.FindByEmailAsync(email);
-                if (user == null)
+                // Crear usuario si no existe
+                user = new ApplicationUser
                 {
-                    // Crear usuario con FullName en vez de UserName
-                    user = new ApplicationUser
-                    {
-                        FullName = fullName, // Aquí usamos FullName en lugar de UserName
-                        Email = email,
-                        PhoneNumber = phoneNumber
-                    };
+                    FullName = fullName,
+                    Email = email,
+                    PhoneNumber = phoneNumber,
+                    UserName = email // Esto es importante para que Identity use el email como UserName
+                };
 
-                    var createResult = await userManager.CreateAsync(user, password);
-                    if (createResult.Succeeded)
-                    {
-                        await userManager.AddToRoleAsync(user, roleName);
-
-                        // Crear registros adicionales según el rol
-                        await AssignUserToRoleEntity(context, user, roleName, fullName, numeroIdentidad, phoneNumber, fechaNacimiento, hojaDeVidaFilePath);
-                    }
-                    else
-                    {
-                        throw new Exception($"Error creando el usuario {email}: {string.Join(", ", createResult.Errors.Select(e => e.Description))}");
-                    }
+                var createResult = await userManager.CreateAsync(user, password);
+                if (createResult.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user, roleName);
+                    await AssignUserToRoleEntity(context, user, roleName, numeroIdentidad);
+                }
+                else
+                {
+                    throw new Exception($"Error creando el usuario {email}: {string.Join(", ", createResult.Errors.Select(e => e.Description))}");
                 }
             }
-            catch (Exception ex)
+            else
             {
-                throw new Exception($"Error en el proceso de creación del usuario {email}: {ex.Message}", ex);
+                // En caso de que el usuario ya exista, asegurarse de que esté en el rol
+                await userManager.AddToRoleAsync(user, roleName);
             }
         }
 
-        // Método para asegurar la creación del Superusuario
         private static async Task EnsureSuperUserAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             var superUserEmail = "SuperUsuario@SuperPTC.com";
             var password = "!5?Yp*F95PYQtAt";
 
-            try
+            var superUser = await userManager.FindByEmailAsync(superUserEmail);
+            if (superUser == null)
             {
-                var superUser = await userManager.FindByEmailAsync(superUserEmail);
-                if (superUser == null)
+                superUser = new ApplicationUser
                 {
-                    superUser = new ApplicationUser
-                    {
-                        FullName = "Super Usuario", // Aquí usamos FullName en lugar de UserName
-                        Email = superUserEmail,
-                        EmailConfirmed = true,
-                        PhoneNumber = "3000000000"
-                    };
+                    FullName = "Super Usuario",
+                    Email = superUserEmail,
+                    EmailConfirmed = true,
+                    PhoneNumber = "3000000000",
+                    UserName = superUserEmail
+                };
 
-                    var createResult = await userManager.CreateAsync(superUser, password);
-                    if (createResult.Succeeded)
-                    {
-                        await userManager.AddToRoleAsync(superUser, "Superusuario");
-                    }
-                    else
-                    {
-                        throw new Exception($"Error creando el superusuario {superUserEmail}: {string.Join(", ", createResult.Errors.Select(e => e.Description))}");
-                    }
+                var createResult = await userManager.CreateAsync(superUser, password);
+                if (createResult.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(superUser, "Superusuario");
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error en el proceso de creación del superusuario: {ex.Message}", ex);
+                else
+                {
+                    throw new Exception($"Error creando el superusuario {superUserEmail}: {string.Join(", ", createResult.Errors.Select(e => e.Description))}");
+                }
             }
         }
 
-        // Método para asignar al usuario a una entidad según el rol
-        private static async Task AssignUserToRoleEntity(
-            ApplicationDbContext context,
-            ApplicationUser user,
-            string roleName,
-            string fullName,
-            string numeroIdentidad,
-            string phoneNumber,
-            DateTime fechaNacimiento,
-            string hojaDeVidaFilePath)
+        // Asignar al usuario a una entidad dependiendo del rol
+        private static async Task AssignUserToRoleEntity(ApplicationDbContext context, ApplicationUser user, string roleName, string numeroIdentidad)
         {
             if (roleName == "Administrador")
             {
@@ -139,7 +120,6 @@ namespace _17.PrivateInvestigationTechnology_PTC.Data
                     var admin = new Administrador
                     {
                         NumeroIdentidad = numeroIdentidad,
-                        HojaDeVida = !string.IsNullOrEmpty(hojaDeVidaFilePath) ? ConvertirArchivoABytes(hojaDeVidaFilePath) : null,
                         IdentityUserId = user.Id
                     };
                     context.Administradores.Add(admin);
@@ -163,32 +143,13 @@ namespace _17.PrivateInvestigationTechnology_PTC.Data
                     var detective = new Detective
                     {
                         NumeroIdentidad = numeroIdentidad,
-                        HojaDeVida = !string.IsNullOrEmpty(hojaDeVidaFilePath) ? ConvertirArchivoABytes(hojaDeVidaFilePath) : null,
                         IdentityUserId = user.Id
                     };
                     context.Detectives.Add(detective);
                 }
             }
 
-            await context.SaveChangesAsync();
-        }
-
-        // Método para convertir el archivo de hoja de vida a un array de bytes
-        private static byte[] ConvertirArchivoABytes(string filePath)
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
-                {
-                    return File.ReadAllBytes(filePath); // Leer el archivo y convertirlo en array de bytes
-                }
-            }
-            catch (Exception ex)
-            {
-                // Manejar posibles excepciones al leer el archivo
-                throw new Exception($"Error al leer el archivo {filePath}: {ex.Message}", ex);
-            }
-            return null; // Retornar null si el archivo no existe o no es accesible
+            await context.SaveChangesAsync(); // Guardar cambios
         }
     }
 }

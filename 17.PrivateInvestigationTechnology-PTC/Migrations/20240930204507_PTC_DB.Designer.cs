@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using _17.PrivateInvestigationTechnology_PTC.Data;
 
@@ -11,9 +12,11 @@ using _17.PrivateInvestigationTechnology_PTC.Data;
 namespace _17.PrivateInvestigationTechnology_PTC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240930204507_PTC_DB")]
+    partial class PTC_DB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -204,10 +207,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FullName")
-<<<<<<< HEAD
-=======
                         .IsRequired()
->>>>>>> 66de8424dee4d51763ccbc09de5695d665fd3452
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -304,12 +304,6 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                     b.Property<int>("IdDetective")
                         .HasColumnType("int");
 
-<<<<<<< HEAD
-                    b.Property<decimal>("Progreso")
-                        .HasColumnType("decimal(18,2)");
-
-=======
->>>>>>> 66de8424dee4d51763ccbc09de5695d665fd3452
                     b.HasKey("Id")
                         .HasName("PK_Caso");
 
@@ -409,22 +403,9 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-<<<<<<< HEAD
-                    b.Property<DateTime>("FechaSubida")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("IdCaso")
                         .HasColumnType("int");
 
-                    b.Property<string>("RutaArchivo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-=======
-                    b.Property<int>("IdCaso")
-                        .HasColumnType("int");
-
->>>>>>> 66de8424dee4d51763ccbc09de5695d665fd3452
                     b.HasKey("Id")
                         .HasName("PK_Evidencium");
 
@@ -490,12 +471,6 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-<<<<<<< HEAD
-                    b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
-
-=======
->>>>>>> 66de8424dee4d51763ccbc09de5695d665fd3452
                     b.Property<int>("IdCliente")
                         .HasColumnType("int");
 

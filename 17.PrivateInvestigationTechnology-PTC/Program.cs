@@ -1,13 +1,18 @@
 using _17.PrivateInvestigationTechnology_PTC.Data;
+using _17.PrivateInvestigationTechnology_PTC.Logic;
 using _17.PrivateInvestigationTechnology_PTC.Models;
+using _17.PrivateInvestigationTechnology_PTC.Seeds;
 using _17.PrivateInvestigationTechnology_PTC.Services;
-using _17.PrivateInvestigationTechnology_PTC.Logic; // Asegúrate de incluir el espacio de nombres donde esté la clase
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configurar el logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug(); // Puedes agregar otras opciones como File, EventLog, etc.
 
 // Configuración de la cadena de conexión
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -29,7 +34,10 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration.GetSection("AuthMessageSenderOptions"));
 
 // Agregar el servicio EntityManagementService
-builder.Services.AddScoped<EntityManagementService>(); // Aquí se agrega el servicio
+builder.Services.AddScoped<EntityManagementService>();
+
+// Agregar el RoleAssignmentService en el contenedor
+builder.Services.AddScoped<RoleAssignmentService>();
 
 // Agregar soporte para Razor Pages y MVC
 builder.Services.AddRazorPages();
@@ -73,6 +81,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapRazorPages();
 
 // Asegurarse de que Razor Pages y las rutas de los controladores estén mapeadas correctamente
 app.MapRazorPages();
