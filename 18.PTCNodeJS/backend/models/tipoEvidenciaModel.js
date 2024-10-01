@@ -21,12 +21,7 @@ const tipoEvidenciaSchema = new mongoose.Schema({
   archivosDigitales: {
     type: String,
     maxlength: 50
-  },
-  idEvidencia: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Evidencia',
-    required: true
   }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('TipoEvidencia', tipoEvidenciaSchema);

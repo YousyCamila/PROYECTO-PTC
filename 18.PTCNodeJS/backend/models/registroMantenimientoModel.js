@@ -21,6 +21,6 @@ const registroMantenimientoSchema = new mongoose.Schema({
     ref: 'Administrador',
     required: true
   }
-});
+}, {timestamps: true});
 
 module.exports = mongoose.model('RegistroMantenimiento', registroMantenimientoSchema);

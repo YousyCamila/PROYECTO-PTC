@@ -19,11 +19,15 @@ const contratoSchema = new mongoose.Schema({
   },
   tarifa: {
     type: mongoose.Types.Decimal128,
-    required: true
+    required: true,
+    set: function(value) {
+      return mongoose.Types.Decimal128.fromString(value.toString().replace(/\./g, '').replace(',', '.'));
+    }
   },
   estado: {
     type: Boolean,
-    required: true
+    required: true,
+    default: true // Se puede inicializar como activo
   },
   idCliente: {
     type: mongoose.Schema.Types.ObjectId,
@@ -33,7 +37,11 @@ const contratoSchema = new mongoose.Schema({
   idDetective: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Detective'
-  }
-});
+  },
+  historial: [{
+    fechaDesactivacion: { type: Date, default: Date.now },
+    motivo: String // Para registrar el motivo de desactivación
+  }]
+}, { timestamps: true });
 
 module.exports = mongoose.model('Contrato', contratoSchema);
