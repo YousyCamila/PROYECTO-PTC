@@ -5,8 +5,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public string FullName { get; set; } // Campo personalizado para el nombre completo
-
-        public string? Sexo { get; set; }
+       public string? FullName { get; set; } // Campo personalizado para el nombre completo
+       public string? Sexo { get; set; }
     }
 }

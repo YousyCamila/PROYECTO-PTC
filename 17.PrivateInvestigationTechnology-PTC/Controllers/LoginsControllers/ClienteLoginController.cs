@@ -20,8 +20,17 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
             _context = context;
         }
 
-        // Acción para ver el estado del caso
-        public async Task<IActionResult> EstadoDelCaso(int? id)
+
+        public async Task<IActionResult> Index()
+        {
+            var casos = await _context.Casos
+                .Include(c => c.IdCliente) // Incluimos al cliente si es necesario mostrar esa información
+                .ToListAsync(); // Obtén todos los casos de la base de datos
+
+            return View(casos); // Pasa la lista de casos a la vista
+        }
+            // Acción para ver el estado del caso
+            public async Task<IActionResult> EstadoDelCaso(int? id)
         {
             if (id == null)
             {
@@ -84,7 +93,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
             {
                 var extension = Path.GetExtension(archivo.FileName).ToLower();
                 var Archivo = Path.GetFileNameWithoutExtension(archivo.FileName) + "_" + DateTime.Now.Ticks + extension;
-                var rutaArchivo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/evidencias", rutaArchivo);
+                var rutaArchivo = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/evidencias", Archivo);
 
                 // Validamos que el archivo sea un formato válido
                 var formatosPermitidos = new[] { ".jpg", ".jpeg", ".png", ".mp4", ".mp3", ".wav", ".avi" };
@@ -103,7 +112,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 
                 // Guardar los datos de la evidencia en la base de datos
                 evidencium.Id = nombreArchivo;
-                evidencium.IdCaso = extension;
+                evidencium.IdCaso = 123;
                 evidencium.RutaArchivo = $"/evidencias/{nombreArchivo}";
                 evidencium.FechaSubida = DateTime.Now;
 
