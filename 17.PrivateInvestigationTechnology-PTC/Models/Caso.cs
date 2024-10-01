@@ -7,6 +7,7 @@ public partial class Caso
 {
     public int Id { get; set; }
 
+    public decimal Progreso { get; set; }
     public int IdCliente { get; set; }
 
     public int IdDetective { get; set; }

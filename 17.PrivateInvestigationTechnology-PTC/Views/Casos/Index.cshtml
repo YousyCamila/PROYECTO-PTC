@@ -1,0 +1,50 @@
+﻿@model IEnumerable<_17.PrivateInvestigationTechnology_PTC.Models.Caso>
+
+@{
+    ViewData["Title"] = "Lista de Casos";
+}
+
+<h1>Lista de Casos</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().IdCliente)
+            </th>
+            <th>
+                Progreso
+            </th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var caso in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => caso.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => caso.IdCliente)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => caso.Progreso)
+                </td>
+                <td>
+                    <!-- Botón para ver detalles del caso -->
+                    <a asp-action="EstadoDelCaso" asp-route-id="@caso.Id" class="btn btn-info">Detalles</a>
+
+                    <!-- Botón para ver historial del caso -->
+                    <a asp-action="HistorialDelCaso" asp-route-id="@caso.Id" class="btn btn-secondary">Historial</a>
+
+                    <!-- Botón para subir evidencia -->
+                    <a asp-action="SubirEvidencium" asp-route-Idcaso="@caso.Id" class="btn btn-primary">Subir Evidencia</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
