@@ -22,19 +22,19 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // GET: TipoEvidencia
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.TipoEvidencia.Include(t => t.IdEvidenciaNavigation);
+            var applicationDbContext = _context.TipoEvidencias.Include(t => t.IdEvidenciaNavigation);
             return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: TipoEvidencia/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.TipoEvidencia == null)
+            if (id == null || _context.TipoEvidencias == null)
             {
                 return NotFound();
             }
 
-            var tipoEvidencium = await _context.TipoEvidencia
+            var tipoEvidencium = await _context.TipoEvidencias
                 .Include(t => t.IdEvidenciaNavigation)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (tipoEvidencium == null)
@@ -48,7 +48,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // GET: TipoEvidencia/Create
         public IActionResult Create()
         {
-            ViewData["IdEvidencia"] = new SelectList(_context.Evidencia, "Id", "Id");
+            ViewData["IdEvidencia"] = new SelectList(_context.Evidencias, "Id", "Id");
             return View();
         }
 
@@ -65,24 +65,24 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdEvidencia"] = new SelectList(_context.Evidencia, "Id", "Id", tipoEvidencium.IdEvidencia);
+            ViewData["IdEvidencia"] = new SelectList(_context.Evidencias, "Id", "Id", tipoEvidencium.IdEvidencia);
             return View(tipoEvidencium);
         }
 
         // GET: TipoEvidencia/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.TipoEvidencia == null)
+            if (id == null || _context.TipoEvidencias == null)
             {
                 return NotFound();
             }
 
-            var tipoEvidencium = await _context.TipoEvidencia.FindAsync(id);
+            var tipoEvidencium = await _context.TipoEvidencias.FindAsync(id);
             if (tipoEvidencium == null)
             {
                 return NotFound();
             }
-            ViewData["IdEvidencia"] = new SelectList(_context.Evidencia, "Id", "Id", tipoEvidencium.IdEvidencia);
+            ViewData["IdEvidencia"] = new SelectList(_context.Evidencias, "Id", "Id", tipoEvidencium.IdEvidencia);
             return View(tipoEvidencium);
         }
 
@@ -118,19 +118,19 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdEvidencia"] = new SelectList(_context.Evidencia, "Id", "Id", tipoEvidencium.IdEvidencia);
+            ViewData["IdEvidencia"] = new SelectList(_context.Evidencias, "Id", "Id", tipoEvidencium.IdEvidencia);
             return View(tipoEvidencium);
         }
 
         // GET: TipoEvidencia/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.TipoEvidencia == null)
+            if (id == null || _context.TipoEvidencias == null)
             {
                 return NotFound();
             }
 
-            var tipoEvidencium = await _context.TipoEvidencia
+            var tipoEvidencium = await _context.TipoEvidencias
                 .Include(t => t.IdEvidenciaNavigation)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (tipoEvidencium == null)
@@ -146,14 +146,14 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.TipoEvidencia == null)
+            if (_context.TipoEvidencias == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.TipoEvidencia'  is null.");
             }
-            var tipoEvidencium = await _context.TipoEvidencia.FindAsync(id);
+            var tipoEvidencium = await _context.TipoEvidencias.FindAsync(id);
             if (tipoEvidencium != null)
             {
-                _context.TipoEvidencia.Remove(tipoEvidencium);
+                _context.TipoEvidencias.Remove(tipoEvidencium);
             }
             
             await _context.SaveChangesAsync();
@@ -162,7 +162,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 
         private bool TipoEvidenciumExists(int id)
         {
-          return (_context.TipoEvidencia?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.TipoEvidencias?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

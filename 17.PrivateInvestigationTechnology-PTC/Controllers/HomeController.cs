@@ -18,7 +18,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Services()
         {
             return View();
         }

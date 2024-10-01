@@ -48,7 +48,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // GET: RegistroMantenimiento/Create
         public IActionResult Create()
         {
-            ViewData["IdAdministrador"] = new SelectList(_context.Administradors, "Id", "Id");
+            ViewData["IdAdministrador"] = new SelectList(_context.Administradores, "Id", "Id");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdAdministrador"] = new SelectList(_context.Administradors, "Id", "Id", registroMantenimiento.IdAdministrador);
+            ViewData["IdAdministrador"] = new SelectList(_context.Administradores, "Id", "Id", registroMantenimiento.IdAdministrador);
             return View(registroMantenimiento);
         }
 
@@ -82,7 +82,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdAdministrador"] = new SelectList(_context.Administradors, "Id", "Id", registroMantenimiento.IdAdministrador);
+            ViewData["IdAdministrador"] = new SelectList(_context.Administradores, "Id", "Id", registroMantenimiento.IdAdministrador);
             return View(registroMantenimiento);
         }
 
@@ -118,7 +118,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdAdministrador"] = new SelectList(_context.Administradors, "Id", "Id", registroMantenimiento.IdAdministrador);
+            ViewData["IdAdministrador"] = new SelectList(_context.Administradores, "Id", "Id", registroMantenimiento.IdAdministrador);
             return View(registroMantenimiento);
         }
 

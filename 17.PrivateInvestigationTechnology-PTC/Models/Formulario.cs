@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace _17.PrivateInvestigationTechnology_PTC.Models;
 
@@ -7,9 +8,10 @@ public partial class Formulario
 {
     public int Id { get; set; }
 
-    public int IdCliente { get; set; }
+    public string FullName { get; set; }
 
-    public string? Detalles { get; set; }
+    public string Email { get; set; }
 
-    public virtual Cliente IdClienteNavigation { get; set; } = null!;
+    public string Descripcion { get; set; }
+
 }

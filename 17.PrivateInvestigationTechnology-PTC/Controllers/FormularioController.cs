@@ -20,118 +20,53 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         }
 
         // GET: Formulario
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var applicationDbContext = _context.Formularios.Include(f => f.IdClienteNavigation);
-            return View(await applicationDbContext.ToListAsync());
+            return View();
+        }
+
+        // Acción para manejar la presentación del formulario
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(Formulario formulario)
+        {
+            if (ModelState.IsValid)
+            {
+                // Guardar el formulario en la base de datos
+                _context.Formularios.Add(formulario);
+                await _context.SaveChangesAsync();
+
+				// Redirigir a una página de confirmación
+				return RedirectToAction("Confirmacion");
+			}
+
+            // Si el modelo no es válido, volver a mostrar el formulario con los errores
+            return View(formulario);
+        }
+
+		[HttpGet]
+		public IActionResult Confirmacion()
+		{
+			return View();
+		}
+
+
+
+        public async Task<IActionResult> IndexAdministracion()
+        {
+            var formularios = await _context.Formularios.ToListAsync();
+            return View(formularios);
         }
 
         // GET: Formulario/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Formularios == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var formulario = await _context.Formularios
-                .Include(f => f.IdClienteNavigation)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (formulario == null)
-            {
-                return NotFound();
-            }
-
-            return View(formulario);
-        }
-
-        // GET: Formulario/Create
-        public IActionResult Create()
-        {
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id");
-            return View();
-        }
-
-        // POST: Formulario/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IdCliente,Detalles")] Formulario formulario)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(formulario);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id", formulario.IdCliente);
-            return View(formulario);
-        }
-
-        // GET: Formulario/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Formularios == null)
-            {
-                return NotFound();
-            }
-
-            var formulario = await _context.Formularios.FindAsync(id);
-            if (formulario == null)
-            {
-                return NotFound();
-            }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id", formulario.IdCliente);
-            return View(formulario);
-        }
-
-        // POST: Formulario/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,IdCliente,Detalles")] Formulario formulario)
-        {
-            if (id != formulario.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(formulario);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!FormularioExists(formulario.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id", formulario.IdCliente);
-            return View(formulario);
-        }
-
-        // GET: Formulario/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Formularios == null)
-            {
-                return NotFound();
-            }
-
-            var formulario = await _context.Formularios
-                .Include(f => f.IdClienteNavigation)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (formulario == null)
             {
@@ -146,23 +81,31 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Formularios == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Formularios'  is null.");
-            }
             var formulario = await _context.Formularios.FindAsync(id);
             if (formulario != null)
             {
                 _context.Formularios.Remove(formulario);
+                await _context.SaveChangesAsync();
             }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexAdministracion));
         }
 
-        private bool FormularioExists(int id)
+        // GET: Formulario/Delete/5 (optional, if you want to show a confirmation page)
+        public async Task<IActionResult> Delete(int? id)
         {
-          return (_context.Formularios?.Any(e => e.Id == id)).GetValueOrDefault();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var formulario = await _context.Formularios
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (formulario == null)
+            {
+                return NotFound();
+            }
+
+            return View(formulario);
         }
     }
 }

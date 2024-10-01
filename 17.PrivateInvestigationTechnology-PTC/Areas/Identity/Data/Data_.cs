@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using _17.PrivateInvestigationTechnology_PTC.Models;
 
 namespace ApplicationDbContext__17.PrivateInvestigationTechnology_PTC;
 
-public class Data_ : IdentityDbContext<IdentityUser>
+public class Data_ : IdentityDbContext<ApplicationUser>
 {
     public Data_(DbContextOptions<Data_> options)
         : base(options)

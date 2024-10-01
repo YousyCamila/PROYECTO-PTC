@@ -1,0 +1,30 @@
+﻿.login-section {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #f8f9fa;
+}
+
+    .login-section h2 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+.form-floating {
+    margin-bottom: 15px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+.text-center {
+    color: #555;
+}

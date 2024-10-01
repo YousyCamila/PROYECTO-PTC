@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Identity;
 
-namespace _17.PrivateInvestigationTechnology_PTC.Models;
-
-public partial class Auditorium
+namespace _17.PrivateInvestigationTechnology_PTC.Models
 {
-    public int Id { get; set; }
+    public partial class Auditorium
+    {
+        public int Id { get; set; }
 
-    public int IdUsuario { get; set; }
+        public string Descripcion { get; set; }
 
-    public string? Descripcion { get; set; }
-
-    public virtual Usuario IdUsuarioNavigation { get; set; } = null!;
+        // Relación con ApplicationUser
+        public string IdentityUserId { get; set; } // Foreign key a ApplicationUser
+        public ApplicationUser IdentityUser { get; set; } // Propiedad de navegación hacia ApplicationUser
+    }
 }

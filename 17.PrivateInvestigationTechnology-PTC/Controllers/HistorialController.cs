@@ -22,19 +22,19 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // GET: Historial
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Historials.Include(h => h.IdClienteNavigation);
+            var applicationDbContext = _context.Historiales.Include(h => h.IdClienteNavigation);
             return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Historial/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Historials == null)
+            if (id == null || _context.Historiales == null)
             {
                 return NotFound();
             }
 
-            var historial = await _context.Historials
+            var historial = await _context.Historiales
                 .Include(h => h.IdClienteNavigation)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (historial == null)
@@ -48,13 +48,11 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // GET: Historial/Create
         public IActionResult Create()
         {
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id");
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "IdentityUser.UserName");
             return View();
         }
 
         // POST: Historial/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,IdCliente,Descripcion")] Historial historial)
@@ -65,30 +63,29 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id", historial.IdCliente);
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "IdentityUser.UserName", historial.IdCliente);
             return View(historial);
         }
 
         // GET: Historial/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Historials == null)
+            if (id == null || _context.Historiales == null)
             {
                 return NotFound();
             }
 
-            var historial = await _context.Historials.FindAsync(id);
+            var historial = await _context.Historiales.FindAsync(id);
             if (historial == null)
             {
                 return NotFound();
             }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id", historial.IdCliente);
+
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "IdentityUser.UserName", historial.IdCliente);
             return View(historial);
         }
 
         // POST: Historial/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,IdCliente,Descripcion")] Historial historial)
@@ -118,19 +115,20 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "Id", historial.IdCliente);
+
+            ViewData["IdCliente"] = new SelectList(_context.Clientes, "Id", "IdentityUser.UserName", historial.IdCliente);
             return View(historial);
         }
 
         // GET: Historial/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Historials == null)
+            if (id == null || _context.Historiales == null)
             {
                 return NotFound();
             }
 
-            var historial = await _context.Historials
+            var historial = await _context.Historiales
                 .Include(h => h.IdClienteNavigation)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (historial == null)
@@ -146,23 +144,24 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Historials == null)
+            if (_context.Historiales == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Historials'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Historiales' is null.");
             }
-            var historial = await _context.Historials.FindAsync(id);
+
+            var historial = await _context.Historiales.FindAsync(id);
             if (historial != null)
             {
-                _context.Historials.Remove(historial);
+                _context.Historiales.Remove(historial);
+                await _context.SaveChangesAsync();
             }
-            
-            await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
         private bool HistorialExists(int id)
         {
-          return (_context.Historials?.Any(e => e.Id == id)).GetValueOrDefault();
+            return _context.Historiales?.Any(e => e.Id == id) ?? false;
         }
     }
 }

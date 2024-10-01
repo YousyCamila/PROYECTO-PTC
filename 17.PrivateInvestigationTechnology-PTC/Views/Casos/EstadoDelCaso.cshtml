@@ -1,0 +1,25 @@
+﻿@model _17.PrivateInvestigationTechnology_PTC.Models.Caso
+
+@{
+    ViewData["Title"] = "Detalles del Caso";
+}
+
+<h1>Detalles del Caso</h1>
+
+<div>
+    <h3>Información del Caso</h3>
+    <p><strong>ID del Caso:</strong> @Model.Id</p>
+    <p><strong>Cliente:</strong> @Model.IdCliente</p>
+    <p><strong>Progreso:</strong> @Model.Progreso %</p>
+    <p><strong>Detective Asignado:</strong> @Model.IdDetective</p>
+
+    <h4>Evidencias</h4>
+    <ul>
+        @foreach (var evidencia in Model.Evidencia)
+        {
+            <li>@evidencia.Descripcion - <a href="@evidencia.RutaArchivo" target="_blank">Ver Archivo</a></li>
+        }
+    </ul>
+
+    <a asp-action="Index" class="btn btn-secondary">Volver a la lista de Casos</a>
+</div>
