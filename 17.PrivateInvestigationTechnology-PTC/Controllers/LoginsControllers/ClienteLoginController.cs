@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using _17.PrivateInvestigationTechnology_PTC.Data;
 using _17.PrivateInvestigationTechnology_PTC.Models;
 
-
 namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 {
     public class CasosController : Controller
@@ -29,7 +28,6 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 
             return View(casos); // Pasa la lista de casos a la vista
         }
-
 
         // Acción para ver el estado del caso
         public async Task<IActionResult> EstadoDelCaso(int? id)
@@ -60,18 +58,18 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
                 return NotFound();
             }
 
-            var Historial = await _context.Historiales
+            var historial = await _context.Historiales
                 .Where(h => h.Id == id)
-                .OrderBy(h => h.Fecha) // Ordena por fecha ascendente
+                .OrderBy(h => h.Descripcion) // Ordena por una propiedad que tenga sentido
                 .ToListAsync();
 
-            if (Historial == null)
+            if (historial == null)
             {
                 return NotFound();
             }
 
             ViewBag.CasoId = id;
-            return View(Historial);
+            return View(historial);
         }
 
         // Acción para mostrar la vista de subir evidencia
@@ -114,9 +112,8 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 
                 // Guardar los datos de la evidencia en la base de datos
                 evidencium.Id = nombreArchivo;
-                evidencium.IdCaso = 123;
-                evidencium.RutaArchivo = $"/evidencias/{nombreArchivo}";
-                evidencium.FechaSubida = DateTime.Now;
+                evidencium.IdCaso = 123; // Asigna el ID del caso correctamente
+                evidencium.RutaArchivo = $"/evidencias/{Archivo}"; // Usamos la variable 'Archivo' para guardar el nombre correcto
 
                 _context.Evidencias.Add(evidencium);
                 await _context.SaveChangesAsync();
