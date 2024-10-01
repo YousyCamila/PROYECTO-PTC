@@ -102,5 +102,8 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "client",
     pattern: "{controller=ClienteLogin}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "client",
+    pattern: "{controller=SuperUsuarioLogin}/{action=Index}/{id?}");
 
 app.Run();

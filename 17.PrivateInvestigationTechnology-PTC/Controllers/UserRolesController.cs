@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 {
-    [Authorize(Roles = "Administrador, SuperUsuario")]
+    [Authorize(Roles = "Administrador, Superusuario")]
     public class UserRolesController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

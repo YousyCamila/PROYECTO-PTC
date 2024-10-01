@@ -52,6 +52,4 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 			return View();
 		}
 	}
-
-
 }

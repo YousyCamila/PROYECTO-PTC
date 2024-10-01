@@ -50,7 +50,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         }
 
         // GET: RolesController/Edit/5
-        [Authorize(Roles = "SuperUsuario")]
+        [Authorize(Roles = "Superusuario")]
         public async Task<IActionResult> Edit(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);
@@ -65,6 +65,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // POST: RolesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Superusuario")]
         public async Task<IActionResult> Edit(RoleViewModel model)
         {
             if (ModelState.IsValid)
@@ -89,7 +90,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         // POST: RolesController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Superusuario")]
         public async Task<IActionResult> Delete(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);
