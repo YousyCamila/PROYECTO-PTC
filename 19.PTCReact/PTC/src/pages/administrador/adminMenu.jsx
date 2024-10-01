@@ -16,7 +16,11 @@ const AdminMenu = () => {
   };
 
   const handleGestionCasos = () => {
-    navigate('/gestion-casos');
+    navigate('/gestionar-casos');
+  };
+
+  const handleGestionContratos = () => {
+    navigate('/gestionar-contratos'); // Navegar a la gestión de contratos
   };
 
   const handleLogout = () => {
@@ -75,8 +79,8 @@ const AdminMenu = () => {
           Menú Administrativo
         </Typography>
 
-        <Grid container spacing={4} sx={{ mt: 4 }}>
-          <Grid item xs={12} md={4}>
+        <Grid container spacing={2} sx={{ mt: 4 }} justifyContent="center">
+          <Grid item xs={12} sm={6} md={3}>
             <Card
               sx={{
                 background: '#f0f4f8',
@@ -103,7 +107,7 @@ const AdminMenu = () => {
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} sm={6} md={3}>
             <Card
               sx={{
                 background: '#f0f4f8',
@@ -130,7 +134,7 @@ const AdminMenu = () => {
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} sm={6} md={3}>
             <Card
               sx={{
                 background: '#f0f4f8',
@@ -152,6 +156,33 @@ const AdminMenu = () => {
                   onClick={handleGestionCasos}
                 >
                   Ir a Gestión de Casos
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3}>
+            <Card
+              sx={{
+                background: '#f0f4f8',
+                '&:hover': { transform: 'scale(1.05)', transition: '0.3s' },
+                borderRadius: 2,
+              }}
+            >
+              <CardContent>
+                <Typography variant="h6" component="div" sx={{ color: '#0077b6' }}>
+                  Gestionar Contratos
+                </Typography>
+                <Typography sx={{ mt: 2 }}>Administra los contratos asociados a los casos</Typography>
+              </CardContent>
+              <CardActions>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  sx={{ backgroundColor: '#0077b6', '&:hover': { backgroundColor: '#005f91' } }}
+                  onClick={handleGestionContratos}
+                >
+                  Ir a Gestión de Contratos
                 </Button>
               </CardActions>
             </Card>

@@ -13,9 +13,11 @@ import {
   Paper,
   IconButton,
   Snackbar,
+  Tooltip,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
@@ -46,6 +48,10 @@ const GestionarClientes = () => {
     navigate(`/editar-cliente/${clienteId}`);
   };
 
+  const handleDetails = (clienteId) => {
+    navigate(`/detalles-cliente/${clienteId}`);
+  };
+
   const handleDeactivate = async (clienteId) => {
     const confirm = await Swal.fire({
       title: '¿Estás seguro?',
@@ -59,12 +65,9 @@ const GestionarClientes = () => {
 
     if (confirm.isConfirmed) {
       try {
-        // Llamar a la API para desactivar el cliente
         await fetch(`http://localhost:3000/api/clientes/${clienteId}`, {
-          method: 'DELETE', // Asegúrate de que esto se maneje en tu backend para cambiar el estado
+          method: 'DELETE',
         });
-
-        // Actualizar el estado del cliente en la tabla
         setClientes(prevClientes => prevClientes.map(cliente => 
           cliente._id === clienteId ? { ...cliente, activo: false } : cliente
         ));
@@ -86,7 +89,7 @@ const GestionarClientes = () => {
   };
 
   const handleBack = () => {
-    navigate(-1); // Navegar hacia atrás
+    navigate('/admin-menu'); // Navegar al menú administrativo
   };
 
   return (
@@ -104,29 +107,29 @@ const GestionarClientes = () => {
         <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#0077b6' }}>
           Gestionar Clientes
         </Typography>
-        <Button
-          variant="contained"
-          onClick={handleCreate}
-          sx={{
-            backgroundColor: '#0077b6',
-            '&:hover': { backgroundColor: '#005f91' },
-            mb: 2,
-          }}
-        >
-          Crear Cliente
-        </Button>
-        <Button
-          variant="outlined"
-          onClick={handleBack}
-          sx={{
-            color: '#0077b6',
-            borderColor: '#0077b6',
-            mb: 2,
-            '&:hover': { backgroundColor: '#e0e0e0' },
-          }}
-        >
-          Volver
-        </Button>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+          <Button
+            variant="contained"
+            onClick={handleCreate}
+            sx={{
+              backgroundColor: '#0077b6',
+              '&:hover': { backgroundColor: '#005f91' },
+            }}
+          >
+            Crear Cliente
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={handleBack}
+            sx={{
+              color: '#0077b6',
+              borderColor: '#0077b6',
+              '&:hover': { backgroundColor: '#e0e0e0' },
+            }}
+          >
+            Volver al Menú
+          </Button>
+        </Box>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -144,12 +147,21 @@ const GestionarClientes = () => {
                   <TableCell>{cliente.activo ? 'Sí' : 'No'}</TableCell>
                   <TableCell>{new Date(cliente.fechaNacimiento).toLocaleDateString()}</TableCell>
                   <TableCell align="right">
-                    <IconButton onClick={() => handleEdit(cliente._id)} color="primary">
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton onClick={() => handleDeactivate(cliente._id)} color="error">
-                      <DeleteIcon />
-                    </IconButton>
+                    <Tooltip title="Ver Detalles" arrow>
+                      <IconButton onClick={() => handleDetails(cliente._id)} color="primary">
+                        <VisibilityIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Editar Cliente" arrow>
+                      <IconButton onClick={() => handleEdit(cliente._id)} color="primary">
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Desactivar Cliente" arrow>
+                      <IconButton onClick={() => handleDeactivate(cliente._id)} color="error">
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))}

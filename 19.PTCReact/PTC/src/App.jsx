@@ -7,14 +7,22 @@ import ClienteForm from './pages/login/clienteForm';
 import { useState } from 'react'; // Importa useState
 import AdministradorForm from './pages/login/administradorForm';
 import AdminMenu from '../src/pages/administrador/adminMenu';
-import GestionarClientes from '../src/pages/administrador/gestionarClientes';
-import CrearCliente from './pages/administrador/crearCliente';
-import EditarCliente from './pages/administrador/editarCliente';
-import GestionarDetectives from './pages/administrador/gestionarDetectives';
-import CrearDetective from './pages/administrador/crearDetective';
-import DetallesCliente from './pages/administrador/detallesCliente';
-import DetallesDetective from './pages/administrador/detallesDetective';
-import EditarDetective from './pages/administrador/editarDetective';
+import GestionarClientes from '../src/pages/administrador/gestionarClientes/gestionarClientes';
+import CrearCliente from './pages/administrador/gestionarClientes/crearCliente';
+import EditarCliente from './pages/administrador/gestionarClientes/editarCliente';
+import GestionarDetectives from './pages/administrador/gestionDetectives/gestionarDetectives';
+import CrearDetective from './pages/administrador/gestionDetectives/crearDetective';
+import DetallesCliente from './pages/administrador/gestionarClientes/detallesCliente';
+import DetallesDetective from './pages/administrador/gestionDetectives/detallesDetective';
+import EditarDetective from './pages/administrador/gestionDetectives/editarDetective';
+import GestionarCasos from './pages/administrador/gestionCasos/gestionarCasos';
+import CrearCaso from './pages/administrador/gestionCasos/crearCaso';
+import EditarCaso from './pages/administrador/gestionCasos/editarCaso';
+import DetallesCaso from './pages/administrador/gestionCasos/detallesCaso';
+import GestionarContratos from './pages/administrador/gestionContrato/gestionarContrato';
+import CrearContrato from './pages/administrador/gestionContrato/crearContrato';
+import DetallesContrato from './pages/administrador/gestionContrato/detallesContrato';
+import EditarContrato from './pages/administrador/gestionContrato/editarContrato';
 
 function App() {
   const [email, setEmail] = useState(''); // Define el estado para el email
@@ -55,7 +63,6 @@ function App() {
 
         <Route path="/detalles-cliente/:id" element={<DetallesCliente />} />
 
-
         <Route path="/gestionar-detectives" element={<GestionarDetectives />} />
 
         <Route path="/crear-detective" element={<CrearDetective />} />
@@ -64,7 +71,21 @@ function App() {
 
         <Route path="/editar-detective/:id" element={<EditarDetective />} />
 
+        <Route path="/gestionar-Casos" element={<GestionarCasos />} /> 
 
+        <Route path="/crear-caso" element={<CrearCaso />} />
+
+        <Route path="/editar-caso/:id" element={<EditarCaso />} />
+
+        <Route path="/detalles-caso/:id" element={<DetallesCaso />} />
+
+        <Route path="/gestionar-contratos" element={<GestionarContratos />} />
+
+        <Route path="/crear-contrato" element={<CrearContrato />} />
+
+        <Route path="/detalles-contrato/:id" element={<DetallesContrato />} />
+
+        <Route path="/editar-contrato/:id" element={<EditarContrato />} />
 
       </Routes>
     </Router>

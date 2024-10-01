@@ -200,6 +200,13 @@ const EditarCliente = () => {
           >
             Guardar Cambios
           </Button>
+          <Button
+            variant="outlined"
+            onClick={() => navigate(-1)} // Botón para volver
+            sx={{ mt: 2, color: '#0077b6', borderColor: '#0077b6', '&:hover': { backgroundColor: '#e0e0e0' } }}
+          >
+            Volver
+          </Button>
         </form>
       </Container>
     </Box>

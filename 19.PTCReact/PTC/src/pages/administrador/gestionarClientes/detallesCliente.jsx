@@ -71,6 +71,9 @@ const DetallesCliente = () => {
               <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#005f91' }}>Información Personal</Typography>
             </Grid>
             <Grid item xs={6}>
+              <Typography variant="body1"><strong>ID:</strong> {cliente._id}</Typography> {/* Mostrar ID del cliente */}
+            </Grid>
+            <Grid item xs={6}>
               <Typography variant="body1"><strong>Nombres:</strong> {cliente.nombres}</Typography>
             </Grid>
             <Grid item xs={6}>
@@ -93,9 +96,10 @@ const DetallesCliente = () => {
             </Grid>
           </Grid>
 
-          {/* Sección para los detalles adicionales */}
+          {/* Sección de detalles adicionales */}
           <Divider sx={{ my: 3 }} />
           <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#005f91' }}>Detalles Adicionales</Typography>
+
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Typography variant="body1"><strong>Casos:</strong></Typography>
@@ -111,6 +115,7 @@ const DetallesCliente = () => {
                 )}
               </List>
             </Grid>
+
             <Grid item xs={12}>
               <Typography variant="body1"><strong>Contratos:</strong></Typography>
               <List>
@@ -125,6 +130,7 @@ const DetallesCliente = () => {
                 )}
               </List>
             </Grid>
+
             <Grid item xs={12}>
               <Typography variant="body1"><strong>Facturas:</strong></Typography>
               <List>
@@ -139,6 +145,7 @@ const DetallesCliente = () => {
                 )}
               </List>
             </Grid>
+
             <Grid item xs={12}>
               <Typography variant="body1"><strong>Historiales:</strong></Typography>
               <List>
@@ -153,6 +160,7 @@ const DetallesCliente = () => {
                 )}
               </List>
             </Grid>
+
             <Grid item xs={12}>
               <Typography variant="body1"><strong>Registro de Casos:</strong></Typography>
               <List>

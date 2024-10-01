@@ -6,9 +6,6 @@ import {
   Paper,
   Button,
   Grid,
-  List,
-  ListItem,
-  ListItemText,
   Divider,
 } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -69,6 +66,9 @@ const DetallesDetective = () => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#005f91' }}>Información Personal</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="body1"><strong>ID:</strong> {detective._id}</Typography> {/* Mostrar ID del detective */}
             </Grid>
             <Grid item xs={6}>
               <Typography variant="body1"><strong>Nombres:</strong> {detective.nombres}</Typography>
