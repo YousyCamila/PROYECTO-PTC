@@ -11,7 +11,7 @@ import {
   InputLabel,
   FormControl,
 } from "@mui/material";
-import Swal from 'sweetalert2'; // Asegúrate de tener esta dependencia instalada
+import Swal from 'sweetalert2';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -43,7 +43,13 @@ const Login = () => {
           title: 'Login exitoso',
           text: 'Bienvenido de nuevo!',
         });
-        navigate("/dashboard"); // Redirigir a una página protegida
+
+        // Verificar el rol del usuario para redirigir
+        if (role === 'administrador') {
+          navigate('/admin-menu'); // Redirigir al menú administrativo
+        } else {
+          navigate("/dashboard"); // Redirigir a una página protegida para otros roles
+        }
       } else {
         Swal.fire({
           icon: 'error',
