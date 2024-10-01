@@ -215,44 +215,44 @@ body {
 }
 
     .contact-info h3 {
-        margin-bottom: 10px; /* Espaciado inferior del encabezado */
-        color: #333; /* Color del texto del encabezado */
+        margin-bottom: 10px; 
+        color: #333; 
     }
 
     .contact-info p {
-        margin: 5px 0; /* Espaciado vertical para párrafos */
-        color: #555; /* Color de texto */
-        font-size: 16px; /* Tamaño de fuente */
+        margin: 5px 0; 
+        color: #555; 
+        font-size: 16px; 
     }
 
 .footer {
-    background-color: #000000; /* Color de fondo negro */
-    color: #ffffff; /* Color de texto blanco */
-    padding: 20px 0; /* Espaciado superior e inferior */
-    text-align: center; /* Centrar texto */
-    font-size: 14px; /* Tamaño de fuente */
+    background-color: #000000; 
+    color: #ffffff; 
+    padding: 20px 0; 
+    text-align: center; 
+    font-size: 14px; 
 }
 
     .footer a {
-        color: #ffffff; /* Color de enlace blanco */
-        text-decoration: none; /* Sin subrayado */
-        transition: color 0.3s; /* Transición suave para el color */
+        color: #ffffff; 
+        text-decoration: none; 
+        transition: color 0.3s; 
     }
 
         .footer a:hover {
-            color: #3498db; /* Color de enlace al pasar el mouse */
-            text-decoration: underline; /* Subrayado al pasar el mouse */
+            color: #3498db; 
+            text-decoration: underline; 
         }
 
-/* Añadir un borde superior si es necesario */
+
 .border-top {
-    border-top: 1px solid #444444; /* Borde superior en un tono gris oscuro */
+    border-top: 1px solid #444444; 
 }
 
-/* Responsivo */
+
 @media (max-width: 768px) {
     .footer {
-        font-size: 12px; /* Tamaño de fuente más pequeño en pantallas pequeñas */
+        font-size: 12px; 
     }
 }
 
