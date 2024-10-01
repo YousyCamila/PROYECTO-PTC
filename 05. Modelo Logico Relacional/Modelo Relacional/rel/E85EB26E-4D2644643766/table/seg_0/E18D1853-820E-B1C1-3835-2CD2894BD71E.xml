@@ -11,12 +11,14 @@
 <Column name="ID_Mantenimiento" id="8EE85DA2-EEA2-96E1-1210-765980427FE7">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
+<commentInRDBMS><![CDATA[Registra el mantenimiento realizado en el sistema por los administradores.]]></commentInRDBMS>
 <generatorID>D46F5679-F798-9E27-5EB0-A05B74CC659E</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>200</dataTypeSize>
+<ownDataTypeParameters>200,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Descripcion" id="C374F7F1-281F-6C45-5463-C3D853E1418F">
@@ -38,9 +40,8 @@
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT037</logicalDatatype>
-<dataTypeSize>128 CHAR</dataTypeSize>
-<ownDataTypeParameters>128 CHAR,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Fecha_Final" id="807255AE-FE1E-6A91-2A13-218F76180032">
@@ -50,9 +51,8 @@
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT037</logicalDatatype>
-<dataTypeSize>128 CHAR</dataTypeSize>
-<ownDataTypeParameters>128 CHAR,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="Estado" id="4184B8EB-3F3B-77A0-C6E7-2B095ABFAAF2">
@@ -76,7 +76,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT037</logicalDatatype>
 <dataTypeSize>16 CHAR</dataTypeSize>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<ownDataTypeParameters>16 CHAR,,</ownDataTypeParameters>
 <previousColumn>false</previousColumn>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>

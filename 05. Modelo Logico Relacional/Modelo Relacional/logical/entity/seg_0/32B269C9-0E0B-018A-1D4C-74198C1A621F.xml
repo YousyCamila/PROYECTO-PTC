@@ -18,6 +18,7 @@
 <Attribute name="ID_Contrato" id="0761070F-007E-27F1-EFBA-86E5DDA82288">
 <createdBy>ludwi</createdBy>
 <createdTime>2024-05-13 16:43:42 UTC</createdTime>
+<commentInRDBMS><![CDATA[Registra los contratos establecidos con los clientes, incluyendo detalles como fechas, tarifas y estado.]]></commentInRDBMS>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <engineerTo>
 <item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
@@ -50,9 +51,8 @@
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT037</logicalDatatype>
-<dataTypeSize>128 CHAR</dataTypeSize>
-<ownDataTypeParameters>128 CHAR,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="Fecha_Cierre" id="F6F58781-11D4-8197-9B51-2C8506AB3ED7">
 <createdBy>ludwi</createdBy>
@@ -63,9 +63,8 @@
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT037</logicalDatatype>
-<dataTypeSize>128 CHAR</dataTypeSize>
-<ownDataTypeParameters>128 CHAR,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="Clausulas" id="AC0B56C6-FA63-076C-037B-EA6354E14BEE">
 <createdBy>ludwi</createdBy>
@@ -126,8 +125,9 @@
 <createdBy>ludwi</createdBy>
 <createdTime>2024-05-13 16:44:54 UTC</createdTime>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
 <engineerTo>
-<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="false"/>
 </engineerTo>
 <pk>true</pk>
 <usedAttributes>

@@ -1,0 +1,26 @@
+﻿@model _17.PrivateInvestigationTechnology_PTC.Models.Administrador
+
+@{
+    ViewData["Title"] = "Eliminar Administrador";
+}
+
+<h2>Eliminar Administrador</h2>
+
+<h3>¿Está seguro de que desea eliminar este administrador?</h3>
+<div>
+    <h4>Administrador</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10">@Model.IdentityUser?.Email</dd>
+
+        <dt class="col-sm-2">Número de Identidad</dt>
+        <dd class="col-sm-10">@Model.NumeroIdentidad</dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Eliminar" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>

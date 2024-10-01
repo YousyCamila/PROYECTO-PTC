@@ -1,0 +1,53 @@
+﻿@model IEnumerable<_17.PrivateInvestigationTechnology_PTC.Models.Formulario>
+
+@{
+    ViewData["Title"] = "Administrar Formularios";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table id="formulariosTable" class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre Completo</th>
+            <th>Email</th>
+            <th>Descripción</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var formulario in Model)
+        {
+            <tr>
+                <td>@formulario.Id</td>
+                <td>@formulario.FullName</td>
+                <td>@formulario.Email</td>
+                <td>@formulario.Descripcion</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@formulario.Id" class="btn btn-info">Detalles</a>
+                    <a asp-action="Delete" asp-route-id="@formulario.Id" class="btn btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#formulariosTable').DataTable({
+                "language": {
+                    "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"
+                }
+            });
+        });
+    </script>
+}
+
+@section Styles {
+    <link href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+}

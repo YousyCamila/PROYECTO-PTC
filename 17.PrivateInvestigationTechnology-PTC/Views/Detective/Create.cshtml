@@ -1,0 +1,46 @@
+﻿@model _17.PrivateInvestigationTechnology_PTC.Models.Detective
+
+@{
+    ViewData["Title"] = "Crear Detective";
+}
+
+<h2>Crear Detective</h2>
+
+<form asp-action="Create" enctype="multipart/form-data" method="post">
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <input type="email" class="form-control" id="Email" name="email" required />
+    </div>
+
+    <div class="form-group">
+        <label for="PhoneNumber">Phone Number</label>
+        <input type="text" class="form-control" id="PhoneNumber" name="phoneNumber" required />
+    </div>
+
+    <div class="form-group">
+        <label for="FullName">Full Name</label>
+        <input type="text" class="form-control" id="FullName" name="fullName" required />
+    </div>
+
+    <div class="form-group">
+        <label for="NumeroIdentidad">Número de Identidad</label>
+        <input type="text" class="form-control" id="NumeroIdentidad" name="NumeroIdentidad" required />
+    </div>
+
+    <div class="form-group">
+        <label for="HojaDeVidaFile">Subir Hoja de Vida</label>
+        <input type="file" class="form-control-file" id="HojaDeVidaFile" name="HojaDeVidaFile" />
+    </div>
+
+    <div class="form-group">
+        <label for="FotoPerfilFile">Subir Foto de Perfil</label>
+        <input type="file" class="form-control-file" id="FotoPerfilFile" name="FotoPerfilFile" />
+    </div>
+
+    <div class="form-group">
+        <label for="Password">Contraseña</label>
+        <input type="password" class="form-control" id="Password" name="password" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>

@@ -1,5 +1,5 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="C897E8EE-9B35-086E-127E-4FD46D8673DC" name="ROLES">
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="C897E8EE-9B35-086E-127E-4FD46D8673DC" name="Roles">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
 <generatorID>8E42603F-E399-F322-C34E-0E2FC85E43B9</generatorID>
@@ -11,6 +11,7 @@
 <Column name="RolId" id="8E456B07-A6D2-3B69-6A22-2EFC7740EC06">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
+<commentInRDBMS><![CDATA[Define los roles disponibles en el sistema para la asignación a usuarios.]]></commentInRDBMS>
 <generatorID>AF53C7D2-C848-1727-13CA-C084A3A755D7</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>

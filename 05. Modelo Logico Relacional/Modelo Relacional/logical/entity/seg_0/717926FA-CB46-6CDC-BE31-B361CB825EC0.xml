@@ -18,6 +18,7 @@
 <Attribute name="ID_Evidencia" id="A9DF89D3-3450-839A-7C82-94D40B5C8909">
 <createdBy>ludwi</createdBy>
 <createdTime>2024-06-17 02:20:39 UTC</createdTime>
+<commentInRDBMS><![CDATA[Guarda información sobre la evidencia recolectada en los casos, incluyendo descripciones y fechas.]]></commentInRDBMS>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <engineerTo>
 <item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
@@ -36,7 +37,7 @@
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
+<logicalDatatype>LOGDT008</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="Descripcion " id="430BC016-5AD3-EC43-8939-61D925E25183">
@@ -72,8 +73,9 @@
 <createdBy>ludwi</createdBy>
 <createdTime>2024-06-17 02:20:59 UTC</createdTime>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
 <engineerTo>
-<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>
+<item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="false"/>
 </engineerTo>
 <pk>true</pk>
 <usedAttributes>

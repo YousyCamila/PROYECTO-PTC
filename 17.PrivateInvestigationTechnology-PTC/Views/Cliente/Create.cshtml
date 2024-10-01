@@ -1,0 +1,35 @@
+﻿@model _17.PrivateInvestigationTechnology_PTC.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Crear Cliente";
+}
+
+<h2>Crear Cliente</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Email" class="control-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PhoneNumber" class="control-label"></label>
+        <input asp-for="PhoneNumber" class="form-control" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FullName" class="control-label"></label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Crear" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a href="@Url.Action("Index")" class="btn btn-secondary">Volver</a>
+</div>

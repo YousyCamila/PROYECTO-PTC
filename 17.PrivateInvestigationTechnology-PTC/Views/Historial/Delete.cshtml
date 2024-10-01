@@ -1,0 +1,24 @@
+﻿@model _17.PrivateInvestigationTechnology_PTC.Models.Historial
+
+@{
+    ViewData["Title"] = "Eliminar Historial";
+}
+
+<h1>Eliminar Historial</h1>
+
+<h4>Historial</h4>
+<hr />
+<div>
+    <h4>¿Está seguro de que desea eliminar este historial?</h4>
+    <div>
+        <h5>Cliente: @Model.IdClienteNavigation.Id</h5>
+        <h5>Descripción: @Model.Descripcion</h5>
+    </div>
+</div>
+<div>
+    <form asp-action="DeleteConfirmed">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Eliminar" class="btn btn-danger" />
+    </form>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</div>

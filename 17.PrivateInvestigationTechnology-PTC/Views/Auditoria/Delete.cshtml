@@ -1,0 +1,34 @@
+﻿@model _17.PrivateInvestigationTechnology_PTC.Models.Auditorium
+
+@{
+    ViewData["Title"] = "Eliminar Auditoría";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Eliminar Auditoría</h1>
+
+<h3>¿Estás seguro que quieres eliminar este registro?</h3>
+<div>
+    <h4>Auditoría</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IdentityUser)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IdentityUser.UserName) <!-- Mostrar el nombre de usuario en lugar del Id -->
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        <a asp-action="Index">Volver a la lista</a>
+    </form>
+</div>

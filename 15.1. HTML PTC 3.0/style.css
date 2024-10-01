@@ -1,4 +1,4 @@
-nav {
+nav{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -8,7 +8,7 @@ nav {
     height: 100px;
     background: linear-gradient(to left, rgba(12, 94, 218, 0.836), rgba(0, 0, 0, 0.711), rgba(12, 94, 218, 0.836));
 
-   /* background-color: rgba(7, 7, 7, 0.712);*/
+    /* background-color: rgba(7, 7, 7, 0.712);*/
     position: fixed;
     z-index: 10;
     

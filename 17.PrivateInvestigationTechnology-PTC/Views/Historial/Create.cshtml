@@ -1,0 +1,30 @@
+﻿@model _17.PrivateInvestigationTechnology_PTC.Models.Historial
+
+@{
+    ViewData["Title"] = "Crear Historial";
+}
+
+<h1>Crear Historial</h1>
+
+<h4>Historial</h4>
+<hr />
+<div>
+    <form asp-action="Create">
+        <div class="form-group">
+            <label asp-for="IdCliente" class="control-label"></label>
+            <select asp-for="IdCliente" class="form-control" asp-items="ViewBag.IdCliente"></select>
+            <span asp-validation-for="IdCliente" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Descripcion" class="control-label"></label>
+            <textarea asp-for="Descripcion" class="form-control"></textarea>
+            <span asp-validation-for="Descripcion" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Crear" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+<div>
+    <a asp-action="Index" class="btn btn-secondary">Volver</a>
+</div>

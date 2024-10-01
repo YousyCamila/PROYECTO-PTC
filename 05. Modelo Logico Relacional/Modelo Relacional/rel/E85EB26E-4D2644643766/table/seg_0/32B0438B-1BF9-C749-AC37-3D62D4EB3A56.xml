@@ -26,6 +26,7 @@
 <Column name="Direccion" id="A5F847E9-1A06-3BC1-3BC6-EE1B49625337">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
+<commentInRDBMS><![CDATA[Guarda información sobre los clientes que solicitan servicios y tienen contratos asociados.]]></commentInRDBMS>
 <generatorID>4CAD89F6-0D79-3878-903A-BD9EAB2A074C</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
@@ -58,7 +59,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT037</logicalDatatype>
 <dataTypeSize>128 CHAR</dataTypeSize>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<ownDataTypeParameters>128 CHAR,,</ownDataTypeParameters>
 <previousColumn>false</previousColumn>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>

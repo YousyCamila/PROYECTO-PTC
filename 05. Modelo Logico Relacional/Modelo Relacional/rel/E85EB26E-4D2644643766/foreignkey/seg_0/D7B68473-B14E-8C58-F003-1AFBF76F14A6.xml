@@ -1,16 +1,16 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="D7B68473-B14E-8C58-F003-1AFBF76F14A6" containerWithKeyObject="15708D28-4CB6-6A4E-ADD8-390D99B9082B" localFKIndex="B4A9143D-B21A-C01B-56E8-CB060547D351" name="Factura_CASOS_FK">
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="D7B68473-B14E-8C58-F003-1AFBF76F14A6" containerWithKeyObject="15708D28-4CB6-6A4E-ADD8-390D99B9082B" localFKIndex="B4A9143D-B21A-C01B-56E8-CB060547D351" name="Factura_Casos_FK">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-06-24 22:21:22 UTC</createdTime>
 <generatorID>2E96DD7F-363B-AFCE-CCCD-069D3B6BD12E</generatorID>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
-<referredTableLongName>CASOS</referredTableLongName>
+<referredTableLongName>Casos</referredTableLongName>
 <deleteRule>NO ACTION</deleteRule>
 <referredTableID>72B40214-958A-C519-8F0F-38E8CC1E1946</referredTableID>
 <keyObject>8A2BE268-226F-A0B1-5F18-EA61C9E8A29B</keyObject>
 <referredKeyID>8A2BE268-226F-A0B1-5F18-EA61C9E8A29B</referredKeyID>
 <mandatory>true</mandatory>
-<refColNames>ID</refColNames>
+<refColNames>ID_Casos</refColNames>
 <transferable>true</transferable>
 <rely>false</rely>
 <columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>

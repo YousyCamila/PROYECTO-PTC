@@ -1,0 +1,53 @@
+﻿@model IEnumerable<_17.PrivateInvestigationTechnology_PTC.Models.Administrador>
+
+@{
+    ViewData["Title"] = "Lista de Administradores";
+}
+
+<h2>Lista de Administradores</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<div class="text-right mb-3">
+    <a href="/SuperUsuarioLogin/Index" class="btn btn-secondary">Volver al Menú</a>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Full Name</th>
+            <th>Número de Identidad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var admin in Model)
+        {
+            <tr>
+                <td>@admin.IdentityUser?.Email</td>
+                <td>@admin.IdentityUser?.PhoneNumber</td>
+                <td>@admin.IdentityUser?.FullName</td>
+                <td>@admin.NumeroIdentidad</td>
+                <td>
+                    <a href="@Url.Action("Details", new { id = admin.Id })" class="btn btn-info">Detalles</a>
+                    <a href="@Url.Action("Edit", new { id = admin.Id })" class="btn btn-warning">Editar</a>
+                    <a href="@Url.Action("Delete", new { id = admin.Id })" class="btn btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+<a href="@Url.Action("Create")" class="btn btn-success">Crear Nuevo Administrador</a>

@@ -19,6 +19,7 @@
 <Attribute name="Direccion" id="4CAD89F6-0D79-3878-903A-BD9EAB2A074C">
 <createdBy>Aprendiz</createdBy>
 <createdTime>2024-05-09 20:15:52 UTC</createdTime>
+<commentInRDBMS><![CDATA[Guarda información sobre los clientes que solicitan servicios y tienen contratos asociados.]]></commentInRDBMS>
 <ownerDesignName>Modelo Relacional</ownerDesignName>
 <engineerTo>
 <item key="E85EB26E-76CD-C495-62C4-4D2644643766" value="true"/>

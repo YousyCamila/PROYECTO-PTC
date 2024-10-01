@@ -1,0 +1,48 @@
+﻿@model IEnumerable<_17.PrivateInvestigationTechnology_PTC.Models.Cliente>
+
+@{
+    ViewData["Title"] = "Lista de Clientes";
+}
+
+<h2>Lista de Clientes</h2>
+
+<!-- Mensaje de éxito -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+<!-- Mensaje de error -->
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+<div class="text-right mb-3">
+    <a href="/AdministradorLogin/Index" class="btn btn-secondary">Volver al Menú</a>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Full Name</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cliente in Model)
+        {
+            <tr>
+                <td>@cliente.IdentityUser.Email</td>
+                <td>@cliente.IdentityUser.PhoneNumber</td>
+                <td>@cliente.IdentityUser.FullName</td>
+                <td>
+                    <a href="@Url.Action("Details", new { id = cliente.Id })" class="btn btn-info">Detalles</a>
+                    <a href="@Url.Action("Edit", new { id = cliente.Id })" class="btn btn-warning">Editar</a>
+                    <a href="@Url.Action("Delete", new { id = cliente.Id })" class="btn btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
