@@ -160,12 +160,11 @@ namespace _17.PrivateInvestigationTechnology_PTC.Data
             builder.Entity<Formulario>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("PK_Formulario");
-                entity.Property(e => e.Detalles).HasMaxLength(255);
-                entity.HasOne(d => d.IdClienteNavigation)
-                    .WithMany(p => p.Formularios)
-                    .HasForeignKey(d => d.IdCliente)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Formulario_Cliente");
+                entity.Property(e => e.Descripcion).HasMaxLength(255);
+                entity.Property(e => e.FullName).HasMaxLength(255);
+                entity.Property(e => e. Email).HasMaxLength(255);
+
+                
             });
 
             // Configuración para Historial
