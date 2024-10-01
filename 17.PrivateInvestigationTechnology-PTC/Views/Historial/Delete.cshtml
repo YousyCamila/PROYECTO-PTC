@@ -1,34 +1,24 @@
 ﻿@model _17.PrivateInvestigationTechnology_PTC.Models.Historial
 
 @{
-    ViewData["Title"] = "Delete";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Eliminar Historial";
 }
 
-<h1>Delete</h1>
+<h1>Eliminar Historial</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h4>Historial</h4>
+<hr />
 <div>
-    <h4>Historial</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Descripcion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Descripcion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdClienteNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdClienteNavigation.Id)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
+    <h4>¿Está seguro de que desea eliminar este historial?</h4>
+    <div>
+        <h5>Cliente: @Model.IdClienteNavigation.Id</h5>
+        <h5>Descripción: @Model.Descripcion</h5>
+    </div>
+</div>
+<div>
+    <form asp-action="DeleteConfirmed">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Eliminar" class="btn btn-danger" />
     </form>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
 </div>
