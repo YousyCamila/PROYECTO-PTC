@@ -9,7 +9,6 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Fecha</th>
             <th>Descripción</th>
         </tr>
     </thead>
@@ -17,7 +16,6 @@
         @foreach (var historial in Model)
         {
             <tr>
-                <td>@historial.Fecha.ToShortDateString()</td>
                 <td>@historial.Descripcion</td>
             </tr>
         }

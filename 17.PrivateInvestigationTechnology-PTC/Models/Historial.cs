@@ -10,8 +10,6 @@ public partial class Historial
 
     public int IdCliente { get; set; }
 
-    public DateTime Fecha { get; set; }
-
     public string? Descripcion { get; set; }
 
     public virtual Cliente IdClienteNavigation { get; set; } = null!;
