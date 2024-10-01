@@ -92,7 +92,7 @@ router.post('/', contratoController.crearContrato);
  *     tags: [Contratos]
  *     responses:
  *       200:
- *         description: Lista de todos los contratos.
+ *         description: Lista de todos los contratos, incluyendo cliente y detective.
  *       500:
  *         description: Error interno del servidor.
  */

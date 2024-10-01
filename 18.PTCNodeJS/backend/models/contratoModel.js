@@ -21,7 +21,6 @@ const contratoSchema = new mongoose.Schema({
     type: mongoose.Types.Decimal128,
     required: true,
     set: function(value) {
-      // Asegurarse de que el valor sea un número y convertir a Decimal128
       return mongoose.Types.Decimal128.fromString(value.toString().replace(/\./g, '').replace(',', '.'));
     }
   },

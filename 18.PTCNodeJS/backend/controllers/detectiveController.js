@@ -19,6 +19,15 @@ const listarDetectives = async (req, res) => {
   }
 };
 
+const buscarDetectivePorId = async (req, res) => {
+  try {
+    const detective = await detectiveService.buscarDetectivePorId(req.params.id);
+    res.status(200).json(detective);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
 const buscarDetectivePorCorreo = async (req, res) => {
   try {
     const detective = await detectiveService.buscarDetectivePorCorreo(req.params.correo);
@@ -37,19 +46,26 @@ const actualizarDetective = async (req, res) => {
   }
 };
 
-const eliminarDetective = async (req, res) => {
+const desactivarDetective = async (req, res) => {
   try {
-    await detectiveService.eliminarDetective(req.params.id);
-    res.status(200).json({ message: "Detective desactivado correctamente" });
+    // Obtén el ID desde los parámetros de la solicitud
+    const { id } = req.params;
+
+    // Llama a la lógica para desactivar al detective
+    await clienteService.desactivarDetective(id);
+
+    res.status(200).json({ message: "Detective desactivado correctamente." });
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
 };
+
 
 module.exports = {
   crearDetective,
   listarDetectives,
   buscarDetectivePorCorreo,
   actualizarDetective,
-  eliminarDetective
+  desactivarDetective,
+  buscarDetectivePorId,
 };

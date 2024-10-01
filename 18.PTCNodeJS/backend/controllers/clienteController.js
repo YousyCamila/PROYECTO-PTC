@@ -18,6 +18,14 @@ const listarClientes = async (req, res) => {
     res.status(404).json({ error: error.message });
   }
 };
+const buscarClientePorId = async (req, res) => {
+  try {
+    const cliente = await clienteService.buscarClientePorId(req.params.id);
+    res.status(200).json(cliente);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
 
 const buscarClientePorCorreo = async (req, res) => {
   try {
@@ -37,14 +45,17 @@ const actualizarCliente = async (req, res) => {
   }
 };
 
+
 const desactivarCliente = async (req, res) => {
   try {
-    await clienteService.desactivarCliente(req.params.id); // Llama a la función de desactivación
-    res.status(200).json({ message: "Cliente desactivado correctamente" });
+    const cliente = await clienteService.desactivarCliente(req.params.id); // Llama al servicio para desactivar el cliente
+    res.status(200).json(cliente); // Envía de vuelta el cliente actualizado
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
 };
+
+
 
 module.exports = {
   crearCliente,
@@ -52,4 +63,5 @@ module.exports = {
   buscarClientePorCorreo,
   actualizarCliente,
   desactivarCliente,
+  buscarClientePorId,
 };

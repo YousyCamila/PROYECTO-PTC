@@ -27,6 +27,15 @@ async function listarClientes() {
   return clientes;
 }
 
+async function buscarClientePorId(id) {
+  const cliente = await Cliente.findById(id);
+  if (!cliente) {
+    throw new Error('Cliente no encontrado.');
+  }
+  return cliente;
+}
+
+
 async function buscarClientePorCorreo(correo) {
   const cliente = await Cliente.findOne({ correo, activo: true });
   if (!cliente) {
@@ -63,19 +72,22 @@ async function actualizarCliente(id, datos) {
 }
 
 async function desactivarCliente(id) {
-  const administrador = await Administrador.findById(id);
-  if (!administrador || !administrador.activo) {
-    throw new Error('El administrador que intenta desactivar no existe o ya ha sido desactivado.');
+  const cliente = await Cliente.findById(id); // Encuentra el cliente por ID
+  if (!cliente) {
+    throw new Error('El cliente que intenta desactivar no existe.'); // Error si no se encuentra
   }
-
-  administrador.activo = false; // Cambia el estado a inactivo
-  return await administrador.save();
+  
+  cliente.activo = false; // Cambia el estado a inactivo
+  return await cliente.save(); // Guarda el cliente con el nuevo estado
 }
+
+
 
 module.exports = {
   crearCliente,
   listarClientes,
   buscarClientePorCorreo,
   actualizarCliente,
-  desactivarCliente
+  desactivarCliente,
+  buscarClientePorId,
 };

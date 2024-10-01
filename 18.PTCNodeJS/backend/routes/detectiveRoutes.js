@@ -56,6 +56,29 @@ router.post('/', detectiveController.crearDetective);
  */
 router.get('/', detectiveController.listarDetectives);
 
+
+
+/**
+ * @swagger
+ * /detectives/{id}:
+ *   get:
+ *     summary: Obtener un detective por ID
+ *     tags: [Detectives]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID del detective
+ *     responses:
+ *       200:
+ *         description: Detective encontrado
+ *       404:
+ *         description: Detective no encontrado
+ */
+router.get('/:id', detectiveController.buscarDetectivePorId);
+
 /**
  * @swagger
  * /detectives/{correo}:
@@ -138,6 +161,6 @@ router.put('/:id', detectiveController.actualizarDetective);
  *       404:
  *         description: Detective no encontrado
  */
-router.delete('/:id', detectiveController.eliminarDetective);
+router.delete('/:id', detectiveController.desactivarDetective);
 
 module.exports = router;

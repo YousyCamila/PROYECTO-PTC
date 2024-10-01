@@ -13,7 +13,7 @@ const clienteSchema = new mongoose.Schema({
     },
     nombre: {
       type: String,
-      required: true
+      required: false // Cambiado a false
     }
   }],
   contratos: [{
@@ -23,12 +23,12 @@ const clienteSchema = new mongoose.Schema({
     },
     descripcionServicio: {
       type: String,
-      required: true
+      required: false // Cambiado a false
     },
     estado: {
       type: String,
       maxlength: 50,
-      required: true
+      required: false // Cambiado a false
     }
   }],
   facturas: [{
@@ -38,12 +38,12 @@ const clienteSchema = new mongoose.Schema({
     },
     total: {
       type: Number,
-      required: true
+      required: false // Cambiado a false
     },
     estado: {
       type: String,
       maxlength: 50,
-      required: true
+      required: false // Cambiado a false
     }
   }],
   historials: [{
@@ -53,11 +53,11 @@ const clienteSchema = new mongoose.Schema({
     },
     fecha: {
       type: Date,
-      required: true
+      required: false // Cambiado a false
     },
     detalle: {
       type: String,
-      required: true
+      required: false // Cambiado a false
     }
   }],
   registroCaso: [{
@@ -67,12 +67,12 @@ const clienteSchema = new mongoose.Schema({
     },
     descripcion: {
       type: String,
-      required: true
+      required: false // Cambiado a false
     },
     estadoRegistro: {
       type: String,
       maxlength: 50,
-      required: true
+      required: false // Cambiado a false
     }
   }],
   activo: { 

@@ -26,6 +26,14 @@ async function listarDetectives() {
   return detectives;
 }
 
+async function buscarDetectivePorId(id) {
+  const detective = await Detective.findById(id);
+  if (!detective) {
+    throw new Error('Detective no encontrado.');
+  }
+  return detective;
+}
+
 async function buscarDetectivePorCorreo(correo) {
   const detective = await Detective.findOne({ correo, activo: true });
   if (!detective) {
@@ -62,19 +70,26 @@ async function actualizarDetective(id, datos) {
 }
 
 async function desactivarDetective(id) {
-  const administrador = await Administrador.findById(id);
-  if (!administrador || !administrador.activo) {
-    throw new Error('El administrador que intenta desactivar no existe o ya ha sido desactivado.');
+  const detective = await Detective.findById(id);
+  
+  // Verifica si el detective existe y si está activo
+  if (!detective || !detective.activo) {
+    throw new Error('El detective que intenta desactivar no existe o ya ha sido desactivado.');
   }
 
-  administrador.activo = false; // Cambia el estado a inactivo
-  return await administrador.save();
+  // Cambia el estado a inactivo
+  detective.activo = false; 
+  
+  // Guarda los cambios y retorna el resultado
+  return await detective.save();
 }
+
 
 module.exports = {
   crearDetective,
   listarDetectives,
   buscarDetectivePorCorreo,
   actualizarDetective,
-  desactivarDetective
+  desactivarDetective,
+  buscarDetectivePorId,
 };

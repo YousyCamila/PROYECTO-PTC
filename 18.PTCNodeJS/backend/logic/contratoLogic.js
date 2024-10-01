@@ -23,11 +23,16 @@ async function crearContrato(data) {
 }
 
 async function listarContratos() {
-  return await Contrato.find();
+  return await Contrato.find()
+    .populate('idCliente', 'nombres apellidos') // Población de Cliente
+    .populate('idDetective', 'nombres apellidos'); // Población de Detective
 }
 
 async function buscarContratoPorId(id) {
-  const contrato = await Contrato.findById(id);
+  const contrato = await Contrato.findById(id)
+    .populate('idCliente')  // Poblar la información del cliente
+    .populate('idDetective'); // Poblar la información del detective
+
   if (!contrato) throw new Error('Contrato no encontrado');
   return contrato;
 }

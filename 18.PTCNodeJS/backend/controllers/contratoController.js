@@ -10,6 +10,7 @@ const crearContrato = async (req, res) => {
   }
 };
 
+
 const listarContratos = async (req, res) => {
   try {
     const contratos = await contratoService.listarContratos();
@@ -24,9 +25,12 @@ const buscarContratoPorId = async (req, res) => {
     const contrato = await contratoService.buscarContratoPorId(req.params.id);
     res.status(200).json(contrato);
   } catch (error) {
+    console.error(error); // Log para ayudar a depurar
     res.status(404).json({ error: error.message });
   }
 };
+
+
 
 const desactivarContrato = async (req, res) => {
   try {

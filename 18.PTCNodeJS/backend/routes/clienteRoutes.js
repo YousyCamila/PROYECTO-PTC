@@ -42,6 +42,29 @@ router.post('/', clienteController.crearCliente);
 
 /**
  * @swagger
+ * /clientes/{id}:
+ *   get:
+ *     summary: Obtener un cliente por ID
+ *     tags: [Clientes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID del cliente
+ *     responses:
+ *       200:
+ *         description: Cliente encontrado
+ *       404:
+ *         description: Cliente no encontrado
+ */
+router.get('/:id', clienteController.buscarClientePorId);
+
+
+
+/**
+ * @swagger
  * /clientes:
  *   get:
  *     summary: Obtener la lista de clientes
