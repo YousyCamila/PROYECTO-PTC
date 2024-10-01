@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 {
-    [Authorize(Roles = "Administrador, SuperUsuario")]
+    [Authorize(Roles = "Administrador, Superusuario")]
     public class RolesController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;

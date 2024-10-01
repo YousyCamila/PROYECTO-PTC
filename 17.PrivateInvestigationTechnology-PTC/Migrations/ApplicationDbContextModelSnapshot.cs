@@ -204,7 +204,6 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -300,6 +299,9 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
 
                     b.Property<int>("IdDetective")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("Progreso")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id")
                         .HasName("PK_Caso");
@@ -400,8 +402,15 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<DateTime>("FechaSubida")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("IdCaso")
                         .HasColumnType("int");
+
+                    b.Property<string>("RutaArchivo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id")
                         .HasName("PK_Evidencium");
@@ -441,17 +450,28 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Detalles")
+                    b.Property<int?>("ClienteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("IdCliente")
-                        .HasColumnType("int");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id")
                         .HasName("PK_Formulario");
 
-                    b.HasIndex("IdCliente");
+                    b.HasIndex("ClienteId");
 
                     b.ToTable("Formularios");
                 });
@@ -708,13 +728,9 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
 
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Formulario", b =>
                 {
-                    b.HasOne("_17.PrivateInvestigationTechnology_PTC.Models.Cliente", "IdClienteNavigation")
+                    b.HasOne("_17.PrivateInvestigationTechnology_PTC.Models.Cliente", null)
                         .WithMany("Formularios")
-                        .HasForeignKey("IdCliente")
-                        .IsRequired()
-                        .HasConstraintName("FK_Formulario_Cliente");
-
-                    b.Navigation("IdClienteNavigation");
+                        .HasForeignKey("ClienteId");
                 });
 
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Historial", b =>

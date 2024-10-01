@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace _17.PrivateInvestigationTechnology_PTC.Migrations
 {
     /// <inheritdoc />
-    public partial class Formulario : Migration
+    public partial class PTC_Remake : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,7 +30,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Sexo = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -284,17 +284,17 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdCliente = table.Column<int>(type: "int", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
+                    Descripcion = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    ClienteId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Formulario", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Formulario_Cliente",
-                        column: x => x.IdCliente,
+                        name: "FK_Formularios_Clientes_ClienteId",
+                        column: x => x.ClienteId,
                         principalTable: "Clientes",
                         principalColumn: "Id");
                 });
@@ -324,6 +324,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Progreso = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IdCliente = table.Column<int>(type: "int", nullable: false),
                     IdDetective = table.Column<int>(type: "int", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
@@ -375,6 +376,8 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IdCaso = table.Column<int>(type: "int", nullable: false),
+                    RutaArchivo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FechaSubida = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
                 },
                 constraints: table =>
@@ -521,9 +524,9 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                 column: "IdCliente");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Formularios_IdCliente",
+                name: "IX_Formularios_ClienteId",
                 table: "Formularios",
-                column: "IdCliente");
+                column: "ClienteId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Historiales_IdCliente",

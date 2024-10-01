@@ -14,7 +14,4 @@ public partial class Formulario
 
     public string Descripcion { get; set; }
 
-   
-    
-
 }

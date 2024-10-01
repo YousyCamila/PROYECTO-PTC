@@ -12,8 +12,8 @@ using _17.PrivateInvestigationTechnology_PTC.Data;
 namespace _17.PrivateInvestigationTechnology_PTC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241001000723_PTC")]
-    partial class PTC
+    [Migration("20241001093320_PTC_Remake")]
+    partial class PTC_Remake
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -453,17 +453,28 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Detalles")
+                    b.Property<int?>("ClienteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("IdCliente")
-                        .HasColumnType("int");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id")
                         .HasName("PK_Formulario");
 
-                    b.HasIndex("IdCliente");
+                    b.HasIndex("ClienteId");
 
                     b.ToTable("Formularios");
                 });
@@ -479,9 +490,6 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
                     b.Property<string>("Descripcion")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
-
-                    b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("IdCliente")
                         .HasColumnType("int");
@@ -723,13 +731,9 @@ namespace _17.PrivateInvestigationTechnology_PTC.Migrations
 
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Formulario", b =>
                 {
-                    b.HasOne("_17.PrivateInvestigationTechnology_PTC.Models.Cliente", "IdClienteNavigation")
+                    b.HasOne("_17.PrivateInvestigationTechnology_PTC.Models.Cliente", null)
                         .WithMany("Formularios")
-                        .HasForeignKey("IdCliente")
-                        .IsRequired()
-                        .HasConstraintName("FK_Formulario_Cliente");
-
-                    b.Navigation("IdClienteNavigation");
+                        .HasForeignKey("ClienteId");
                 });
 
             modelBuilder.Entity("_17.PrivateInvestigationTechnology_PTC.Models.Historial", b =>
