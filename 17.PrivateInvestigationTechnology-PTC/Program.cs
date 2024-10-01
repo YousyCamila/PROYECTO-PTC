@@ -33,8 +33,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration.GetSection("AuthMessageSenderOptions"));
 
-// Agregar el servicio EntityManagementService
-builder.Services.AddScoped<EntityManagementService>();
+// Agregar el servicio UserDataSyncService
+builder.Services.AddScoped<UserDataSyncService>();
 
 // Agregar el RoleAssignmentService en el contenedor
 builder.Services.AddScoped<RoleAssignmentService>();

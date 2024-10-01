@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using _17.PrivateInvestigationTechnology_PTC.Logic;
+using Microsoft.Extensions.Logging;
 
 namespace _17.PrivateInvestigationTechnology_PTC.Controllers
 {
@@ -18,17 +18,17 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _context;
-        private readonly RoleAssignmentService _roleAssignmentService;
+        private readonly ILogger<UserRolesController> _logger;
 
         public UserRolesController(UserManager<ApplicationUser> userManager,
                                    RoleManager<IdentityRole> roleManager,
                                    ApplicationDbContext context,
-                                   RoleAssignmentService roleAssignmentService)
+                                   ILogger<UserRolesController> logger)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _context = context;
-            _roleAssignmentService = roleAssignmentService;
+            _logger = logger;
         }
 
         // Mostrar lista de usuarios y sus roles
@@ -82,7 +82,7 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
             return View(model);
         }
 
-        // POST: Asignar roles a un usuario y añadirlo a la tabla correspondiente
+        // POST: Asignar roles a un usuario y sincronizar datos
         [HttpPost]
         public async Task<IActionResult> Manage(string userId, List<ManageUserRolesViewModel> roles)
         {
@@ -98,26 +98,111 @@ namespace _17.PrivateInvestigationTechnology_PTC.Controllers
             // Roles seleccionados en el formulario
             var selectedRoles = roles.Where(r => r.IsSelected).Select(r => r.RoleName).ToList();
 
-            // Agregar nuevos roles seleccionados
-            var result = await _userManager.AddToRolesAsync(user, selectedRoles.Except(currentRoles).ToList());
-            if (!result.Succeeded)
+            try
             {
-                ModelState.AddModelError("", "No se pudo agregar los roles.");
+                // Agregar nuevos roles seleccionados
+                var result = await _userManager.AddToRolesAsync(user, selectedRoles.Except(currentRoles).ToList());
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError("", "No se pudo agregar los roles.");
+                    return View(roles);
+                }
+
+                // Remover roles no seleccionados
+                result = await _userManager.RemoveFromRolesAsync(user, currentRoles.Except(selectedRoles).ToList());
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError("", "No se pudo remover los roles.");
+                    return View(roles);
+                }
+
+                // Asignar el usuario a la entidad correspondiente
+                await AssignToEntityAsync(user, selectedRoles);
+
+                // Usar TempData para pasar el mensaje de éxito a través de la redirección
+                TempData["SuccessMessage"] = "Roles actualizados con éxito";
+            }
+            catch (System.Exception ex)
+            {
+                _logger?.LogError(ex, $"Error al gestionar roles para el usuario con ID: {userId}");
+                ModelState.AddModelError("", "Se produjo un error al gestionar los roles del usuario.");
                 return View(roles);
             }
 
-            // Remover roles no seleccionados
-            result = await _userManager.RemoveFromRolesAsync(user, currentRoles.Except(selectedRoles).ToList());
-            if (!result.Succeeded)
+            return RedirectToAction("Manage", new { userId = user.Id });
+        }
+
+
+
+        // Asignar el usuario a la entidad correspondiente (Administrador, Cliente o Detective)
+        private async Task AssignToEntityAsync(ApplicationUser user, List<string> selectedRoles)
+        {
+            foreach (var role in selectedRoles)
             {
-                ModelState.AddModelError("", "No se pudo remover los roles.");
-                return View(roles);
+                if (role == "Administrador")
+                {
+                    await AssignAdminAsync(user);
+                }
+                else if (role == "Cliente")
+                {
+                    await AssignClienteAsync(user);
+                }
+                else if (role == "Detective")
+                {
+                    await AssignDetectiveAsync(user);
+                }
             }
+        }
 
-            // Asignar el usuario a la entidad correspondiente (Administrador, Cliente o Detective) dependiendo del rol asignado
-            await _roleAssignmentService.AssignToEntityAsync(user, selectedRoles);
+        // Método para asignar el rol de Administrador
+        private async Task AssignAdminAsync(ApplicationUser user)
+        {
+            if (!_context.Administradores.Any(a => a.IdentityUserId == user.Id))
+            {
+                var admin = new Administrador
+                {
+                    IdentityUserId = user.Id,
+                    IdentityUser = user,
+                    NumeroIdentidad = "123456789", // Ajustar según sea necesario
+                    HojaDeVida = null,
+                    FotoPerfil = null
+                };
+                _context.Administradores.Add(admin);
+                await _context.SaveChangesAsync();
+            }
+        }
 
-            return RedirectToAction("Index");
+        // Método para asignar el rol de Cliente
+        private async Task AssignClienteAsync(ApplicationUser user)
+        {
+            if (!_context.Clientes.Any(c => c.IdentityUserId == user.Id))
+            {
+                var cliente = new Cliente
+                {
+                    IdentityUserId = user.Id,
+                    IdentityUser = user
+                };
+                _context.Clientes.Add(cliente);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        // Método para asignar el rol de Detective
+        private async Task AssignDetectiveAsync(ApplicationUser user)
+        {
+            if (!_context.Detectives.Any(d => d.IdentityUserId == user.Id))
+            {
+                var detective = new Detective
+                {
+                    IdentityUserId = user.Id,
+                    IdentityUser = user,
+                    NumeroIdentidad = "654987321", // Ajustar según sea necesario
+                    HojaDeVida = null,
+                    FotoPerfil = null
+                };
+                _context.Detectives.Add(detective);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

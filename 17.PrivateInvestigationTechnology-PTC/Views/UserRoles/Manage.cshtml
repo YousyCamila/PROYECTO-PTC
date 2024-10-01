@@ -1,10 +1,24 @@
 ﻿@model List<_17.PrivateInvestigationTechnology_PTC.Models.ViewModels.ManageUserRolesViewModel>
 
-<h2>Gestionar Roles para @ViewBag.UserName</h2>
+<h2>Gestionar Roles para @ViewBag.FullName</h2>
 
+<!-- Mensaje de éxito -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<!-- Formulario para gestionar los roles de un usuario -->
 <form asp-action="Manage" method="post">
+    <!-- ID del usuario oculto -->
     <input type="hidden" name="userId" value="@ViewBag.UserId" />
 
+    <!-- Tabla de roles con casillas de verificación -->
     <table class="table">
         <thead>
             <tr>
@@ -13,14 +27,17 @@
             </tr>
         </thead>
         <tbody>
-            @for (int i = 0; i < Model.Count(); i++)
+            @for (int i = 0; i < Model.Count; i++)
             {
                 var role = Model[i];
                 <tr>
                     <td>@role.RoleName</td>
                     <td>
+                        <!-- Campos ocultos para enviar el RoleId y RoleName al controlador -->
                         <input type="hidden" name="roles[@i].RoleId" value="@role.RoleId" />
                         <input type="hidden" name="roles[@i].RoleName" value="@role.RoleName" />
+
+                        <!-- Checkbox para asignar o quitar roles -->
                         <input type="checkbox" name="roles[@i].IsSelected" value="true" @(role.IsSelected ? "checked" : "") />
                     </td>
                 </tr>
@@ -28,5 +45,26 @@
         </tbody>
     </table>
 
+    <!-- Botón para enviar el formulario -->
     <button type="submit" class="btn btn-success">Actualizar Roles</button>
 </form>
+
+<!-- Botón para volver al menú principal -->
+<div class="text-right mt-3">
+    <a href="/UserRoles/Index" class="btn btn-secondary">Volver a la Lista de Usuarios</a>
+</div>
+
+@section Scripts {
+    <!-- Cerrar automáticamente la alerta de éxito después de 5 segundos -->
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $(".alert").alert('close');
+            }, 5000);
+        });
+    </script>
+
+    <!-- Scripts de jQuery y Bootstrap (necesarios para el funcionamiento de las alertas) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+}

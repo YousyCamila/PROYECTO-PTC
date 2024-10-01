@@ -1,0 +1,25 @@
+﻿@model _17.PrivateInvestigationTechnology_PTC.Models.Detective
+
+@{
+    ViewData["Title"] = "Eliminar Detective";
+}
+
+<h2>Eliminar Detective</h2>
+
+<h3>¿Estás seguro de que deseas eliminar este detective?</h3>
+
+<div>
+    <strong>Nombre Completo:</strong> @Model.IdentityUser.FullName
+    <br />
+    <strong>Email:</strong> @Model.IdentityUser.Email
+    <br />
+    <strong>Número de Teléfono:</strong> @Model.IdentityUser.PhoneNumber
+    <br />
+    <strong>Número de Identidad:</strong> @Model.NumeroIdentidad
+</div>
+
+<form asp-action="DeleteConfirmed">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a href="@Url.Action("Index")" class="btn btn-secondary">Cancelar</a>
+</form>

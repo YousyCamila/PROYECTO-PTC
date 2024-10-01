@@ -1,0 +1,56 @@
+﻿@model _17.PrivateInvestigationTechnology_PTC.Models.Detective
+
+@{
+    ViewData["Title"] = "Editar Detective";
+}
+
+<h2>Editar Detective</h2>
+
+<form asp-action="Edit" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label for="FullName">Nombre Completo</label>
+        <input asp-for="IdentityUser.FullName" class="form-control" />
+        <span asp-validation-for="IdentityUser.FullName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="PhoneNumber">Número de Teléfono</label>
+        <input asp-for="IdentityUser.PhoneNumber" class="form-control" />
+        <span asp-validation-for="IdentityUser.PhoneNumber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <input asp-for="IdentityUser.Email" class="form-control" />
+        <span asp-validation-for="IdentityUser.Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="NumeroIdentidad">Número de Identidad</label>
+        <input asp-for="NumeroIdentidad" class="form-control" />
+        <span asp-validation-for="NumeroIdentidad" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="FotoPerfil">Foto de Perfil (opcional)</label>
+        <input type="file" name="fotoPerfil" class="form-control" />
+        <small class="form-text text-muted">Dejar en blanco para mantener la foto existente.</small>
+    </div>
+
+    <div class="form-group">
+        <label for="HojaDeVida">Hoja de Vida (opcional)</label>
+        <input type="file" name="hojaDeVida" class="form-control" />
+        <small class="form-text text-muted">Dejar en blanco para mantener la hoja de vida existente.</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    <a href="@Url.Action("Index")" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
