@@ -6,26 +6,22 @@
 
 <h2>Lista de Detectives</h2>
 
-<!-- Mensaje de éxito -->
+<!-- Mensajes de éxito o error -->
 @if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success">@TempData["SuccessMessage"]</div>
 }
-
-<!-- Mensaje de error -->
 @if (TempData["ErrorMessage"] != null)
 {
     <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
 }
 
-<!-- Tabla de detectives -->
-<table id="detectiveTable" class="table table-striped table-bordered">
-    <thead>
+<table id="detectivesTable" class="table table-bordered table-striped">
+    <thead class="thead-dark">
         <tr>
-            <th>Nombre de Usuario</th>
             <th>Email</th>
-            <th>PhoneNumber</th>
-            <th>FullName</th>
+            <th>Phone Number</th>
+            <th>Full Name</th>
             <th>Número de Identidad</th>
             <th>Acciones</th>
         </tr>
@@ -34,10 +30,9 @@
         @foreach (var detective in Model)
         {
             <tr>
-                <td>@detective.IdentityUser.UserName</td>
-                <td>@detective.IdentityUser.Email</td>
-                <td>@detective.IdentityUser.PhoneNumber</td>
-                <td>@detective.IdentityUser.FullName</td>
+                <td>@detective.IdentityUser?.Email</td>
+                <td>@detective.IdentityUser?.PhoneNumber</td>
+                <td>@detective.IdentityUser?.FullName</td>
                 <td>@detective.NumeroIdentidad</td>
                 <td>
                     <a href="@Url.Action("Details", new { id = detective.Id })" class="btn btn-info">Detalles</a>
@@ -49,17 +44,13 @@
     </tbody>
 </table>
 
-<a href="@Url.Action("Create")" class="btn btn-success">Crear Nuevo Detective</a>
-
+<!-- Script de DataTables para mejorar la presentación -->
 @section Scripts {
-    <!-- Scripts de DataTables y Bootstrap -->
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Inicialización de DataTables -->
     <script>
         $(document).ready(function () {
-            $('#detectiveTable').DataTable({
+            $('#detectivesTable').DataTable({
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/Spanish.json"
                 }
@@ -67,6 +58,3 @@
         });
     </script>
 }
-
-<!-- Estilos de DataTables y Bootstrap -->
-<link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css" rel="stylesheet" />

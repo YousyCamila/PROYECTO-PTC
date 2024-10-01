@@ -6,51 +6,38 @@
 
 <h2>Editar Detective</h2>
 
-<form asp-action="Edit" enctype="multipart/form-data">
+<form asp-action="Edit" enctype="multipart/form-data" method="post">
     <input type="hidden" asp-for="Id" />
 
     <div class="form-group">
-        <label for="FullName">Nombre Completo</label>
-        <input asp-for="IdentityUser.FullName" class="form-control" />
-        <span asp-validation-for="IdentityUser.FullName" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label for="PhoneNumber">Número de Teléfono</label>
-        <input asp-for="IdentityUser.PhoneNumber" class="form-control" />
-        <span asp-validation-for="IdentityUser.PhoneNumber" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
         <label for="Email">Email</label>
-        <input asp-for="IdentityUser.Email" class="form-control" />
-        <span asp-validation-for="IdentityUser.Email" class="text-danger"></span>
+        <input type="email" class="form-control" id="Email" name="email" value="@Model.IdentityUser?.Email" required />
+    </div>
+
+    <div class="form-group">
+        <label for="PhoneNumber">Phone Number</label>
+        <input type="text" class="form-control" id="PhoneNumber" name="phoneNumber" value="@Model.IdentityUser?.PhoneNumber" required />
+    </div>
+
+    <div class="form-group">
+        <label for="FullName">Full Name</label>
+        <input type="text" class="form-control" id="FullName" name="fullName" value="@Model.IdentityUser?.FullName" required />
     </div>
 
     <div class="form-group">
         <label for="NumeroIdentidad">Número de Identidad</label>
-        <input asp-for="NumeroIdentidad" class="form-control" />
-        <span asp-validation-for="NumeroIdentidad" class="text-danger"></span>
+        <input type="text" class="form-control" asp-for="NumeroIdentidad" required />
     </div>
 
     <div class="form-group">
-        <label for="FotoPerfil">Foto de Perfil (opcional)</label>
-        <input type="file" name="fotoPerfil" class="form-control" />
-        <small class="form-text text-muted">Dejar en blanco para mantener la foto existente.</small>
+        <label for="HojaDeVidaFile">Subir nueva Hoja de Vida (opcional)</label>
+        <input type="file" class="form-control-file" id="HojaDeVidaFile" name="HojaDeVidaFile" />
     </div>
 
     <div class="form-group">
-        <label for="HojaDeVida">Hoja de Vida (opcional)</label>
-        <input type="file" name="hojaDeVida" class="form-control" />
-        <small class="form-text text-muted">Dejar en blanco para mantener la hoja de vida existente.</small>
+        <label for="FotoPerfilFile">Subir nueva Foto de Perfil (opcional)</label>
+        <input type="file" class="form-control-file" id="FotoPerfilFile" name="FotoPerfilFile" />
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-    <a href="@Url.Action("Index")" class="btn btn-secondary">Cancelar</a>
 </form>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
