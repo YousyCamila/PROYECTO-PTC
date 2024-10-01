@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
-using System.IO;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 using _17.PrivateInvestigationTechnology_PTC.Models;
 
-namespace _17.PrivateInvestigationTechnology_PTC.Data
+
+namespace _17.PrivateInvestigationTechnology_PTC.Seeds
 {
     public static class IdentityDataInitializer
     {
@@ -14,181 +15,103 @@ namespace _17.PrivateInvestigationTechnology_PTC.Data
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
+            var logger = serviceProvider.GetRequiredService<ILogger>(); // Elimina el tipo genérico
 
             // Crear roles predefinidos
-            await EnsureRoleAsync(roleManager, "Cliente");
-            await EnsureRoleAsync(roleManager, "Administrador");
-            await EnsureRoleAsync(roleManager, "Detective");
-            await EnsureRoleAsync(roleManager, "Superusuario");
+            await EnsureRoleAsync(roleManager, "Cliente", logger);
+            await EnsureRoleAsync(roleManager, "Administrador", logger);
+            await EnsureRoleAsync(roleManager, "Detective", logger);
+            await EnsureRoleAsync(roleManager, "Superusuario", logger);
 
             // Crear usuarios predeterminados y asignarlos a roles
-            await EnsureUserAsync(userManager, roleManager, context, "admin@example.com", "Admin@123", "Administrador", "Admin Nombre", "123456789", "3001234567", new DateTime(1990, 1, 1), "admin_cv.pdf");
-            await EnsureUserAsync(userManager, roleManager, context, "cliente@example.com", "Cliente@123", "Cliente", "Cliente Nombre", null, "3009876543", new DateTime(1985, 5, 5), null);
-            await EnsureUserAsync(userManager, roleManager, context, "detective@example.com", "Detective@123", "Detective", "Detective Nombre", "567890123", "3005678901", new DateTime(1992, 2, 2), "detective_cv.pdf");
+            await EnsureUserAsync(userManager, roleManager, logger, "admin@example.com", "Admin@123", "Administrador", "Admin Nombre", "123456789", "3001234567");
+            await EnsureUserAsync(userManager, roleManager, logger, "cliente@example.com", "Cliente@123", "Cliente", "Cliente Nombre", null, "3009876543");
+            await EnsureUserAsync(userManager, roleManager, logger, "detective@example.com", "Detective@123", "Detective", "Detective Nombre", "567890123", "3005678901");
 
             // Crear Superusuario predeterminado
-            await EnsureSuperUserAsync(userManager, roleManager);
+            await EnsureSuperUserAsync(userManager, roleManager, logger);
         }
 
-        // Método para asegurar la creación de roles
-        private static async Task EnsureRoleAsync(RoleManager<IdentityRole> roleManager, string roleName)
+        private static async Task EnsureRoleAsync(RoleManager<IdentityRole> roleManager, string roleName, ILogger logger)
         {
             if (!await roleManager.RoleExistsAsync(roleName))
             {
                 var roleResult = await roleManager.CreateAsync(new IdentityRole(roleName));
-                if (!roleResult.Succeeded)
+                if (roleResult.Succeeded)
                 {
-                    throw new Exception($"Error creando el rol {roleName}: {string.Join(", ", roleResult.Errors.Select(e => e.Description))}");
+                    logger.LogInformation($"Rol {roleName} creado exitosamente.");
                 }
+                else
+                {
+                    logger.LogError($"Error creando el rol {roleName}: {string.Join(", ", roleResult.Errors.Select(e => e.Description))}");
+                }
+            }
+            else
+            {
+                logger.LogInformation($"El rol {roleName} ya existe.");
             }
         }
 
-        // Método para asegurar la creación de usuarios
-        private static async Task EnsureUserAsync(
-            UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager,
-            ApplicationDbContext context,
-            string email, string password, string roleName, string fullName,
-            string numeroIdentidad, string phoneNumber, DateTime fechaNacimiento, string hojaDeVidaFilePath)
+        private static async Task EnsureUserAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ILogger logger, string email, string password, string roleName, string fullName, string numeroIdentidad, string phoneNumber)
         {
-            try
+            var user = await userManager.FindByEmailAsync(email);
+            if (user == null)
             {
-                var user = await userManager.FindByEmailAsync(email);
-                if (user == null)
+                user = new ApplicationUser
                 {
-                    // Crear usuario con FullName en vez de UserName
-                    user = new ApplicationUser
-                    {
-                        FullName = fullName, // Aquí usamos FullName en lugar de UserName
-                        Email = email,
-                        PhoneNumber = phoneNumber
-                    };
+                    FullName = fullName,
+                    Email = email,
+                    PhoneNumber = phoneNumber
+                };
 
-                    var createResult = await userManager.CreateAsync(user, password);
-                    if (createResult.Succeeded)
-                    {
-                        await userManager.AddToRoleAsync(user, roleName);
-
-                        // Crear registros adicionales según el rol
-                        await AssignUserToRoleEntity(context, user, roleName, fullName, numeroIdentidad, phoneNumber, fechaNacimiento, hojaDeVidaFilePath);
-                    }
-                    else
-                    {
-                        throw new Exception($"Error creando el usuario {email}: {string.Join(", ", createResult.Errors.Select(e => e.Description))}");
-                    }
+                var createResult = await userManager.CreateAsync(user, password);
+                if (createResult.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user, roleName);
+                    logger.LogInformation($"Usuario {email} creado y asignado al rol {roleName}.");
+                }
+                else
+                {
+                    logger.LogError($"Error creando el usuario {email}: {string.Join(", ", createResult.Errors.Select(e => e.Description))}");
                 }
             }
-            catch (Exception ex)
+            else
             {
-                throw new Exception($"Error en el proceso de creación del usuario {email}: {ex.Message}", ex);
+                logger.LogInformation($"El usuario {email} ya existe.");
             }
         }
 
-        // Método para asegurar la creación del Superusuario
-        private static async Task EnsureSuperUserAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        private static async Task EnsureSuperUserAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ILogger logger)
         {
             var superUserEmail = "SuperUsuario@SuperPTC.com";
             var password = "!5?Yp*F95PYQtAt";
 
-            try
+            var superUser = await userManager.FindByEmailAsync(superUserEmail);
+            if (superUser == null)
             {
-                var superUser = await userManager.FindByEmailAsync(superUserEmail);
-                if (superUser == null)
+                superUser = new ApplicationUser
                 {
-                    superUser = new ApplicationUser
-                    {
-                        FullName = "Super Usuario", // Aquí usamos FullName en lugar de UserName
-                        Email = superUserEmail,
-                        EmailConfirmed = true,
-                        PhoneNumber = "3000000000"
-                    };
+                    FullName = "Super Usuario",
+                    Email = superUserEmail,
+                    EmailConfirmed = true,
+                    PhoneNumber = "3000000000"
+                };
 
-                    var createResult = await userManager.CreateAsync(superUser, password);
-                    if (createResult.Succeeded)
-                    {
-                        await userManager.AddToRoleAsync(superUser, "Superusuario");
-                    }
-                    else
-                    {
-                        throw new Exception($"Error creando el superusuario {superUserEmail}: {string.Join(", ", createResult.Errors.Select(e => e.Description))}");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error en el proceso de creación del superusuario: {ex.Message}", ex);
-            }
-        }
-
-        // Método para asignar al usuario a una entidad según el rol
-        private static async Task AssignUserToRoleEntity(
-            ApplicationDbContext context,
-            ApplicationUser user,
-            string roleName,
-            string fullName,
-            string numeroIdentidad,
-            string phoneNumber,
-            DateTime fechaNacimiento,
-            string hojaDeVidaFilePath)
-        {
-            if (roleName == "Administrador")
-            {
-                if (!context.Administradores.Any(a => a.IdentityUserId == user.Id))
+                var createResult = await userManager.CreateAsync(superUser, password);
+                if (createResult.Succeeded)
                 {
-                    var admin = new Administrador
-                    {
-                        NumeroIdentidad = numeroIdentidad,
-                        HojaDeVida = !string.IsNullOrEmpty(hojaDeVidaFilePath) ? ConvertirArchivoABytes(hojaDeVidaFilePath) : null,
-                        IdentityUserId = user.Id
-                    };
-                    context.Administradores.Add(admin);
+                    await userManager.AddToRoleAsync(superUser, "Superusuario");
+                    logger.LogInformation($"Superusuario {superUserEmail} creado y asignado al rol Superusuario.");
                 }
-            }
-            else if (roleName == "Cliente")
-            {
-                if (!context.Clientes.Any(c => c.IdentityUserId == user.Id))
+                else
                 {
-                    var cliente = new Cliente
-                    {
-                        IdentityUserId = user.Id
-                    };
-                    context.Clientes.Add(cliente);
+                    logger.LogError($"Error creando el superusuario {superUserEmail}: {string.Join(", ", createResult.Errors.Select(e => e.Description))}");
                 }
             }
-            else if (roleName == "Detective")
+            else
             {
-                if (!context.Detectives.Any(d => d.IdentityUserId == user.Id))
-                {
-                    var detective = new Detective
-                    {
-                        NumeroIdentidad = numeroIdentidad,
-                        HojaDeVida = !string.IsNullOrEmpty(hojaDeVidaFilePath) ? ConvertirArchivoABytes(hojaDeVidaFilePath) : null,
-                        IdentityUserId = user.Id
-                    };
-                    context.Detectives.Add(detective);
-                }
+                logger.LogInformation($"El superusuario {superUserEmail} ya existe.");
             }
-
-            await context.SaveChangesAsync();
-        }
-
-        // Método para convertir el archivo de hoja de vida a un array de bytes
-        private static byte[] ConvertirArchivoABytes(string filePath)
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
-                {
-                    return File.ReadAllBytes(filePath); // Leer el archivo y convertirlo en array de bytes
-                }
-            }
-            catch (Exception ex)
-            {
-                // Manejar posibles excepciones al leer el archivo
-                throw new Exception($"Error al leer el archivo {filePath}: {ex.Message}", ex);
-            }
-            return null; // Retornar null si el archivo no existe o no es accesible
         }
     }
 }
