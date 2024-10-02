@@ -8,7 +8,7 @@ const formularioSchema = new mongoose.Schema({
   },
   numeroCelular: {
     type: String,
-    maxlength: 15,
+    maxlength: 10,
     required: true
   },
   descripcion: {

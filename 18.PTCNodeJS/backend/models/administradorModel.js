@@ -1,19 +1,14 @@
 const mongoose = require('mongoose');
+const personaSchema = require('./personaModel');
 
 const administradorSchema = new mongoose.Schema({
-  especialidad: {
-    type: String,
-    maxlength: 100
-  },
-  idPersona: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Persona',
-    required: true
-  },
-  registroMantenimientos: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'RegistroMantenimiento'
-  }]
-});
+    
+    activo: { type: Boolean, default: true },
+  
+},
+{timestamps : true});
+administradorSchema.add(personaSchema);
 
-module.exports = mongoose.model('Administrador', administradorSchema);
+// Crea el modelo de Administrador
+const Administrador = mongoose.model('Administrador', administradorSchema);
+module.exports = Administrador;

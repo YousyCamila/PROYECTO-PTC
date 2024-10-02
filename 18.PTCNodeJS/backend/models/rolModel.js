@@ -8,12 +8,14 @@ const roleSchema = new mongoose.Schema({
   },
   estado: {
     type: Boolean,
-    required: true
+    required: true,
+    default: true, 
   },
   usuarios: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Usuario'
   }]
-});
+},
+  { timestamps: true }) ;
 
 module.exports = mongoose.model('Rol', roleSchema);
