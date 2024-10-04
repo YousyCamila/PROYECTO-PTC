@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const casoController = require('../controllers/casoController');
+const autenticar = require('../middleware/verifyToken');
 
 /**
  * @swagger
@@ -151,17 +152,10 @@ router.delete('/:id', casoController.desactivarCaso);
 
 /**
  * @swagger
- * /caso/cliente-casos/{id}:
+ * /caso/cliente-casos:
  *   get:
- *     summary: Obtener casos por ID del cliente
+ *     summary: Obtener casos por ID del cliente autenticado
  *     tags: [Casos]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: ID del cliente
  *     responses:
  *       200:
  *         description: Casos encontrados
@@ -170,7 +164,9 @@ router.delete('/:id', casoController.desactivarCaso);
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/cliente-casos/:id', casoController.obtenerCasosPorClienteId);
+router.get('/cliente-casos', autenticar, casoController.obtenerCasosPorClienteId);
+
+
 
 
 

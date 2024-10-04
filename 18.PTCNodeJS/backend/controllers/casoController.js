@@ -12,18 +12,22 @@ const crearCaso = async (req, res) => {
 };
 
 const obtenerCasosPorClienteId = async (req, res) => {
-  const idCliente = req.params.id; // Obtén el ID del cliente de los parámetros de la ruta
+  // Obtenemos el ID del cliente de la sesión
+  const idCliente = req.session.userId; // Suponiendo que guardamos el userId en la sesión
+
   try {
-      const casos = await clienteLogic.obtenerCasosPorClienteId(idCliente); // Llama a la función del servicio
-      if (!casos || casos.length === 0) {
-          return res.status(404).json({ message: 'No se encontraron casos para este cliente.' });
-      }
-      res.status(200).json(casos); // Devuelve los casos encontrados
+    const casos = await clienteLogic.obtenerCasosPorClienteId(idCliente);
+    if (!casos || casos.length === 0) {
+      return res.status(404).json({ message: 'No se encontraron casos para este cliente.' });
+    }
+    res.status(200).json(casos); // Devuelve los casos encontrados
   } catch (error) {
-      console.error('Error al obtener los casos:', error); // Log para depuración
-      res.status(500).json({ error: 'Error interno del servidor: ' + error.message });
+    console.error('Error al obtener los casos:', error);
+    res.status(500).json({ error: 'Error interno del servidor: ' + error.message });
   }
 };
+
+
 
 
 

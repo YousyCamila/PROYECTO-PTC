@@ -60,9 +60,12 @@ const login = async (req, res) => {
       return res.status(400).json({ error: 'Usuario, rol o contraseña incorrectos' });
     }
 
-    // Generar el token
-    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
+    // Establecer la cookie de sesión
+    req.session.userId = user._id; // Almacena el ID del usuario en la sesión
+    req.session.role = user.role;   // Almacena el rol del usuario en la sesión
+
+    // Respuesta de éxito
+    res.status(200).json({ message: 'Inicio de sesión exitoso' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al iniciar sesión' });

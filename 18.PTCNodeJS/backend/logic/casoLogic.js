@@ -46,12 +46,17 @@ async function crearCaso(datos) {
   return caso;
 }
 
+//Funcion para clientes 
 async function obtenerCasosPorClienteId(idCliente) {
+  if (!mongoose.Types.ObjectId.isValid(idCliente)) {
+    throw new Error('ID de cliente no válido');
+  }
+
   try {
-      const casos = await Caso.find({ idCliente }); // Busca los casos asociados al cliente
-      return casos; // Devuelve los casos encontrados
+    const casos = await Caso.find({ idCliente }).populate('idDetective').populate('evidencias').populate('registroCasos');
+    return casos;
   } catch (error) {
-      throw new Error('Error al obtener los casos: ' + error.message); // Manejo de errores
+    throw new Error('Error al obtener los casos: ' + error.message);
   }
 }
 
