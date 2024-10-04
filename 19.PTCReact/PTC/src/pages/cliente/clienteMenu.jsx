@@ -23,6 +23,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AddIcon from '@mui/icons-material/Add';
+import Cookies from 'js-cookie'; // Importar js-cookie
 
 const ClienteMenu = () => {
   const { id } = useParams(); // Obtener el ID del cliente de la URL
@@ -36,17 +37,20 @@ const ClienteMenu = () => {
   // Fetch casos por cliente ID
   const fetchCasos = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/cliente-casos/${id}`);
+      const response = await fetch(`http://localhost:3000/api/caso/cliente-casos`, {
+        method: 'GET',
+        credentials: 'include', // Asegúrate de incluir cookies
+      });
       const data = await response.json();
 
       if (response.ok) {
         setCasos(data);
       } else {
-        throw new Error(data.error);
+        throw new Error(data.message);
       }
     } catch (error) {
       console.error("Error fetching casos:", error);
-      setSnackbarMessage('Error al cargar los casos');
+      setSnackbarMessage('Error al cargar los casos: ' + error.message);
       setOpenSnackbar(true);
     }
   };
@@ -54,7 +58,9 @@ const ClienteMenu = () => {
   // Fetch caso por ID
   const fetchCasoById = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/caso/${id}`);
+      const response = await fetch(`http://localhost:3000/api/caso/${id}`, {
+        credentials: 'include', // Asegúrate de incluir cookies
+      });
       const data = await response.json();
 
       if (response.ok) {
@@ -64,11 +70,11 @@ const ClienteMenu = () => {
           Swal.fire('El caso ya está asociado al cliente.');
         }
       } else {
-        throw new Error(data.error);
+        throw new Error(data.message);
       }
     } catch (error) {
       console.error("Error fetching caso:", error);
-      setSnackbarMessage('Error al cargar el caso');
+      setSnackbarMessage('Error al cargar el caso: ' + error.message);
       setOpenSnackbar(true);
     }
   };
@@ -116,7 +122,7 @@ const ClienteMenu = () => {
 
   useEffect(() => {
     fetchCasos(); // Fetch casos cuando el componente se monta
-  }, [id]);
+  }, []);
 
   return (
     <Box
