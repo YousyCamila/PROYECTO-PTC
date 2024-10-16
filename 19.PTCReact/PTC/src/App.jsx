@@ -26,6 +26,7 @@ import EditarContrato from './pages/administrador/gestionContrato/editarContrato
 import MenuCliente from './pages/cliente/clienteMenu';
 import AgregarEvidencia from './pages/cliente/agregarEvidencia';
 import DetectiveMenu from './pages/detective/detectiveMenu';
+import Servicios from './pages/servicios/servicios';
 
 function App() {
   const [email, setEmail] = useState(''); // Define el estado para el email
@@ -40,25 +41,27 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />  {/* Página principal */}
         <Route path="/login" element={<Login />} />  {/* Página de Login */}
-        <Route 
-          path="/register" 
+        <Route
+          path="/register"
           element={<Register onEmailChange={handleEmailChange} />} // Pasa la función
         />
-        <Route 
-          path="/detective-form" 
+        <Route
+          path="/detective-form"
           element={<DetectiveForm email={email} />} // Asegúrate de pasar el email
         />
-         <Route 
-          path="/cliente-form" 
+        <Route
+          path="/cliente-form"
           element={<ClienteForm email={email} />} // Asegúrate de pasar el email
         />
-        <Route 
-          path="/administrador-form" 
+        <Route
+          path="/administrador-form"
           element={<AdministradorForm email={email} />} // Asegúrate de pasar el email
         />
-        <Route path="/admin-menu" element={<AdminMenu />} /> 
+        <Route path="/servicios" element={<Servicios />} />
 
-        <Route path="/gestionar-clientes" element={<GestionarClientes />} /> 
+        <Route path="/admin-menu" element={<AdminMenu />} />
+
+        <Route path="/gestionar-clientes" element={<GestionarClientes />} />
 
         <Route path="/crear-cliente" element={<CrearCliente />} />
 
@@ -74,7 +77,7 @@ function App() {
 
         <Route path="/editar-detective/:id" element={<EditarDetective />} />
 
-        <Route path="/gestionar-Casos" element={<GestionarCasos />} /> 
+        <Route path="/gestionar-Casos" element={<GestionarCasos />} />
 
         <Route path="/crear-caso" element={<CrearCaso />} />
 
@@ -90,11 +93,13 @@ function App() {
 
         <Route path="/editar-contrato/:id" element={<EditarContrato />} />
 
-        <Route path="/cliente-menu" element={<MenuCliente />} /> 
+        <Route path="/cliente-menu" element={<MenuCliente />} />
 
-        <Route path="/detective-menu" element={<DetectiveMenu />} /> 
+        <Route path="/detective-menu" element={<DetectiveMenu />} />
 
         <Route path="/agregar-evidencia/:casoId" element={<AgregarEvidencia />} />
+
+
 
       </Routes>
     </Router>

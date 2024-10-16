@@ -60,12 +60,18 @@ const StyledCard = styled(Card)(({ theme }) => ({
 
 const Home = () => {
   return (
-    <Box sx={{ width: '100%', background: 'linear-gradient(to bottom, #00b4d8, #0077b6)', color: '#fff' }}>
-      <AppBar position="static" sx={{ backgroundColor: '#005f91' }}>
+    <Box sx={{ width: '100%', background: 'linear-gradient(to bottom, #5D5D5DFF, #004D76FF)', color: '#fff' }}>
+      <AppBar position="static" sx={{ backgroundColor: '#1A1C1EFF' }}>
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             PTC
           </Typography>
+          <Button color="inherit" href="/servicios">
+            Servicios
+          </Button>
+          <Button color="inherit" href="/contactanos">
+            Contáctanos
+          </Button>
           <Button color="inherit" href="/login">
             Inicio de Sesión
           </Button>
@@ -116,7 +122,7 @@ const Home = () => {
         </Grid>
       </Box>
 
-      <footer style={{ backgroundColor: '#005f91', color: '#fff', textAlign: 'center', padding: '20px 0' }}>
+      <footer style={{ backgroundColor: '#000000FF', color: '#fff', textAlign: 'center', padding: '20px 0' }}>
         <Typography variant="h4">PTC</Typography>
         <Typography variant="body2" sx={{ mt: 2 }}>© 2024 PTC. Todos los derechos reservados.</Typography>
       </footer>

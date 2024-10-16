@@ -1,0 +1,125 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.services-section {
+    text-align: center;
+    padding: 50px 20px;
+    flex: 1;
+}
+
+.services-title h1 {
+    font-size: 3em;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: black;
+}
+
+.services-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.service {
+    flex: 1 1 30%;
+    max-width: 400px;
+    margin: 20px;
+    padding: 20px;
+    text-align: left;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.service h2 {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.service ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    padding-left: 20px;
+}
+
+.service-description {
+    margin-top: 10px;
+}
+
+.divider {
+    width: 100%;
+    margin: 40px 0;
+    border-top: 2px solid #ddd;
+}
+
+/* Añadir animación al pasar el mouse */
+.service:hover {
+    transform: scale(1.05);
+    /* Aumentar ligeramente el tamaño */
+    background-color: #e0e0e0;
+    /* Cambiar el color de fondo */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    /* Aumentar la sombra */
+}
+
+.back-button {
+    background: linear-gradient(45deg, #007bff, #00d4ff);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 20px 0;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s ease, transform 0.3s ease;
+
+    position: absolute;
+    /* Hace que el botón se posicione de forma relativa a su contenedor */
+    bottom: 20px;
+    /* Posiciona el botón a 20px del borde inferior */
+    right: 20px;
+    /* Posiciona el botón a 20px del borde derecho */
+}
+
+.back-button:hover {
+    background: linear-gradient(45deg, #ff4500, #ffae00);
+    transform: scale(1.1);
+}
+
+.contact-button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s ease, transform 0.3s ease;
+
+    position: absolute;
+    /* Hace que el botón se posicione de forma relativa a su contenedor */
+    top: 20px;
+    /* Posiciona el botón a 20px del borde superior */
+    right: 20px;
+    /* Posiciona el botón a 20px del borde derecho */
+}
+
+.contact-button:hover {
+    background: #218838;
+    transform: scale(1.1);
+}
