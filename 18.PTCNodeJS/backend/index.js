@@ -18,7 +18,7 @@ const evidenciaRoutes = require('./routes/evidenciaRoutes');
 const facturaRoutes = require('./routes/facturaRoutes');
 const formularioRoutes = require('./routes/formularioRoutes');
 const historialRoutes = require('./routes/historialRoutes');
-const casoRoutes = require ('./routes/casoRoutes');
+const casoRoutes = require('./routes/casoRoutes');
 const registroCasoRoutes = require('./routes/registroCasoRoutes');
 const registroMantenimientoRoutes = require('./routes/registroMantenimientoRoutes');
 const rolRoutes = require('./routes/rolRoutes');
@@ -62,12 +62,6 @@ app.use('/api/registros-mantenimiento', registroMantenimientoRoutes);
 app.use('/api/roles', rolRoutes);
 app.use('/api/tipos-evidencia', tipoEvidenciaRoutes);
 app.use('/api/usuario', usuarioRoutes);
-
-// Configuración de manejo de errores
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ message: 'Ocurrió un error en el servidor.' });
-});
 
 const port = 3000; // Establece el puerto directamente en el código
 

@@ -4,13 +4,22 @@ const { formularioSchemaValidation } = require('../validations/formularioValidat
 // Controlador para crear un nuevo formulario
 const crearFormulario = async (req, res) => {
   try {
-    // Validar los datos entrantes
     await formularioSchemaValidation.validateAsync(req.body);
     const formulario = await formularioService.crearFormulario(req.body);
     res.status(201).json(formulario);
-    // Aquí puedes agregar la lógica para enviar el correo electrónico al administrador
   } catch (error) {
     res.status(400).json({ message: 'Error al crear el formulario', error: error.message });
+  }
+};
+
+// Controlador para responder a un formulario
+const responderFormulario = async (req, res) => {
+  try {
+    const { respuesta } = req.body;
+    const formulario = await formularioService.responderFormulario(req.params.id, respuesta);
+    res.status(200).json(formulario);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al responder el formulario', error: error.message });
   }
 };
 
@@ -53,6 +62,7 @@ const eliminarFormulario = async (req, res) => {
 
 module.exports = {
   crearFormulario,
+  responderFormulario,
   obtenerFormularios,
   obtenerFormularioPorId,
   actualizarFormulario,

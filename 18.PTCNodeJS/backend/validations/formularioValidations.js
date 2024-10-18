@@ -1,61 +1,71 @@
-const Joi = require('@hapi/joi');
-const mongoose = require('mongoose');
+const Joi = require('joi');
 
-// Validaciones para el objeto Formulario
+// Definición del esquema de validación para el formulario
 const formularioSchemaValidation = Joi.object({
   nombre: Joi.string()
     .max(100)
     .required()
     .messages({
-      'string.base': 'nombre debe ser un texto',
-      'string.max': 'nombre no puede tener más de 100 caracteres',
-      'any.required': 'nombre es un campo requerido',
+      'string.base': 'El nombre debe ser un texto.',
+      'string.empty': 'El nombre no puede estar vacío.',
+      'string.max': 'El nombre no puede tener más de 100 caracteres.',
+      'any.required': 'El nombre es un campo requerido.'
     }),
-
+  
   numeroCelular: Joi.string()
-    .max(10)
+    .length(10)
+    .pattern(/^[0-9]+$/)
     .required()
     .messages({
-      'string.base': 'numeroCelular debe ser un texto',
-      'string.max': 'numeroCelular no puede tener más de 10 caracteres',
-      'any.required': 'numeroCelular es un campo requerido',
+      'string.base': 'El número de celular debe ser un texto.',
+      'string.empty': 'El número de celular no puede estar vacío.',
+      'string.length': 'El número de celular debe tener exactamente 10 dígitos.',
+      'string.pattern.base': 'El número de celular debe contener solo números.',
+      'any.required': 'El número de celular es un campo requerido.'
     }),
-
+  
   descripcion: Joi.string()
     .required()
     .messages({
-      'string.base': 'descripcion debe ser un texto',
-      'any.required': 'descripcion es un campo requerido',
+      'string.base': 'La descripción debe ser un texto.',
+      'string.empty': 'La descripción no puede estar vacía.',
+      'any.required': 'La descripción es un campo requerido.'
     }),
-
+  
   fechaEnvio: Joi.date()
+    .default(() => new Date(), 'fecha de envío predeterminada')
     .required()
     .messages({
-      'date.base': 'fechaEnvio debe ser una fecha',
-      'any.required': 'fechaEnvio es un campo requerido',
+      'date.base': 'La fecha de envío debe ser una fecha válida.',
+      'any.required': 'La fecha de envío es un campo requerido.'
     }),
-
+  
   idCliente: Joi.string()
-    .custom((value, helpers) => {
-      if (!mongoose.Types.ObjectId.isValid(value)) {
-        return helpers.message('idCliente debe ser un ID válido de MongoDB');
-      }
-      return value;
-    })
     .required()
     .messages({
-      'string.base': 'idCliente debe ser un texto',
-      'any.required': 'idCliente es un campo requerido',
+      'string.base': 'El ID del cliente debe ser un texto.',
+      'string.empty': 'El ID del cliente no puede estar vacío.',
+      'any.required': 'El ID del cliente es un campo requerido.'
     }),
-
+  
   correoCliente: Joi.string()
     .email()
     .required()
     .messages({
-      'string.base': 'correoCliente debe ser un texto',
-      'string.email': 'correoCliente debe ser un correo electrónico válido',
-      'any.required': 'correoCliente es un campo requerido',
+      'string.base': 'El correo electrónico debe ser un texto.',
+      'string.empty': 'El correo electrónico no puede estar vacío.',
+      'string.email': 'El correo electrónico debe tener un formato válido.',
+      'any.required': 'El correo electrónico es un campo requerido.'
+    }),
+  
+  respuesta: Joi.string()
+    .optional() // El campo de respuesta es opcional
+    .messages({
+      'string.base': 'La respuesta debe ser un texto.',
+      'string.empty': 'La respuesta no puede estar vacía.'
     }),
 });
 
-module.exports = { formularioSchemaValidation };
+module.exports = {
+  formularioSchemaValidation,
+};
