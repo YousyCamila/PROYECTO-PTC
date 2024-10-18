@@ -17,8 +17,8 @@ const formularioSchema = new mongoose.Schema({
   },
   fechaEnvio: {
     type: Date,
-    default: Date.now, // Se establece la fecha actual por defecto
-    required: true
+    required: true,
+    default: Date.now // Fecha actual por defecto
   },
   idCliente: {
     type: mongoose.Schema.Types.ObjectId,
@@ -28,7 +28,8 @@ const formularioSchema = new mongoose.Schema({
   correo: {
     type: String,
     required: true,
-    match: [/.+\@.+\..+/, 'Por favor ingresa un correo electrónico válido.'] // Validación de correo
+    lowercase: true, // Convierte a minúsculas
+    trim: true // Elimina espacios en blanco
   }
 });
 
