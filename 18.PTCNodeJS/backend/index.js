@@ -6,7 +6,6 @@ const connectDB = require('./configDB/db'); // Conexión a la base de datos
 const { swaggerUi, swaggerSpec } = require('./swagger/swagger'); // Configuración de Swagger
 const sessionMiddleware = require('./middleware/middleware');
 
-
 dotenv.config(); // Carga las variables del archivo .env
 
 // Importar las rutas
@@ -29,15 +28,12 @@ const usuarioRoutes = require('./routes/usuarioRoutes');
 // Conectar a MongoDB
 connectDB();
 
-
-
 // Inicializar la aplicación Express
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 sessionMiddleware(app);
-
 
 // Configuración de CORS
 const corsOptions = {
@@ -66,6 +62,12 @@ app.use('/api/registros-mantenimiento', registroMantenimientoRoutes);
 app.use('/api/roles', rolRoutes);
 app.use('/api/tipos-evidencia', tipoEvidenciaRoutes);
 app.use('/api/usuario', usuarioRoutes);
+
+// Configuración de manejo de errores
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: 'Ocurrió un error en el servidor.' });
+});
 
 const port = 3000; // Establece el puerto directamente en el código
 
