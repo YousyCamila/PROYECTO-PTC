@@ -15,17 +15,32 @@ const formularioController = require('../controllers/formularioController');
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - nombre
+ *               - numeroCelular
+ *               - descripcion
+ *               - correoCliente
  *             properties:
- *               clienteId:
+ *               nombre:
+ *                 type: string
+ *                 example: "Juan Pérez"
+ *               numeroCelular:
+ *                 type: string
+ *                 example: "1234567890"
+ *               descripcion:
+ *                 type: string
+ *                 example: "Necesito información sobre sus servicios."
+ *               fechaEnvio:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2024-10-18T12:00:00Z"
+ *               idCliente:
  *                 type: string
  *                 example: "651edc5565bfc2a7f8e98345"
- *               tipo:
+ *               correoCliente:
  *                 type: string
- *                 example: "Solicitud de información"
- *               fecha:
- *                 type: string
- *                 format: date
- *                 example: "2024-09-01"
+ *                 format: email
+ *                 example: "juan.perez@example.com"
  *     responses:
  *       201:
  *         description: Formulario creado exitosamente
@@ -54,16 +69,26 @@ router.post('/', formularioController.crearFormulario);
  *                   id:
  *                     type: string
  *                     example: "651edc5565bfc2a7f8e98345"
- *                   clienteId:
+ *                   nombre:
+ *                     type: string
+ *                     example: "Juan Pérez"
+ *                   numeroCelular:
+ *                     type: string
+ *                     example: "1234567890"
+ *                   descripcion:
+ *                     type: string
+ *                     example: "Necesito información sobre sus servicios."
+ *                   fechaEnvio:
+ *                     type: string
+ *                     format: date-time
+ *                     example: "2024-10-18T12:00:00Z"
+ *                   idCliente:
  *                     type: string
  *                     example: "651edc5565bfc2a7f8e98345"
- *                   tipo:
+ *                   correoCliente:
  *                     type: string
- *                     example: "Solicitud de información"
- *                   fecha:
- *                     type: string
- *                     format: date
- *                     example: "2024-09-01"
+ *                     format: email
+ *                     example: "juan.perez@example.com"
  */
 router.get('/', formularioController.listarFormularios);
 
@@ -110,11 +135,15 @@ router.get('/:id', formularioController.obtenerFormularioPorId);
  *           schema:
  *             type: object
  *             properties:
- *               tipo:
+ *               nombre:
  *                 type: string
- *               fecha:
+ *               numeroCelular:
  *                 type: string
- *                 format: date
+ *               descripcion:
+ *                 type: string
+ *               correoCliente:
+ *                 type: string
+ *                 format: email
  *     responses:
  *       200:
  *         description: Formulario actualizado exitosamente
