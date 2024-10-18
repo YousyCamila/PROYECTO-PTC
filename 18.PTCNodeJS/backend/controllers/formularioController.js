@@ -1,101 +1,70 @@
-const formularioLogic = require('../logic/formularioLogic');
-const { formularioSchemaValidation } = require('../validations/formularioValidations');
+const formularioService = require('../logic/formularioLogic');
+const { formularioSchemaValidation } = require('../validations/formularioValidation');
+const nodemailer = require('nodemailer');
 
-// Controlador para listar todos los formularios
-const listarFormularios = async (req, res) => {
-  try {
-    const formularios = await formularioLogic.obtenerFormularios();
-    if (formularios.length === 0) {
-      return res.status(204).send(); // 204 No Content
-    }
-    res.json(formularios);
-  } catch (err) {
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
-};
+// Configuración de Nodemailer
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASS,
+  },
+});
 
-// Controlador para crear un nuevo formulario
+// Crear un nuevo formulario
 const crearFormulario = async (req, res) => {
-  const body = req.body;
-  const { error, value } = formularioSchemaValidation.validate({
-    fechaEnvio: body.fechaEnvio,
-    idCliente: body.idCliente,
-    // Otras propiedades del formulario que necesites validar
-  });
-
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
-  }
-
   try {
-    const nuevoFormulario = await formularioLogic.crearFormulario(value);
-    res.status(201).json(nuevoFormulario);
-  } catch (err) {
-    if (err.message === 'Ya existe un formulario enviado por el cliente en la fecha especificada.') {
-      return res.status(409).json({ error: err.message });
-    }
-    res.status(500).json({ error: 'Error interno del servidor' });
+    // Validar los datos del formulario
+    await formularioSchemaValidation.validateAsync(req.body);
+
+    const formulario = await formularioService.crearFormulario(req.body);
+    
+    // Envío de correo electrónico al administrador
+    const mailOptions = {
+      from: process.env.GMAIL_USER,
+      to: process.env.ADMIN_EMAIL,
+      subject: 'Nuevo formulario enviado',
+      text: `Se ha enviado un nuevo formulario:\n\nNombre: ${formulario.nombre}\nDescripción: ${formulario.descripcion}\nCorreo: ${formulario.correo}`
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(201).json(formulario);
+  } catch (error) {
+    res.status(400).json({ message: 'Error de validación', error: error.message });
   }
 };
 
-// Controlador para obtener un formulario por ID
-const obtenerFormularioPorId = async (req, res) => {
+// Responder a un formulario
+const responderFormulario = async (req, res) => {
   const { id } = req.params;
-  try {
-    const formulario = await formularioLogic.obtenerFormularioPorId(id);
-    res.json(formulario);
-  } catch (err) {
-    if (err.message === 'Formulario no encontrado') {
-      return res.status(404).json({ error: err.message });
-    }
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
-};
-
-// Controlador para actualizar un formulario por ID
-const actualizarFormulario = async (req, res) => {
-  const { id } = req.params;
-  const body = req.body;
-  const { error, value } = formularioSchemaValidation.validate({
-    fechaEnvio: body.fechaEnvio,
-    idCliente: body.idCliente,
-    // Otras propiedades del formulario que necesites validar
-  });
-
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
-  }
+  const { respuesta } = req.body;
 
   try {
-    const formularioActualizado = await formularioLogic.actualizarFormulario(id, value);
-    res.json(formularioActualizado);
-  } catch (err) {
-    if (err.message === 'Formulario no encontrado') {
-      return res.status(404).json({ error: err.message });
-    }
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
-};
+    const formulario = await formularioService.obtenerFormularioPorId(id);
 
-// Controlador para eliminar un formulario por ID
-const eliminarFormulario = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const resultado = await formularioLogic.eliminarFormulario(id);
-    res.json(resultado);
-  } catch (err) {
-    if (err.message === 'Formulario no encontrado') {
-      return res.status(404).json({ error: err.message });
+    if (!formulario) {
+      return res.status(404).json({ message: 'Formulario no encontrado' });
     }
-    res.status(500).json({ error: 'Error interno del servidor' });
+
+    // Envío del correo electrónico al cliente
+    const mailOptions = {
+      from: process.env.GMAIL_USER,
+      to: formulario.correo,
+      subject: 'Respuesta a tu solicitud',
+      text: respuesta
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: 'Respuesta enviada al cliente' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al enviar respuesta', error: error.message });
   }
 };
 
 // Exportar los controladores
 module.exports = {
-  listarFormularios,
   crearFormulario,
-  obtenerFormularioPorId,
-  actualizarFormulario,
-  eliminarFormulario,
+  responderFormulario,
 };
