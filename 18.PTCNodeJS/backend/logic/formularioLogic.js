@@ -1,11 +1,10 @@
 const Formulario = require('../models/formularioModel');
-const Cliente = require('../models/clienteModel');
 
 // Función para crear un nuevo formulario
 async function crearFormulario(body) {
-  const formularioExistente = await Formulario.findOne({
-    fechaEnvio: body.fechaEnvio,
-    idCliente: body.idCliente
+  const formularioExistente = await Formulario.findOne({ 
+    fechaEnvio: body.fechaEnvio, 
+    idCliente: body.idCliente 
   });
 
   if (formularioExistente) {
