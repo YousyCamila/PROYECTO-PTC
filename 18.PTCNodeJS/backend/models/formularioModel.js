@@ -30,7 +30,7 @@ const formularioSchema = new mongoose.Schema({
     required: true,
     match: /.+\@.+\..+/ // Valida formato de correo electrónico
   },
-  respuesta: {
+  respuesta: {  
     type: String,
     default: null // Respuesta del administrador
   }
