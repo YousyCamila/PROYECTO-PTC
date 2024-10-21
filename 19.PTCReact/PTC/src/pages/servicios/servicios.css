@@ -1,15 +1,39 @@
-/* servicios.css */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 
-/* Estructura principal */
-.services-section {
+.header-line {
+    background-color: #000000;
+    /* Cambiado a negro */
+    padding: 20px;
     text-align: center;
-    padding: 10px 220px;
+    border-top: 5px solid #000000;
+    /* Línea más gruesa en negro */
+}
+
+.header-title {
+    color: white;
+    margin: 0;
+    font-size: 2.5em;
+    font-family: 'Roboto', sans-serif;
+}
+
+.services-section {
+    padding: 40px 20px;
     background-color: #f7f7f7;
     /* Color gris muy claro */
 }
 
 .services-title {
-    margin-bottom: 40px;
+    text-align: center;
+    padding: 50px 20px;
+    flex: 1;
 }
 
 .services-title h1 {
@@ -40,76 +64,79 @@
     /* Centrar el contenido dentro de las tarjetas */
 }
 
-.service-container:hover {
-    transform: translateY(-10px);
-}
-
-/* Estilo de los textos */
-.service-container h3 {
-    color: #1d3557;
+.service h2 {
+    font-size: 1.8em;
+    font-weight: bold;
     margin-bottom: 10px;
 }
 
-.service-container p {
-    color: #666;
-    margin-bottom: 15px;
+.service ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    padding-left: 20px;
 }
 
-ul {
-    list-style-type: none;
-    /* Eliminar viñetas */
-    padding: 0;
-    margin-left: 0;
-    color: #666;
+.service-description {
+    margin-top: 10px;
 }
 
-ul li {
-    margin-bottom: 8px;
+.divider {
+    width: 100%;
+    margin: 40px 0;
+    border-top: 2px solid #ddd;
 }
 
-/* Iconos */
-.icon {
-    font-size: 40px;
-    color: #1d3557;
-    margin-bottom: 20px;
-    /* Aumentar espacio debajo del icono */
+.service:hover {
+    transform: scale(1.05);
+    background-color: #e0e0e0;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Estilo del footer */
-.footer {
-    background-color: #000;
-    color: #fff;
-    padding: 20px 0;
+.back-button {
+    background: linear-gradient(45deg, #0162c9, #012755);
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 10px 20px;
     text-align: center;
-    margin-top: 40px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 20px 0;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s ease, transform 0.3s ease;
+
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
 }
 
-.footer h4 {
-    margin: 0;
+.back-button:hover {
+    background: linear-gradient(45deg, #faf9f9, #2963dff7);
+    transform: scale(1.1);
 }
 
-.footer-text {
-    font-size: 0.9rem;
+.contact-button {
+    background: linear-gradient(45deg, #007bff, #00d4ff);
+    /* Cambiado al mismo color que el botón "Regresa" */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s ease, transform 0.3s ease;
+
+    position: absolute;
+    top: 20px;
+    right: 20px;
 }
 
-/* Adaptabilidad para dispositivos móviles */
-@media (max-width: 768px) {
-    .services-section {
-        padding: 30px 10px;
-    }
-
-    .services-title h1 {
-        font-size: 2rem;
-    }
-
-    .services-content {
-        grid-template-columns: 1fr;
-        gap: 15px;
-        /* Ajustar el espacio entre las tarjetas en móviles */
-    }
-
-    .service-container {
-        margin-bottom: 20px;
-        /* Menos margen entre tarjetas en pantallas pequeñas */
-    }
+.contact-button:hover {
+    background: linear-gradient(45deg, #ff4500, #ffae00);
+    /* Cambiado al mismo color de hover que el botón "Regresa" */
+    transform: scale(1.1);
 }
