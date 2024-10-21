@@ -1,29 +1,4 @@
-body {
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-.header-line {
-    background-color: #000000;
-    /* Cambiado a negro */
-    padding: 20px;
-    text-align: center;
-    border-top: 5px solid #000000;
-    /* Línea más gruesa en negro */
-}
-
-.header-title {
-    color: white;
-    margin: 0;
-    font-size: 2.5em;
-    font-family: 'Roboto', sans-serif;
-}
-
+/* Estructura principal */
 .services-section {
     padding: 40px 220px;
     background-color: #f7f7f7;
@@ -32,8 +7,7 @@ body {
 
 .services-title {
     text-align: center;
-    padding: 50px 20px;
-    flex: 1;
+    margin-bottom: 40px;
 }
 
 .services-title h1 {
@@ -75,73 +49,65 @@ body {
     margin-bottom: 10px;
 }
 
-.service ul {
-    list-style-type: disc;
-    margin-left: 20px;
-    padding-left: 20px;
+.service-container p {
+    color: #666;
+    margin-bottom: 15px;
 }
 
-.service-description {
-    margin-top: 10px;
+ul {
+    list-style-type: none;
+    /* Eliminar viñetas */
+    padding: 0;
+    margin-left: 0;
+    color: #666;
 }
 
-.divider {
-    width: 100%;
-    margin: 40px 0;
-    border-top: 2px solid #ddd;
+ul li {
+    margin-bottom: 8px;
 }
 
-.service:hover {
-    transform: scale(1.05);
-    background-color: #e0e0e0;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+/* Iconos */
+.icon {
+    font-size: 40px;
+    color: #1d3557;
+    margin-bottom: 20px;
+    /* Aumentar espacio debajo del icono */
+}
+
+/* Botón de regresar */
+.button-container {
+    text-align: center;
+    margin-top: 30px;
 }
 
 .back-button {
-    background: linear-gradient(45deg, #0162c9, #012755);
-    color: rgb(255, 255, 255);
+    background-color: #1d3557;
+    color: #fff;
+    padding: 12px 25px;
+    /* Botón más grande */
     border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 20px 0;
+    border-radius: 8px;
+    /* Bordes más redondeados */
     cursor: pointer;
-    border-radius: 5px;
-    transition: background 0.3s ease, transform 0.3s ease;
-
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
+    font-size: 1.1rem;
+    /* Fuente un poco más grande */
+    transition: background-color 0.3s ease;
 }
 
 .back-button:hover {
-    background: linear-gradient(45deg, #faf9f9, #2963dff7);
-    transform: scale(1.1);
+    background-color: #457b9d;
 }
 
-.contact-button {
-    background: linear-gradient(45deg, #007bff, #00d4ff);
-    /* Cambiado al mismo color que el botón "Regresa" */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background 0.3s ease, transform 0.3s ease;
+/* Adaptabilidad para dispositivos móviles */
+@media (max-width: 768px) {
+    .services-content {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        /* Ajustar el espacio entre las tarjetas en móviles */
+    }
 
-    position: absolute;
-    top: 20px;
-    right: 20px;
-}
-
-.contact-button:hover {
-    background: linear-gradient(45deg, #ff4500, #ffae00);
-    /* Cambiado al mismo color de hover que el botón "Regresa" */
-    transform: scale(1.1);
+    .service-container {
+        margin-bottom: 20px;
+        /* Menos margen entre tarjetas en pantallas pequeñas */
+    }
 }
