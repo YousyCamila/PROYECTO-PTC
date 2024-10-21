@@ -27,7 +27,8 @@ import MenuCliente from './pages/cliente/clienteMenu';
 import AgregarEvidencia from './pages/cliente/agregarEvidencia';
 import DetectiveMenu from './pages/detective/detectiveMenu';
 import Servicios from './pages/servicios/servicios';
-import Contactanos from './pages/contactanos/contactanos'; // Ajusta la ruta según sea necesario
+import Contactanos from './pages/contactanos/contactanos';
+import ResponderSolicitudes from './pages/administrador/GestionarSolicitudes/ResponderSolicitudes';
 
 
 function App() {
@@ -100,8 +101,9 @@ function App() {
 
         <Route path="/detective-menu" element={<DetectiveMenu />} />
 
-        <Route path="/agregar-evidencia/:casoId" element={<AgregarEvidencia />} />
+        <Route path="/agregar-evidencia/:casoId" element={<AgregarEvidencia />} /> 
 
+        <Route path="/responder-solicitudes" element={<ResponderSolicitudes />} /> 
 
 
       </Routes>
