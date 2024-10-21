@@ -86,7 +86,7 @@ const Servicios = () => {
         <Link to="/contact" className="contact-button">Contáctanos Aquí!</Link>
       </div>
 
-      {/* Botón para retroceder en la esquina inferior derecha */}
+      {/* Botn para retroceder en la esquina inferior derecha */}
       <div className="back-button-container">
         <button onClick={() => navigate(-1)} className="back-button">Regresar</button>
       </div>
