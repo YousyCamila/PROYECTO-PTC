@@ -7,6 +7,9 @@ const Servicios = () => {
 
   return (
     <>
+      <div className="header-line">
+        <h2 className="header-title">PTC</h2>
+      </div>
       <section className="services-section">
         <div className="services-title">
           <h1>Nuestros Servicios</h1>
@@ -83,8 +86,8 @@ const Servicios = () => {
         <Link to="/contact" className="contact-button">Contáctanos Aquí!</Link>
       </div>
 
-      {/* Botón para retroceder */}
-      <div className="button-container">
+      {/* Botón para retroceder en la esquina inferior derecha */}
+      <div className="back-button-container">
         <button onClick={() => navigate(-1)} className="back-button">Regresar</button>
       </div>
     </>

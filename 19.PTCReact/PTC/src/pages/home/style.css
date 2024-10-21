@@ -1,56 +1,80 @@
 .detectives-section {
     text-align: center;
-    padding: 50px 20px;
-    background-color: rgba(127, 255, 212, 0.274);
+    padding: 60px 20px;
+    /* Aumenté el padding superior para más espacio */
+    background-color: rgba(247, 7, 7, 0.3);
+    /* Ajusté la opacidad del fondo */
 }
 
 .detectives-title h1 {
-    font-size: 3em;
+    font-size: 3.5em;
+    /* Aumenté el tamaño de la fuente */
     font-weight: bold;
-    margin-bottom: 30px;
-    color: black;
+    margin-bottom: 40px;
+    /* Aumenté el margen inferior */
+    color: #222;
+    /* Cambié el color a un tono más oscuro */
 }
 
 .detectives-content {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    /* Cambié a 'center' para mejor alineación */
     flex-wrap: wrap;
     margin-top: 20px;
 }
 
 .detective-box {
     flex: 1;
-    max-width: 300px;
+    max-width: 320px;
+    /* Aumenté el ancho máximo */
     padding: 20px;
-    margin: 10px;
+    margin: 15px;
+    /* Ajusté el margen */
     text-align: center;
-    background-color: #f0f0f0;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    background-color: #f9f9f9;
+    /* Cambié a un color de fondo más claro */
+    border-radius: 12px;
+    /* Bordes más redondeados */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    /* Sombra más sutil */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Añadí transición para la sombra */
 }
 
 .detective-box:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    /* Sombra más intensa al pasar el ratón */
 }
 
 .detective-box h2 {
-    font-size: 2em;
+    font-size: 2.5em;
+    /* Aumenté el tamaño del título */
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    /* Ajusté el margen inferior */
+    color: #333;
+    /* Color más oscuro para el título */
 }
 
 .detective-box p {
-    font-size: 1em;
-    color: #555;
+    font-size: 1.1em;
+    /* Aumenté el tamaño de la fuente del párrafo */
+    color: #666;
+    /* Cambié el color a un tono más gris */
 }
 
 .carousel {
-    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5));
-    margin-top: 90px; /* Ajusta el margen superior según sea necesario */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
+    /* Aumenté la opacidad del fondo */
+    margin-top: 90px;
+    /* Mantuve el margen superior */
 }
 
 .carousel-item img {
     height: 500px;
     object-fit: cover;
+    border-radius: 16px;
+    /* Bordes redondeados para las imágenes del carrusel */
 }

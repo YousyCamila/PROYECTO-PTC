@@ -18,27 +18,27 @@ const services = [
   {
     title: "Cadena de Custodia",
     description: "Garantizamos la preservación de la evidencia en investigaciones.",
-    img: "https://via.placeholder.com/800x400.png?text=Cadena+de+Custodia",
+    img: "https://www.precintia.com/wp-content/uploads/2020/09/cadena-custodia-precintia.jpg",
   },
   {
     title: "Investigación de Extorsión",
     description: "Servicios especializados para combatir la extorsión.",
-    img: "https://via.placeholder.com/800x400.png?text=Investigación+de+Extorsión",
+    img: "https://keepcoding.io/wp-content/uploads/2024/06/extorsion-en-ciberseguridad-que-es.jpg",
   },
   {
     title: "Estudios de Seguridad",
     description: "Evaluaciones exhaustivas para garantizar su seguridad.",
-    img: "https://via.placeholder.com/800x400.png?text=Estudios+de+Seguridad",
+    img: "https://www.asis.org.pe/media/k2/items/cache/85b62d4a27ea43297eb1ab349b6e06c6_XL.jpg",
   },
   {
     title: "Investigación de Infidelidades",
     description: "Investigaciones discretas y profesionales.",
-    img: "https://via.placeholder.com/800x400.png?text=Investigación+de+Infidelidades",
+    img: "https://www.ctxdetectives.com/wp-content/uploads/2018/01/detective-infidelidades.jpg",
   },
   {
     title: "Investigación de Robos Empresariales",
     description: "Soluciones para la prevención de robos en su empresa.",
-    img: "https://via.placeholder.com/800x400.png?text=Investigación+de+Robos+Empresariales",
+    img: "https://investigacioncriminal.es/wp-content/uploads/2023/02/auditoria.jpg",
   },
 ];
 
@@ -54,14 +54,27 @@ const StyledCard = styled(Card)(({ theme }) => ({
   transition: 'transform 0.3s, background-color 0.3s',
   '&:hover': {
     transform: 'scale(1.05)',
-    backgroundColor: '#e0f7fa',
+    backgroundColor: '#9D9D9D59',
   },
+}));
+
+const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
+  borderRadius: '16px 16px 0 0', // Bordes redondeados en la parte superior
+  height: '400px',
+}));
+
+const StyledCardContent = styled(CardContent)(({ theme }) => ({
+  backgroundColor: 'transparent', // Fondo transparente
+  borderRadius: '0 0 16px 16px', // Bordes redondeados en la parte inferior
+  position: 'relative',
+  zIndex: 1, // Asegura que el contenido esté por encima de la imagen
+  padding: theme.spacing(2),
 }));
 
 const Home = () => {
   return (
-    <Box sx={{ width: '100%', background: 'linear-gradient(to bottom, #5D5D5DFF, #004D76FF)', color: '#fff' }}>
-      <AppBar position="static" sx={{ backgroundColor: '#1A1C1EFF' }}>
+    <Box sx={{ width: '100%', background: 'linear-gradient(to bottom, #000000FF, #011691FF)', color: '#fff' }}>
+      <AppBar position="static" sx={{ backgroundColor: '#000000FF' }}>
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             PTC
@@ -83,16 +96,15 @@ const Home = () => {
           {services.map((service, i) => (
             <Box key={i}>
               <StyledCard sx={{ maxWidth: '100%', borderRadius: 2 }}>
-                <CardMedia
+                <StyledCardMedia
                   component="img"
                   alt={service.title}
-                  height="400"
                   image={service.img}
                 />
-                <CardContent>
-                  <Typography variant="h5">{service.title}</Typography>
-                  <Typography variant="body2">{service.description}</Typography>
-                </CardContent>
+                <StyledCardContent>
+                  <Typography variant="h5" align="center">{service.title}</Typography>
+                  <Typography variant="body2" align="center">{service.description}</Typography>
+                </StyledCardContent>
               </StyledCard>
             </Box>
           ))}

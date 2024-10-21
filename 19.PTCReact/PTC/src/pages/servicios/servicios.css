@@ -1,11 +1,27 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+}
+
+.header-line {
+    background-color: #000000;
+    /* Cambiado a negro */
+    padding: 20px;
+    text-align: center;
+    border-top: 5px solid #000000;
+    /* Línea más gruesa en negro */
+}
+
+.header-title {
+    color: white;
+    margin: 0;
+    font-size: 2.5em;
+    font-family: 'Roboto', sans-serif;
 }
 
 .services-section {
@@ -61,19 +77,15 @@ body {
     border-top: 2px solid #ddd;
 }
 
-/* Añadir animación al pasar el mouse */
 .service:hover {
     transform: scale(1.05);
-    /* Aumentar ligeramente el tamaño */
     background-color: #e0e0e0;
-    /* Cambiar el color de fondo */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    /* Aumentar la sombra */
 }
 
 .back-button {
-    background: linear-gradient(45deg, #007bff, #00d4ff);
-    color: white;
+    background: linear-gradient(45deg, #0162c9, #012755);
+    color: rgb(255, 255, 255);
     border: none;
     padding: 10px 20px;
     text-align: center;
@@ -86,20 +98,18 @@ body {
     transition: background 0.3s ease, transform 0.3s ease;
 
     position: absolute;
-    /* Hace que el botón se posicione de forma relativa a su contenedor */
     bottom: 20px;
-    /* Posiciona el botón a 20px del borde inferior */
     right: 20px;
-    /* Posiciona el botón a 20px del borde derecho */
 }
 
 .back-button:hover {
-    background: linear-gradient(45deg, #ff4500, #ffae00);
+    background: linear-gradient(45deg, #faf9f9, #2963dff7);
     transform: scale(1.1);
 }
 
 .contact-button {
-    background: #28a745;
+    background: linear-gradient(45deg, #007bff, #00d4ff);
+    /* Cambiado al mismo color que el botón "Regresa" */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -112,14 +122,12 @@ body {
     transition: background 0.3s ease, transform 0.3s ease;
 
     position: absolute;
-    /* Hace que el botón se posicione de forma relativa a su contenedor */
     top: 20px;
-    /* Posiciona el botón a 20px del borde superior */
     right: 20px;
-    /* Posiciona el botón a 20px del borde derecho */
 }
 
 .contact-button:hover {
-    background: #218838;
+    background: linear-gradient(45deg, #ff4500, #ffae00);
+    /* Cambiado al mismo color de hover que el botón "Regresa" */
     transform: scale(1.1);
 }
