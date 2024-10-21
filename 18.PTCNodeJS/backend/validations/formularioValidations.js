@@ -17,14 +17,12 @@ const formularioSchemaValidation = Joi.object({
     'string.base': 'La descripción debe ser un texto.',
     'any.required': 'La descripción es requerida.'
   }),
-  fechaEnvio: Joi.date().default(() => new Date()).required().messages({
-    'date.base': 'Debe ser una fecha válida.',
-    'any.required': 'La fecha es requerida.'
-  }),
-  idCliente: Joi.string().required().messages({
-    'string.base': 'El ID del cliente debe ser un texto.',
-    'any.required': 'El ID del cliente es requerido.'
-  }),
+  fechaEnvio: Joi.date().default(() => new Date()).messages({
+    'date.base': 'Debe ser una fecha válida.'
+  }), // Ya no es requerida porque se asigna automáticamente
+  idCliente: Joi.string().optional().allow(null).messages({
+    'string.base': 'El ID del cliente debe ser un texto.'
+  }), // Ahora es opcional y puede ser nulo
   correoCliente: Joi.string().email().required().messages({
     'string.email': 'Debe tener un formato de email válido.',
     'any.required': 'El correo electrónico es requerido.'

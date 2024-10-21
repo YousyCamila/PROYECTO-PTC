@@ -3,22 +3,33 @@ const nodemailer = require('nodemailer');
 
 // Función para crear un nuevo formulario
 async function crearFormulario(body) {
-  const formularioExistente = await Formulario.findOne({
-    fechaEnvio: body.fechaEnvio,
-    idCliente: body.idCliente
-  });
+  // Validación opcional del cliente solo si se proporciona un idCliente
+  if (body.idCliente) {
+    const formularioExistente = await Formulario.findOne({
+      idCliente: body.idCliente,
+    });
 
-  if (formularioExistente) {
-    throw new Error('Ya existe un formulario enviado por el cliente en la fecha especificada.');
+    if (formularioExistente) {
+      throw new Error('Ya existe un formulario enviado por este cliente.');
+    }
   }
 
-  const formulario = new Formulario(body);
-  return await formulario.save();
+  try {
+    const formulario = new Formulario(body);
+    const formularioGuardado = await formulario.save();
+    return formularioGuardado;
+  } catch (error) {
+    throw new Error('Error al guardar el formulario: ' + error.message);
+  }
 }
 
 // Función para responder a un formulario
 async function responderFormulario(id, respuesta) {
-  const formulario = await Formulario.findByIdAndUpdate(id, { respuesta }, { new: true });
+  const formulario = await Formulario.findByIdAndUpdate(
+    id,
+    { respuesta },
+    { new: true }
+  );
 
   if (!formulario) {
     throw new Error('Formulario no encontrado');
@@ -28,8 +39,8 @@ async function responderFormulario(id, respuesta) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: process.env.EMAIL_USER, // Tu correo
-      pass: process.env.EMAIL_PASS, // Tu contraseña de correo
+      user: process.env.EMAIL_USER, // Correo
+      pass: process.env.EMAIL_PASS, // Contraseña
     },
   });
 
@@ -41,27 +52,34 @@ async function responderFormulario(id, respuesta) {
     text: `Hola ${formulario.nombre},\n\nAquí está la respuesta a su consulta:\n${respuesta}\n\nGracias.`,
   };
 
-  await transporter.sendMail(mailOptions);
-
-  return formulario;
+  try {
+    await transporter.sendMail(mailOptions);
+    return formulario;
+  } catch (error) {
+    throw new Error('Error al enviar el correo: ' + error.message);
+  }
 }
 
-// Funciones para obtener, actualizar y eliminar formularios
+// Función para obtener todos los formularios
 async function obtenerFormularios() {
   return await Formulario.find().populate('idCliente');
 }
 
+// Función para obtener un formulario por ID
 async function obtenerFormularioPorId(id) {
   const formulario = await Formulario.findById(id).populate('idCliente');
-  
+
   if (!formulario) {
     throw new Error('Formulario no encontrado');
   }
   return formulario;
 }
 
+// Función para actualizar un formulario
 async function actualizarFormulario(id, body) {
-  const formulario = await Formulario.findByIdAndUpdate(id, body, { new: true }).populate('idCliente');
+  const formulario = await Formulario.findByIdAndUpdate(id, body, {
+    new: true,
+  }).populate('idCliente');
 
   if (!formulario) {
     throw new Error('Formulario no encontrado');
@@ -69,6 +87,7 @@ async function actualizarFormulario(id, body) {
   return formulario;
 }
 
+// Función para eliminar un formulario
 async function eliminarFormulario(id) {
   const formulario = await Formulario.findByIdAndDelete(id);
 

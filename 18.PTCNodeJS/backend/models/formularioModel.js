@@ -18,12 +18,12 @@ const formularioSchema = new mongoose.Schema({
   fechaEnvio: {
     type: Date,
     default: Date.now,
-    required: true
+    required: false
   },
   idCliente: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Cliente',
-    required: true
+    required: false
   },
   correoCliente: {
     type: String,
