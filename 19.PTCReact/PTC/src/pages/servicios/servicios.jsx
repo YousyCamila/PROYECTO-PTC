@@ -9,8 +9,6 @@ import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 
 const Servicios = () => {
-  const navigate = useNavigate(); // Hook para la navegación
-
   return (
     <>
       <AppBar position="static" sx={{ backgroundColor: '#000000' }}>
@@ -85,11 +83,6 @@ const Servicios = () => {
           </div>
         </div>
       </section>
-
-      {/* Botón para retroceder */}
-      <div className="button-container">
-        <button onClick={() => navigate(-1)} className="back-button">Regresar</button>
-      </div>
     </>
   );
 };
