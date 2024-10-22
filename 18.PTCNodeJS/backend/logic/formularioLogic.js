@@ -20,24 +20,24 @@ class FormularioLogic {
     if (!respuesta) {
       throw new Error('La respuesta no puede estar vacía.');
     }
-
+  
     const formulario = await Formulario.findByIdAndUpdate(
       id,
       { respuesta }, 
       { new: true } // Devuelve el documento actualizado
     );
-
+  
     if (!formulario) {
       throw new Error('Formulario no encontrado');
     }
-
+  
     // Enviar correo al cliente con la respuesta
     await enviarCorreo(
       formulario.correoCliente,
       'Respuesta a su formulario',
       `Hola ${formulario.nombre},\n\nAquí está la respuesta:\n${respuesta}\n\nGracias.`
     );
-
+  
     return formulario; // Retorna el formulario actualizado
   }
 
