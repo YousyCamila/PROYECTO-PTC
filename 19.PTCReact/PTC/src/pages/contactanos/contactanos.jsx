@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, Button, Container, Typography, TextField, AppBar, Toolbar, Grid } from '@mui/material';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import './contactanos.css';
 
 const Contactanos = () => {
   const [formData, setFormData] = useState({
@@ -56,14 +57,7 @@ const Contactanos = () => {
   };
 
   return (
-    <Box
-      sx={{
-        width: '100vw',
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
+    <Box className="main-container">
       <AppBar position="static" sx={{ backgroundColor: '#1A1C1EFF' }}>
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>PTC</Typography>
@@ -74,25 +68,9 @@ const Contactanos = () => {
         </Toolbar>
       </AppBar>
 
-      <Box
-        sx={{
-          flexGrow: 1,
-          display: 'flex',
-          background: 'linear-gradient(to right, #0077b6, #00b4d8)',
-          justifyContent: 'space-between',
-          padding: 4,
-        }}
-      >
-        <Container
-          maxWidth="sm"
-          sx={{
-            backgroundColor: 'white',
-            padding: 4,
-            borderRadius: 2,
-            boxShadow: 3,
-          }}
-        >
-          <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#0077b6' }}>
+      <Box className="content-container">
+        <Container maxWidth="sm" className="form-container">
+          <Typography variant="h4" component="h1" className="title">
             Contáctanos
           </Typography>
 
@@ -151,23 +129,14 @@ const Contactanos = () => {
               type="submit"
               variant="contained"
               fullWidth
-              sx={{ mt: 3, backgroundColor: '#0077b6', '&:hover': { backgroundColor: '#005f91' } }}
+              className="submit-button"
             >
               Enviar
             </Button>
           </form>
         </Container>
 
-        <Box
-          sx={{
-            flexGrow: 1,
-            padding: 4,
-            color: '#fff',
-            background: 'rgba(0, 0, 0, 0.6)',
-            borderRadius: 2,
-            marginLeft: 2,
-          }}
-        >
+        <Box className="instructions-container">
           <Typography variant="h5" gutterBottom>Instrucciones:</Typography>
           <Typography variant="body1">
             Por favor, complete el formulario con sus datos. Nos pondremos en contacto con usted lo antes posible.
@@ -175,9 +144,9 @@ const Contactanos = () => {
         </Box>
       </Box>
 
-      <footer style={{ backgroundColor: '#000', color: '#fff', textAlign: 'center', padding: '20px 0' }}>
+      <footer className="footer">
         <Typography variant="h4">PTC</Typography>
-        <Typography variant="body2" sx={{ mt: 2 }}>© 2024 PTC. Todos los derechos reservados.</Typography>
+        <Typography variant="body2" className="footer-text">© 2024 PTC. Todos los derechos reservados.</Typography>
       </footer>
     </Box>
   );
