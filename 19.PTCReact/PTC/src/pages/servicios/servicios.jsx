@@ -104,7 +104,7 @@ const Servicios = () => {
             <p>Brindamos apoyo emocional y profesional a las familias afectadas.</p>
           </div>
 
-        </div>
+        </div>nmo
       </section>
 
       <footer style={{ backgroundColor: '#000000FF', color: '#fff', textAlign: 'center', padding: '10px 0' }}>
