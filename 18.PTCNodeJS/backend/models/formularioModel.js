@@ -8,7 +8,7 @@ const formularioSchema = new mongoose.Schema({
   },
   numeroCelular: {
     type: String,
-    maxlength: 10,
+    maxlength: 15, // Ajustado para permitir números más largos si es necesario
     required: true
   },
   descripcion: {
@@ -17,7 +17,7 @@ const formularioSchema = new mongoose.Schema({
   },
   fechaEnvio: {
     type: Date,
-    default: Date.now,
+    default: Date.now, // Se establece la fecha por defecto a la fecha actual
     required: false
   },
   idCliente: {
@@ -28,12 +28,12 @@ const formularioSchema = new mongoose.Schema({
   correoCliente: {
     type: String,
     required: true,
-    match: /.+\@.+\..+/ // Valida formato de correo electrónico
+    match: /.+\@.+\..+/ // Valida el formato de correo electrónico
   },
   respuesta: {  
     type: String,
     default: null // Respuesta del administrador
   }
-});
+}, { timestamps: true }); // Agrega timestamps para crear y actualizar automáticamente las fechas
 
 module.exports = mongoose.model('Formulario', formularioSchema);

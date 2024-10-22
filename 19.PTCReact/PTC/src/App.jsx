@@ -29,6 +29,7 @@ import DetectiveMenu from './pages/detective/detectiveMenu';
 import Servicios from './pages/servicios/servicios';
 import Contactanos from './pages/contactanos/contactanos';
 import ResponderSolicitudes from './pages/administrador/GestionarSolicitudes/ResponderSolicitudes';
+import MensajesRespondidos from './pages/administrador/GestionarSolicitudes/MensajesRespondidos';
 
 
 function App() {
@@ -104,6 +105,8 @@ function App() {
         <Route path="/agregar-evidencia/:casoId" element={<AgregarEvidencia />} /> 
 
         <Route path="/responder-solicitudes" element={<ResponderSolicitudes />} /> 
+
+        <Route path="/mensajes-respondidos" element={<MensajesRespondidos />} />
 
 
       </Routes>

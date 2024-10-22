@@ -1,77 +1,83 @@
-const formularioService = require('../logic/formularioLogic');
+const formularioLogic = require('../logic/formularioLogic');
 const { formularioSchemaValidation } = require('../validations/formularioValidations');
+const { enviarCorreo } = require('../services/mailService');
 
-// Controlador para crear un nuevo formulario
+const handleError = (res, error, defaultMessage) => {
+  const statusCode = error.message.includes('no encontrado') ? 404 : 400;
+  res.status(statusCode).json({ message: defaultMessage, error: error.message });
+};
+
 const crearFormulario = async (req, res) => {
   try {
-    // Validación del esquema usando Joi
+    // Validar el cuerpo de la solicitud
     await formularioSchemaValidation.validateAsync(req.body, { abortEarly: false });
-
-    const formulario = await formularioService.crearFormulario(req.body);
+    const formulario = await formularioLogic.crearFormulario(req.body);
     res.status(201).json(formulario);
   } catch (error) {
-    res.status(400).json({
-      message: 'Error al crear el formulario',
-      error: error.details ? error.details.map((e) => e.message) : error.message,
-    });
+    handleError(res, error, 'Error al crear el formulario');
   }
 };
 
-// Controlador para responder a un formulario
 const responderFormulario = async (req, res) => {
   try {
     const { respuesta } = req.body;
-    const formulario = await formularioService.responderFormulario(req.params.id, respuesta);
+
+    // Validar que la respuesta no esté vacía
+    if (!respuesta) {
+      throw new Error('La respuesta no puede estar vacía.');
+    }
+
+    // Obtener y responder el formulario
+    const formulario = await formularioLogic.responderFormulario(req.params.id, respuesta);
+    
+    // Enviar correo de respuesta al cliente
+    await enviarCorreo(
+      formulario.correoCliente,
+      'Respuesta a su formulario',
+      `Hola ${formulario.nombre},\n\nAquí está la respuesta:\n${respuesta}\n\nGracias.`
+    );
 
     res.status(200).json(formulario);
   } catch (error) {
-    res.status(500).json({ message: 'Error al responder el formulario', error: error.message });
+    console.error('Error al responder el formulario:', error.message);
+    handleError(res, error, 'Error al responder el formulario');
   }
 };
 
-// Controlador para obtener todos los formularios
 const obtenerFormularios = async (req, res) => {
   try {
-    const formularios = await formularioService.obtenerFormularios();
+    const formularios = await formularioLogic.obtenerFormularios();
     res.status(200).json(formularios);
   } catch (error) {
-    res.status(500).json({ message: 'Error al obtener formularios', error: error.message });
+    handleError(res, error, 'Error al obtener formularios');
   }
 };
 
-// Controlador para obtener un formulario por ID
 const obtenerFormularioPorId = async (req, res) => {
   try {
-    const formulario = await formularioService.obtenerFormularioPorId(req.params.id);
-
+    const formulario = await formularioLogic.obtenerFormularioPorId(req.params.id);
     res.status(200).json(formulario);
   } catch (error) {
-    res.status(404).json({ message: 'Formulario no encontrado', error: error.message });
+    handleError(res, error, 'Formulario no encontrado');
   }
 };
 
-// Controlador para actualizar un formulario
 const actualizarFormulario = async (req, res) => {
   try {
     await formularioSchemaValidation.validateAsync(req.body, { abortEarly: false });
-
-    const formularioActualizado = await formularioService.actualizarFormulario(req.params.id, req.body);
-    res.status(200).json(formularioActualizado);
+    const formulario = await formularioLogic.actualizarFormulario(req.params.id, req.body);
+    res.status(200).json(formulario);
   } catch (error) {
-    res.status(400).json({
-      message: 'Error al actualizar el formulario',
-      error: error.details ? error.details.map((e) => e.message) : error.message,
-    });
+    handleError(res, error, 'Error al actualizar el formulario');
   }
 };
 
-// Controlador para eliminar un formulario
 const eliminarFormulario = async (req, res) => {
   try {
-    const resultado = await formularioService.eliminarFormulario(req.params.id);
-    res.status(200).json(resultado);
+    const result = await formularioLogic.eliminarFormulario(req.params.id);
+    res.status(200).json(result);
   } catch (error) {
-    res.status(404).json({ message: 'Formulario no encontrado', error: error.message });
+    handleError(res, error, 'Formulario no encontrado');
   }
 };
 

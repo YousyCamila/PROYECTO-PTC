@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom'; // Importa Link
 
 const ResponderSolicitudes = () => {
   const [formularios, setFormularios] = useState([]);
@@ -32,7 +33,7 @@ const ResponderSolicitudes = () => {
         // Asegúrate de que la fechaEnvio esté en el formato adecuado
         const formData = data.map(form => ({
           ...form,
-          fechaEnvio: new Date(form.fechaEnvio) // Convertir a objeto Date
+          fechaEnvio: new Date(form.fechaEnvio), // Convertir a objeto Date
         }));
         setFormularios(formData);
       } catch (error) {
@@ -125,7 +126,7 @@ const ResponderSolicitudes = () => {
                 <TableCell>Nombre</TableCell>
                 <TableCell>Correo</TableCell>
                 <TableCell>Descripción</TableCell>
-                <TableCell>Fecha de Envío</TableCell> {/* Columna para fechaEnvio */}
+                <TableCell>Fecha de Envío</TableCell>
                 <TableCell>
                   <Button onClick={handleSort}>
                     {sortOrder === 'asc' ? 'Ordenar por Fecha (Asc)' : 'Ordenar por Fecha (Desc)'}
@@ -140,7 +141,7 @@ const ResponderSolicitudes = () => {
                   <TableCell>{formulario.nombre}</TableCell>
                   <TableCell>{formulario.correoCliente}</TableCell>
                   <TableCell>{formulario.descripcion}</TableCell>
-                  <TableCell>{new Date(formulario.fechaEnvio).toLocaleDateString()}</TableCell> {/* Mostrar fechaEnvio */}
+                  <TableCell>{new Date(formulario.fechaEnvio).toLocaleDateString()}</TableCell>
                   <TableCell>
                     <Button
                       variant="contained"
@@ -179,6 +180,15 @@ const ResponderSolicitudes = () => {
             </Button>
           </Box>
         )}
+
+        <Button
+          component={Link} // Hacemos que el botón sea un enlace
+          to="/mensajes-respondidos" // Ruta a los mensajes respondidos
+          variant="outlined"
+          sx={{ mt: 4, color: '#0077b6', borderColor: '#0077b6' }}
+        >
+          Ver Mensajes Respondidos
+        </Button>
 
         <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
           <MuiAlert elevation={6} variant="filled" onClose={handleCloseSnackbar} severity="success">
