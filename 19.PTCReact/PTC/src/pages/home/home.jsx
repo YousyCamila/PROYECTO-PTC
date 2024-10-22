@@ -111,9 +111,9 @@ const Home = () => {
         </Carousel>
       </Container>
 
-      <Box sx={{ p: 4, backgroundColor: '#ffffff', color: '#000' }}>
-        <Typography variant="h4" align="center">¿Quiénes Somos?</Typography>
-        <Typography variant="body1" align="center" sx={{ mt: 2 }}>
+      <Box sx={{ p: 12, backgroundColor: '#ffffff', color: '#000' }}>
+        <Typography variant="h3" align="center" sx={{ mb: 3}}>¿Quiénes Somos?</Typography>
+        <Typography variant="body1" align="center" sx={{ mt: 2, fontSize: '1.2rem', lineHeight: 1.6 }}>
           Agencia de investigación privada con énfasis en delitos de alto impacto, 25 años de experiencia y reconocimiento a nivel nacional e internacional. Personal capacitado, profesionales en cada área. Especialistas en criminalística y manejo de cadena de custodia. Un amplio portafolio de servicios y la garantía de dar absoluta reserva en cada proceso.
         </Typography>
       </Box>
