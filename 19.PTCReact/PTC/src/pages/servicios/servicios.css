@@ -37,14 +37,14 @@ body {
 }
 
 .services-title h1 {
-    font-size: 2.5rem;
+    font-size: 4.5rem;
     color: #333;
 }
 
 /* Contenido de los servicios */
 .services-content {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 4fr));
     gap: 20px;
     justify-items: center;
     /* Asegurar que todo esté centrado */
@@ -64,9 +64,14 @@ body {
     /* Centrar el contenido dentro de las tarjetas */
 }
 
-.service h2 {
-    font-size: 1.8em;
-    font-weight: bold;
+.service-container:hover {
+    transform: translateY(-10px);
+}
+
+/* Estilo de los textos */
+.service-container h2,
+.service-container h3 {
+    color: #1d3557;
     margin-bottom: 10px;
 }
 
