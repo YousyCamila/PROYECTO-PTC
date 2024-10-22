@@ -1,12 +1,13 @@
 import React from 'react';
 import './servicios.css';
-import { useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import SecurityIcon from '@mui/icons-material/Security';
 import GavelIcon from '@mui/icons-material/Gavel';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
-import HowToRegIcon from '@mui/icons-material/HowToReg';
+import PeopleIcon from '@mui/icons-material/People'; // Icono para Investigación de Infidelidades
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'; // Icono para Investigación de Fraudes
+import SearchIcon from '@mui/icons-material/Search'; // Icono para Investigación de Desapariciones
 
 const Servicios = () => {
   return (
@@ -29,17 +30,10 @@ const Servicios = () => {
           {/* Contenedor para la Agencia de Investigación Criminal */}
           <div className="service-container">
             <SecurityIcon className="icon" />
-            <h2>Agencia de Investigación Criminal</h2>
-            <p>Investigadores Privados. Investigación Especializada en:</p>
-            <ul>
-              <li>Cadena de custodia</li>
-              <li>Investigación en extorsiones y secuestros</li>
-              <li>Estudios de seguridad</li>
-              <li>Investigación de infidelidades</li>
-              <li>Investigación en robos empresariales</li>
-              <li>Antecedentes</li>
-              <li>Recuperación de vehículos</li>
-            </ul>
+            <h3>Agencia de Investigación Criminal</h3>
+            <p>Investigadores Privados especializados en cadena de custodia,
+              extorsiones, secuestros, estudios de seguridad, infidelidades, robos,
+              fraudes, desapariciones y antecedentes.</p>
             <p>Asesoría legal en todas las áreas del derecho.</p>
           </div>
 
@@ -81,8 +75,42 @@ const Servicios = () => {
               integral para resolver cualquier asunto legal que su empresa o persona pueda necesitar.</p>
             <p>Si desea más información sobre nuestros servicios de asesoría legal, contáctenos.</p>
           </div>
+
+          {/* Contenedor para Investigación de Infidelidades */}
+          <div className="service-container">
+            <PeopleIcon className="icon" /> {/* Nuevo icono */}
+            <h3>Investigación de Infidelidades</h3>
+            <p>Contamos con un equipo especializado que realiza seguimientos discretos para verificar la
+              fidelidad en relaciones personales. Utilizamos técnicas avanzadas de investigación.</p>
+            <p>Nuestros investigadores están capacitados para ofrecer un servicio confidencial y profesional.</p>
+          </div>
+
+          {/* Contenedor para Investigación de Fraudes */}
+          <div className="service-container">
+            <MonetizationOnIcon className="icon" /> {/* Nuevo icono */}
+            <h3>Investigación de Fraudes</h3>
+            <p>Ofrecemos servicios de investigación para detectar fraudes financieros, laborales o comerciales.
+              Nuestros investigadores están equipados con las herramientas necesarias para identificar y
+              documentar fraudes.</p>
+            <p>Con nuestros servicios, protegerá su patrimonio y asegurará la integridad de su negocio.</p>
+          </div>
+
+          {/* Contenedor para Investigación de Desapariciones */}
+          <div className="service-container">
+            <SearchIcon className="icon" /> {/* Nuevo icono */}
+            <h3>Investigación de Desapariciones</h3>
+            <p>Cuando una persona desaparece, cada minuto cuenta. Nuestros investigadores actúan rápidamente para
+              recabar información y evidencias que puedan ayudar a localizar a la persona desaparecida.</p>
+            <p>Brindamos apoyo emocional y profesional a las familias afectadas.</p>
+          </div>
+
         </div>
       </section>
+
+      <footer style={{ backgroundColor: '#000000FF', color: '#fff', textAlign: 'center', padding: '10px 0' }}>
+        <Typography variant="h4">PTC</Typography>
+        <Typography variant="body2" sx={{ mt: 2 }}>© 2024 PTC. Todos los derechos reservados.</Typography>
+      </footer>
     </>
   );
 };
