@@ -54,7 +54,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   transition: 'transform 0.3s, background-color 0.3s',
   '&:hover': {
     transform: 'scale(1.05)',
-    backgroundColor: '#9D9D9D59',
+    backgroundColor: '#FFFFFFE0',
   },
 }));
 
@@ -73,8 +73,8 @@ const StyledCardContent = styled(CardContent)(({ theme }) => ({
 
 const Home = () => {
   return (
-    <Box sx={{ width: '100%', background: 'linear-gradient(to bottom, #000000FF, #011691FF)', color: '#fff' }}>
-      <AppBar position="static" sx={{ backgroundColor: '#000000FF' }}>
+    <Box sx={{ width: '100%', background: 'linear-gradient(to bottom, #000000FF, #0056E0FF)', color: '#fff' }}>
+      <AppBar position="static" sx={{ background: 'linear-gradient(to left, rgba(12, 94, 218, 0.298), rgba(0, 0, 0, 0.911), rgba(12, 94, 218, 0.298))' }}>
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             PTC
@@ -111,15 +111,15 @@ const Home = () => {
         </Carousel>
       </Container>
 
-      <Box sx={{ p: 12, backgroundColor: '#ffffff', color: '#000' }}>
-        <Typography variant="h3" align="center" sx={{ mb: 3 }}>¿Quiénes Somos?</Typography>
-        <Typography variant="body1" align="center" sx={{ mt: 2, fontSize: '1.2rem', lineHeight: 1.6 }}>
+      <Box sx={{ p: 12, backgroundColor: '#ffffff', color: '#000', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Typography variant="h3" align="center" sx={{ mb: 3, fontWeight: 'bold' }}>¿Quiénes Somos?</Typography>
+        <Typography variant="body1" align="center" sx={{ mt: 2, fontSize: '1.2rem', lineHeight: 1.6, maxWidth: '800px' }}>
           Agencia de investigación privada con énfasis en delitos de alto impacto, 25 años de experiencia y reconocimiento a nivel nacional e internacional. Personal capacitado, profesionales en cada área. Especialistas en criminalística y manejo de cadena de custodia. Un amplio portafolio de servicios y la garantía de dar absoluta reserva en cada proceso.
         </Typography>
       </Box>
 
-      <Box sx={{ p: 4, backgroundColor: '#e0e0e0', color: '#000' }}>
-        <Typography variant="h4" align="center">¿Por Qué Elegirnos?</Typography>
+      <Box sx={{ p: 4, backgroundColor: '#EBECECFF', color: '#000' }}>
+        <Typography variant="h4" align="center" sx={{ fontWeight: 'bold' }}>¿Por Qué Elegirnos?</Typography>
         <Grid container spacing={4} justifyContent="center" sx={{ mt: 2 }}>
           {reasons.map((reason, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
@@ -134,8 +134,8 @@ const Home = () => {
         </Grid>
       </Box>
 
-      <footer style={{ backgroundColor: '#000000FF', color: '#fff', textAlign: 'center', padding: '20px 0' }}>
-        <Typography variant="h4">PTC</Typography>
+      <footer style={{ backgroundColor: '#000000FF', color: '#fff', textAlign: 'center', padding: '5px 0' }}>
+        <Typography variant="h5">PTC</Typography>
         <Typography variant="body2" sx={{ mt: 2 }}>© 2024 PTC. Todos los derechos reservados.</Typography>
       </footer>
     </Box>
