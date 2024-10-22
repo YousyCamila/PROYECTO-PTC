@@ -30,7 +30,6 @@ const ResponderSolicitudes = () => {
       try {
         const response = await fetch('http://localhost:3000/api/formularios');
         const data = await response.json();
-        // Asegúrate de que la fechaEnvio esté en el formato adecuado
         const formData = data.map(form => ({
           ...form,
           fechaEnvio: new Date(form.fechaEnvio), // Convertir a objeto Date
@@ -60,6 +59,9 @@ const ResponderSolicitudes = () => {
       });
 
       if (response.ok) {
+        // Mostrar alerta de éxito
+        Swal.fire('Éxito', 'Respuesta enviada correctamente.', 'success');
+
         setOpenSnackbar(true);
         setRespuesta('');
         setSelectedFormulario(null);
@@ -113,8 +115,24 @@ const ResponderSolicitudes = () => {
           padding: 4,
           borderRadius: 2,
           boxShadow: 3,
+          position: 'relative', // Para posicionar el botón
         }}
       >
+        <Button
+          component={Link} // Hacemos que el botón sea un enlace
+          to="/admin-menu" // Ruta al menú principal
+          variant="outlined"
+          sx={{
+            position: 'absolute', // Posicionamiento absoluto
+            top: 16, // Espaciado desde la parte superior
+            left: 16, // Espaciado desde la izquierda
+            color: '#0077b6',
+            borderColor: '#0077b6',
+          }}
+        >
+          Volver al Menú
+        </Button>
+
         <Typography variant="h4" gutterBottom sx={{ textAlign: 'center', color: '#0077b6' }}>
           Responder Solicitudes
         </Typography>
