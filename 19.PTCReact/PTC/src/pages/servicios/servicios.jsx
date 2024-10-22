@@ -1,13 +1,21 @@
 import React from 'react';
 import './servicios.css';
+<<<<<<< HEAD
+=======
+import { useNavigate } from 'react-router-dom';
+>>>>>>> 86b658647c5d1d4a690b3fbccb89f7a005e5535c
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import SecurityIcon from '@mui/icons-material/Security';
 import GavelIcon from '@mui/icons-material/Gavel';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
+<<<<<<< HEAD
 import PeopleIcon from '@mui/icons-material/People'; // Icono para Investigación de Infidelidades
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'; // Icono para Investigación de Fraudes
 import SearchIcon from '@mui/icons-material/Search'; // Icono para Investigación de Desapariciones
+=======
+import HowToRegIcon from '@mui/icons-material/HowToReg';
+>>>>>>> 86b658647c5d1d4a690b3fbccb89f7a005e5535c
 
 const Servicios = () => {
   return (
@@ -30,10 +38,24 @@ const Servicios = () => {
           {/* Contenedor para la Agencia de Investigación Criminal */}
           <div className="service-container">
             <SecurityIcon className="icon" />
+<<<<<<< HEAD
             <h3>Agencia de Investigación Criminal</h3>
             <p>Investigadores Privados especializados en cadena de custodia,
               extorsiones, secuestros, estudios de seguridad, infidelidades, robos,
               fraudes, desapariciones y antecedentes.</p>
+=======
+            <h2>Agencia de Investigación Criminal</h2>
+            <p>Investigadores Privados. Investigación Especializada en:</p>
+            <ul>
+              <li>Cadena de custodia</li>
+              <li>Investigación en extorsiones y secuestros</li>
+              <li>Estudios de seguridad</li>
+              <li>Investigación de infidelidades</li>
+              <li>Investigación en robos empresariales</li>
+              <li>Antecedentes</li>
+              <li>Recuperación de vehículos</li>
+            </ul>
+>>>>>>> 86b658647c5d1d4a690b3fbccb89f7a005e5535c
             <p>Asesoría legal en todas las áreas del derecho.</p>
           </div>
 
@@ -106,11 +128,14 @@ const Servicios = () => {
 
         </div>
       </section>
+<<<<<<< HEAD
 
       <footer style={{ backgroundColor: '#000000FF', color: '#fff', textAlign: 'center', padding: '10px 0' }}>
         <Typography variant="h4">PTC</Typography>
         <Typography variant="body2" sx={{ mt: 2 }}>© 2024 PTC. Todos los derechos reservados.</Typography>
       </footer>
+=======
+>>>>>>> 86b658647c5d1d4a690b3fbccb89f7a005e5535c
     </>
   );
 };
