@@ -1,100 +1,90 @@
 const formularioLogic = require('../logic/formularioLogic');
 const { formularioSchemaValidation } = require('../validations/formularioValidations');
+const { enviarCorreo } = require('../services/mailService');
 
-// Controlador para listar todos los formularios
-const listarFormularios = async (req, res) => {
+const handleError = (res, error, defaultMessage) => {
+  const statusCode = error.message.includes('no encontrado') ? 404 : 400;
+  res.status(statusCode).json({ message: defaultMessage, error: error.message });
+};
+
+const crearFormulario = async (req, res) => {
+  try {
+    // Validar el cuerpo de la solicitud
+    await formularioSchemaValidation.validateAsync(req.body, { abortEarly: false });
+    const formulario = await formularioLogic.crearFormulario(req.body);
+    res.status(201).json(formulario);
+  } catch (error) {
+    handleError(res, error, 'Error al crear el formulario');
+  }
+};
+
+const responderFormulario = async (req, res) => {
+  try {
+    const { respuesta } = req.body;
+
+    // Validar que la respuesta no esté vacía
+    if (!respuesta) {
+      throw new Error('La respuesta no puede estar vacía.');
+    }
+
+    // Obtener y responder el formulario
+    const formulario = await formularioLogic.responderFormulario(req.params.id, respuesta);
+    
+    // Enviar correo de respuesta al cliente
+    await enviarCorreo(
+      formulario.correoCliente,
+      'Respuesta a su formulario',
+      `Hola ${formulario.nombre},\n\nAquí está la respuesta:\n${respuesta}\n\nGracias.`
+    );
+
+    res.status(200).json(formulario);
+  } catch (error) {
+    console.error('Error al responder el formulario:', error.message);
+    handleError(res, error, 'Error al responder el formulario');
+  }
+};
+
+const obtenerFormularios = async (req, res) => {
   try {
     const formularios = await formularioLogic.obtenerFormularios();
-    if (formularios.length === 0) {
-      return res.status(204).send(); // 204 No Content
-    }
-    res.json(formularios);
-  } catch (err) {
-    res.status(500).json({ error: 'Error interno del servidor' });
+    res.status(200).json(formularios);
+  } catch (error) {
+    handleError(res, error, 'Error al obtener formularios');
   }
 };
 
-// Controlador para crear un nuevo formulario
-const crearFormulario = async (req, res) => {
-  const body = req.body;
-  const { error, value } = formularioSchemaValidation.validate({
-    fechaEnvio: body.fechaEnvio,
-    idCliente: body.idCliente,
-    // Otras propiedades del formulario que necesites validar
-  });
-
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
-  }
-
-  try {
-    const nuevoFormulario = await formularioLogic.crearFormulario(value);
-    res.status(201).json(nuevoFormulario);
-  } catch (err) {
-    if (err.message === 'Ya existe un formulario enviado por el cliente en la fecha especificada.') {
-      return res.status(409).json({ error: err.message });
-    }
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
-};
-
-// Controlador para obtener un formulario por ID
 const obtenerFormularioPorId = async (req, res) => {
-  const { id } = req.params;
   try {
-    const formulario = await formularioLogic.obtenerFormularioPorId(id);
-    res.json(formulario);
-  } catch (err) {
-    if (err.message === 'Formulario no encontrado') {
-      return res.status(404).json({ error: err.message });
-    }
-    res.status(500).json({ error: 'Error interno del servidor' });
+    const formulario = await formularioLogic.obtenerFormularioPorId(req.params.id);
+    res.status(200).json(formulario);
+  } catch (error) {
+    handleError(res, error, 'Formulario no encontrado');
   }
 };
 
-// Controlador para actualizar un formulario por ID
 const actualizarFormulario = async (req, res) => {
-  const { id } = req.params;
-  const body = req.body;
-  const { error, value } = formularioSchemaValidation.validate({
-    fechaEnvio: body.fechaEnvio,
-    idCliente: body.idCliente,
-    // Otras propiedades del formulario que necesites validar
-  });
-
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
-  }
-
   try {
-    const formularioActualizado = await formularioLogic.actualizarFormulario(id, value);
-    res.json(formularioActualizado);
-  } catch (err) {
-    if (err.message === 'Formulario no encontrado') {
-      return res.status(404).json({ error: err.message });
-    }
-    res.status(500).json({ error: 'Error interno del servidor' });
+    await formularioSchemaValidation.validateAsync(req.body, { abortEarly: false });
+    const formulario = await formularioLogic.actualizarFormulario(req.params.id, req.body);
+    res.status(200).json(formulario);
+  } catch (error) {
+    handleError(res, error, 'Error al actualizar el formulario');
   }
 };
 
-// Controlador para eliminar un formulario por ID
 const eliminarFormulario = async (req, res) => {
-  const { id } = req.params;
   try {
-    const resultado = await formularioLogic.eliminarFormulario(id);
-    res.json(resultado);
-  } catch (err) {
-    if (err.message === 'Formulario no encontrado') {
-      return res.status(404).json({ error: err.message });
-    }
-    res.status(500).json({ error: 'Error interno del servidor' });
+    const result = await formularioLogic.eliminarFormulario(req.params.id);
+    res.status(200).json(result);
+  } catch (error) {
+    handleError(res, error, 'Formulario no encontrado');
   }
 };
 
-// Exportar los controladores
 module.exports = {
-  listarFormularios,
   crearFormulario,
+  responderFormulario,
+  obtenerFormularios,
   obtenerFormularioPorId,
   actualizarFormulario,
   eliminarFormulario,

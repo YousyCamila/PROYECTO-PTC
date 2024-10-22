@@ -6,7 +6,6 @@ const connectDB = require('./configDB/db'); // Conexión a la base de datos
 const { swaggerUi, swaggerSpec } = require('./swagger/swagger'); // Configuración de Swagger
 const sessionMiddleware = require('./middleware/middleware');
 
-
 dotenv.config(); // Carga las variables del archivo .env
 
 // Importar las rutas
@@ -19,7 +18,7 @@ const evidenciaRoutes = require('./routes/evidenciaRoutes');
 const facturaRoutes = require('./routes/facturaRoutes');
 const formularioRoutes = require('./routes/formularioRoutes');
 const historialRoutes = require('./routes/historialRoutes');
-const casoRoutes = require ('./routes/casoRoutes');
+const casoRoutes = require('./routes/casoRoutes');
 const registroCasoRoutes = require('./routes/registroCasoRoutes');
 const registroMantenimientoRoutes = require('./routes/registroMantenimientoRoutes');
 const rolRoutes = require('./routes/rolRoutes');
@@ -29,15 +28,12 @@ const usuarioRoutes = require('./routes/usuarioRoutes');
 // Conectar a MongoDB
 connectDB();
 
-
-
 // Inicializar la aplicación Express
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 sessionMiddleware(app);
-
 
 // Configuración de CORS
 const corsOptions = {

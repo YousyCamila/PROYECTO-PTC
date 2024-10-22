@@ -27,6 +27,10 @@ import MenuCliente from './pages/cliente/clienteMenu';
 import AgregarEvidencia from './pages/cliente/agregarEvidencia';
 import DetectiveMenu from './pages/detective/detectiveMenu';
 import Servicios from './pages/servicios/servicios';
+import Contactanos from './pages/contactanos/contactanos';
+import ResponderSolicitudes from './pages/administrador/GestionarSolicitudes/ResponderSolicitudes';
+import MensajesRespondidos from './pages/administrador/GestionarSolicitudes/MensajesRespondidos';
+
 
 function App() {
   const [email, setEmail] = useState(''); // Define el estado para el email
@@ -41,6 +45,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />  {/* Página principal */}
         <Route path="/login" element={<Login />} />  {/* Página de Login */}
+        <Route path="/contactanos" element={<Contactanos />} /> {/* Página del Fomulario de solicitud */}
         <Route
           path="/register"
           element={<Register onEmailChange={handleEmailChange} />} // Pasa la función
@@ -97,8 +102,11 @@ function App() {
 
         <Route path="/detective-menu" element={<DetectiveMenu />} />
 
-        <Route path="/agregar-evidencia/:casoId" element={<AgregarEvidencia />} />
+        <Route path="/agregar-evidencia/:casoId" element={<AgregarEvidencia />} /> 
 
+        <Route path="/responder-solicitudes" element={<ResponderSolicitudes />} /> 
+
+        <Route path="/mensajes-respondidos" element={<MensajesRespondidos />} />
 
 
       </Routes>

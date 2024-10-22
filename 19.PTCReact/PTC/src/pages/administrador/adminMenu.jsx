@@ -22,6 +22,10 @@ const AdminMenu = () => {
   const handleGestionContratos = () => {
     navigate('/gestionar-contratos'); // Navegar a la gestión de contratos
   };
+  
+  const handleResponderSolicitudes = () => {
+    navigate('/responder-solicitudes'); // Navegar a la página de responder solicitudes
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -102,6 +106,33 @@ const AdminMenu = () => {
                   onClick={handleGestionClientes}
                 >
                   Ir a Gestión de Clientes
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3}>
+            <Card
+              sx={{
+                background: '#f0f4f8',
+                '&:hover': { transform: 'scale(1.05)', transition: '0.3s' },
+                borderRadius: 2,
+              }}
+            >
+              <CardContent>
+                <Typography variant="h6" component="div" sx={{ color: '#0077b6' }}>
+                  Responder Solicitudes
+                </Typography>
+                <Typography sx={{ mt: 2 }}>Revisa y responde las solicitudes de los clientes</Typography>
+              </CardContent>
+              <CardActions>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  sx={{ backgroundColor: '#0077b6', '&:hover': { backgroundColor: '#005f91' } }}
+                  onClick={handleResponderSolicitudes}
+                >
+                  Ir a Responder Solicitudes
                 </Button>
               </CardActions>
             </Card>
