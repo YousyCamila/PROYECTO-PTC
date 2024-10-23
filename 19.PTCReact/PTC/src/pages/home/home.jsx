@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import Carousel from 'react-material-ui-carousel';
 import { styled } from '@mui/system';
+import { LinearProgress } from '@mui/material';
 
 const services = [
   {
@@ -71,10 +72,19 @@ const StyledCardContent = styled(CardContent)(({ theme }) => ({
   padding: theme.spacing(2),
 }));
 
+
+const StyledStatCard = styled(Card)(({ theme }) => ({
+  transition: 'transform 0.3s, box-shadow 0.3s',
+  '&:hover': {
+    transform: 'translateY(-10px)',
+    boxShadow: '0 10px 20px rgba(0,0,0,0.2)',
+  },
+}));
+
 const Home = () => {
   return (
     <Box sx={{ width: '100%', background: 'linear-gradient(to bottom, #000000FF, #0056E0FF)', color: '#fff' }}>
-      <AppBar position="static" sx={{ background: 'linear-gradient(to left, rgba(12, 94, 218, 0.298), rgba(0, 0, 0, 0.911), rgba(12, 94, 218, 0.298))' }}>
+      <AppBar position="static" sx={{ background: 'linear-gradient(to left, rgba(12, 9, 218, 0.598), rgba(0, 0, 0, 0.911), rgba(12, 9, 218, 0.598))' }}>
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             PTC
@@ -116,6 +126,26 @@ const Home = () => {
         <Typography variant="body1" align="center" sx={{ mt: 2, fontSize: '1.4rem', lineHeight: 1.6, maxWidth: '800px' }}>
           Agencia de investigación privada con énfasis en delitos de alto impacto, 25 años de experiencia y reconocimiento a nivel nacional e internacional. Personal capacitado, profesionales en cada área. Especialistas en criminalística y manejo de cadena de custodia. Un amplio portafolio de servicios y la garantía de dar absoluta reserva en cada proceso.
         </Typography>
+
+        <Grid container spacing={4} sx={{ mt: 6 }}>
+          {[
+            { percentage: 75, text: "Crimenes resueltos con mayor efectividad en tiempo record" },
+            { percentage: 100, text: "Asesorías Legales. Abogados Especializados en todo tipo de Derecho." },
+            { percentage: 98, text: "Delitos de alto impacto con resultados óptimos. Gracias a nuestra investigación." }
+          ].map((stat, index) => (
+            <Grid item xs={12} md={4} key={index}>
+              <StyledStatCard>
+                <CardContent>
+                  <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 2 }}>
+                    {stat.percentage}%
+                  </Typography>
+                  <LinearProgress variant="determinate" value={stat.percentage} sx={{ mb: 2, height: 10 }} />
+                  <Typography variant="body1">{stat.text}</Typography>
+                </CardContent>
+              </StyledStatCard>
+            </Grid>
+          ))}
+        </Grid>
       </Box>
 
       <Box sx={{ p: 12, backgroundColor: '#EBECECFF', color: '#000' }}>
