@@ -1,24 +1,49 @@
+<<<<<<< HEAD
 /* Estructura principal */
 .services-section {
     padding: 40px 20px;
+=======
+/* servicios.css */
+
+/* Estructura principal */
+.services-section {
+    padding: 40px 220px;
+>>>>>>> f3e25ee3410d0c65bb5bfcf8d1f1678ccc2f7eb9
     background-color: #f7f7f7;
     /* Color gris muy claro */
 }
 
 .services-title {
     text-align: center;
+<<<<<<< HEAD
+=======
+    padding: 10px 220px;
+    background-color: #f7f7f7;
+    /* Color gris muy claro */
+}
+
+.services-title {
+>>>>>>> f3e25ee3410d0c65bb5bfcf8d1f1678ccc2f7eb9
     margin-bottom: 40px;
 }
 
 .services-title h1 {
+<<<<<<< HEAD
     font-size: 4.5rem;
+=======
+    font-size: 2.5rem;
+>>>>>>> f3e25ee3410d0c65bb5bfcf8d1f1678ccc2f7eb9
     color: #333;
 }
 
 /* Contenido de los servicios */
 .services-content {
     display: grid;
+<<<<<<< HEAD
     grid-template-columns: repeat(auto-fit, minmax(300px, 4fr));
+=======
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+>>>>>>> f3e25ee3410d0c65bb5bfcf8d1f1678ccc2f7eb9
     gap: 20px;
     justify-items: center;
     /* Asegurar que todo esté centrado */
@@ -39,11 +64,18 @@
 }
 
 .service-container:hover {
+<<<<<<< HEAD
     transform: translateY(10px);
 }
 
 /* Estilo de los textos */
 .service-container h2,
+=======
+    transform: translateY(-10px);
+}
+
+/* Estilo de los textos */
+>>>>>>> f3e25ee3410d0c65bb5bfcf8d1f1678ccc2f7eb9
 .service-container h3 {
     color: #1d3557;
     margin-bottom: 10px;
@@ -72,6 +104,7 @@ ul li {
     color: #1d3557;
     margin-bottom: 20px;
     /* Aumentar espacio debajo del icono */
+<<<<<<< HEAD
 }
 
 /* Botón de regresar */
@@ -100,6 +133,37 @@ ul li {
 
 /* Adaptabilidad para dispositivos móviles */
 @media (max-width: 768px) {
+=======
+}
+
+/* Estilo del footer */
+.footer {
+    background-color: #000;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.footer h4 {
+    margin: 0;
+}
+
+.footer-text {
+    font-size: 0.9rem;
+}
+
+/* Adaptabilidad para dispositivos móviles */
+@media (max-width: 768px) {
+    .services-section {
+        padding: 30px 10px;
+    }
+
+    .services-title h1 {
+        font-size: 2rem;
+    }
+
+>>>>>>> f3e25ee3410d0c65bb5bfcf8d1f1678ccc2f7eb9
     .services-content {
         grid-template-columns: 1fr;
         gap: 15px;

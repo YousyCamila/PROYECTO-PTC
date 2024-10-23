@@ -111,15 +111,15 @@ const Home = () => {
         </Carousel>
       </Container>
 
-      <Box sx={{ p: 12, backgroundColor: '#ffffff', color: '#000', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Box sx={{ p: 16, backgroundColor: '#ffffff', color: '#000', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Typography variant="h3" align="center" sx={{ mb: 3, fontWeight: 'bold' }}>¿Quiénes Somos?</Typography>
-        <Typography variant="body1" align="center" sx={{ mt: 2, fontSize: '1.2rem', lineHeight: 1.6, maxWidth: '800px' }}>
+        <Typography variant="body1" align="center" sx={{ mt: 2, fontSize: '1.4rem', lineHeight: 1.6, maxWidth: '800px' }}>
           Agencia de investigación privada con énfasis en delitos de alto impacto, 25 años de experiencia y reconocimiento a nivel nacional e internacional. Personal capacitado, profesionales en cada área. Especialistas en criminalística y manejo de cadena de custodia. Un amplio portafolio de servicios y la garantía de dar absoluta reserva en cada proceso.
         </Typography>
       </Box>
 
-      <Box sx={{ p: 4, backgroundColor: '#EBECECFF', color: '#000' }}>
-        <Typography variant="h4" align="center" sx={{ fontWeight: 'bold' }}>¿Por Qué Elegirnos?</Typography>
+      <Box sx={{ p: 12, backgroundColor: '#EBECECFF', color: '#000' }}>
+        <Typography variant="h3" align="center" sx={{ fontWeight: 'bold' }}>¿Por Qué Elegirnos?</Typography>
         <Grid container spacing={4} justifyContent="center" sx={{ mt: 2 }}>
           {reasons.map((reason, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>

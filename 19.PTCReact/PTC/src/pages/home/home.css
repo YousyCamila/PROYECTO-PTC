@@ -1,7 +1,6 @@
 .detectives-section {
     text-align: center;
     padding: 60px 20px;
-    /* Aumenté el padding superior para más espacio */
     background-color: rgba(247, 7, 7, 0.3);
     /* Ajusté la opacidad del fondo */
 }
@@ -61,7 +60,7 @@
 .detective-box p {
     font-size: 1.1em;
     /* Aumenté el tamaño de la fuente del párrafo */
-    color: #ffffff;
+    color: #04888a;
     /* Cambié el color a un tono más gris */
 }
 
