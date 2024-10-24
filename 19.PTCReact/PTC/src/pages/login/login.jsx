@@ -69,16 +69,20 @@ const Login = () => {
 
   return (
     <Box
-      sx={{
-        width: "100vw",
-        height: "100vh",
-        background: "linear-gradient(to right, #0077b6, #00b4d8)",
-        display: "flex",
+    sx={{
+      width: "100vw",
+      height: "100vh",
+      backgroundImage: "url('https://scontent.fbog4-1.fna.fbcdn.net/v/t39.30808-6/312404170_109199351992944_5430879874558801924_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=BxpplRDTj9EQ7kNvgHWi6tN&_nc_zt=23&_nc_ht=scontent.fbog4-1.fna&_nc_gid=A2AKN1EgkgNUcogxmZd092q&oh=00_AYD1yB-yGwsjJNx-xZQwyw0ljfDE6ELkeYLQYGZUUNP0tA&oe=6720401C')", // URL de la imagen
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      position: "relative",
+      display: "flex",
         justifyContent: "center",
         alignItems: "center",
-      }}
+    }}
     >
-      <Container
+
+  <Container
         maxWidth="sm"
         sx={{
           backgroundColor: "white",
