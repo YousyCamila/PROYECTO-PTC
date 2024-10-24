@@ -75,14 +75,21 @@ body {
     margin-bottom: 10px;
 }
 
-.service ul {
-    list-style-type: disc;
-    margin-left: 20px;
-    padding-left: 20px;
+.service-container p {
+    color: #666;
+    margin-bottom: 15px;
 }
 
-.service-description {
-    margin-top: 10px;
+ul {
+    list-style-type: none;
+    /* Eliminar viñetas */
+    padding: 0;
+    margin-left: 0;
+    color: #666;
+}
+
+ul li {
+    margin-bottom: 8px;
 }
 
 .divider {
@@ -98,22 +105,17 @@ body {
 }
 
 .back-button {
-    background: linear-gradient(45deg, #0162c9, #012755);
-    color: rgb(255, 255, 255);
+    background-color: #1d3557;
+    color: #fff;
+    padding: 12px 25px;
+    /* Botón más grande */
     border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 20px 0;
+    border-radius: 8px;
+    /* Bordes más redondeados */
     cursor: pointer;
-    border-radius: 5px;
-    transition: background 0.3s ease, transform 0.3s ease;
-
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
+    font-size: 1.1rem;
+    /* Fuente un poco más grande */
+    transition: background-color 0.3s ease;
 }
 
 .back-button:hover {
