@@ -12,7 +12,7 @@ import SearchIcon from '@mui/icons-material/Search'; // Icono para Investigació
 const Servicios = () => {
   return (
     <>
-      <AppBar position="static" sx={{ backgroundColor: '#000000' }}>
+      <AppBar position="static" sx={{ background: 'linear-gradient(to left, rgba(0, 0, 139, 1), rgba(0, 0, 0, 0.911), rgba(0, 0, 139, 1))' }}>
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>PTC</Typography>
           <Button color="inherit" href="/">Inicio</Button>
@@ -104,10 +104,10 @@ const Servicios = () => {
             <p>Brindamos apoyo emocional y profesional a las familias afectadas.</p>
           </div>
 
-        </div>nmo
+        </div>
       </section>
 
-      <footer style={{ backgroundColor: '#000000FF', color: '#fff', textAlign: 'center', padding: '10px 0' }}>
+      <footer style={{ backgroundColor: '#000000FF', color: '#fff', textAlign: 'center', padding: 'px 0' }}>
         <Typography variant="h4">PTC</Typography>
         <Typography variant="body2" sx={{ mt: 2 }}>© 2024 PTC. Todos los derechos reservados.</Typography>
       </footer>
