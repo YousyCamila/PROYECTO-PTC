@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, Button, Container, Typography, TextField, AppBar, Toolbar, Grid } from '@mui/material';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import './contactanos.css';
 
 const Contactanos = () => {
   const [formData, setFormData] = useState({
@@ -56,15 +57,8 @@ const Contactanos = () => {
   };
 
   return (
-    <Box
-      sx={{
-        width: '100vw',
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      <AppBar position="static" sx={{ backgroundColor: '#1A1C1EFF' }}>
+    <Box className="main-container">
+      <AppBar position="static" sx={{ background: 'linear-gradient(to left, rgba(0, 0, 139, 1), rgba(0, 0, 0, 0.911), rgba(0, 0, 139, 1))' }}>
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>PTC</Typography>
           <Button color="inherit" href="/">Inicio</Button>
@@ -74,25 +68,9 @@ const Contactanos = () => {
         </Toolbar>
       </AppBar>
 
-      <Box
-        sx={{
-          flexGrow: 1,
-          display: 'flex',
-          background: 'linear-gradient(to right, #0077b6, #00b4d8)',
-          justifyContent: 'space-between',
-          padding: 4,
-        }}
-      >
-        <Container
-          maxWidth="sm"
-          sx={{
-            backgroundColor: 'white',
-            padding: 4,
-            borderRadius: 2,
-            boxShadow: 3,
-          }}
-        >
-          <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#0077b6' }}>
+      <Box className="content-container">
+        <Container maxWidth="sm" className="form-container">
+          <Typography variant="h4" component="h1" className="title">
             Contáctanos
           </Typography>
 
@@ -150,34 +128,48 @@ const Contactanos = () => {
             <Button
               type="submit"
               variant="contained"
-              fullWidth
-              sx={{ mt: 3, backgroundColor: '#0077b6', '&:hover': { backgroundColor: '#005f91' } }}
+              fullWidth 
+              className="submit-button"
             >
               Enviar
             </Button>
           </form>
         </Container>
 
-        <Box
-          sx={{
-            flexGrow: 1,
-            padding: 4,
-            color: '#fff',
-            background: 'rgba(0, 0, 0, 0.6)',
-            borderRadius: 2,
-            marginLeft: 2,
-          }}
-        >
+        <Box className="instructions-container">
           <Typography variant="h5" gutterBottom>Instrucciones:</Typography>
           <Typography variant="body1">
             Por favor, complete el formulario con sus datos. Nos pondremos en contacto con usted lo antes posible.
           </Typography>
+          <Box sx={{ marginTop: '2rem', padding: '1.5rem', border: '1px solid #00448CFF', borderRadius: '8px', backgroundColor: '#f0f8ff', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#00448DFF' }}>Información de Contacto</Typography>
+            <Typography variant="body1" sx={{ marginTop: '0.5rem', color: '#333' }}>
+              Teléfono: <span style={{ fontWeight: 'bold' }}>+57 350 797 2131</span>
+              <br />
+              Dirección: <span style={{ fontWeight: 'bold' }}>Carrera 15 # 79-70</span>
+              <br />
+              Ciudad: <span style={{ fontWeight: 'bold' }}>Bogotá</span>
+              <br />
+              País: <span style={{ fontWeight: 'bold' }}>Colombia</span>
+            </Typography>
+          </Box>
+          <Box sx={{ marginTop: '1rem' }}>
+            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+              <img src="path/to/instagram-icon.png" alt="Instagram" style={{ width: '30px', marginRight: '10px' }} />
+            </a>
+            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+              <img src="path/to/facebook-icon.png" alt="Facebook" style={{ width: '30px', marginRight: '10px' }} />
+            </a>
+            <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">
+              <img src="path/to/youtube-icon.png" alt="YouTube" style={{ width: '30px' }} />
+            </a>
+          </Box>
         </Box>
       </Box>
 
-      <footer style={{ backgroundColor: '#000', color: '#fff', textAlign: 'center', padding: '20px 0' }}>
+      <footer className="footer">
         <Typography variant="h4">PTC</Typography>
-        <Typography variant="body2" sx={{ mt: 2 }}>© 2024 PTC. Todos los derechos reservados.</Typography>
+        <Typography variant="body2" className="footer-text">© 2024 PTC. Todos los derechos reservados.</Typography>
       </footer>
     </Box>
   );

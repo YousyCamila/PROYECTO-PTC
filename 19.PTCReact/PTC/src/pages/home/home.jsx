@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import Carousel from 'react-material-ui-carousel';
 import { styled } from '@mui/system';
+import { LinearProgress } from '@mui/material';
 
 const services = [
   {
@@ -54,7 +55,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   transition: 'transform 0.3s, background-color 0.3s',
   '&:hover': {
     transform: 'scale(1.05)',
-    backgroundColor: '#9D9D9D59',
+    backgroundColor: '#FFFFFFE0',
   },
 }));
 
@@ -71,10 +72,19 @@ const StyledCardContent = styled(CardContent)(({ theme }) => ({
   padding: theme.spacing(2),
 }));
 
+
+const StyledStatCard = styled(Card)(({ theme }) => ({
+  transition: 'transform 0.3s, box-shadow 0.3s',
+  '&:hover': {
+    transform: 'translateY(-10px)',
+    boxShadow: '0 10px 20px rgba(0,0,0,0.2)',
+  },
+}));
+
 const Home = () => {
   return (
-    <Box sx={{ width: '100%', background: 'linear-gradient(to bottom, #000000FF, #011691FF)', color: '#fff' }}>
-      <AppBar position="static" sx={{ backgroundColor: '#000000FF' }}>
+    <Box sx={{ width: '100%', background: 'linear-gradient(to bottom, #000000FF, #0056E0FF)', color: '#fff' }}>
+      <AppBar position="static" sx={{ background: 'linear-gradient(to left, rgba(12, 9, 218, 0.598), rgba(0, 0, 0, 0.911), rgba(12, 9, 218, 0.598))' }}>
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             PTC
@@ -111,15 +121,35 @@ const Home = () => {
         </Carousel>
       </Container>
 
-      <Box sx={{ p: 12, backgroundColor: '#ffffff', color: '#000' }}>
-        <Typography variant="h3" align="center" sx={{ mb: 3}}>¿Quiénes Somos?</Typography>
-        <Typography variant="body1" align="center" sx={{ mt: 2, fontSize: '1.2rem', lineHeight: 1.6 }}>
+      <Box sx={{ p: 16, backgroundColor: '#ffffff', color: '#000', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Typography variant="h3" align="center" sx={{ mb: 3, fontWeight: 'bold' }}>¿Quiénes Somos?</Typography>
+        <Typography variant="body1" align="center" sx={{ mt: 2, fontSize: '1.4rem', lineHeight: 1.6, maxWidth: '800px' }}>
           Agencia de investigación privada con énfasis en delitos de alto impacto, 25 años de experiencia y reconocimiento a nivel nacional e internacional. Personal capacitado, profesionales en cada área. Especialistas en criminalística y manejo de cadena de custodia. Un amplio portafolio de servicios y la garantía de dar absoluta reserva en cada proceso.
         </Typography>
+
+        <Grid container spacing={4} sx={{ mt: 6 }}>
+          {[
+            { percentage: 75, text: "Crimenes resueltos con mayor efectividad en tiempo record" },
+            { percentage: 100, text: "Asesorías Legales. Abogados Especializados en todo tipo de Derecho." },
+            { percentage: 98, text: "Delitos de alto impacto con resultados óptimos. Gracias a nuestra investigación." }
+          ].map((stat, index) => (
+            <Grid item xs={12} md={4} key={index}>
+              <StyledStatCard>
+                <CardContent>
+                  <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 2 }}>
+                    {stat.percentage}%
+                  </Typography>
+                  <LinearProgress variant="determinate" value={stat.percentage} sx={{ mb: 2, height: 10 }} />
+                  <Typography variant="body1">{stat.text}</Typography>
+                </CardContent>
+              </StyledStatCard>
+            </Grid>
+          ))}
+        </Grid>
       </Box>
 
-      <Box sx={{ p: 4, backgroundColor: '#e0e0e0', color: '#000' }}>
-        <Typography variant="h4" align="center">¿Por Qué Elegirnos?</Typography>
+      <Box sx={{ p: 12, backgroundColor: '#EBECECFF', color: '#000' }}>
+        <Typography variant="h3" align="center" sx={{ fontWeight: 'bold' }}>¿Por Qué Elegirnos?</Typography>
         <Grid container spacing={4} justifyContent="center" sx={{ mt: 2 }}>
           {reasons.map((reason, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
@@ -134,8 +164,8 @@ const Home = () => {
         </Grid>
       </Box>
 
-      <footer style={{ backgroundColor: '#000000FF', color: '#fff', textAlign: 'center', padding: '20px 0' }}>
-        <Typography variant="h4">PTC</Typography>
+      <footer style={{ backgroundColor: '#000000FF', color: '#fff', textAlign: 'center', padding: '5px 0' }}>
+        <Typography variant="h5">PTC</Typography>
         <Typography variant="body2" sx={{ mt: 2 }}>© 2024 PTC. Todos los derechos reservados.</Typography>
       </footer>
     </Box>
