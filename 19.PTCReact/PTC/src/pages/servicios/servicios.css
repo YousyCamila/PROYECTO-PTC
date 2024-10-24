@@ -25,15 +25,15 @@ body {
 }
 
 .services-section {
-    padding: 40px 220px;
+    padding: 5px 220px;
     background-color: #f7f7f7;
     /* Color gris muy claro */
 }
 
 .services-title {
     text-align: center;
-    padding: 50px 20px;
-    flex: 1;
+    padding: 10px 20px;
+    flex: 2;
 }
 
 .services-title h1 {
@@ -58,7 +58,7 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     /* Sombra más suave */
     transition: transform 0.3s ease;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     /* Espacio extra entre tarjetas */
     text-align: center;
     /* Centrar el contenido dentro de las tarjetas */
