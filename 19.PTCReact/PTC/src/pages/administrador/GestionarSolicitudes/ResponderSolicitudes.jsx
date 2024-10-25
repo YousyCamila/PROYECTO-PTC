@@ -30,7 +30,6 @@ const ResponderSolicitudes = () => {
       try {
         const response = await fetch('http://localhost:3000/api/formularios');
         const data = await response.json();
-        // Asegúrate de que la fechaEnvio esté en el formato adecuado
         const formData = data.map(form => ({
           ...form,
           fechaEnvio: new Date(form.fechaEnvio), // Convertir a objeto Date
@@ -60,6 +59,9 @@ const ResponderSolicitudes = () => {
       });
 
       if (response.ok) {
+        // Mostrar alerta de éxito
+        Swal.fire('Éxito', 'Respuesta enviada correctamente.', 'success');
+
         setOpenSnackbar(true);
         setRespuesta('');
         setSelectedFormulario(null);
@@ -78,6 +80,11 @@ const ResponderSolicitudes = () => {
         text: 'No se pudo enviar la respuesta.',
       });
     }
+  };
+
+  const handleCancel = () => {
+    setSelectedFormulario(null);
+    setRespuesta(''); // Limpiar la respuesta cuando se cancele
   };
 
   const handleCloseSnackbar = () => {
@@ -104,6 +111,7 @@ const ResponderSolicitudes = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        overflow: 'hidden', // Evitar overflow en el eje Y
       }}
     >
       <Container
@@ -113,14 +121,35 @@ const ResponderSolicitudes = () => {
           padding: 4,
           borderRadius: 2,
           boxShadow: 3,
+          position: 'relative',
+          height: '90vh', // Ajustar el alto para que el contenido ocupe el 90% de la pantalla
+          display: 'flex',
+          flexDirection: 'column',
+          overflowY: 'auto', // Añadir desplazamiento vertical si es necesario
         }}
       >
+        <Button
+          component={Link}
+          to="/admin-menu"
+          variant="outlined"
+          sx={{
+            position: 'absolute',
+            top: 16,
+            left: 16,
+            color: '#0077b6',
+            borderColor: '#0077b6',
+          }}
+        >
+          Volver al Menú
+        </Button>
+
         <Typography variant="h4" gutterBottom sx={{ textAlign: 'center', color: '#0077b6' }}>
           Responder Solicitudes
         </Typography>
 
-        <TableContainer component={Paper}>
-          <Table>
+        <TableContainer component={Paper} sx={{ flex: '1 1 auto', overflowY: 'auto' }}>
+          <Table stickyHeader>
+            {/* Esto permite que el encabezado se quede fijo mientras haces scroll */}
             <TableHead>
               <TableRow>
                 <TableCell>Nombre</TableCell>
@@ -171,19 +200,28 @@ const ResponderSolicitudes = () => {
               label="Tu respuesta"
               variant="outlined"
             />
-            <Button
-              variant="contained"
-              onClick={() => handleResponder(selectedFormulario)}
-              sx={{ mt: 2, backgroundColor: '#0077b6', '&:hover': { backgroundColor: '#005f91' } }}
-            >
-              Enviar Respuesta
-            </Button>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+              <Button
+                variant="contained"
+                onClick={() => handleResponder(selectedFormulario)}
+                sx={{ backgroundColor: '#0077b6', '&:hover': { backgroundColor: '#005f91' } }}
+              >
+                Enviar Respuesta
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={handleCancel}
+                sx={{ color: '#ff6f61', borderColor: '#ff6f61' }}
+              >
+                Cancelar Respuesta
+              </Button>
+            </Box>
           </Box>
         )}
 
         <Button
-          component={Link} // Hacemos que el botón sea un enlace
-          to="/mensajes-respondidos" // Ruta a los mensajes respondidos
+          component={Link}
+          to="/mensajes-respondidos"
           variant="outlined"
           sx={{ mt: 4, color: '#0077b6', borderColor: '#0077b6' }}
         >
