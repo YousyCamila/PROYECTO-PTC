@@ -21,22 +21,7 @@ const crearFormulario = async (req, res) => {
 const responderFormulario = async (req, res) => {
   try {
     const { respuesta } = req.body;
-
-    // Validar que la respuesta no esté vacía
-    if (!respuesta) {
-      throw new Error('La respuesta no puede estar vacía.');
-    }
-
-    // Obtener y responder el formulario
     const formulario = await formularioLogic.responderFormulario(req.params.id, respuesta);
-    
-    // Enviar correo de respuesta al cliente
-    await enviarCorreo(
-      formulario.correoCliente,
-      'Respuesta a su formulario',
-      `Hola ${formulario.nombre},\n\nAquí está la respuesta:\n${respuesta}\n\nGracias.`
-    );
-
     res.status(200).json(formulario);
   } catch (error) {
     console.error('Error al responder el formulario:', error.message);
@@ -50,6 +35,16 @@ const obtenerFormularios = async (req, res) => {
     res.status(200).json(formularios);
   } catch (error) {
     handleError(res, error, 'Error al obtener formularios');
+  }
+};
+
+// **Nuevo: Obtener solo formularios respondidos**
+const obtenerFormulariosRespondidos = async (req, res) => {
+  try {
+    const formulariosRespondidos = await formularioLogic.obtenerFormulariosRespondidos();
+    res.status(200).json(formulariosRespondidos);
+  } catch (error) {
+    handleError(res, error, 'Error al obtener los formularios respondidos');
   }
 };
 
@@ -85,6 +80,7 @@ module.exports = {
   crearFormulario,
   responderFormulario,
   obtenerFormularios,
+  obtenerFormulariosRespondidos, // Exportamos la nueva función
   obtenerFormularioPorId,
   actualizarFormulario,
   eliminarFormulario,

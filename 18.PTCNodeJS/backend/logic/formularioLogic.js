@@ -20,30 +20,42 @@ class FormularioLogic {
     if (!respuesta) {
       throw new Error('La respuesta no puede estar vacía.');
     }
-
+  
     const formulario = await Formulario.findByIdAndUpdate(
       id,
-      { respuesta }, 
+      { respuesta, fechaRespuesta: new Date() },  // Agregamos la fecha de respuesta
       { new: true } // Devuelve el documento actualizado
     );
-
+  
     if (!formulario) {
       throw new Error('Formulario no encontrado');
     }
-
+  
     // Enviar correo al cliente con la respuesta
     await enviarCorreo(
       formulario.correoCliente,
       'Respuesta a su formulario',
       `Hola ${formulario.nombre},\n\nAquí está la respuesta:\n${respuesta}\n\nGracias.`
     );
-
+  
     return formulario; // Retorna el formulario actualizado
   }
 
   async obtenerFormularios() {
     return await Formulario.find().populate('idCliente');
   }
+
+  // **Nuevo método: obtener solo los formularios respondidos**
+  async obtenerFormulariosRespondidos() {
+    return await Formulario.find({
+      respuesta: {
+        $exists: true,                 // Asegura que la respuesta exista
+        $type: "string",               // La respuesta debe ser una cadena
+        $not: /^\s*$/                  // Al menos un carácter distinto a espacios
+      }
+    }).populate('idCliente'); // Opcional: Traer los datos del cliente relacionado
+  }
+  
 
   async obtenerFormularioPorId(id) {
     const formulario = await Formulario.findById(id).populate('idCliente');
