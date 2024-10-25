@@ -38,6 +38,16 @@ const obtenerFormularios = async (req, res) => {
   }
 };
 
+// **Nuevo: Obtener solo formularios respondidos**
+const obtenerFormulariosRespondidos = async (req, res) => {
+  try {
+    const formulariosRespondidos = await formularioLogic.obtenerFormulariosRespondidos();
+    res.status(200).json(formulariosRespondidos);
+  } catch (error) {
+    handleError(res, error, 'Error al obtener los formularios respondidos');
+  }
+};
+
 const obtenerFormularioPorId = async (req, res) => {
   try {
     const formulario = await formularioLogic.obtenerFormularioPorId(req.params.id);
@@ -70,6 +80,7 @@ module.exports = {
   crearFormulario,
   responderFormulario,
   obtenerFormularios,
+  obtenerFormulariosRespondidos, // Exportamos la nueva función
   obtenerFormularioPorId,
   actualizarFormulario,
   eliminarFormulario,

@@ -82,6 +82,11 @@ const ResponderSolicitudes = () => {
     }
   };
 
+  const handleCancel = () => {
+    setSelectedFormulario(null);
+    setRespuesta(''); // Limpiar la respuesta cuando se cancele
+  };
+
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
@@ -106,6 +111,7 @@ const ResponderSolicitudes = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        overflow: 'hidden', // Evitar overflow en el eje Y
       }}
     >
       <Container
@@ -115,17 +121,21 @@ const ResponderSolicitudes = () => {
           padding: 4,
           borderRadius: 2,
           boxShadow: 3,
-          position: 'relative', // Para posicionar el botón
+          position: 'relative',
+          height: '90vh', // Ajustar el alto para que el contenido ocupe el 90% de la pantalla
+          display: 'flex',
+          flexDirection: 'column',
+          overflowY: 'auto', // Añadir desplazamiento vertical si es necesario
         }}
       >
         <Button
-          component={Link} // Hacemos que el botón sea un enlace
-          to="/admin-menu" // Ruta al menú principal
+          component={Link}
+          to="/admin-menu"
           variant="outlined"
           sx={{
-            position: 'absolute', // Posicionamiento absoluto
-            top: 16, // Espaciado desde la parte superior
-            left: 16, // Espaciado desde la izquierda
+            position: 'absolute',
+            top: 16,
+            left: 16,
             color: '#0077b6',
             borderColor: '#0077b6',
           }}
@@ -137,8 +147,9 @@ const ResponderSolicitudes = () => {
           Responder Solicitudes
         </Typography>
 
-        <TableContainer component={Paper}>
-          <Table>
+        <TableContainer component={Paper} sx={{ flex: '1 1 auto', overflowY: 'auto' }}>
+          <Table stickyHeader>
+            {/* Esto permite que el encabezado se quede fijo mientras haces scroll */}
             <TableHead>
               <TableRow>
                 <TableCell>Nombre</TableCell>
@@ -189,19 +200,28 @@ const ResponderSolicitudes = () => {
               label="Tu respuesta"
               variant="outlined"
             />
-            <Button
-              variant="contained"
-              onClick={() => handleResponder(selectedFormulario)}
-              sx={{ mt: 2, backgroundColor: '#0077b6', '&:hover': { backgroundColor: '#005f91' } }}
-            >
-              Enviar Respuesta
-            </Button>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+              <Button
+                variant="contained"
+                onClick={() => handleResponder(selectedFormulario)}
+                sx={{ backgroundColor: '#0077b6', '&:hover': { backgroundColor: '#005f91' } }}
+              >
+                Enviar Respuesta
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={handleCancel}
+                sx={{ color: '#ff6f61', borderColor: '#ff6f61' }}
+              >
+                Cancelar Respuesta
+              </Button>
+            </Box>
           </Box>
         )}
 
         <Button
-          component={Link} // Hacemos que el botón sea un enlace
-          to="/mensajes-respondidos" // Ruta a los mensajes respondidos
+          component={Link}
+          to="/mensajes-respondidos"
           variant="outlined"
           sx={{ mt: 4, color: '#0077b6', borderColor: '#0077b6' }}
         >

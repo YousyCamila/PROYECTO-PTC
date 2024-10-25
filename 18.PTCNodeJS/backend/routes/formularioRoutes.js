@@ -44,6 +44,37 @@ router.post('/', formularioController.crearFormulario);
 
 /**
  * @swagger
+ * /formularios/respondidos:
+ *   get:
+ *     summary: Listar formularios respondidos
+ *     tags: ["Formularios"]
+ *     responses:
+ *       200:
+ *         description: Lista de formularios respondidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     example: "651edc5565bfc2a7f8e98345"
+ *                   nombre:
+ *                     type: string
+ *                     example: "Juan Perez"
+ *                   respuesta:
+ *                     type: string
+ *                     example: "Gracias por su consulta."
+ *                   correoCliente:
+ *                     type: string
+ *                     example: "juan.perez@example.com"
+ */
+router.get('/respondidos', formularioController.obtenerFormulariosRespondidos);
+
+/**
+ * @swagger
  * /formularios/{id}/responder:
  *   post:
  *     summary: Responder a un formulario
@@ -107,9 +138,6 @@ router.post('/:id/responder', formularioController.responderFormulario);
  *                     type: string
  *                     format: date
  *                     example: "2024-09-01"
- *                   idCliente:
- *                     type: string
- *                     example: "651edc5565bfc2a7f8e98345"
  *                   correoCliente:
  *                     type: string
  *                     example: "juan.perez@example.com"
@@ -134,8 +162,6 @@ router.get('/', formularioController.obtenerFormularios);
  *         description: Formulario encontrado
  *       404:
  *         description: Formulario no encontrado
- *       500:
- *         description: Error al obtener el formulario
  */
 router.get('/:id', formularioController.obtenerFormularioPorId);
 
@@ -162,9 +188,6 @@ router.get('/:id', formularioController.obtenerFormularioPorId);
  *               nombre:
  *                 type: string
  *                 example: "Juan Perez"
- *               numeroCelular:
- *                 type: string
- *                 example: "1234567890"
  *               descripcion:
  *                 type: string
  *                 example: "Solicitud de información actualizada"
@@ -173,8 +196,6 @@ router.get('/:id', formularioController.obtenerFormularioPorId);
  *         description: Formulario actualizado exitosamente
  *       404:
  *         description: Formulario no encontrado
- *       500:
- *         description: Error al actualizar el formulario
  */
 router.put('/:id', formularioController.actualizarFormulario);
 
@@ -196,8 +217,6 @@ router.put('/:id', formularioController.actualizarFormulario);
  *         description: Formulario eliminado exitosamente
  *       404:
  *         description: Formulario no encontrado
- *       500:
- *         description: Error al eliminar el formulario
  */
 router.delete('/:id', formularioController.eliminarFormulario);
 

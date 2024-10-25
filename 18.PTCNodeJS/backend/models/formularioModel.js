@@ -32,6 +32,8 @@ const formularioSchema = new mongoose.Schema({
   },
   respuesta: {  
     type: String,
+    trim: true,  // Elimina espacios en los extremos
+    minlength: 1, // Asegura que la respuesta tenga al menos un carácter significativo
     default: null // Respuesta del administrador
   }
 }, { timestamps: true }); // Agrega timestamps para crear y actualizar automáticamente las fechas
