@@ -11,10 +11,11 @@ import {
   TableRow,
   Paper,
   Snackbar,
+  Button,
 } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import Swal from 'sweetalert2';
-import { Link } from 'react-router-dom'; // Importa Link
+import { Link } from 'react-router-dom'; // Para navegación entre rutas
 
 const MensajesRespondidos = () => {
   const [mensajes, setMensajes] = useState([]);
@@ -23,9 +24,10 @@ const MensajesRespondidos = () => {
   useEffect(() => {
     const fetchMensajes = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/mensajes-respondidos'); // Asegúrate de que esta ruta sea correcta
+        const response = await fetch('http://localhost:3000/api/formularios/respondidos'); // Nueva ruta
         const data = await response.json();
         setMensajes(data);
+        setOpenSnackbar(true); // Mostrar snackbar al cargar correctamente
       } catch (error) {
         console.error('Error al obtener mensajes respondidos:', error);
         Swal.fire({
@@ -52,6 +54,7 @@ const MensajesRespondidos = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        overflow: 'hidden', // Evitar overflow
       }}
     >
       <Container
@@ -61,38 +64,51 @@ const MensajesRespondidos = () => {
           padding: 4,
           borderRadius: 2,
           boxShadow: 3,
+          height: '90vh', // Ajustar altura
+          display: 'flex',
+          flexDirection: 'column',
+          overflowY: 'auto', // Permitir scroll si es necesario
         }}
       >
         <Typography variant="h4" gutterBottom sx={{ textAlign: 'center', color: '#0077b6' }}>
           Mensajes Respondidos
         </Typography>
 
-        <TableContainer component={Paper}>
-          <Table>
+        <TableContainer component={Paper} sx={{ flex: '1 1 auto', overflowY: 'auto' }}>
+          <Table stickyHeader>
+            {/* Esto mantiene el encabezado visible mientras haces scroll */}
             <TableHead>
               <TableRow>
                 <TableCell>Nombre</TableCell>
                 <TableCell>Correo</TableCell>
+                <TableCell>Descripcion</TableCell>
                 <TableCell>Respuesta</TableCell>
-                <TableCell>Fecha de Respuesta</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {mensajes.map((mensaje) => (
-                <TableRow key={mensaje._id}>
-                  <TableCell>{mensaje.nombre}</TableCell>
-                  <TableCell>{mensaje.correoCliente}</TableCell>
-                  <TableCell>{mensaje.respuesta}</TableCell>
-                  <TableCell>{new Date(mensaje.fechaRespuesta).toLocaleDateString()}</TableCell>
+              {mensajes.length > 0 ? (
+                mensajes.map((mensaje) => (
+                  <TableRow key={mensaje._id}>
+                    <TableCell>{mensaje.nombre}</TableCell>
+                    <TableCell>{mensaje.correoCliente}</TableCell>
+                    <TableCell>{mensaje.descripcion}</TableCell>
+                    <TableCell>{mensaje.respuesta}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={3} align="center">
+                    No hay mensajes respondidos disponibles.
+                  </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </TableContainer>
 
         <Button
-          component={Link} // Hacemos que el botón sea un enlace
-          to="/responder-solicitudes" // Ruta de regreso a las solicitudes
+          component={Link}
+          to="/responder-solicitudes" // Redirección a solicitudes pendientes
           variant="outlined"
           sx={{ mt: 4, color: '#0077b6', borderColor: '#0077b6' }}
         >
