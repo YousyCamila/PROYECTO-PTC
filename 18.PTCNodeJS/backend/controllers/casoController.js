@@ -16,7 +16,7 @@ const obtenerCasosPorClienteId = async (req, res) => {
   const idCliente = req.session.userId; // Suponiendo que guardamos el userId en la sesión
 
   try {
-    const casos = await clienteLogic.obtenerCasosPorClienteId(idCliente);
+    const casos = await casoLogic.obtenerCasosPorClienteId(idCliente);
     if (!casos || casos.length === 0) {
       return res.status(404).json({ message: 'No se encontraron casos para este cliente.' });
     }
