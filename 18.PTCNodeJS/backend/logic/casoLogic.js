@@ -1,5 +1,5 @@
 const Caso = require('../models/casoModel');
-const Cliente = require('../models/clienteModel'); // Asegúrate de importar el modelo Cliente
+const Cliente = require('../models/clienteModel');
 const Detective = require('../models/detectiveModel');
 
 async function crearCaso(datos) {
@@ -46,20 +46,19 @@ async function crearCaso(datos) {
   return caso;
 }
 
-//Funcion para clientes 
-async function obtenerCasosPorClienteId(idCliente) {
-  if (!mongoose.Types.ObjectId.isValid(idCliente)) {
-    throw new Error('ID de cliente no válido');
-  }
-
+/**
+ * Obtener los casos asociados a un cliente por su ID.
+ * @param {string} idCliente - El ID del cliente.
+ * @returns {Promise<Array>} - Lista de casos asociados al cliente.
+ */
+const obtenerCasosPorClienteId = async (idCliente) => {
   try {
-    const casos = await Caso.find({ idCliente }).populate('idDetective').populate('evidencias').populate('registroCasos');
+    const casos = await Caso.find({ idCliente: idCliente.trim() }).populate('idDetective evidencias');
     return casos;
   } catch (error) {
-    throw new Error('Error al obtener los casos: ' + error.message);
+    throw new Error('Error al obtener casos por ID de cliente');
   }
-}
-
+};
 
 
 // Listar Casos

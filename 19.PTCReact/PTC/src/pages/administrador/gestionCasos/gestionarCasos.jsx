@@ -14,6 +14,7 @@ import {
   IconButton,
   Snackbar,
   Tooltip,
+  CircularProgress,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -25,18 +26,23 @@ const GestionarCasos = () => {
   const [casos, setCasos] = useState([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [loading, setLoading] = useState(true); // Estado de carga
   const navigate = useNavigate();
 
   // Fetch casos from the API
   const fetchCasos = async () => {
     try {
+      setLoading(true);
       const response = await fetch("http://localhost:3000/api/caso");
+      if (!response.ok) throw new Error('Error al cargar los casos');
       const data = await response.json();
       setCasos(data);
     } catch (error) {
       console.error("Error fetching casos:", error);
       setSnackbarMessage('Error al cargar los casos');
       setOpenSnackbar(true);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -68,9 +74,7 @@ const GestionarCasos = () => {
         await fetch(`http://localhost:3000/api/caso/${casoId}`, {
           method: 'DELETE',
         });
-        setCasos(prevCasos => prevCasos.map(caso => 
-          caso._id === casoId ? { ...caso, activo: false } : caso
-        ));
+        fetchCasos(); // Refrescar la lista de casos después de desactivar
         Swal.fire('Desactivado!', 'El caso ha sido desactivado.', 'success');
       } catch (error) {
         console.error("Error al desactivar caso:", error);
@@ -130,46 +134,57 @@ const GestionarCasos = () => {
             Volver al Menú
           </Button>
         </Box>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Nombre del Caso</TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Cliente</TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Detective</TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Activo</TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Acciones</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {casos.map((caso) => (
-                <TableRow key={caso._id}>
-                  <TableCell>{caso.nombreCaso}</TableCell>
-                  <TableCell>{caso.idCliente.nombres} {caso.idCliente.apellidos}</TableCell>
-                  <TableCell>{caso.idDetective ? `${caso.idDetective.nombres} ${caso.idDetective.apellidos}` : 'No asignado'}</TableCell>
-                  <TableCell>{caso.activo ? 'Sí' : 'No'}</TableCell>
-                  <TableCell align="right">
-                    <Tooltip title="Ver Detalles" arrow>
-                      <IconButton onClick={() => handleDetails(caso._id)} color="primary">
-                        <VisibilityIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Editar Caso" arrow>
-                      <IconButton onClick={() => handleEdit(caso._id)} color="primary">
-                        <EditIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Desactivar Caso" arrow>
-                      <IconButton onClick={() => handleDeactivate(caso._id)} color="error">
-                        <DeleteIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
+        
+        {loading ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Nombre del Caso</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Cliente</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Detective</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Activo</TableCell>
+                  <TableCell align="right" sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Acciones</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {casos.map((caso) => (
+                  <TableRow key={caso._id}>
+                    <TableCell>{caso.nombreCaso}</TableCell>
+                    <TableCell>
+                      {caso.idCliente ? `${caso.idCliente.nombres} ${caso.idCliente.apellidos}` : 'Sin asignar'}
+                    </TableCell>
+                    <TableCell>
+                      {caso.idDetective ? `${caso.idDetective.nombres} ${caso.idDetective.apellidos}` : 'No asignado'}
+                    </TableCell>
+                    <TableCell>{caso.activo ? 'Sí' : 'No'}</TableCell>
+                    <TableCell align="right">
+                      <Tooltip title="Ver Detalles" arrow>
+                        <IconButton onClick={() => handleDetails(caso._id)} color="primary">
+                          <VisibilityIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Editar Caso" arrow>
+                        <IconButton onClick={() => handleEdit(caso._id)} color="primary">
+                          <EditIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Desactivar Caso" arrow>
+                        <IconButton onClick={() => handleDeactivate(caso._id)} color="error">
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
 
         <Snackbar
           open={openSnackbar}

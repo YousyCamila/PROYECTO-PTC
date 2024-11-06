@@ -1,4 +1,3 @@
-// routes/clienteRoutes.js
 const express = require('express');
 const router = express.Router();
 const clienteController = require('../controllers/clienteController');
@@ -61,8 +60,6 @@ router.post('/', clienteController.crearCliente);
  */
 router.get('/:id', clienteController.buscarClientePorId);
 
-
-
 /**
  * @swagger
  * /clientes:
@@ -79,7 +76,7 @@ router.get('/', clienteController.listarClientes);
 
 /**
  * @swagger
- * /clientes/{correo}:
+ * /clientes/correo/{correo}:
  *   get:
  *     summary: Buscar un cliente por correo
  *     tags: [Clientes]
@@ -96,7 +93,7 @@ router.get('/', clienteController.listarClientes);
  *       404:
  *         description: Cliente no encontrado
  */
-router.get('/:correo', clienteController.buscarClientePorCorreo);
+router.get('/correo/:correo', clienteController.buscarClientePorCorreo);
 
 /**
  * @swagger

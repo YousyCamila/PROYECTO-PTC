@@ -1,8 +1,6 @@
-// routes/casoRoutes.js
 const express = require('express');
 const router = express.Router();
 const casoController = require('../controllers/casoController');
-const autenticar = require('../middleware/verifyToken');
 
 /**
  * @swagger
@@ -149,25 +147,51 @@ router.put('/:id', casoController.actualizarCaso);
  */
 router.delete('/:id', casoController.desactivarCaso);
 
-
 /**
  * @swagger
- * /caso/cliente-casos:
+ * /caso/cliente/{id}:
  *   get:
- *     summary: Obtener casos por ID del cliente autenticado
+ *     summary: Obtener todos los casos asociados a un cliente específico
  *     tags: [Casos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID del cliente
  *     responses:
  *       200:
- *         description: Casos encontrados
+ *         description: Lista de casos asociados al cliente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     description: ID del caso
+ *                   nombreCaso:
+ *                     type: string
+ *                     description: Nombre del caso
+ *                   idDetective:
+ *                     type: string
+ *                     description: ID del detective asignado
+ *                   evidencias:
+ *                     type: array
+ *                     items:
+ *                       type: string
+ *                   activo:
+ *                     type: boolean
+ *       400:
+ *         description: ID de cliente no válida
  *       404:
- *         description: No se encontraron casos
+ *         description: Cliente no encontrado
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/cliente-casos', autenticar, casoController.obtenerCasosPorClienteId);
-
-
-
-
+router.get('/cliente/:id', casoController.obtenerCasosPorClienteId);
 
 module.exports = router;
