@@ -1,5 +1,6 @@
 // services/clienteService.js
 const Cliente = require('../models/clienteModel');
+const Caso = require('../models/casoModel'); // Modelo de Caso
 
 async function crearCliente(datos) {
   // Verificar si el correo ya existe

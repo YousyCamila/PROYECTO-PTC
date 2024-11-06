@@ -30,6 +30,9 @@ import Servicios from './pages/servicios/servicios';
 import Contactanos from './pages/contactanos/contactanos';
 import ResponderSolicitudes from './pages/administrador/GestionarSolicitudes/ResponderSolicitudes';
 import MensajesRespondidos from './pages/administrador/GestionarSolicitudes/MensajesRespondidos';
+import CasoDetailsMenu from './pages/cliente/CasoDetailsMenu';
+import EvidenciasCrud from './pages/cliente/EvidenciasCrud';
+
 
 
 function App() {
@@ -107,6 +110,10 @@ function App() {
         <Route path="/responder-solicitudes" element={<ResponderSolicitudes />} /> 
 
         <Route path="/mensajes-respondidos" element={<MensajesRespondidos />} />
+
+        <Route path="/caso-details" element={<CasoDetailsMenu />} /> {/* Menú de detalles del caso */}
+
+        <Route path="/evidencias-crud" element={<EvidenciasCrud />} /> {/* CRUD de evidencias */}
 
 
       </Routes>

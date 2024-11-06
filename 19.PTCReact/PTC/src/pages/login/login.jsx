@@ -32,11 +32,15 @@ const Login = () => {
 
       const data = await response.json();
 
-      console.log({ email, password, role });
+      console.log({ email, role });
       console.log(data);
 
       if (response.ok) {
-        localStorage.setItem("token", data.token);
+
+        localStorage.setItem("userId", data.userId.trim()); // Guarda el userId en localStorage
+        localStorage.setItem("role", data.role);      // Guarda el rol del usuario en localStorage
+
+        
         Swal.fire({
           icon: 'success',
           title: 'Login exitoso',
@@ -47,6 +51,7 @@ const Login = () => {
           navigate('/admin-menu');
         } else if (role === 'cliente') {
           navigate('/cliente-menu');
+          console.log(data.idCliente);
         } else if (role === 'detective') {
           navigate('/detective-menu');
         }

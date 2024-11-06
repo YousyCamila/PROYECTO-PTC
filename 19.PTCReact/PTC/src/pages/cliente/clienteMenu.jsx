@@ -12,207 +12,199 @@ import {
   Paper,
   Button,
   Snackbar,
-  TextField,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  TextField,
   IconButton,
 } from '@mui/material';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AddIcon from '@mui/icons-material/Add';
-import Cookies from 'js-cookie'; // Importar js-cookie
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import CasoDetailsMenu from './CasoDetailsMenu';
 
 const ClienteMenu = () => {
-  const { id } = useParams(); // Obtener el ID del cliente de la URL
-  const [casos, setCasos] = useState([]); // Lista de casos
+  const [casos, setCasos] = useState([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
-  const [casoId, setCasoId] = useState(''); // ID del caso a agregar
+  const [clienteId, setClienteId] = useState('');
+  const [selectedCaso, setSelectedCaso] = useState(null); // Caso seleccionado para ver detalles
   const navigate = useNavigate();
 
-  // Fetch casos por cliente ID
-  const fetchCasos = async () => {
+  const userId = localStorage.getItem('userId'); // Obtiene el ID del cliente desde el localStorage
+  const API_URL = 'http://localhost:3000/api';
+
+  const fetchCasos = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/caso/cliente-casos`, {
+      const response = await fetch(`${API_URL}/caso/cliente/${id}`, {
         method: 'GET',
-        credentials: 'include', // Asegúrate de incluir cookies
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
       const data = await response.json();
 
       if (response.ok) {
         setCasos(data);
       } else {
-        throw new Error(data.message);
+        throw new Error(data.message || 'Error al buscar los casos');
       }
     } catch (error) {
       console.error("Error fetching casos:", error);
-      setSnackbarMessage('Error al cargar los casos: ' + error.message);
+      setSnackbarMessage(`Error al buscar los casos: ${error.message}`);
       setOpenSnackbar(true);
     }
   };
 
-  // Fetch caso por ID
-  const fetchCasoById = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/caso/${id}`, {
-        credentials: 'include', // Asegúrate de incluir cookies
-      });
-      const data = await response.json();
-
-      if (response.ok) {
-        if (!casos.some(caso => caso._id === data._id)) {
-          setCasos(prev => [...prev, data]); // Agregar el caso si no está en la lista
-        } else {
-          Swal.fire('El caso ya está asociado al cliente.');
-        }
-      } else {
-        throw new Error(data.message);
-      }
-    } catch (error) {
-      console.error("Error fetching caso:", error);
-      setSnackbarMessage('Error al cargar el caso: ' + error.message);
+  const handleBuscarCasoPorId = () => {
+    if (clienteId) {
+      fetchCasos(clienteId);
+      setOpenDialog(false);
+    } else {
+      setSnackbarMessage("Por favor ingresa un ID de cliente.");
       setOpenSnackbar(true);
     }
+  };
+
+  const handleBackToLogin = () => {
+    navigate('/login'); // Redirige al login
+  };
+
+  const handleOpenCasoDetails = (caso) => {
+    setSelectedCaso(caso); // Guardar el caso seleccionado
+  };
+
+  const handleCloseCasoDetails = () => {
+    setSelectedCaso(null); // Cerrar el menú de detalles del caso
   };
 
   const handleViewDetails = (caso) => {
     Swal.fire({
-      title: `Detalles del Caso: ${caso.nombreCaso}`,
+      title: `Detalles del Caso: ${caso.nombreCaso}`, 
       html: `
         <p><strong>Nombre del Caso:</strong> ${caso.nombreCaso}</p>
-        <p><strong>Detective Asignado:</strong> ${caso.idDetective ? `${caso.idDetective.nombres} ${caso.idDetective.apellidos}` : 'No asignado'}</p>
         <p><strong>Estado:</strong> ${caso.activo ? 'Activo' : 'Inactivo'}</p>
         <p><strong>ID del Caso:</strong> ${caso._id}</p>
-        <p><strong>Evidencias:</strong> ${caso.evidencias.length > 0 ? caso.evidencias.join(', ') : 'No hay evidencias asociadas.'}</p>
+        <p><strong>Detective Asignado:</strong> ${caso.idDetective ? caso.idDetective.nombre : 'No asignado'}</p>
+        <p><strong>Evidencias:</strong> ${caso.evidencias && caso.evidencias.length > 0 ? caso.evidencias.join(', ') : 'No hay evidencias asociadas.'}</p>
+        <p><strong>Registro de Casos:</strong> ${caso.registroCasos && caso.registroCasos.length > 0 ? caso.registroCasos.join(', ') : 'No hay registros asociados.'}</p>
       `,
       icon: 'info',
       confirmButtonText: 'Cerrar',
     });
   };
 
-  const handleAgregarEvidencia = (casoId) => {
-    navigate(`/agregar-evidencia/${casoId}`); // Redirigir a la vista de agregar evidencia
-  };
-
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
-  };
-
-  const handleBack = () => {
-    navigate('/login'); // Redirigir a la página de inicio de sesión
-  };
-
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-    setCasoId('');
-  };
-
-  const handleAddCaso = () => {
-    fetchCasoById(casoId);
-    handleCloseDialog();
-  };
-
   useEffect(() => {
-    fetchCasos(); // Fetch casos cuando el componente se monta
-  }, []);
+    if (userId) {
+      fetchCasos(userId); // Cargar los casos automáticamente si el userId está definido
+    }
+  }, [userId]);
 
   return (
-    <Box
-      sx={{
-        width: '100vw',
-        height: '100vh',
-        background: 'linear-gradient(to right, #0077b6, #00b4d8)',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
+    <Box sx={{ width: '100vw', height: '100vh', background: 'linear-gradient(to right, #0077b6, #00b4d8)', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
+      {/* Botón de "Salir" en la esquina superior izquierda con estilo visible */}
+      <Button
+        variant="contained"
+        onClick={handleBackToLogin}
+        sx={{
+          position: 'absolute',
+          top: 16,
+          left: 16,
+          color: '#0077b6', // Cambia el texto a color azul
+          backgroundColor: 'white', // Fondo en blanco
+          '&:hover': {
+            backgroundColor: '#005f91', // Cambia ligeramente el color al pasar el ratón
+          },
+        }}
+        >
+        Salir
+      </Button>
+
       <Container maxWidth="lg" sx={{ background: 'white', borderRadius: 2, padding: 4, boxShadow: 3 }}>
         <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#0077b6' }}>
           Casos Asociados al Cliente
         </Typography>
-        
-        <Button variant="outlined" onClick={handleOpenDialog} sx={{ mb: 2, color: '#0077b6', borderColor: '#0077b6' }}>
-          Agregar ID de Caso
-        </Button>
+
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+          <Button variant="contained" color="primary" onClick={() => fetchCasos(userId)}>
+            Cargar Casos Asociados
+          </Button>
+          <Button variant="outlined" color="primary" onClick={() => setOpenDialog(true)}>
+            Buscar Caso por ID de Cliente
+          </Button>
+        </Box>
 
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Nombre del Caso</TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Detective Asignado</TableCell>
                 <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Estado</TableCell>
                 <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>ID del Caso</TableCell>
                 <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {casos.map((caso) => (
-                <TableRow key={caso._id}>
-                  <TableCell>{caso.nombreCaso}</TableCell>
-                  <TableCell>{caso.idDetective ? `${caso.idDetective.nombres} ${caso.idDetective.apellidos}` : 'No asignado'}</TableCell>
-                  <TableCell>{caso.activo ? 'Activo' : 'Inactivo'}</TableCell>
-                  <TableCell>{caso._id}</TableCell>
-                  <TableCell>
-                    <IconButton onClick={() => handleViewDetails(caso)}>
-                      <VisibilityIcon color="primary" />
-                    </IconButton>
-                    <IconButton onClick={() => handleAgregarEvidencia(caso._id)}>
-                      <AddIcon color="secondary" />
-                    </IconButton>
+              {casos.length > 0 ? (
+                casos.map((caso) => (
+                  <TableRow key={caso._id}>
+                    <TableCell>{caso.nombreCaso}</TableCell>
+                    <TableCell>{caso.activo ? 'Activo' : 'Inactivo'}</TableCell>
+                    <TableCell>{caso._id}</TableCell>
+                    <TableCell>
+                      <IconButton onClick={() => handleViewDetails(caso)}>
+                        <VisibilityIcon color="primary" />
+                      </IconButton>
+                      <IconButton onClick={() => handleOpenCasoDetails(caso)}>
+                        <MenuOpenIcon color="secondary" />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={4} sx={{ textAlign: 'center' }}>
+                    No hay casos asociados para este cliente.
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </TableContainer>
-
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-          <Button 
-            variant="outlined" 
-            onClick={handleBack} 
-            sx={{ color: '#0077b6', borderColor: '#0077b6', '&:hover': { backgroundColor: '#e0e0e0' } }}
-          >
-            Volver
-          </Button>
-        </Box>
       </Container>
 
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        message={snackbarMessage}
-      />
+      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} />
 
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Agregar Caso por ID</DialogTitle>
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>Cargar casos mediante ID de Cliente</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
-            label="ID del Caso"
+            label="ID de Cliente"
             type="text"
             fullWidth
             variant="outlined"
-            value={casoId}
-            onChange={(e) => setCasoId(e.target.value)}
+            value={clienteId}
+            onChange={(e) => setClienteId(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancelar</Button>
-          <Button onClick={handleAddCaso}>Agregar</Button>
+          <Button onClick={() => setOpenDialog(false)} color="secondary">Cancelar</Button>
+          <Button onClick={handleBuscarCasoPorId} color="primary">Buscar</Button>
         </DialogActions>
       </Dialog>
+
+      {selectedCaso && (
+        <CasoDetailsMenu
+          caso={selectedCaso}
+          onClose={handleCloseCasoDetails}
+        />
+      )}
     </Box>
   );
 };

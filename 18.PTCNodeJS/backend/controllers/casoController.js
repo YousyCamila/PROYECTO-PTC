@@ -1,5 +1,9 @@
 const casosService = require('../logic/casoLogic');
-const clienteLogic = require ('../logic/clienteLogic');
+const clienteService = require('../logic/clienteLogic'); // Importa el servicio de cliente para verificar su existencia
+const mongoose = require('mongoose'); // Importa mongoose
+const Cliente = require('../models/clienteModel');
+const Detective = require('../models/detectiveModel');
+const Caso = require('../models/casoModel');
 
 // Crear un nuevo caso
 const crearCaso = async (req, res) => {
@@ -11,23 +15,28 @@ const crearCaso = async (req, res) => {
   }
 };
 
+/**
+ * Controlador para obtener los casos por ID de cliente.
+ * @param {Request} req - La solicitud HTTP.
+ * @param {Response} res - La respuesta HTTP.
+ */
 const obtenerCasosPorClienteId = async (req, res) => {
-  // Obtenemos el ID del cliente de la sesión
-  const idCliente = req.session.userId; // Suponiendo que guardamos el userId en la sesión
-
   try {
-    const casos = await casoLogic.obtenerCasosPorClienteId(idCliente);
-    if (!casos || casos.length === 0) {
-      return res.status(404).json({ message: 'No se encontraron casos para este cliente.' });
+    const idCliente = req.params.id.trim();
+    console.log("ID del cliente recibido:", idCliente);
+    
+    const casos = await casosService.obtenerCasosPorClienteId(idCliente);
+    
+    if (casos.length === 0) {
+      return res.status(404).json({ message: "No se encontraron casos para el cliente especificado." });
     }
-    res.status(200).json(casos); // Devuelve los casos encontrados
+    
+    res.status(200).json(casos);
   } catch (error) {
-    console.error('Error al obtener los casos:', error);
-    res.status(500).json({ error: 'Error interno del servidor: ' + error.message });
+    console.error("Error al obtener casos por ID de cliente:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
-
-
 
 
 

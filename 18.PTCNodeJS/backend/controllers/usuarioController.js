@@ -65,7 +65,11 @@ const login = async (req, res) => {
     req.session.role = user.role;   // Almacena el rol del usuario en la sesión
 
     // Respuesta de éxito
-    res.status(200).json({ message: 'Inicio de sesión exitoso' });
+    res.status(200).json({
+       message: 'Inicio de sesión exitoso',
+       userId: user._id,     // Envía el ID del usuario
+       role: user.role       // Envía el rol del usuario
+      });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al iniciar sesión' });
