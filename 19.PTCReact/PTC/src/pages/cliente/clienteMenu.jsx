@@ -105,7 +105,7 @@ const ClienteMenu = () => {
   }, [userId]);
 
   return (
-    <Box sx={{ width: '100vw', height: '100vh', background: 'linear-gradient(to right, #0077b6, #00b4d8)', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
+    <Box sx={{ width: '100vw', height: '100vh', background: 'linear-gradient(to right, #ffffff, #e0e0e0)', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
       {/* Botón de "Salir" en la esquina superior izquierda con estilo visible */}
       <Button
         variant="contained"
@@ -114,10 +114,10 @@ const ClienteMenu = () => {
           position: 'absolute',
           top: 16,
           left: 16,
-          color: '#0077b6', // Cambia el texto a color azul
-          backgroundColor: 'white', // Fondo en blanco
+          color: '#ffffff', // Cambia el texto a color azul
+          backgroundColor: '#005f91', // Fondo en blanco
           '&:hover': {
-            backgroundColor: '#005f91', // Cambia ligeramente el color al pasar el ratón
+            backgroundColor: '#d9d9d9', // Cambia ligeramente el color al pasar el ratón
           },
         }}
         >
@@ -125,12 +125,12 @@ const ClienteMenu = () => {
       </Button>
 
       <Container maxWidth="lg" sx={{ background: 'white', borderRadius: 2, padding: 4, boxShadow: 3 }}>
-        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#0077b6' }}>
+        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#000000' }}>
           Casos Asociados al Cliente
         </Typography>
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-          <Button variant="contained" color="primary" onClick={() => fetchCasos(userId)}>
+        <Button variant="outlined" color="primary" onClick={() => fetchCasos(userId)}>
             Cargar Casos Asociados
           </Button>
           <Button variant="outlined" color="primary" onClick={() => setOpenDialog(true)}>
