@@ -27,7 +27,6 @@ const GestionarClientes = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const navigate = useNavigate();
 
-  // Fetch clientes from the API
   const fetchClientes = async () => {
     try {
       const response = await fetch("http://localhost:3000/api/clientes");
@@ -89,7 +88,7 @@ const GestionarClientes = () => {
   };
 
   const handleBack = () => {
-    navigate('/admin-menu'); // Navegar al menú administrativo
+    navigate('/admin-menu');
   };
 
   return (
@@ -97,22 +96,33 @@ const GestionarClientes = () => {
       sx={{
         width: '100vw',
         height: '100vh',
-        background: 'linear-gradient(to right, #001f3f, #0077b6)',
+        background: '#f4f6f8',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
       }}
     >
-      <Container maxWidth="lg" sx={{ background: 'white', borderRadius: 2, padding: 4, boxShadow: 3 }}>
-        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#0077b6' }}>
+      <Container
+        maxWidth="lg"
+        sx={{
+          background: 'white',
+          borderRadius: 4,
+          padding: 4,
+          boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)',
+          borderLeft: '5px solid #0077b6', // Resalta el borde izquierdo
+        }}
+      >
+        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#333', fontWeight: '700' }}>
           Gestionar Clientes
         </Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
           <Button
             variant="contained"
             onClick={handleCreate}
             sx={{
               backgroundColor: '#0077b6',
+              color: 'white',
+              fontWeight: 'bold',
               '&:hover': { backgroundColor: '#005f91' },
             }}
           >
@@ -124,41 +134,42 @@ const GestionarClientes = () => {
             sx={{
               color: '#0077b6',
               borderColor: '#0077b6',
+              fontWeight: 'bold',
               '&:hover': { backgroundColor: '#e0e0e0' },
             }}
           >
             Volver al Menú
           </Button>
         </Box>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ borderRadius: 3, boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)' }}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}><strong>Nombre</strong></TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}><strong>Activo</strong></TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}><strong>Fecha de Nacimiento</strong></TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}><strong>Acciones</strong></TableCell>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white', textAlign: 'center' }}>Nombre</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white', textAlign: 'center' }}>Activo</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white', textAlign: 'center' }}>Fecha de Nacimiento</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white', textAlign: 'center' }}>Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {clientes.map((cliente) => (
-                <TableRow key={cliente._id}>
-                  <TableCell>{cliente.nombres} {cliente.apellidos}</TableCell>
-                  <TableCell>{cliente.activo ? 'Sí' : 'No'}</TableCell>
-                  <TableCell>{new Date(cliente.fechaNacimiento).toLocaleDateString()}</TableCell>
-                  <TableCell align="right">
+                <TableRow key={cliente._id} hover>
+                  <TableCell sx={{ textAlign: 'center' }}>{cliente.nombres} {cliente.apellidos}</TableCell>
+                  <TableCell sx={{ textAlign: 'center' }}>{cliente.activo ? 'Sí' : 'No'}</TableCell>
+                  <TableCell sx={{ textAlign: 'center' }}>{new Date(cliente.fechaNacimiento).toLocaleDateString()}</TableCell>
+                  <TableCell sx={{ textAlign: 'center' }}>
                     <Tooltip title="Ver Detalles" arrow>
-                      <IconButton onClick={() => handleDetails(cliente._id)} color="primary">
+                      <IconButton onClick={() => handleDetails(cliente._id)} sx={{ color: '#0077b6' }}>
                         <VisibilityIcon />
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Editar Cliente" arrow>
-                      <IconButton onClick={() => handleEdit(cliente._id)} color="primary">
+                      <IconButton onClick={() => handleEdit(cliente._id)} sx={{ color: '#005f91' }}>
                         <EditIcon />
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Desactivar Cliente" arrow>
-                      <IconButton onClick={() => handleDeactivate(cliente._id)} color="error">
+                      <IconButton onClick={() => handleDeactivate(cliente._id)} sx={{ color: '#d32f2f' }}>
                         <DeleteIcon />
                       </IconButton>
                     </Tooltip>
