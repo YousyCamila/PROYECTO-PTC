@@ -23,7 +23,7 @@ const crearCaso = async (req, res) => {
 const obtenerCasosPorClienteId = async (req, res) => {
   try {
     const idCliente = req.params.id.trim();
-    console.log("ID del cliente recibido:", idCliente);
+   
     
     const casos = await casosService.obtenerCasosPorClienteId(idCliente);
     

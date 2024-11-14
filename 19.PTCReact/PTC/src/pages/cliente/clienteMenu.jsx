@@ -83,20 +83,31 @@ const ClienteMenu = () => {
   };
 
   const handleViewDetails = (caso) => {
+    const evidenciasFormatted = caso.evidencias && caso.evidencias.length > 0 
+      ? caso.evidencias.map((evidencia, index) => `
+          <li>
+            <strong>Fecha:</strong> ${evidencia.fechaEvidencia}, 
+            <strong>Descripción:</strong> ${evidencia.descripcion}, 
+            <strong>Tipo:</strong> ${evidencia.tipoEvidencia}
+          </li>
+        `).join('')
+      : 'No hay evidencias asociadas.';
+  
     Swal.fire({
       title: `Detalles del Caso: ${caso.nombreCaso}`, 
       html: `
-        <p><strong>Nombre del Caso:</strong> ${caso.nombreCaso}</p>
-        <p><strong>Estado:</strong> ${caso.activo ? 'Activo' : 'Inactivo'}</p>
-        <p><strong>ID del Caso:</strong> ${caso._id}</p>
-        <p><strong>Detective Asignado:</strong> ${caso.idDetective ? caso.idDetective.nombre : 'No asignado'}</p>
-        <p><strong>Evidencias:</strong> ${caso.evidencias && caso.evidencias.length > 0 ? caso.evidencias.join(', ') : 'No hay evidencias asociadas.'}</p>
-        <p><strong>Registro de Casos:</strong> ${caso.registroCasos && caso.registroCasos.length > 0 ? caso.registroCasos.join(', ') : 'No hay registros asociados.'}</p>
+        <div><strong>Nombre del Caso:</strong> ${caso.nombreCaso}</div>
+        <div><strong>Estado:</strong> ${caso.activo ? 'Activo' : 'Inactivo'}</div>
+        <div><strong>ID del Caso:</strong> ${caso._id}</div>
+        <div><strong>Detective Asignado:</strong> ${caso.idDetective ? caso.idDetective.nombre : 'No asignado'}</div>
+        <div><strong>Evidencias:</strong><ul>${evidenciasFormatted}</ul></div>
+        <div><strong>Registro de Casos:</strong> ${caso.registroCasos && caso.registroCasos.length > 0 ? caso.registroCasos.join(', ') : 'No hay registros asociados.'}</div>
       `,
       icon: 'info',
       confirmButtonText: 'Cerrar',
     });
   };
+  
 
   useEffect(() => {
     if (userId) {
