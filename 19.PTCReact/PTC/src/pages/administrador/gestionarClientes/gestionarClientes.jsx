@@ -14,10 +14,13 @@ import {
   IconButton,
   Snackbar,
   Tooltip,
+  Stack,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,13 +30,14 @@ const GestionarClientes = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const navigate = useNavigate();
 
+  // Función para obtener la lista de clientes
   const fetchClientes = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/clientes");
+      const response = await fetch('http://localhost:3000/api/clientes');
       const data = await response.json();
       setClientes(data);
     } catch (error) {
-      console.error("Error fetching clientes:", error);
+      console.error('Error fetching clientes:', error);
       setSnackbarMessage('Error al cargar los clientes');
       setOpenSnackbar(true);
     }
@@ -54,7 +58,7 @@ const GestionarClientes = () => {
   const handleDeactivate = async (clienteId) => {
     const confirm = await Swal.fire({
       title: '¿Estás seguro?',
-      text: "Cambiará el estado del cliente a inactivo.",
+      text: 'Cambiará el estado del cliente a inactivo.',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
@@ -67,12 +71,14 @@ const GestionarClientes = () => {
         await fetch(`http://localhost:3000/api/clientes/${clienteId}`, {
           method: 'DELETE',
         });
-        setClientes(prevClientes => prevClientes.map(cliente => 
-          cliente._id === clienteId ? { ...cliente, activo: false } : cliente
-        ));
+        setClientes((prevClientes) =>
+          prevClientes.map((cliente) =>
+            cliente._id === clienteId ? { ...cliente, activo: false } : cliente
+          )
+        );
         Swal.fire('Desactivado!', 'El cliente ha sido desactivado.', 'success');
       } catch (error) {
-        console.error("Error al desactivar cliente:", error);
+        console.error('Error al desactivar cliente:', error);
         setSnackbarMessage('No se pudo desactivar el cliente.');
         setOpenSnackbar(true);
       }
@@ -83,12 +89,16 @@ const GestionarClientes = () => {
     navigate('/crear-cliente');
   };
 
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
-  };
-
   const handleBack = () => {
     navigate('/admin-menu');
+  };
+
+  const handleRefresh = () => {
+    fetchClientes();
+  };
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
   };
 
   return (
@@ -109,25 +119,47 @@ const GestionarClientes = () => {
           borderRadius: 4,
           padding: 4,
           boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)',
-          borderLeft: '5px solid #0077b6', // Resalta el borde izquierdo
+          borderLeft: '5px solid #0077b6',
         }}
       >
-        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#333', fontWeight: '700' }}>
+        <Typography
+          variant="h4"
+          component="h1"
+          gutterBottom
+          sx={{ textAlign: 'center', color: '#333', fontWeight: '700' }}
+        >
           Gestionar Clientes
         </Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-          <Button
-            variant="contained"
-            onClick={handleCreate}
-            sx={{
-              backgroundColor: '#0077b6',
-              color: 'white',
-              fontWeight: 'bold',
-              '&:hover': { backgroundColor: '#005f91' },
-            }}
-          >
-            Crear Cliente
-          </Button>
+
+        {/* Botones de acciones */}
+        <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between', mb: 3 }}>
+          <Stack direction="row" spacing={2}>
+            <Button
+              variant="contained"
+              onClick={handleCreate}
+              sx={{
+                backgroundColor: '#0077b6',
+                color: 'white',
+                fontWeight: 'bold',
+                '&:hover': { backgroundColor: '#005f91' },
+              }}
+            >
+              Crear Cliente
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={handleRefresh}
+              sx={{
+                color: '#0077b6',
+                borderColor: '#0077b6',
+                fontWeight: 'bold',
+                '&:hover': { backgroundColor: '#e0e0e0' },
+              }}
+              startIcon={<RefreshIcon />}
+            >
+              Refrescar
+            </Button>
+          </Stack>
           <Button
             variant="outlined"
             onClick={handleBack}
@@ -137,18 +169,25 @@ const GestionarClientes = () => {
               fontWeight: 'bold',
               '&:hover': { backgroundColor: '#e0e0e0' },
             }}
+            startIcon={<ArrowBackIcon />}
           >
             Volver al Menú
           </Button>
-        </Box>
+        </Stack>
+
+        {/* Tabla de clientes */}
         <TableContainer component={Paper} sx={{ borderRadius: 3, boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)' }}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white', textAlign: 'center' }}>Nombre</TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white', textAlign: 'center' }}>Activo</TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white', textAlign: 'center' }}>Fecha de Nacimiento</TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white', textAlign: 'center' }}>Acciones</TableCell>
+                {['Nombre', 'Activo', 'Fecha de Nacimiento', 'Acciones'].map((header) => (
+                  <TableCell
+                    key={header}
+                    sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white', textAlign: 'center' }}
+                  >
+                    {header}
+                  </TableCell>
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -180,12 +219,22 @@ const GestionarClientes = () => {
           </Table>
         </TableContainer>
 
-        <Snackbar
-          open={openSnackbar}
-          autoHideDuration={6000}
-          onClose={handleCloseSnackbar}
-          message={snackbarMessage}
-        />
+        {/* Botón para regresar al menú al final */}
+        <Button
+          fullWidth
+          onClick={handleBack}
+          sx={{
+            mt: 4,
+            backgroundColor: '#0077b6',
+            color: 'white',
+            '&:hover': { backgroundColor: '#005f91' },
+          }}
+          startIcon={<ArrowBackIcon />}
+        >
+          Regresar al Menú Anterior
+        </Button>
+
+        <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} message={snackbarMessage} />
       </Container>
     </Box>
   );
