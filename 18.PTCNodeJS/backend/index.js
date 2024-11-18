@@ -43,7 +43,6 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.use(cors(corsOptions));
 
 // Rutas de Swagger para documentación
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
