@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Container,
@@ -25,8 +25,10 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import AddIcon from '@mui/icons-material/Add';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import CasoDetailsMenu from './CasoDetailsMenu';
+import { AuthContext } from '../../context/AuthContext';
 
 const ClienteMenu = () => {
+  const { user } = useContext(AuthContext);  // Obtiene el usuario desde el contexto
   const [casos, setCasos] = useState([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -37,6 +39,12 @@ const ClienteMenu = () => {
 
   const email = localStorage.getItem('email'); // Obtiene el email del cliente desde el localStorage
   const API_URL = 'http://localhost:3000/api';
+
+  // Verifica si el usuario está autenticado y tiene el rol de cliente
+  if (!user || user.role !== 'cliente') {
+    return <Typography variant="h6" color="error">Acceso denegado. Solo clientes pueden acceder a este menú.</Typography>;
+  }
+  
 
   const fetchCasosByEmail = async (emailCliente) => {
     try {
