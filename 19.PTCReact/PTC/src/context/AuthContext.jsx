@@ -1,8 +1,6 @@
-import { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import jwt_decode from 'jwt-decode';
 
-
-// Crear el contexto de autenticación
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -11,13 +9,19 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
     if (token) {
-      // Si hay un token, decodificarlo y establecer el usuario
-      const decodedToken = jwt_decode(token);
-      setUser({
-        id: decodedToken.id,
-        email: decodedToken.email,
-        role: decodedToken.role,
-      });
+      try {
+        const decodedToken = jwt_decode(token);
+        setUser({
+          id: decodedToken.id,
+          email: decodedToken.email,
+          role: decodedToken.role,
+        });
+      } catch (error) {
+        console.error("Error decodificando el token", error);
+        localStorage.removeItem('accessToken');
+      }
+    } else {
+      setUser(null);
     }
   }, []);
 

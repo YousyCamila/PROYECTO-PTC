@@ -1,11 +1,23 @@
+
 import React from 'react';
 import { Box, Button, Container, Typography, Grid, Card, CardContent, CardActions, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout'; // Icono para el botón interactivo
+import { useContext } from 'react';
 import Swal from 'sweetalert2';
+import { AuthContext } from '../../context/AuthContext';
+
+
+
 
 const AdminMenu = () => {
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  // Si no hay usuario o el rol no es "administrador", no renderizamos el menú
+  if (!user || user.role !== 'administrador') {
+    return <Typography variant="h6" color="error">Acceso denegado. Solo administradores pueden acceder a este menú.</Typography>;
+  }
 
   const handleGestionClientes = () => {
     navigate('/gestionar-clientes');
