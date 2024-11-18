@@ -1,13 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from '../src/pages/home/home';
-import Register from '../src/pages/login/registro';
-import Login from '../src/pages/login/login';  // El componente de login que ya tienes
-import DetectiveForm from '../src/pages/login/detectiveForm'; // Asegúrate de que la ruta sea correcta
+import Home from './pages/home/home';
+import Register from './pages/login/registro';
+import Login from './pages/login/login';  
+import DetectiveForm from './pages/login/detectiveForm';
 import ClienteForm from './pages/login/clienteForm';
-import { useState } from 'react'; // Importa useState
 import AdministradorForm from './pages/login/administradorForm';
-import AdminMenu from '../src/pages/administrador/adminMenu';
-import GestionarClientes from '../src/pages/administrador/gestionarClientes/gestionarClientes';
+import AdminMenu from './pages/administrador/adminMenu';
+import GestionarClientes from './pages/administrador/gestionarClientes/gestionarClientes';
 import CrearCliente from './pages/administrador/gestionarClientes/crearCliente';
 import EditarCliente from './pages/administrador/gestionarClientes/editarCliente';
 import GestionarDetectives from './pages/administrador/gestionDetectives/gestionarDetectives';
@@ -32,92 +31,68 @@ import ResponderSolicitudes from './pages/administrador/GestionarSolicitudes/Res
 import MensajesRespondidos from './pages/administrador/GestionarSolicitudes/MensajesRespondidos';
 import CasoDetailsMenu from './pages/cliente/CasoDetailsMenu';
 import EvidenciasCrud from './pages/cliente/EvidenciasCrud';
-
-
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
-  const [email, setEmail] = useState(''); // Define el estado para el email
-
-  // Función para actualizar el estado del email
-  const handleEmailChange = (newEmail) => {
-    setEmail(newEmail);
-  };
-
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />  {/* Página principal */}
-        <Route path="/login" element={<Login />} />  {/* Página de Login */}
-        <Route path="/contactanos" element={<Contactanos />} /> {/* Página del Fomulario de solicitud */}
-        <Route
-          path="/register"
-          element={<Register onEmailChange={handleEmailChange} />} // Pasa la función
-        />
-        <Route
-          path="/detective-form"
-          element={<DetectiveForm email={email} />} // Asegúrate de pasar el email
-        />
-        <Route
-          path="/cliente-form"
-          element={<ClienteForm email={email} />} // Asegúrate de pasar el email
-        />
-        <Route
-          path="/administrador-form"
-          element={<AdministradorForm email={email} />} // Asegúrate de pasar el email
-        />
-        <Route path="/servicios" element={<Servicios />} />
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Rutas públicas (sin autenticación requerida) */}
+          <Route path="/" element={<Home />} /> 
+          <Route path="/login" element={<Login />} />
+          <Route path="/contactanos" element={<Contactanos />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/detective-form" element={<DetectiveForm />} />
+          <Route path="/cliente-form" element={<ClienteForm />} />
+          <Route path="/administrador-form" element={<AdministradorForm />} />
+          <Route path="/servicios" element={<Servicios />} />
 
-        <Route path="/admin-menu" element={<AdminMenu />} />
+          {/* Rutas protegidas - solo para administradores */}
+          <Route element={<ProtectedRoute roles={['administrador']} />}>
+            <Route path="/admin-menu" element={<AdminMenu />} />
+            <Route path="/gestionar-clientes" element={<GestionarClientes />} />
+            <Route path="/crear-cliente" element={<CrearCliente />} />
+            <Route path="/editar-cliente/:id" element={<EditarCliente />} />
+            <Route path="/detalles-cliente/:id" element={<DetallesCliente />} />
+            <Route path="/gestionar-detectives" element={<GestionarDetectives />} />
+            <Route path="/crear-detective" element={<CrearDetective />} />
+            <Route path="/detalles-detective/:id" element={<DetallesDetective />} />
+            <Route path="/editar-detective/:id" element={<EditarDetective />} />
+            <Route path="/gestionar-Casos" element={<GestionarCasos />} />
+            <Route path="/crear-caso" element={<CrearCaso />} />
+            <Route path="/editar-caso/:id" element={<EditarCaso />} />
+            <Route path="/detalles-caso/:id" element={<DetallesCaso />} />
+            <Route path="/gestionar-contratos" element={<GestionarContratos />} />
+            <Route path="/crear-contrato" element={<CrearContrato />} />
+            <Route path="/detalles-contrato/:id" element={<DetallesContrato />} />
+            <Route path="/editar-contrato/:id" element={<EditarContrato />} />
+            <Route path="/responder-solicitudes" element={<ResponderSolicitudes />} />
+            <Route path="/mensajes-respondidos" element={<MensajesRespondidos />} />
+          </Route>
 
-        <Route path="/gestionar-clientes" element={<GestionarClientes />} />
+          {/* Rutas protegidas - solo para clientes */}
+          <Route element={<ProtectedRoute roles={['cliente']} />}>
+            <Route path="/cliente-menu" element={<MenuCliente />} />
+            <Route path="/caso-details" element={<CasoDetailsMenu />} />
+            <Route path="/evidencias-crud" element={<EvidenciasCrud />} />
+          </Route>
 
-        <Route path="/crear-cliente" element={<CrearCliente />} />
+          {/* Rutas protegidas - solo para detectives */}
+          <Route element={<ProtectedRoute roles={['detective']} />}>
+            <Route path="/detective-menu" element={<DetectiveMenu />} />
+            <Route path="/agregar-evidencia/:casoId" element={<AgregarEvidencia />} />
+          </Route>
 
-        <Route path="/editar-cliente/:id" element={<EditarCliente />} />
-
-        <Route path="/detalles-cliente/:id" element={<DetallesCliente />} />
-
-        <Route path="/gestionar-detectives" element={<GestionarDetectives />} />
-
-        <Route path="/crear-detective" element={<CrearDetective />} />
-
-        <Route path="/detalles-detective/:id" element={<DetallesDetective />} />
-
-        <Route path="/editar-detective/:id" element={<EditarDetective />} />
-
-        <Route path="/gestionar-Casos" element={<GestionarCasos />} />
-
-        <Route path="/crear-caso" element={<CrearCaso />} />
-
-        <Route path="/editar-caso/:id" element={<EditarCaso />} />
-
-        <Route path="/detalles-caso/:id" element={<DetallesCaso />} />
-
-        <Route path="/gestionar-contratos" element={<GestionarContratos />} />
-
-        <Route path="/crear-contrato" element={<CrearContrato />} />
-
-        <Route path="/detalles-contrato/:id" element={<DetallesContrato />} />
-
-        <Route path="/editar-contrato/:id" element={<EditarContrato />} />
-
-        <Route path="/cliente-menu" element={<MenuCliente />} />
-
-        <Route path="/detective-menu" element={<DetectiveMenu />} />
-
-        <Route path="/agregar-evidencia/:casoId" element={<AgregarEvidencia />} /> 
-
-        <Route path="/responder-solicitudes" element={<ResponderSolicitudes />} /> 
-
-        <Route path="/mensajes-respondidos" element={<MensajesRespondidos />} />
-
-        <Route path="/caso-details" element={<CasoDetailsMenu />} /> {/* Menú de detalles del caso */}
-
-        <Route path="/evidencias-crud" element={<EvidenciasCrud />} /> {/* CRUD de evidencias */}
-
-
-      </Routes>
-    </Router>
+          {/* Rutas protegidas - administradores o detectives */}
+          <Route element={<ProtectedRoute roles={['administrador', 'detective']} />}>
+            <Route path="/gestionar-detectives" element={<GestionarDetectives />} />
+            <Route path="/detalles-detective/:id" element={<DetallesDetective />} />
+          </Route>
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
