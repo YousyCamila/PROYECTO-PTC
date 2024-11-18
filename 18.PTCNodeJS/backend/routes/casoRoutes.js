@@ -78,7 +78,7 @@ router.get('/', casoController.listarCasos);
  *       500:
  *         description: Error al buscar el caso.
  */
-router.get('/:id', casoController.buscarCasoPorId);
+router.get('/:id',casoController.buscarCasoPorId);
 
 /**
  * @swagger
@@ -193,5 +193,35 @@ router.delete('/:id', casoController.desactivarCaso);
  *         description: Error interno del servidor
  */
 router.get('/cliente/:id', casoController.obtenerCasosPorClienteId);
+
+/**
+ * @swagger
+ * /caso/cliente/email/{email}:
+ *   get:
+ *     summary: Obtener casos asociados a un cliente por su correo electrónico.
+ *     tags: [Casos]
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Correo electrónico del cliente.
+ *         example: cliente@example.com
+ *     responses:
+ *       200:
+ *         description: Lista de casos asociados al cliente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       404:
+ *         description: No se encontraron casos para el cliente especificado.
+ *       500:
+ *         description: Error interno del servidor.
+ */
+router.get('/cliente/email/:email', casoController.obtenerCasosPorEmailCliente);
 
 module.exports = router;

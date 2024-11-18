@@ -35,12 +35,12 @@ const ClienteMenu = () => {
   const [selectedCaso, setSelectedCaso] = useState(null); // Caso seleccionado para ver detalles
   const navigate = useNavigate();
 
-  const userId = localStorage.getItem('userId'); // Obtiene el ID del cliente desde el localStorage
+  const email = localStorage.getItem('email'); // Obtiene el email del cliente desde el localStorage
   const API_URL = 'http://localhost:3000/api';
 
-  const fetchCasos = async (id) => {
+  const fetchCasosByEmail = async (emailCliente) => {
     try {
-      const response = await fetch(`${API_URL}/caso/cliente/${id}`, {
+      const response = await fetch(`${API_URL}/caso/cliente/email/${emailCliente}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ const ClienteMenu = () => {
 
   const handleBuscarCasoPorId = () => {
     if (clienteId) {
-      fetchCasos(clienteId);
+      fetchCasosByEmail(clienteId);
       setOpenDialog(false);
     } else {
       setSnackbarMessage("Por favor ingresa un ID de cliente.");
@@ -108,12 +108,11 @@ const ClienteMenu = () => {
     });
   };
   
-
   useEffect(() => {
-    if (userId) {
-      fetchCasos(userId); // Cargar los casos automáticamente si el userId está definido
+    if (email) {
+      fetchCasosByEmail(email); // Cargar los casos automáticamente si el email está definido
     }
-  }, [userId]);
+  }, [email]);
 
   return (
     <Box sx={{ width: '100vw', height: '100vh', background: 'linear-gradient(to right, #ffffff, #e0e0e0)', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
@@ -141,7 +140,7 @@ const ClienteMenu = () => {
         </Typography>
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-        <Button variant="outlined" color="primary" onClick={() => fetchCasos(userId)}>
+        <Button variant="outlined" color="primary" onClick={() => fetchCasosByEmail(email)}>
             Cargar Casos Asociados
           </Button>
           <Button variant="outlined" color="primary" onClick={() => setOpenDialog(true)}>

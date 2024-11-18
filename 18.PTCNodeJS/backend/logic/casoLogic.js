@@ -60,6 +60,26 @@ const obtenerCasosPorClienteId = async (idCliente) => {
   }
 };
 
+/**
+ * Obtener casos asociados a un cliente por correo electrónico.
+ * @param {string} emailCliente - Correo electrónico del cliente.
+ * @returns {Promise<Array>} Lista de casos asociados al cliente.
+ */
+const obtenerCasosPorEmailCliente = async (emailCliente) => {
+  try {
+    // Verificar si el cliente existe
+    const cliente = await Cliente.findOne({ correo: emailCliente.trim() });
+    if (!cliente) {
+      throw new Error(`No se encontró un cliente con el correo: ${emailCliente}`);
+    }
+
+    // Buscar casos asociados al cliente
+    const casos = await Caso.find({ idCliente: cliente._id }).populate('idDetective evidencias');
+    return casos;
+  } catch (error) {
+    throw new Error(`Error al obtener casos por correo: ${error.message}`);
+  }
+};
 
 // Listar Casos
 async function listarCasos() {
@@ -108,4 +128,5 @@ module.exports = {
   actualizarCaso,
   desactivarCaso,
   obtenerCasosPorClienteId,
+  obtenerCasosPorEmailCliente
 };

@@ -1,10 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const dotenv = require('dotenv'); // Para manejar variables de entorno
+const dotenv = require('dotenv');
 const connectDB = require('./configDB/db'); // Conexión a la base de datos
 const { swaggerUi, swaggerSpec } = require('./swagger/swagger'); // Configuración de Swagger
-const sessionMiddleware = require('./middleware/middleware');
+const cookieParser = require('cookie-parser'); // Para manejar cookies
 
 dotenv.config(); // Carga las variables del archivo .env
 
@@ -23,7 +23,7 @@ const registroCasoRoutes = require('./routes/registroCasoRoutes');
 const registroMantenimientoRoutes = require('./routes/registroMantenimientoRoutes');
 const rolRoutes = require('./routes/rolRoutes');
 const tipoEvidenciaRoutes = require('./routes/tipoEvidenciaRoutes');
-const usuarioRoutes = require('./routes/usuarioRoutes');
+const usuarioRoutes = require('./routes/usuarioRoutes'); // Asegúrate de que esta línea esté solo una vez
 
 // Conectar a MongoDB
 connectDB();
@@ -33,15 +33,16 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-sessionMiddleware(app);
+app.use(cookieParser()); // Middleware para manejar cookies
 
-// Configuración de CORS
 const corsOptions = {
-    origin: '*', // Ajusta esto con los dominios permitidos de tu frontend
+    origin: 'http://localhost:5173', // Cambia esto al dominio de tu frontend
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true, // Permitir el envío de cookies y encabezados de autenticación
 };
 app.use(cors(corsOptions));
+
 
 // Rutas de Swagger para documentación
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -63,7 +64,7 @@ app.use('/api/roles', rolRoutes);
 app.use('/api/tipos-evidencia', tipoEvidenciaRoutes);
 app.use('/api/usuario', usuarioRoutes);
 
-const port = 3000; // Establece el puerto directamente en el código
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);
