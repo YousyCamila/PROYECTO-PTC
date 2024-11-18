@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
   Box,
   Container,
@@ -23,8 +23,10 @@ import {
 import Swal from 'sweetalert2';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AddIcon from '@mui/icons-material/Add';
+import { AuthContext } from '../../context/AuthContext';
 
 const DetectiveMenu = () => {
+  const { user } = useContext(AuthContext);
   const [contratos, setContratos] = useState([]);
   const [contratoId, setContratoId] = useState('');
   const [error, setError] = useState('');
@@ -32,6 +34,11 @@ const DetectiveMenu = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [casos, setCasos] = useState([]);
+
+  if (!user || user.role !== 'detective') {
+    return <Typography variant="h6" color="error">Acceso denegado. Solo detective pueden acceder a este menú.</Typography>;
+  }
+  
 
   // Función para obtener los contratos del detective
   const fetchContratos = async () => {
