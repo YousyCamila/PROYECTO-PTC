@@ -39,7 +39,7 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Rutas públicas (sin autenticación requerida) */}
+          {/* Rutas públicas */}
           <Route path="/" element={<Home />} /> 
           <Route path="/login" element={<Login />} />
           <Route path="/contactanos" element={<Contactanos />} />
@@ -83,12 +83,6 @@ function App() {
           <Route element={<ProtectedRoute roles={['detective']} />}>
             <Route path="/detective-menu" element={<DetectiveMenu />} />
             <Route path="/agregar-evidencia/:casoId" element={<AgregarEvidencia />} />
-          </Route>
-
-          {/* Rutas protegidas - administradores o detectives */}
-          <Route element={<ProtectedRoute roles={['administrador', 'detective']} />}>
-            <Route path="/gestionar-detectives" element={<GestionarDetectives />} />
-            <Route path="/detalles-detective/:id" element={<DetallesDetective />} />
           </Route>
         </Routes>
       </Router>

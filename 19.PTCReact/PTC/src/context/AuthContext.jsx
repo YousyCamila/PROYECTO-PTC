@@ -1,38 +1,33 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import { createContext, useState, useEffect } from 'react';
+import jwt_decode from 'jwt-decode';
 
-// Contexto para autenticación
+
+// Crear el contexto de autenticación
 export const AuthContext = createContext();
-
-// Hook personalizado para acceder al contexto
-export const useAuth = () => {
-  return useContext(AuthContext); // Accede al contexto dentro de cualquier componente
-};
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  // Aquí puedes verificar el token almacenado en localStorage o sesión
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('accessToken');
     if (token) {
-      // Si tienes un token, decodifícalo y establece el usuario
-      const decodedUser = JSON.parse(atob(token.split('.')[1])); // Esto depende de cómo esté estructurado el token
-      setUser(decodedUser);
+      // Si hay un token, decodificarlo y establecer el usuario
+      const decodedToken = jwt_decode(token);
+      setUser({
+        id: decodedToken.id,
+        email: decodedToken.email,
+        role: decodedToken.role,
+      });
     }
   }, []);
 
-  const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem('token', userData.token); // Guarda el token en localStorage
-  };
-
   const logout = () => {
+    localStorage.removeItem('accessToken');
     setUser(null);
-    localStorage.removeItem('token'); // Elimina el token cuando el usuario cierre sesión
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, logout }}>
       {children}
     </AuthContext.Provider>
   );

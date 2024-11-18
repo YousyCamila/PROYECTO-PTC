@@ -20,6 +20,22 @@ const Login = () => {
   const [role, setRole] = useState("");
   const navigate = useNavigate();
 
+  // Verifica si el usuario ya tiene un token
+  const checkAuth = () => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      const decodedToken = jwt_decode(token);
+      if (decodedToken.role === "administrador") {
+        navigate("/admin-menu");
+      } else if (decodedToken.role === "cliente") {
+        navigate("/cliente-menu");
+      } else if (decodedToken.role === "detective") {
+        navigate("/detective-menu");
+      }
+    }
+  };
+
+  // Llamada al backend para el login
   const login = async (e) => {
     e.preventDefault();
     try {
