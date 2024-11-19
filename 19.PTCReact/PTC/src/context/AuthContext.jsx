@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       try {
         const decodedToken = jwt_decode(token);
+        console.log(decodedToken); // Verifica el contenido del token
         setUser({
           id: decodedToken.id,
           email: decodedToken.email,
@@ -21,9 +22,10 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('accessToken');
       }
     } else {
-      setUser(null);
+      setUser(null); // Si no hay token, el usuario es null
     }
   }, []);
+  
 
   const logout = () => {
     localStorage.removeItem('accessToken');
