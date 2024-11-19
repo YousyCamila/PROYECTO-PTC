@@ -38,8 +38,27 @@ const obtenerCasosPorClienteId = async (req, res) => {
   }
 };
 
+/**
+ * Controlador para obtener los casos asociados al cliente por correo.
+ * @param {Request} req - La solicitud HTTP.
+ * @param {Response} res - La respuesta HTTP.
+ */
+const obtenerCasosPorEmailCliente = async (req, res) => {
+  const emailCliente = req.params.email.trim();
 
+  try {
+    const casos = await casosService.obtenerCasosPorEmailCliente(emailCliente);
 
+    if (casos.length === 0) {
+      return res.status(404).json({ message: 'No se encontraron casos para el cliente especificado.' });
+    }
+
+    res.status(200).json(casos);
+  } catch (error) {
+    console.error('Error al obtener casos por email del cliente:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
 
 // Listar todos los casos
 const listarCasos = async (req, res) => {
@@ -92,4 +111,5 @@ module.exports = {
   actualizarCaso,
   desactivarCaso,
   obtenerCasosPorClienteId,
+  obtenerCasosPorEmailCliente
 };

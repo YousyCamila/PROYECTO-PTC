@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode"; // Importa jwt_decode para decodificar el token JWT
 import {
   Box,
   Button,
@@ -11,12 +12,12 @@ import {
   InputLabel,
   FormControl,
 } from "@mui/material";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState(""); // Valor por defecto
+  const [role, setRole] = useState("");
   const navigate = useNavigate();
 
   const login = async (e) => {
@@ -27,67 +28,68 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password, role }),
+        body: JSON.stringify({ email, password, role }), // Incluye el rol en la solicitud
       });
 
       const data = await response.json();
 
-      console.log({ email, role });
-      console.log(data);
-
       if (response.ok) {
+        // Decodifica el token para obtener email, id y role
+        const decodedToken = jwt_decode(data.accessToken);
 
-        localStorage.setItem("userId", data.userId.trim()); // Guarda el userId en localStorage
-        localStorage.setItem("role", data.role);      // Guarda el rol del usuario en localStorage
+        // Guarda los datos en localStorage
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("userId", decodedToken.id); // Guarda el id del usuario
+        localStorage.setItem("email", decodedToken.email); // Guarda el email
+        localStorage.setItem("role", decodedToken.role); // Guarda el rol
 
-        
         Swal.fire({
-          icon: 'success',
-          title: 'Login exitoso',
-          text: 'Bienvenido de nuevo!',
+          icon: "success",
+          title: "Login exitoso",
+          text: "Bienvenido de nuevo!",
         });
 
-        if (role === 'administrador') {
-          navigate('/admin-menu');
-        } else if (role === 'cliente') {
-          navigate('/cliente-menu');
-          console.log(data.idCliente);
-        } else if (role === 'detective') {
-          navigate('/detective-menu');
+        // Redirige según el rol decodificado del token
+        if (decodedToken.role === "administrador") {
+          navigate("/admin-menu");
+        } else if (decodedToken.role === "cliente") {
+          navigate("/cliente-menu");
+        } else if (decodedToken.role === "detective") {
+          navigate("/detective-menu");
         }
       } else {
+        // Mostrar mensaje de error si hay problema con el rol o credenciales
         Swal.fire({
-          icon: 'error',
-          title: 'Error de inicio de sesión',
-          text: data.message || 'Credenciales inválidas',
+          icon: "error",
+          title: "Error de inicio de sesión",
+          text: data.error || "Credenciales inválidas",
         });
       }
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Ocurrió un error inesperado, por favor intenta más tarde.',
+        icon: "error",
+        title: "Error",
+        text: "Ocurrió un error inesperado, por favor intenta más tarde.",
       });
     }
   };
 
   return (
     <Box
-    sx={{
-      width: "100vw",
-      height: "100vh",
-      backgroundImage: "url('https://scontent.fbog4-1.fna.fbcdn.net/v/t39.30808-6/312404170_109199351992944_5430879874558801924_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=BxpplRDTj9EQ7kNvgHWi6tN&_nc_zt=23&_nc_ht=scontent.fbog4-1.fna&_nc_gid=A2AKN1EgkgNUcogxmZd092q&oh=00_AYD1yB-yGwsjJNx-xZQwyw0ljfDE6ELkeYLQYGZUUNP0tA&oe=6720401C')", // URL de la imagen
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      position: "relative",
-      display: "flex",
+      sx={{
+        width: "100vw",
+        height: "100vh",
+        backgroundImage: "url('https://scontent.fbog4-1.fna.fbcdn.net/v/t39.30808-6/312404170_109199351992944_5430879874558801924_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=BxpplRDTj9EQ7kNvgHWi6tN&_nc_zt=23&_nc_ht=scontent.fbog4-1.fna&_nc_gid=A2AKN1EgkgNUcogxmZd092q&oh=00_AYD1yB-yGwsjJNx-xZQwyw0ljfDE6ELkeYLQYGZUUNP0tA&oe=6720401C')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        position: "relative",
+        display: "flex",
         justifyContent: "center",
         alignItems: "center",
-    }}
+      }}
     >
-
-  <Container
+      <Container
         maxWidth="sm"
         sx={{
           backgroundColor: "white",
