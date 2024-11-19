@@ -45,6 +45,7 @@ const ClienteMenu = () => {
     return <Typography variant="h6" color="error">Acceso denegado. Solo clientes pueden acceder a este menú.</Typography>;
   }
   
+  
 
   const fetchCasosByEmail = async (emailCliente) => {
     try {
