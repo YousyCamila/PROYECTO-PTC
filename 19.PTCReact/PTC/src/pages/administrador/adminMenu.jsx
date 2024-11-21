@@ -1,54 +1,62 @@
-
-import React from 'react';
-import { Box, Button, Container, Typography, Grid, Card, CardContent, CardActions, IconButton } from '@mui/material';
+import React, { useState } from 'react';
+import {
+  Box,
+  Button,
+  Container,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  CardActions,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+  Avatar,
+} from '@mui/material';
+import LogoutIcon from '@mui/icons-material/Logout';
+import MenuIcon from '@mui/icons-material/Menu';
+import GroupIcon from '@mui/icons-material/Group';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import FolderSpecialIcon from '@mui/icons-material/FolderSpecial';
+import ArticleIcon from '@mui/icons-material/Article';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import { useNavigate } from 'react-router-dom';
-import LogoutIcon from '@mui/icons-material/Logout'; // Icono para el botón interactivo
-import { useContext } from 'react';
 import Swal from 'sweetalert2';
+import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-
-
-
 
 const AdminMenu = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Si no hay usuario o el rol no es "administrador", no renderizamos el menú
   if (!user || user.role !== 'administrador') {
     return <Typography variant="h6" color="error">Acceso denegado. Solo administradores pueden acceder a este menú.</Typography>;
   }
 
-  const handleGestionClientes = () => {
-    navigate('/gestionar-clientes');
-  };
-
-  const handleGestionDetectives = () => {
-    navigate('/gestionar-detectives');
-  };
-
-  const handleGestionCasos = () => {
-    navigate('/gestionar-casos');
-  };
-
-  const handleGestionContratos = () => {
-    navigate('/gestionar-contratos'); // Navegar a la gestión de contratos
-  };
-  
-  const handleResponderSolicitudes = () => {
-    navigate('/responder-solicitudes'); // Navegar a la página de responder solicitudes
+  const handleNavigation = (route) => {
+    navigate(route);
+    setSidebarOpen(false); // Cerrar el sidebar al seleccionar una opción
   };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    setSidebarOpen(false);
     Swal.fire({
       icon: 'success',
       title: 'Sesión cerrada',
       text: 'Has cerrado sesión exitosamente',
     }).then(() => {
-      navigate('/'); // Redirigir al home
+      navigate('/');
     });
   };
+
+
 
   return (
     <Box
@@ -62,25 +70,145 @@ const AdminMenu = () => {
         position: 'relative',
       }}
     >
-      {/* Botón de cerrar sesión en la parte superior derecha */}
+      {/* Botón de menú (sidebar) */}
       <IconButton
-        onClick={handleLogout}
+        onClick={() => setSidebarOpen(true)}
         sx={{
           position: 'absolute',
           top: 20,
-          right: 20,
-          backgroundColor: '#ff5e57',
+          left: 20,
+          backgroundColor: '#0077b6',
           color: 'white',
           '&:hover': {
-            backgroundColor: '#ff2e20',
+            backgroundColor: '#005f91',
             transform: 'scale(1.1)',
           },
           transition: 'transform 0.3s ease-in-out',
         }}
       >
-        <LogoutIcon />
+        <MenuIcon />
       </IconButton>
 
+      {/* Botones de acciones (parte superior derecha) */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 20,
+          right: 20,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 2,
+        }}
+      >
+        {/* Botón de "Responder Solicitudes" */}
+        <Button
+          onClick={() => navigate('/responder-solicitudes')}
+          sx={{
+            backgroundColor: '#0077b6',
+            color: 'white',
+            textTransform: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            '&:hover': {
+              backgroundColor: '#005f91',
+            },
+          }}
+        >
+          <AssignmentTurnedInIcon />
+          Responder Solicitudes
+        </Button>
+
+        {/* Botón de subir imagen */}
+        <IconButton>
+          <Avatar
+            sx={{
+              backgroundColor: '#fff',
+              color: '#0077b6',
+              border: '1px solid #0077b6',
+              width: 40,
+              height: 40,
+              '&:hover': {
+                backgroundColor: '#f0f8ff',
+              }
+            }
+            }
+            src="https://icones.pro/wp-content/uploads/2021/02/symbole-masculin-icone-l-utilisateur-gris.png" // Imagen predefinida
+            alt="Imagen"
+          />
+        </IconButton>
+      </Box>
+
+      {/* Sidebar */}
+      <Drawer
+        anchor="left"
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        sx={{
+          '& .MuiDrawer-paper': {
+            width: 240,
+            backgroundColor: '#000',
+            color: 'white',
+          },
+        }}
+      >
+        <Box
+          sx={{
+            backgroundColor: '#0077b6',
+            padding: 2,
+            textAlign: 'center',
+          }}
+        >
+          <Typography variant="h6" sx={{ color: 'white' }}>
+            PTC
+          </Typography>
+        </Box>
+        <List sx={{ mt: 2 }}>
+          {[
+            { text: 'Gestionar Clientes', route: '/gestionar-clientes', icon: <GroupIcon /> },
+            { text: 'Gestionar Detectives', route: '/gestionar-detectives', icon: <AssignmentIcon /> },
+            { text: 'Gestionar Casos', route: '/gestionar-casos', icon: <FolderSpecialIcon /> },
+            { text: 'Gestionar Contratos', route: '/gestionar-contratos', icon: <ArticleIcon /> },
+          ].map((item, index) => (
+            <ListItem key={index} disablePadding sx={{ mb: 1 }}>
+              <ListItemButton
+                onClick={() => handleNavigation(item.route)}
+                sx={{
+                  '&:hover': {
+                    backgroundColor: '#0077b6',
+                    color: 'white',
+                  },
+                  padding: '10px 20px',
+                }}
+              >
+                <ListItemIcon sx={{ color: 'white' }}>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+        <Divider sx={{ backgroundColor: '#444' }} />
+        <Button
+          onClick={handleLogout}
+          sx={{
+            margin: 2,
+            backgroundColor: '#ff5e57',
+            color: 'white',
+            '&:hover': {
+              backgroundColor: '#ff2e20',
+            },
+            display: 'block',
+            width: '80%',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+          }}
+        >
+          <LogoutIcon sx={{ mr: 1 }} /> Cerrar Sesión
+        </Button>
+
+      </Drawer>
+
+      {/* Contenido principal */}
       <Container
         maxWidth="md"
         sx={{
@@ -96,140 +224,39 @@ const AdminMenu = () => {
         </Typography>
 
         <Grid container spacing={2} sx={{ mt: 4 }} justifyContent="center">
-          <Grid item xs={12} sm={6} md={3}>
-            <Card
-              sx={{
-                background: '#f0f4f8',
-                '&:hover': { transform: 'scale(1.05)', transition: '0.3s' },
-                borderRadius: 2,
-              }}
-            >
-              <CardContent>
-                <Typography variant="h6" component="div" sx={{ color: '#0077b6' }}>
-                  Gestionar Clientes
-                </Typography>
-                <Typography sx={{ mt: 2 }}>Agrega, edita y elimina clientes</Typography>
-              </CardContent>
-              <CardActions>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  sx={{ backgroundColor: '#0077b6', '&:hover': { backgroundColor: '#005f91' } }}
-                  onClick={handleGestionClientes}
-                >
-                  Ir a Gestión de Clientes
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={3}>
-            <Card
-              sx={{
-                background: '#f0f4f8',
-                '&:hover': { transform: 'scale(1.05)', transition: '0.3s' },
-                borderRadius: 2,
-              }}
-            >
-              <CardContent>
-                <Typography variant="h6" component="div" sx={{ color: '#0077b6' }}>
-                  Responder Solicitudes
-                </Typography>
-                <Typography sx={{ mt: 2 }}>Revisa y responde las solicitudes de los clientes</Typography>
-              </CardContent>
-              <CardActions>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  sx={{ backgroundColor: '#0077b6', '&:hover': { backgroundColor: '#005f91' } }}
-                  onClick={handleResponderSolicitudes}
-                >
-                  Ir a Responder Solicitudes
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={3}>
-            <Card
-              sx={{
-                background: '#f0f4f8',
-                '&:hover': { transform: 'scale(1.05)', transition: '0.3s' },
-                borderRadius: 2,
-              }}
-            >
-              <CardContent>
-                <Typography variant="h6" component="div" sx={{ color: '#0077b6' }}>
-                  Gestionar Detectives
-                </Typography>
-                <Typography sx={{ mt: 2 }}>Controla y administra a los detectives</Typography>
-              </CardContent>
-              <CardActions>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  sx={{ backgroundColor: '#0077b6', '&:hover': { backgroundColor: '#005f91' } }}
-                  onClick={handleGestionDetectives}
-                >
-                  Ir a Gestión de Detectives
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={3}>
-            <Card
-              sx={{
-                background: '#f0f4f8',
-                '&:hover': { transform: 'scale(1.05)', transition: '0.3s' },
-                borderRadius: 2,
-              }}
-            >
-              <CardContent>
-                <Typography variant="h6" component="div" sx={{ color: '#0077b6' }}>
-                  Gestionar Casos
-                </Typography>
-                <Typography sx={{ mt: 2 }}>Maneja y organiza los casos asignados</Typography>
-              </CardContent>
-              <CardActions>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  sx={{ backgroundColor: '#0077b6', '&:hover': { backgroundColor: '#005f91' } }}
-                  onClick={handleGestionCasos}
-                >
-                  Ir a Gestión de Casos
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={3}>
-            <Card
-              sx={{
-                background: '#f0f4f8',
-                '&:hover': { transform: 'scale(1.05)', transition: '0.3s' },
-                borderRadius: 2,
-              }}
-            >
-              <CardContent>
-                <Typography variant="h6" component="div" sx={{ color: '#0077b6' }}>
-                  Gestionar Contratos
-                </Typography>
-                <Typography sx={{ mt: 2 }}>Administra los contratos asociados a los casos</Typography>
-              </CardContent>
-              <CardActions>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  sx={{ backgroundColor: '#0077b6', '&:hover': { backgroundColor: '#005f91' } }}
-                  onClick={handleGestionContratos}
-                >
-                  Ir a Gestión de Contratos
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
+          {[
+            { title: 'Gestionar Clientes', description: 'Agrega, edita y elimina clientes', onClick: () => handleNavigation('/gestionar-clientes') },
+            { title: 'Gestionar Detectives', description: 'Administra a los detectives', onClick: () => handleNavigation('/gestionar-detectives') },
+            { title: 'Gestionar Casos', description: 'Maneja y organiza los casos', onClick: () => handleNavigation('/gestionar-casos') },
+            { title: 'Gestionar Contratos', description: 'Administra los contratos', onClick: () => handleNavigation('/gestionar-contratos') },
+          ].map((card, index) => (
+            <Grid item xs={12} sm={6} md={3} key={index}>
+              <Card
+                sx={{
+                  background: '#f0f4f8',
+                  '&:hover': { transform: 'scale(1.05)', transition: '0.3s' },
+                  borderRadius: 2,
+                }}
+              >
+                <CardContent>
+                  <Typography variant="h6" component="div" sx={{ color: '#0077b6' }}>
+                    {card.title}
+                  </Typography>
+                  <Typography sx={{ mt: 2 }}>{card.description}</Typography>
+                </CardContent>
+                <CardActions>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    sx={{ backgroundColor: '#0077b6', '&:hover': { backgroundColor: '#005f91' } }}
+                    onClick={card.onClick}
+                  >
+                    Ir
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
         </Grid>
       </Container>
     </Box>
