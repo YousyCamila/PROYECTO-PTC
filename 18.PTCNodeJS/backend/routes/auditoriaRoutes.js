@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const auditoriaController = require('../controllers/auditoriaController');
+const authenticateToken = require('../middleware/authenticateToken');
+const authorizeRole = require('../middleware/authorizeRole');
 
 // Crear un nuevo registro de auditoría
 /**
@@ -9,6 +11,8 @@ const auditoriaController = require('../controllers/auditoriaController');
  *   post:
  *     summary: Crear un nuevo registro de auditoría
  *     tags: ["Auditorías"]
+ *     security:
+ *       - bearerAuth: []  # Indica que esta ruta requiere autenticación con JWT
  *     requestBody:
  *       required: true
  *       content:
@@ -32,7 +36,7 @@ const auditoriaController = require('../controllers/auditoriaController');
  *       400:
  *         description: Error en la solicitud
  */
-router.post('/', auditoriaController.crearAuditoria);
+router.post('/', authenticateToken, authorizeRole(['administrador']), auditoriaController.crearAuditoria);
 
 // Obtener todos los registros de auditoría
 /**
@@ -41,6 +45,8 @@ router.post('/', auditoriaController.crearAuditoria);
  *   get:
  *     summary: Listar todos los registros de auditoría
  *     tags: ["Auditorías"]
+ *     security:
+ *       - bearerAuth: []  # Indica que esta ruta requiere autenticación con JWT
  *     responses:
  *       200:
  *         description: Lista de registros de auditoría
@@ -65,7 +71,7 @@ router.post('/', auditoriaController.crearAuditoria);
  *                     format: date-time
  *                     example: "2024-09-22T14:00:00Z"
  */
-router.get('/', auditoriaController.listarAuditorias);
+router.get('/', authenticateToken, authorizeRole(['administrador']), auditoriaController.listarAuditorias);
 
 // Obtener un registro de auditoría por ID
 /**
@@ -81,13 +87,15 @@ router.get('/', auditoriaController.listarAuditorias);
  *         schema:
  *           type: string
  *         description: Identificador único del registro de auditoría.
+ *     security:
+ *       - bearerAuth: []  # Indica que esta ruta requiere autenticación con JWT
  *     responses:
  *       200:
  *         description: Registro de auditoría encontrado
  *       404:
  *         description: Registro de auditoría no encontrado
  */
-router.get('/:id', auditoriaController.obtenerAuditoriaPorId);
+router.get('/:id', authenticateToken, authorizeRole(['administrador']), auditoriaController.obtenerAuditoriaPorId);
 
 // Actualizar un registro de auditoría por ID
 /**
@@ -114,13 +122,15 @@ router.get('/:id', auditoriaController.obtenerAuditoriaPorId);
  *                 type: string
  *               usuario:
  *                 type: string
+ *     security:
+ *       - bearerAuth: []  # Indica que esta ruta requiere autenticación con JWT
  *     responses:
  *       200:
  *         description: Registro de auditoría actualizado exitosamente
  *       404:
  *         description: Registro de auditoría no encontrado
  */
-router.put('/:id', auditoriaController.actualizarAuditoria);
+router.put('/:id', authenticateToken, authorizeRole(['administrador']), auditoriaController.actualizarAuditoria);
 
 // Eliminar un registro de auditoría por ID
 /**
@@ -136,12 +146,14 @@ router.put('/:id', auditoriaController.actualizarAuditoria);
  *         schema:
  *           type: string
  *         description: Identificador único del registro de auditoría.
+ *     security:
+ *       - bearerAuth: []  # Indica que esta ruta requiere autenticación con JWT
  *     responses:
  *       200:
  *         description: Registro de auditoría eliminado exitosamente
  *       404:
  *         description: Registro de auditoría no encontrado
  */
-router.delete('/:id', auditoriaController.eliminarAuditoria);
+router.delete('/:id', authenticateToken, authorizeRole(['administrador']), auditoriaController.eliminarAuditoria);
 
 module.exports = router;
