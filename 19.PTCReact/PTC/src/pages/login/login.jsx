@@ -11,13 +11,24 @@ import {
   Select,
   InputLabel,
   FormControl,
+  Snackbar,
+  Slide,
+  IconButton,
 } from "@mui/material";
 import Swal from "sweetalert2";
+import { MdArrowBack } from 'react-icons/md'; 
+import { motion } from "framer-motion"; // Importa framer-motion
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
+  const [fullName, setFullName] = useState(""); // Añadir fullName
+  const [confirmPassword, setConfirmPassword] = useState(""); // Añadir confirmPassword
+  const [verificationCode, setVerificationCode] = useState(""); // Añadir verificationCode
+  const [showVerification, setShowVerification] = useState(false); // Añadir showVerification
+  const [snackbarMessage, setSnackbarMessage] = useState(""); // Añadir snackbarMessage
+  const [openSnackbar, setOpenSnackbar] = useState(false); // Añadir openSnackbar
   const navigate = useNavigate();
 
   // Verifica si el usuario ya tiene un token
@@ -98,6 +109,7 @@ const Login = () => {
         height: "100vh",
         backgroundImage: "url('https://scontent.fbog4-1.fna.fbcdn.net/v/t39.30808-6/312404170_109199351992944_5430879874558801924_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=BxpplRDTj9EQ7kNvgHWi6tN&_nc_zt=23&_nc_ht=scontent.fbog4-1.fna&_nc_gid=A2AKN1EgkgNUcogxmZd092q&oh=00_AYD1yB-yGwsjJNx-xZQwyw0ljfDE6ELkeYLQYGZUUNP0tA&oe=6720401C')",
         backgroundSize: "cover",
+        background: "linear-gradient(to top, #0077b6, #00aaff)",
         backgroundPosition: "center",
         position: "relative",
         display: "flex",
@@ -105,6 +117,35 @@ const Login = () => {
         alignItems: "center",
       }}
     >
+      {/* Navbar */}
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          backgroundColor: '#0077b6',
+          color: 'white',
+          padding: '10px 20px',
+          position: 'absolute',
+          top: 0,
+          zIndex: 100,
+        }}
+      >
+        <IconButton
+          onClick={() => navigate('/')}
+          sx={{ color: 'white', display: 'flex', alignItems: 'center' }}
+        >
+          <MdArrowBack />
+          <Typography variant="body1" sx={{ marginLeft: '10px' }}>
+            Volver
+          </Typography>
+        </IconButton>
+        <Typography variant="h6" sx={{ flexGrow: 1, textAlign: 'center' }}>
+          PTC
+        </Typography>
+      </Box>
+
       <Container
         maxWidth="sm"
         sx={{
@@ -114,89 +155,121 @@ const Login = () => {
           boxShadow: 3,
         }}
       >
-        <Box
-          sx={{
-            position: "absolute",
-            top: 16,
-            right: 16,
-            fontWeight: "bold",
-            fontSize: 48,
-            color: "#0056b3",
+        <motion.div
+          initial={{ y: 50, opacity: 0 }}  // Comienza con 50px abajo y opacidad 0
+          animate={{ y: 0, opacity: 1 }}   // Alcanza la posición original con opacidad 1
+          transition={{ duration: 0.8 }}    // Duración de la animación
+          style={{
+            width: "100%",
           }}
         >
-          PTC
-        </Box>
-
-        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: "center", color: "#0077b6" }}>
-          Iniciar Sesión
-        </Typography>
-
-        <form onSubmit={login}>
-          <TextField
-            fullWidth
-            label="Correo"
-            margin="normal"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            variant="outlined"
-            sx={{ backgroundColor: "white" }}
-          />
-          <TextField
-            fullWidth
-            label="Contraseña"
-            type="password"
-            margin="normal"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            variant="outlined"
-            sx={{ backgroundColor: "white" }}
-          />
-          <FormControl fullWidth margin="normal">
-            <InputLabel id="role-label" sx={{ color: "black" }}>Rol</InputLabel>
-            <Select
-              labelId="role-label"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              required
-              sx={{ backgroundColor: "white" }}
-            >
-              <MenuItem value="cliente">Cliente</MenuItem>
-              <MenuItem value="administrador">Administrador</MenuItem>
-              <MenuItem value="detective">Detective</MenuItem>
-            </Select>
-          </FormControl>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2, backgroundColor: "#0077b6", "&:hover": { backgroundColor: "#005f91" } }}
+          <Typography
+            variant="h4"
+            component="h1"
+            gutterBottom
+            sx={{
+              textAlign: "center",
+              color: "#0077b6",
+              marginBottom: "20px",
+            }}
           >
-            Iniciar Sesión
-          </Button>
-        </form>
+            Iniciar sesión
+          </Typography>
 
-        <Button
-          fullWidth
-          variant="outlined"
-          onClick={() => navigate("/register")}
-          sx={{ mt: 2, color: "#0077b6", borderColor: "#0077b6", "&:hover": { backgroundColor: "#e0e0e0" } }}
-        >
-          Registrarse
-        </Button>
+          <form onSubmit={login}>
+            <TextField
+              fullWidth
+              label="Correo"
+              margin="normal"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              sx={{ marginBottom: "16px" }}
+            />
+            <TextField
+              fullWidth
+              label="Contraseña"
+              type="password"
+              margin="normal"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              sx={{ marginBottom: "16px" }}
+            />
+            <FormControl fullWidth margin="normal" sx={{ marginBottom: "16px" }}>
+              <InputLabel id="role-label">Rol</InputLabel>
+              <Select
+                labelId="role-label"
+                value={role}
+                onChange={(e) => {
+                  setRole(e.target.value);
+                  setShowVerification(e.target.value === "administrador" || e.target.value === "detective");
+                }}
+                required
+              >
+                <MenuItem value="cliente">Cliente</MenuItem>
+                <MenuItem value="administrador">Administrador</MenuItem>
+                <MenuItem value="detective">Detective</MenuItem>
+              </Select>
+            </FormControl>
 
-        {/* Botón para volver a la página de inicio */}
-        <Button
-          fullWidth
-          variant="outlined"
-          onClick={() => navigate("/")}
-          sx={{ mt: 2, color: "#0077b6", borderColor: "#0077b6", "&:hover": { backgroundColor: "#e0e0e0" } }}
-        >
-          Volver a Inicio
-        </Button>
+            {showVerification && (
+              <TextField
+                fullWidth
+                label="Código de Verificación"
+                margin="normal"
+                value={verificationCode}
+                onChange={(e) => setVerificationCode(e.target.value)}
+                required
+                sx={{ marginBottom: "16px" }}
+              />
+            )}
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{
+                mt: 2,
+                mb: 2,
+                backgroundColor: "#0077b6",
+                "&:hover": { backgroundColor: "#005f91" },
+              }}
+            >
+              Iniciar sesión
+            </Button>
+
+            <Button
+              fullWidth
+              variant="outlined"
+              onClick={() => navigate("/register")}
+              sx={{
+                mb: 2,
+                color: "#0077b6",
+                borderColor: "#0077b6",
+                "&:hover": { backgroundColor: "#e0e0e0" },
+              }}
+            >
+              ¿No tienes cuenta? Regístrate
+            </Button>
+          </form>
+        </motion.div>
       </Container>
+        {/* Footer */}
+        <Box sx={{ position: "absolute", bottom: 0, width: "100%", padding: "20px", backgroundColor: "rgba(0, 0, 0, 0.7)", color: "white", textAlign: "center" }}>
+        <Typography variant="body2">&copy; 2024 PTC. Todos los derechos reservados.</Typography>
+      </Box>
+
+      {/* Snackbar de éxito */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar(false)}
+        message={snackbarMessage}
+        TransitionComponent={(props) => <Slide {...props} direction="up" />}
+      />
     </Box>
+    
   );
 };
 
