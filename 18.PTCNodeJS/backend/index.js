@@ -6,6 +6,7 @@ const connectDB = require('./configDB/db'); // Conexión a la base de datos
 const { swaggerUi, swaggerSpec } = require('./swagger/swagger'); // Configuración de Swagger
 const cookieParser = require('cookie-parser'); // Para manejar cookies
 
+
 dotenv.config(); // Carga las variables del archivo .env
 
 // Importar las rutas

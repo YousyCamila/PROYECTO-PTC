@@ -2,10 +2,10 @@ const personaSchema = require('./personaModel');
 const mongoose = require('mongoose');
 
 const DetectiveSchema = new mongoose.Schema({
-  especialidad: {
+  especialidad: [{
     type: String,
     required: true
-  },
+  }],
   casos: [{
     id: {
       type: mongoose.Schema.Types.ObjectId,
