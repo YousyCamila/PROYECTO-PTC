@@ -51,7 +51,8 @@ const  authorizeRole = require ('../middleware/authorizeRole');
  *       403:
  *         description: Acceso denegado, rol insuficiente
  */
-router.post('/', authenticateToken, authorizeRole(['administrador']), administradorController.crearAdministrador);
+router.post('/', administradorController.crearAdministrador);
+//router.post('/', authenticateToken, authorizeRole(['administrador']), administradorController.crearAdministrador);
 
 /**
  * @swagger
