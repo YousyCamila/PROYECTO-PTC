@@ -21,6 +21,7 @@ const ClienteForm = () => {
     direccion: '',
     telefono: '',
   });
+  
   const [showSnackbar, setShowSnackbar] = useState(false);
 
   const handleChange = (e) => {
@@ -30,19 +31,32 @@ const ClienteForm = () => {
   // Validar que el número de documento solo contenga números
   const handleNumberInput = (e) => {
     const value = e.target.value;
-    if (/^\d*$/.test(value)) {
-      setFormData({ ...formData, [e.target.name]: value });
+    const isPasaporte = formData.tipoDocumento === "Pasaporte";
+  
+    if (isPasaporte) {
+      // Permitir letras, números y espacios para pasaporte
+      if (/^[a-zA-Z0-9\s]*$/.test(value)) {
+        setFormData({ ...formData, [e.target.name]: value });
+      }
+    } else {
+      // Permitir solo números para otros tipos de documento
+      if (/^\d*$/.test(value)) {
+        setFormData({ ...formData, [e.target.name]: value });
+      }
     }
   };
+  
 
   // Validar que solo se permitan letras (nombres y apellidos)
   const handleTextInput = (e) => {
     const value = e.target.value;
     // Solo letras y espacios permitidos
     if (/^[a-zA-Z\s]*$/.test(value)) {
-      setFormData({ ...formData, [e.target.name]: value });
+      setFormData({ ...formData, [e.target.name]:  value.toUpperCase() });
     }
   };
+ 
+  
 
   const validateAge = (birthDate) => {
     const today = new Date();
@@ -107,6 +121,7 @@ const ClienteForm = () => {
       });
     }
   };
+  
 
   return (
     <Box

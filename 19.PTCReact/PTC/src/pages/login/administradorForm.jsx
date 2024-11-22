@@ -20,6 +20,14 @@ const AdministradorForm = () => {
     fechaNacimiento: '',
   });
 
+  const handleTextInput = (e) => {
+    const value = e.target.value;
+    // Solo letras y espacios permitidos
+    if (/^[a-zA-Z\s]*$/.test(value)) {
+      setFormData({ ...formData, [e.target.name]: value.toUpperCase() });
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -99,16 +107,21 @@ const AdministradorForm = () => {
 
   const handleNumberInput = (e) => {
     const value = e.target.value;
-    if (/^\d*$/.test(value) || value === '') {
-      setFormData({ ...formData, numeroDocumento: value });
+    const isPasaporte = formData.tipoDocumento === "Pasaporte";
+
+    if (isPasaporte) {
+      // Permitir letras, números y espacios para pasaporte
+      if (/^[a-zA-Z0-9\s]*$/.test(value)) {
+        setFormData({ ...formData, [e.target.name]: value });
+      }
     } else {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Entrada no válida',
-        text: 'El número de documento solo puede contener números.',
-      });
+      // Permitir solo números para otros tipos de documento
+      if (/^\d*$/.test(value)) {
+        setFormData({ ...formData, [e.target.name]: value });
+      }
     }
   };
+
 
   return (
     <Box
@@ -210,7 +223,7 @@ const AdministradorForm = () => {
                   name="nombres"
                   margin="normal"
                   value={formData.nombres}
-                  onChange={handleChange}
+                  onChange={handleTextInput}
                   required
                 />
               </Grid>
@@ -222,7 +235,7 @@ const AdministradorForm = () => {
                   name="apellidos"
                   margin="normal"
                   value={formData.apellidos}
-                  onChange={handleChange}
+                  onChange={handleTextInput}
                   required
                 />
               </Grid>

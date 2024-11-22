@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -33,6 +33,14 @@ import Swal from 'sweetalert2';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import InboxIcon from '@mui/icons-material/Inbox';
+import { motion } from 'framer-motion';
+import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+import { LineChart,CartesianGrid,XAxis,ResponsiveContainer,YAxis,Line,BarChart,Bar } from 'recharts';
+import { CircularProgress } from '@mui/material'; // Agrega esta línea
+
+
+
+
 
 const AdminMenu = () => {
   const { user } = useContext(AuthContext);
@@ -40,6 +48,13 @@ const AdminMenu = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [openMenu, setOpenMenu] = React.useState(false);
+  const [casos, setCasos] = useState([]);
+  const [clientes, setClientes] = useState([]);
+  const [detectives, setDetectives] = useState([]);
+  const [chartData, setChartData] = useState([]);
+  const [data, setData] = useState({});
+  const [loading, setLoading] = useState(true);
+
 
   // Si el usuario no es administrador, muestra un mensaje de acceso denegado
   if (!user || user.role !== 'administrador') {
@@ -72,6 +87,82 @@ const AdminMenu = () => {
   const handleMenuClose = () => {
     setOpenMenu(false);
   };
+  useEffect(() => {
+    fetch('http://localhost:3000/api/caso')
+      .then((response) => response.json())
+      .then((data) => {
+        setCasos(data);
+        setLoading(false);
+      })
+      .catch((error) => console.error('Error al cargar los casos:', error));
+  }, []);
+
+  useEffect(() => {
+    fetch('http://localhost:3000/api/clientes')
+      .then((response) => response.json())
+      .then((data) => {
+        setClientes(data);
+      })
+      .catch((error) => console.error('Error al cargar los clientes:', error));
+  }, []);
+
+  
+  const especialidades = [
+    'Investigación Penal y Criminal',
+    'Cadena de Custodia y Evidencias',
+    'Extorsiones y Secuestros',
+    'Seguridad Residencial y Empresarial',
+    'Asesoría Legal',
+    'Infidelidades',
+    'Fraudes Financieros y Comerciales',
+    'Desapariciones',
+  ];
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/detectives');
+        if (!response.ok) {
+          throw new Error('Error al cargar los datos');
+        }
+  
+        const detectives = await response.json();
+  
+        // Filtrar y contar detectives por especialidad
+        const conteoEspecialidades = especialidades.reduce((acc, especialidad) => {
+          // Filtrar detectives que tengan esta especialidad en su array de especialidades
+          acc[especialidad] = detectives.filter((det) => 
+            det.especialidad && det.especialidad.includes(especialidad)  // Verifica si la especialidad está en el array
+          ).length;
+          return acc;
+        }, {});
+  
+        setData(conteoEspecialidades);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error al cargar los datos:', error);
+        setLoading(false);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+  
+  
+
+
+
+  // Datos para la gráfica (puedes modificar según lo que necesites)
+
+  
 
   return (
     <Box
@@ -138,7 +229,7 @@ const AdminMenu = () => {
               alignItems: 'center',
               gap: 1,
               position: 'relative',
-              paddingRight: '40px', // Ajuste el padding según sea necesario
+              paddingRight: '10px', // Ajuste el padding según sea necesario
               '&:hover': {
                 backgroundColor: '#005f91',
               },
@@ -276,6 +367,8 @@ const AdminMenu = () => {
       </Drawer>
 
       {/* Contenido principal */}
+      {/* Contenido principal */}
+      {/* Contenido principal */}
       <Container
         maxWidth="xl"
         sx={{
@@ -287,43 +380,107 @@ const AdminMenu = () => {
           height: '100vh',
         }}
       >
-        <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#0077b6' }}>
-
+        <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#0077b6', fontWeight: 'bold' }}>
+          Informe general
         </Typography>
 
         {/* Información general */}
-        <Grid container spacing={4} sx={{ mt: 4 }} justifyContent="center">
-          {/* Cards con estadísticas */}
-          <Grid item xs={12} md={4}>
-            <Card sx={{ padding: 3, backgroundColor: '#f0f4f8', borderRadius: 2, boxShadow: 2 }}>
+        <Grid container spacing={3}>
+      {Object.entries(data).map(([especialidad, cantidad], index) => (
+        <Grid item xs={12} sm={6} md={4} key={especialidad}>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: index * 0.1 }}
+          >
+            <Card
+              sx={{
+                padding: 3,
+                backgroundColor: 'rgba(0, 119, 182, 0.1)',
+                borderRadius: 2,
+                boxShadow: 3,
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(0, 119, 182, 0.2)',
+              }}
+            >
               <CardContent>
-                <Typography variant="h6" sx={{ color: '#0077b6' }}>Detectives Activos</Typography>
-                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>25</Typography>
-                <Typography sx={{ mt: 2 }}>Número total de detectives activos en la agencia.</Typography>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: '#0077b6',
+                    fontFamily: 'Roboto, sans-serif',
+                    fontWeight: 'bold',
+                    letterSpacing: '1px',
+                  }}
+                >
+                  {especialidad}
+                </Typography>
+                <Typography
+                  variant="h4"
+                  sx={{
+                    fontWeight: 'bold',
+                    fontFamily: 'Roboto, sans-serif',
+                    marginTop: 1,
+                  }}
+                >
+                  {cantidad}
+                </Typography>
+                <Typography sx={{ mt: 2, fontStyle: 'italic', color: '#555' }}>
+                  Detectives especializados en esta área.
+                </Typography>
               </CardContent>
             </Card>
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            <Card sx={{ padding: 3, backgroundColor: '#f0f4f8', borderRadius: 2, boxShadow: 2 }}>
-              <CardContent>
-                <Typography variant="h6" sx={{ color: '#0077b6' }}>Casos Abiertos</Typography>
-                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>15</Typography>
-                <Typography sx={{ mt: 2 }}>Número de casos actualmente abiertos para investigación.</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            <Card sx={{ padding: 3, backgroundColor: '#f0f4f8', borderRadius: 2, boxShadow: 2 }}>
-              <CardContent>
-                <Typography variant="h6" sx={{ color: '#0077b6' }}>Clientes Atendidos</Typography>
-                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>30</Typography>
-                <Typography sx={{ mt: 2 }}>Clientes que han recibido servicios de investigación en el último mes.</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+          </motion.div>
         </Grid>
+      ))}
+    </Grid>
+
+          <Grid item xs={12} md={4}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
+            >
+              <Card sx={{ padding: 3, backgroundColor: '#f0f4f8', borderRadius: 2, boxShadow: 2 }}>
+                <CardContent>
+                  <Typography variant="h6" sx={{ color: '#0077b6' }}>Casos Abiertos</Typography>
+                  <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{casos.length}</Typography>
+                  <Typography sx={{ mt: 2 }}>Número de casos actualmente abiertos para investigación.</Typography>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
+            >
+              <Card sx={{ padding: 3, backgroundColor: '#f0f4f8', borderRadius: 2, boxShadow: 2 }}>
+                <CardContent>
+                  <Typography variant="h6" sx={{ color: '#0077b6' }}>Clientes Atendidos</Typography>
+                  <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{clientes.length}</Typography>
+                  <Typography sx={{ mt: 2 }}>Clientes que han recibido servicios de investigación en el último mes.</Typography>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </Grid>
+        
+
+        {/* Sección de Gráficas */}
+        <Box sx={{ mt: 4 }}>
+          <Typography variant="h5" sx={{ color: '#0077b6', fontWeight: 'bold' }}>Casos por Mes</Typography>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={data}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Line type="monotone" dataKey="casos" stroke="#0077b6" strokeWidth={3} />
+            </LineChart>
+          </ResponsiveContainer>
+        </Box>
       </Container>
     </Box>
   );

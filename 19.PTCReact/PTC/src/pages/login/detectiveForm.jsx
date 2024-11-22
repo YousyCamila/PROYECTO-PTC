@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Container, TextField, Typography, MenuItem, Select, InputLabel, FormControl, Grid, IconButton, Snackbar, Alert } from '@mui/material';
+import { Box, Button, Container, TextField, Typography, MenuItem, Select, InputLabel, FormControl, Grid, IconButton, Snackbar, Alert, Checkbox, ListItemText } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+
+const especialidades = [
+  'Investigación Penal y Criminal',
+  'Cadena de Custodia y Evidencias',
+  'Extorsiones y Secuestros',
+  'Seguridad Residencial y Empresarial',
+  'Asesoría Legal',
+  'Infidelidades',
+  'Fraudes Financieros y Comerciales',
+  'Desapariciones',
+];
 
 const DetectiveForm = () => {
   const location = useLocation();
@@ -17,7 +28,7 @@ const DetectiveForm = () => {
     apellidos: '',
     correo: email,
     fechaNacimiento: '',
-    especialidad: '',
+    especialidad: [],
     activo: true,
   });
 
@@ -54,12 +65,18 @@ const DetectiveForm = () => {
     }
 
     try {
+      const formattedData = {
+        ...formData,
+        nombres: formData.nombres.toUpperCase(),
+        apellidos: formData.apellidos.toUpperCase(),
+      };
+
       const response = await fetch('http://localhost:3000/api/detectives', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formattedData),
       });
 
       const data = await response.json();
@@ -78,14 +95,21 @@ const DetectiveForm = () => {
 
   const handleNumberInput = (e) => {
     const value = e.target.value;
-    if (/^\d*$/.test(value) || value === '') {
-      setFormData({ ...formData, numeroDocumento: value });
+    const isPasaporte = formData.tipoDocumento === "Pasaporte";
+
+    if (isPasaporte) {
+      // Permitir letras, números y espacios para pasaporte
+      if (/^[a-zA-Z0-9\s]*$/.test(value)) {
+        setFormData({ ...formData, [e.target.name]: value });
+      }
     } else {
-      alert('El número de documento solo puede contener números.');
+      // Permitir solo números para otros tipos de documento
+      if (/^\d*$/.test(value)) {
+        setFormData({ ...formData, [e.target.name]: value });
+      }
     }
   };
 
-  // Función para manejar los campos de texto y validar que solo contengan letras y espacios
   const handleTextInput = (e) => {
     const value = e.target.value;
     if (/^[a-zA-Z\s]*$/.test(value) || value === '') {
@@ -93,6 +117,11 @@ const DetectiveForm = () => {
     } else {
       alert('Solo se permiten letras y espacios.');
     }
+  };
+
+  const handleEspecialidadChange = (event) => {
+    const { value } = event.target;
+    setFormData({ ...formData, especialidad: typeof value === 'string' ? value.split(',') : value });
   };
 
   return (
@@ -193,7 +222,7 @@ const DetectiveForm = () => {
                   name="nombres"
                   margin="normal"
                   value={formData.nombres}
-                  onChange={handleTextInput} // Validación agregada
+                  onChange={handleTextInput}
                   required
                 />
               </Grid>
@@ -204,7 +233,7 @@ const DetectiveForm = () => {
                   name="apellidos"
                   margin="normal"
                   value={formData.apellidos}
-                  onChange={handleTextInput} // Validación agregada
+                  onChange={handleTextInput}
                   required
                 />
               </Grid>
@@ -235,49 +264,48 @@ const DetectiveForm = () => {
                   }}
                 />
               </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Especialidad"
-                  name="especialidad"
-                  margin="normal"
-                  value={formData.especialidad}
-                  onChange={handleChange}
-                  required
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Activo"
-                  margin="normal"
-                  value={formData.activo ? 'Sí' : 'No'}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
+              <Grid item xs={12}>
+                <FormControl fullWidth margin="normal">
+                  <InputLabel id="especialidad-label">Especialidad</InputLabel>
+                  <Select
+                    labelId="especialidad-label"
+                    name="especialidad"
+                    multiple
+                    value={formData.especialidad}
+                    onChange={handleEspecialidadChange}
+                    renderValue={(selected) => selected.join(', ')}
+                  >
+                    {especialidades.map((especialidad) => (
+                      <MenuItem key={especialidad} value={especialidad}>
+                        <Checkbox checked={formData.especialidad.includes(especialidad)} />
+                        <ListItemText primary={especialidad} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
             </Grid>
             <Button
               type="submit"
-              fullWidth
               variant="contained"
-              sx={{ mt: 3, backgroundColor: '#0077b6', '&:hover': { backgroundColor: '#005f91' } }}
+              sx={{ marginTop: 4, backgroundColor: '#0077b6', color: 'white', width: '100%' }}
             >
-              Guardar
+              Registrar
             </Button>
           </form>
         </Container>
       </motion.div>
-
       <Snackbar
         open={showSnackbar}
-        autoHideDuration={3000}
+        autoHideDuration={6000}
         onClose={() => setShowSnackbar(false)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <Alert severity="success" sx={{ width: '100%' }}>
-          ¡Registro exitoso!
+        <Alert
+          onClose={() => setShowSnackbar(false)}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
+          Registro exitoso. Redirigiendo a inicio de sesión...
         </Alert>
       </Snackbar>
     </Box>
