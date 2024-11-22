@@ -122,6 +122,12 @@ const DetectiveForm = () => {
         </Typography>
       </Box>
 
+      <motion.div
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        style={{ width: '100%' }}
+      >
         <Container
           maxWidth="md"
           sx={{
@@ -129,6 +135,7 @@ const DetectiveForm = () => {
             padding: 4,
             borderRadius: 2,
             boxShadow: 3,
+            marginTop: 2,
           }}
         >
           <Typography
@@ -252,6 +259,8 @@ const DetectiveForm = () => {
           </form>
         </Container>
       </motion.div>
+
+      
 
       <Snackbar
         open={showSnackbar}

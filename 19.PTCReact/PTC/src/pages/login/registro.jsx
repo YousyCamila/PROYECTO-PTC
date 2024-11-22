@@ -148,7 +148,7 @@ const Register = () => {
             padding: 2,
             borderRadius: 2,
             boxShadow: 3,
-            marginTop: 5,
+            marginTop: 2,
           }}
         >
           <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: "center", color: "#0077b6" }}>
