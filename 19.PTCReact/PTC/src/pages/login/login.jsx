@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import jwt_decode from "jwt-decode";
+import jwt_decode from "jwt-decode"; // Importa jwt_decode para decodificar el token JWT
 import {
   Box,
   Button,
@@ -11,41 +11,14 @@ import {
   Select,
   InputLabel,
   FormControl,
-  Snackbar,
-  Slide,
-  IconButton,
 } from "@mui/material";
 import Swal from "sweetalert2";
-import { MdArrowBack } from 'react-icons/md';
-import { motion } from "framer-motion";
-import { Visibility, VisibilityOff } from '@mui/icons-material'; // Importa los íconos para mostrar/ocultar la contraseña
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [verificationCode, setVerificationCode] = useState("");
-  const [showVerification, setShowVerification] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); // Estado para controlar la visibilidad de la contraseña
   const navigate = useNavigate();
-
-  const checkAuth = () => {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
-      const decodedToken = jwt_decode(token);
-      if (decodedToken.role === "administrador") {
-        navigate("/admin-menu");
-      } else if (decodedToken.role === "cliente") {
-        navigate("/cliente-menu");
-      } else if (decodedToken.role === "detective") {
-        navigate("/detective-menu");
-      }
-    }
-  };
 
   const login = async (e) => {
     e.preventDefault();
@@ -55,17 +28,20 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password, role }),
+        body: JSON.stringify({ email, password, role }), // Incluye el rol en la solicitud
       });
 
       const data = await response.json();
 
       if (response.ok) {
+        // Decodifica el token para obtener email, id y role
         const decodedToken = jwt_decode(data.accessToken);
+
+        // Guarda los datos en localStorage
         localStorage.setItem("accessToken", data.accessToken);
-        localStorage.setItem("userId", decodedToken.id);
-        localStorage.setItem("email", decodedToken.email);
-        localStorage.setItem("role", decodedToken.role);
+        localStorage.setItem("userId", decodedToken.id); // Guarda el id del usuario
+        localStorage.setItem("email", decodedToken.email); // Guarda el email
+        localStorage.setItem("role", decodedToken.role); // Guarda el rol
 
         Swal.fire({
           icon: "success",
@@ -73,6 +49,7 @@ const Login = () => {
           text: "Bienvenido de nuevo!",
         });
 
+        // Redirige según el rol decodificado del token
         if (decodedToken.role === "administrador") {
           navigate("/admin-menu");
         } else if (decodedToken.role === "cliente") {
@@ -81,6 +58,7 @@ const Login = () => {
           navigate("/detective-menu");
         }
       } else {
+        // Mostrar mensaje de error si hay problema con el rol o credenciales
         Swal.fire({
           icon: "error",
           title: "Error de inicio de sesión",
@@ -112,35 +90,6 @@ const Login = () => {
         alignItems: "center",
       }}
     >
-      {/* Navbar */}
-      <Box
-        sx={{
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          backgroundColor: '#0077b6',
-          color: 'white',
-          padding: '10px 20px',
-          position: 'absolute',
-          top: 0,
-          zIndex: 100,
-        }}
-      >
-        <IconButton
-          onClick={() => navigate('/')}
-          sx={{ color: 'white', display: 'flex', alignItems: 'center' }}
-        >
-          <MdArrowBack />
-          <Typography variant="body1" sx={{ marginLeft: '10px' }}>
-            Volver
-          </Typography>
-        </IconButton>
-        <Typography variant="h6" sx={{ flexGrow: 1, textAlign: 'center' }}>
-          PTC
-        </Typography>
-      </Box>
-
       <Container
         maxWidth="sm"
         sx={{
@@ -150,121 +99,82 @@ const Login = () => {
           boxShadow: 3,
         }}
       >
-        <motion.div
-          initial={{ y: 50, opacity: 0 }}  
-          animate={{ y: 0, opacity: 1 }}  
-          transition={{ duration: 0.8 }}    
-          style={{
-            width: "100%",
+        <Typography
+          variant="h4"
+          component="h1"
+          gutterBottom
+          sx={{
+            textAlign: "center",
+            color: "#0077b6",
+            marginBottom: "20px",
           }}
         >
-          <Typography
-            variant="h4"
-            component="h1"
-            gutterBottom
+          Iniciar sesión
+        </Typography>
+
+        <form onSubmit={login}>
+          <TextField
+            fullWidth
+            label="Correo"
+            margin="normal"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            sx={{ marginBottom: "16px" }}
+          />
+          <TextField
+            fullWidth
+            label="Contraseña"
+            type="password"
+            margin="normal"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            sx={{ marginBottom: "16px" }}
+          />
+          <FormControl fullWidth margin="normal" sx={{ marginBottom: "16px" }}>
+            <InputLabel id="role-label">Rol</InputLabel>
+            <Select
+              labelId="role-label"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              required
+            >
+              <MenuItem value="cliente">Cliente</MenuItem>
+              <MenuItem value="administrador">Administrador</MenuItem>
+              <MenuItem value="detective">Detective</MenuItem>
+            </Select>
+          </FormControl>
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
             sx={{
-              textAlign: "center",
-              color: "#0077b6",
-              marginBottom: "20px",
+              mt: 2,
+              mb: 2,
+              backgroundColor: "#0077b6",
+              "&:hover": { backgroundColor: "#005f91" },
             }}
           >
             Iniciar sesión
-          </Typography>
+          </Button>
 
-          <form onSubmit={login}>
-            <TextField
-              fullWidth
-              label="Correo"
-              margin="normal"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              sx={{ marginBottom: "16px" }}
-            />
-            <TextField
-              fullWidth
-              label="Contraseña"
-              type={showPassword ? "text" : "password"}  // Cambia el tipo según la visibilidad
-              margin="normal"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              sx={{ marginBottom: "16px" }}
-              InputProps={{
-                endAdornment: (
-                  <IconButton
-                    onClick={() => setShowPassword(!showPassword)}  // Cambia el estado al hacer clic
-                    edge="end"
-                    sx={{ color: 'gray' }}
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}  {/* Icono de ver/ocultar */}
-                  </IconButton>
-                ),
-              }}
-            />
-            <FormControl fullWidth margin="normal" sx={{ marginBottom: "16px" }}>
-              <InputLabel id="role-label">Rol</InputLabel>
-              <Select
-                labelId="role-label"
-                value={role}
-                onChange={(e) => {
-                  setRole(e.target.value);
-                  setShowVerification(e.target.value === "administrador" || e.target.value === "detective");
-                }}
-                required
-              >
-                <MenuItem value="cliente">Cliente</MenuItem>
-                <MenuItem value="administrador">Administrador</MenuItem>
-                <MenuItem value="detective">Detective</MenuItem>
-              </Select>
-            </FormControl>
-
-            {showVerification && (
-              <TextField
-                fullWidth
-                label="Código de Verificación"
-                margin="normal"
-                value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value)}
-                required
-                sx={{ marginBottom: "16px" }}
-              />
-            )}
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                mt: 2,
-                mb: 2,
-                backgroundColor: "#0077b6",
-                "&:hover": { backgroundColor: "#005f91" },
-              }}
-            >
-              Iniciar sesión
-            </Button>
-
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => navigate("/register")}
-              sx={{
-                mb: 2,
-                color: "#0077b6",
-                borderColor: "#0077b6",
-                "&:hover": { backgroundColor: "#e0e0e0" },
-              }}
-            >
-              ¿No tienes cuenta? Regístrate
-            </Button>
-          </form>
-        </motion.div>
+          <Button
+            fullWidth
+            variant="outlined"
+            sx={{
+              mb: 2,
+              color: "#0077b6",
+              borderColor: "#0077b6",
+              "&:hover": { backgroundColor: "#e0e0e0" },
+            }}
+            onClick={() => navigate("/register")}
+          >
+            ¿No tienes cuenta? Regístrate
+          </Button>
+        </form>
       </Container>
-      {/* Footer */}
-      <Box sx={{ position: "absolute", bottom: 0, width: "100%", padding: "20px", backgroundColor: "rgba(0, 0, 0, 0.7)", color: "white", textAlign: "center" }}>
-        <Typography variant="body2">&copy; 2024 Todos los derechos reservados</Typography>
-      </Box>
     </Box>
   );
 };
