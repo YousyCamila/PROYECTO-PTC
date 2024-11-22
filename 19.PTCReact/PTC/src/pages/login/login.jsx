@@ -11,13 +11,21 @@ import {
   Select,
   InputLabel,
   FormControl,
+  IconButton,
+  Snackbar,
+  Alert,
 } from "@mui/material";
+import { ArrowBack } from "@mui/icons-material";
+import { motion } from "framer-motion";
 import Swal from "sweetalert2";
+import { Visibility, VisibilityOff } from "@mui/icons-material"; // Iconos para ver/ocultar la contraseña
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showSnackbar, setShowSnackbar] = useState(false);
   const navigate = useNavigate();
 
   const login = async (e) => {
@@ -80,101 +88,151 @@ const Login = () => {
       sx={{
         width: "100vw",
         height: "100vh",
-        backgroundImage: "url('https://scontent.fbog4-1.fna.fbcdn.net/v/t39.30808-6/312404170_109199351992944_5430879874558801924_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=BxpplRDTj9EQ7kNvgHWi6tN&_nc_zt=23&_nc_ht=scontent.fbog4-1.fna&_nc_gid=A2AKN1EgkgNUcogxmZd092q&oh=00_AYD1yB-yGwsjJNx-xZQwyw0ljfDE6ELkeYLQYGZUUNP0tA&oe=6720401C')",
-        backgroundSize: "cover",
         background: "linear-gradient(to top, #0077b6, #00aaff)",
-        backgroundPosition: "center",
-        position: "relative",
         display: "flex",
-        justifyContent: "center",
+        flexDirection: "column",
         alignItems: "center",
+        justifyContent: "center",
       }}
     >
-      <Container
-        maxWidth="sm"
+      {/* NavBar */}
+      <Box
         sx={{
-          backgroundColor: "white",
-          padding: 4,
-          borderRadius: 2,
-          boxShadow: 3,
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          backgroundColor: "#0077b6",
+          color: "white",
+          padding: "10px 20px",
+          position: "absolute", // Colocando el navbar arriba de todo
+          top: "10px", // Ajustando la distancia desde el top
         }}
       >
-        <Typography
-          variant="h4"
-          component="h1"
-          gutterBottom
+        <IconButton
+          onClick={() => navigate("/")}
+          sx={{ color: "white", display: "flex", alignItems: "center" }}
+        >
+          <ArrowBack />
+          <Typography variant="body1" sx={{ marginLeft: "6px" }}>
+            Volver
+          </Typography>
+        </IconButton>
+        <Typography variant="h6" sx={{ flexGrow: 1, textAlign: "center" }}>
+          PTC - Iniciar Sesión
+        </Typography>
+      </Box>
+
+      <motion.div
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        style={{ width: "100%" }}
+      >
+        <Container
+          maxWidth="sm"
           sx={{
-            textAlign: "center",
-            color: "#0077b6",
-            marginBottom: "20px",
+            backgroundColor: "white",
+            padding: 4,
+            borderRadius: 2,
+            boxShadow: 3,
+            marginTop: 10, // Esto asegura que el formulario no se superponga al navbar
           }}
         >
-          Iniciar sesión
-        </Typography>
-
-        <form onSubmit={login}>
-          <TextField
-            fullWidth
-            label="Correo"
-            margin="normal"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            sx={{ marginBottom: "16px" }}
-          />
-          <TextField
-            fullWidth
-            label="Contraseña"
-            type="password"
-            margin="normal"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            sx={{ marginBottom: "16px" }}
-          />
-          <FormControl fullWidth margin="normal" sx={{ marginBottom: "16px" }}>
-            <InputLabel id="role-label">Rol</InputLabel>
-            <Select
-              labelId="role-label"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              required
-            >
-              <MenuItem value="cliente">Cliente</MenuItem>
-              <MenuItem value="administrador">Administrador</MenuItem>
-              <MenuItem value="detective">Detective</MenuItem>
-            </Select>
-          </FormControl>
-
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{
-              mt: 2,
-              mb: 2,
-              backgroundColor: "#0077b6",
-              "&:hover": { backgroundColor: "#005f91" },
-            }}
+          <Typography
+            variant="h4"
+            component="h1"
+            gutterBottom
+            sx={{ textAlign: "center", color: "#0077b6", marginBottom: 8 }}
           >
             Iniciar sesión
-          </Button>
+          </Typography>
 
-          <Button
-            fullWidth
-            variant="outlined"
-            sx={{
-              mb: 2,
-              color: "#0077b6",
-              borderColor: "#0077b6",
-              "&:hover": { backgroundColor: "#e0e0e0" },
-            }}
-            onClick={() => navigate("/register")}
-          >
-            ¿No tienes cuenta? Regístrate
-          </Button>
-        </form>
-      </Container>
+          <form onSubmit={login}>
+            <TextField
+              fullWidth
+              label="Correo"
+              margin="normal"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              sx={{ marginBottom: "16px" }}
+            />
+            <TextField
+              fullWidth
+              label="Contraseña"
+              type={showPassword ? "text" : "password"}
+              margin="normal"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              sx={{ marginBottom: "16px" }}
+              InputProps={{
+                endAdornment: (
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                    sx={{ padding: "10px" }}
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />} {/* Logo de ver contraseña */}
+                  </IconButton>
+                ),
+              }}
+            />
+            <FormControl fullWidth margin="normal" sx={{ marginBottom: "16px" }}>
+              <InputLabel id="role-label">Rol</InputLabel>
+              <Select
+                labelId="role-label"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                required
+              >
+                <MenuItem value="cliente">Cliente</MenuItem>
+                <MenuItem value="administrador">Administrador</MenuItem>
+                <MenuItem value="detective">Detective</MenuItem>
+              </Select>
+            </FormControl>
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{
+                mt: 2,
+                mb: 2,
+                backgroundColor: "#0077b6",
+                "&:hover": { backgroundColor: "#005f91" },
+              }}
+            >
+              Iniciar sesión
+            </Button>
+
+            <Button
+              fullWidth
+              variant="outlined"
+              sx={{
+                mb: 2,
+                color: "#0077b6",
+                borderColor: "#0077b6",
+                "&:hover": { backgroundColor: "#e0e0e0" },
+              }}
+              onClick={() => navigate("/register")}
+            >
+              ¿No tienes cuenta? Regístrate
+            </Button>
+          </form>
+        </Container>
+      </motion.div>
+
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setShowSnackbar(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert severity="success" sx={{ width: "100%" }}>
+          ¡Login exitoso!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

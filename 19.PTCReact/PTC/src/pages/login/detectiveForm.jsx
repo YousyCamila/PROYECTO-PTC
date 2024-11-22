@@ -85,6 +85,16 @@ const DetectiveForm = () => {
     }
   };
 
+  // Función para manejar los campos de texto y validar que solo contengan letras y espacios
+  const handleTextInput = (e) => {
+    const value = e.target.value;
+    if (/^[a-zA-Z\s]*$/.test(value) || value === '') {
+      setFormData({ ...formData, [e.target.name]: value });
+    } else {
+      alert('Solo se permiten letras y espacios.');
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -183,7 +193,7 @@ const DetectiveForm = () => {
                   name="nombres"
                   margin="normal"
                   value={formData.nombres}
-                  onChange={handleChange}
+                  onChange={handleTextInput} // Validación agregada
                   required
                 />
               </Grid>
@@ -194,7 +204,7 @@ const DetectiveForm = () => {
                   name="apellidos"
                   margin="normal"
                   value={formData.apellidos}
-                  onChange={handleChange}
+                  onChange={handleTextInput} // Validación agregada
                   required
                 />
               </Grid>
@@ -259,8 +269,6 @@ const DetectiveForm = () => {
           </form>
         </Container>
       </motion.div>
-
-      
 
       <Snackbar
         open={showSnackbar}

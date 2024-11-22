@@ -2,17 +2,21 @@ import React, { useState } from 'react';
 import { Box, IconButton, Typography, Container, Grid, TextField, FormControl, InputLabel, Select, MenuItem, Button, Snackbar, Alert } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import { useNavigate, useLocation } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const ClienteForm = () => {
   const navigate = useNavigate(); // Usa el hook useNavigate
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const email = params.get('email'); // Obtener el email desde la URL
 
   const [formData, setFormData] = useState({
     tipoDocumento: '',
     numeroDocumento: '',
     nombres: '',
     apellidos: '',
-    correo: '',
+    correo: email, // Usar el correo desde la URL
     fechaNacimiento: '',
     direccion: '',
     telefono: '',
@@ -23,6 +27,7 @@ const ClienteForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Validar que el número de documento solo contenga números
   const handleNumberInput = (e) => {
     const value = e.target.value;
     if (/^\d*$/.test(value)) {
@@ -30,10 +35,77 @@ const ClienteForm = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  // Validar que solo se permitan letras (nombres y apellidos)
+  const handleTextInput = (e) => {
+    const value = e.target.value;
+    // Solo letras y espacios permitidos
+    if (/^[a-zA-Z\s]*$/.test(value)) {
+      setFormData({ ...formData, [e.target.name]: value });
+    }
+  };
+
+  const validateAge = (birthDate) => {
+    const today = new Date();
+    const birthDateObj = new Date(birthDate);
+    const age = today.getFullYear() - birthDateObj.getFullYear();
+    const monthDifference = today.getMonth() - birthDateObj.getMonth();
+
+    // Si la fecha de nacimiento aún no ha ocurrido este año, restar un año
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDateObj.getDate())) {
+      return age - 1;
+    }
+    return age;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Lógica de envío de formulario
-    setShowSnackbar(true);
+
+    // Validar la edad
+    const age = validateAge(formData.fechaNacimiento);
+    if (age < 18) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debes tener al menos 18 años para registrarte.',
+      });
+      return; // Detener el proceso de envío si la edad es menor de 18
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/api/clientes", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Registro exitoso',
+          text: 'Datos del cliente guardados correctamente!',
+        });
+        
+        // Redirigir al login después de guardar los datos
+        navigate("/login"); // Redirige a la página de inicio de sesión
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: data.error || 'No se pudo guardar los datos.',
+        });
+      }
+    } catch (error) {
+      console.error('Error al guardar datos:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Ocurrió un error inesperado.',
+      });
+    }
   };
 
   return (
@@ -134,7 +206,7 @@ const ClienteForm = () => {
                   name="nombres"
                   margin="normal"
                   value={formData.nombres}
-                  onChange={handleChange}
+                  onChange={handleTextInput} // Usar la validación para letras
                   required
                 />
               </Grid>
@@ -145,7 +217,7 @@ const ClienteForm = () => {
                   name="apellidos"
                   margin="normal"
                   value={formData.apellidos}
-                  onChange={handleChange}
+                  onChange={handleTextInput} // Usar la validación para letras
                   required
                 />
               </Grid>
@@ -194,33 +266,23 @@ const ClienteForm = () => {
                   name="telefono"
                   margin="normal"
                   value={formData.telefono}
-                  onChange={handleNumberInput}
+                  onChange={handleChange}
                   required
                 />
               </Grid>
             </Grid>
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, backgroundColor: '#0077b6', '&:hover': { backgroundColor: '#005f91' } }}
+              sx={{ mt: 3, backgroundColor: "#0077b6", "&:hover": { backgroundColor: "#00b4d8" } }}
             >
-              Guardar
+              Registrar
             </Button>
           </form>
         </Container>
       </motion.div>
-
-      <Snackbar
-        open={showSnackbar}
-        autoHideDuration={3000}
-        onClose={() => setShowSnackbar(false)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      >
-        <Alert severity="success" sx={{ width: '100%' }}>
-          ¡Registro exitoso!
-        </Alert>
-      </Snackbar>
     </Box>
   );
 };

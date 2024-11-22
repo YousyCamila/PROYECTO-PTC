@@ -18,11 +18,21 @@ const AdministradorForm = () => {
     apellidos: '',
     correo: email, // Usar el correo desde la URL
     fechaNacimiento: '',
-    activo: true, // Valor por defecto
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // Validación de nombres y apellidos: solo letras
+    if ((name === 'nombres' || name === 'apellidos') && !/^[a-zA-Z\s]*$/.test(value)) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Entrada no válida',
+        text: 'Los nombres y apellidos solo pueden contener letras y espacios.',
+      });
+      return;
+    }
+
     setFormData({ ...formData, [name]: value });
   };
 
@@ -180,6 +190,7 @@ const AdministradorForm = () => {
                   </Select>
                 </FormControl>
               </Grid>
+
               <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
@@ -187,10 +198,11 @@ const AdministradorForm = () => {
                   name="numeroDocumento"
                   margin="normal"
                   value={formData.numeroDocumento}
-                  onChange={handleNumberInput}
+                  onChange={handleNumberInput} // Validación en tiempo real
                   required
                 />
               </Grid>
+
               <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
@@ -202,6 +214,7 @@ const AdministradorForm = () => {
                   required
                 />
               </Grid>
+
               <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
@@ -213,7 +226,8 @@ const AdministradorForm = () => {
                   required
                 />
               </Grid>
-              <Grid item xs={12} md={6}>
+
+              <Grid item xs={12}>
                 <TextField
                   fullWidth
                   label="Correo"
@@ -222,10 +236,11 @@ const AdministradorForm = () => {
                   value={formData.correo}
                   onChange={handleChange}
                   required
-                  disabled
+                  disabled // No se puede editar
                 />
               </Grid>
-              <Grid item xs={12} md={6}>
+
+              <Grid item xs={12}>
                 <TextField
                   fullWidth
                   label="Fecha de Nacimiento"
@@ -235,18 +250,23 @@ const AdministradorForm = () => {
                   value={formData.fechaNacimiento}
                   onChange={handleChange}
                   required
-                  InputLabelProps={{ shrink: true }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 />
               </Grid>
+
+              <Grid item xs={12}>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, backgroundColor: "#0077b6", "&:hover": { backgroundColor: "#005f91" } }}
+                >
+                  Guardar
+                </Button>
+              </Grid>
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, backgroundColor: "#0077b6", "&:hover": { backgroundColor: "#005f91" } }}
-            >
-              Guardar
-            </Button>
           </form>
         </Container>
       </motion.div>
