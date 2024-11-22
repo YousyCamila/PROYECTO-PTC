@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import jwt_decode from "jwt-decode"; // Importa jwt_decode para decodificar el token JWT
+import jwt_decode from "jwt-decode";
 import {
   Box,
   Button,
@@ -16,22 +16,23 @@ import {
   IconButton,
 } from "@mui/material";
 import Swal from "sweetalert2";
-import { MdArrowBack } from 'react-icons/md'; 
-import { motion } from "framer-motion"; // Importa framer-motion
+import { MdArrowBack } from 'react-icons/md';
+import { motion } from "framer-motion";
+import { Visibility, VisibilityOff } from '@mui/icons-material'; // Importa los íconos para mostrar/ocultar la contraseña
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
-  const [fullName, setFullName] = useState(""); // Añadir fullName
-  const [confirmPassword, setConfirmPassword] = useState(""); // Añadir confirmPassword
-  const [verificationCode, setVerificationCode] = useState(""); // Añadir verificationCode
-  const [showVerification, setShowVerification] = useState(false); // Añadir showVerification
-  const [snackbarMessage, setSnackbarMessage] = useState(""); // Añadir snackbarMessage
-  const [openSnackbar, setOpenSnackbar] = useState(false); // Añadir openSnackbar
+  const [fullName, setFullName] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
+  const [showVerification, setShowVerification] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // Estado para controlar la visibilidad de la contraseña
   const navigate = useNavigate();
 
-  // Verifica si el usuario ya tiene un token
   const checkAuth = () => {
     const token = localStorage.getItem("accessToken");
     if (token) {
@@ -46,7 +47,6 @@ const Login = () => {
     }
   };
 
-  // Llamada al backend para el login
   const login = async (e) => {
     e.preventDefault();
     try {
@@ -55,20 +55,17 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password, role }), // Incluye el rol en la solicitud
+        body: JSON.stringify({ email, password, role }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Decodifica el token para obtener email, id y role
         const decodedToken = jwt_decode(data.accessToken);
-
-        // Guarda los datos en localStorage
         localStorage.setItem("accessToken", data.accessToken);
-        localStorage.setItem("userId", decodedToken.id); // Guarda el id del usuario
-        localStorage.setItem("email", decodedToken.email); // Guarda el email
-        localStorage.setItem("role", decodedToken.role); // Guarda el rol
+        localStorage.setItem("userId", decodedToken.id);
+        localStorage.setItem("email", decodedToken.email);
+        localStorage.setItem("role", decodedToken.role);
 
         Swal.fire({
           icon: "success",
@@ -76,7 +73,6 @@ const Login = () => {
           text: "Bienvenido de nuevo!",
         });
 
-        // Redirige según el rol decodificado del token
         if (decodedToken.role === "administrador") {
           navigate("/admin-menu");
         } else if (decodedToken.role === "cliente") {
@@ -85,7 +81,6 @@ const Login = () => {
           navigate("/detective-menu");
         }
       } else {
-        // Mostrar mensaje de error si hay problema con el rol o credenciales
         Swal.fire({
           icon: "error",
           title: "Error de inicio de sesión",
@@ -156,9 +151,9 @@ const Login = () => {
         }}
       >
         <motion.div
-          initial={{ y: 50, opacity: 0 }}  // Comienza con 50px abajo y opacidad 0
-          animate={{ y: 0, opacity: 1 }}   // Alcanza la posición original con opacidad 1
-          transition={{ duration: 0.8 }}    // Duración de la animación
+          initial={{ y: 50, opacity: 0 }}  
+          animate={{ y: 0, opacity: 1 }}  
+          transition={{ duration: 0.8 }}    
           style={{
             width: "100%",
           }}
@@ -189,12 +184,23 @@ const Login = () => {
             <TextField
               fullWidth
               label="Contraseña"
-              type="password"
+              type={showPassword ? "text" : "password"}  // Cambia el tipo según la visibilidad
               margin="normal"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               sx={{ marginBottom: "16px" }}
+              InputProps={{
+                endAdornment: (
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}  // Cambia el estado al hacer clic
+                    edge="end"
+                    sx={{ color: 'gray' }}
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}  {/* Icono de ver/ocultar */}
+                  </IconButton>
+                ),
+              }}
             />
             <FormControl fullWidth margin="normal" sx={{ marginBottom: "16px" }}>
               <InputLabel id="role-label">Rol</InputLabel>
@@ -255,21 +261,11 @@ const Login = () => {
           </form>
         </motion.div>
       </Container>
-        {/* Footer */}
-        <Box sx={{ position: "absolute", bottom: 0, width: "100%", padding: "20px", backgroundColor: "rgba(0, 0, 0, 0.7)", color: "white", textAlign: "center" }}>
-        <Typography variant="body2">&copy; 2024 PTC. Todos los derechos reservados.</Typography>
+      {/* Footer */}
+      <Box sx={{ position: "absolute", bottom: 0, width: "100%", padding: "20px", backgroundColor: "rgba(0, 0, 0, 0.7)", color: "white", textAlign: "center" }}>
+        <Typography variant="body2">&copy; 2024 Todos los derechos reservados</Typography>
       </Box>
-
-      {/* Snackbar de éxito */}
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={6000}
-        onClose={() => setOpenSnackbar(false)}
-        message={snackbarMessage}
-        TransitionComponent={(props) => <Slide {...props} direction="up" />}
-      />
     </Box>
-    
   );
 };
 

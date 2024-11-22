@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Slide } from '@mui/material'; // Para la animación de entrada
 import { MdArrowBack } from 'react-icons/md'; // Cambié ArrowBack por MdArrowBack
 import { motion } from 'framer-motion';
+import { Visibility, VisibilityOff } from '@mui/icons-material'; // Importamos los íconos para ver/ocultar la contraseña
 
 const Register = () => {
   const [fullName, setFullName] = useState("");
@@ -15,6 +16,8 @@ const Register = () => {
   const [showVerification, setShowVerification] = useState(false); // Mostrar cuadro de verificación
   const [openSnackbar, setOpenSnackbar] = useState(false); // Estado para manejar Snackbar de éxito
   const [snackbarMessage, setSnackbarMessage] = useState(""); // Mensaje de éxito en Snackbar
+  const [showPassword, setShowPassword] = useState(false); // Estado para controlar la visibilidad de la contraseña
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Estado para controlar la visibilidad de la confirmación de contraseña
   const navigate = useNavigate();
 
   const ADMIN_CODE = "123456"; // Código de verificación para administrador
@@ -44,13 +47,13 @@ const Register = () => {
       setOpenSnackbar(true);
       return; // Detener el proceso si el código es incorrecto
     }
-    
+
     // Validar código de verificación si es detective
     if (role === "detective" && verificationCode !== DECT_CODE) {
       setSnackbarMessage("Código de verificación incorrecto.");
       setOpenSnackbar(true);
       return; // Detener el proceso si el código es incorrecto
-    } 
+    }
 
     try {
       const response = await fetch("http://localhost:3000/api/usuario/register", {
@@ -87,7 +90,6 @@ const Register = () => {
       setOpenSnackbar(true);
     }
   };
-
 
   return (
     <Box
@@ -129,7 +131,7 @@ const Register = () => {
           PTC
         </Typography>
       </Box>
-  
+
       {/* Formulario de Registro */}
       <motion.div
         initial={{ y: 50, opacity: 0 }}  // Comienza con 50px abajo y opacidad 0
@@ -154,7 +156,7 @@ const Register = () => {
           <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: "center", color: "#0077b6" }}>
             Registrarse
           </Typography>
-  
+
           <form onSubmit={register}>
             <TextField
               fullWidth
@@ -175,20 +177,40 @@ const Register = () => {
             <TextField
               fullWidth
               label="Contraseña"
-              type="password"
+              type={showPassword ? "text" : "password"}  // Aquí cambia el tipo del campo
               margin="normal"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              InputProps={{
+                endAdornment: (
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                ),
+              }}
             />
             <TextField
               fullWidth
               label="Confirmar Contraseña"
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}  // Aquí cambia el tipo del campo
               margin="normal"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
+              InputProps={{
+                endAdornment: (
+                  <IconButton
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    edge="end"
+                  >
+                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                ),
+              }}
             />
             <FormControl fullWidth margin="normal">
               <InputLabel id="role-label">Rol</InputLabel>
@@ -206,7 +228,7 @@ const Register = () => {
                 <MenuItem value="detective">Detective</MenuItem>
               </Select>
             </FormControl>
-  
+
             {showVerification && (
               <TextField
                 fullWidth
@@ -217,32 +239,20 @@ const Register = () => {
                 required
               />
             )}
-  
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, backgroundColor: "#0077b6", "&:hover": { backgroundColor: "#005f91" } }}
-            >
+
+            <Button fullWidth variant="contained" type="submit" sx={{ marginTop: 2, backgroundColor: "#0077b6" }}>
               Registrarse
             </Button>
           </form>
         </Container>
       </motion.div>
-  
-      {/* Footer */}
-      <Box sx={{ position: "absolute", bottom: 0, width: "100%", padding: "2px", backgroundColor: "rgba(0, 0, 0, 0.7)", color: "white", textAlign: "center" }}>
-        <Typography variant="body2">&copy; 2024 PTC. Todos los derechos reservados.</Typography>
-      </Box>
-  
-      {/* Snackbar de éxito */}
+
       <Snackbar
         open={openSnackbar}
-        autoHideDuration={6000}
+        autoHideDuration={3000}
         onClose={() => setOpenSnackbar(false)}
         message={snackbarMessage}
-        TransitionComponent={Slide}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       />
     </Box>
   );
