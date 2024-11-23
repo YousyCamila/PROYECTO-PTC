@@ -43,6 +43,7 @@ import './style.css';
 
 
 
+
 const AdminMenu = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -100,7 +101,7 @@ const AdminMenu = () => {
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/clientes')
+    fetch('http://localhost:3000/api/cliente')
       .then((response) => response.json())
       .then((data) => {
         setClientes(data);
@@ -233,16 +234,17 @@ const AdminMenu = () => {
               textTransform: 'none',
               display: 'flex',
               alignItems: 'center',
-              gap: 1,
+              gap: 1, // Esto asegura que haya espacio entre el ícono y el texto
               position: 'relative',
-              paddingRight: '10px', // Ajuste el padding según sea necesario
+              paddingRight: '10px', // Ajusta el padding según sea necesario
+              width: '250px',
               '&:hover': {
                 backgroundColor: '#005f91',
               },
             }}
           >
-            <InboxIcon sx={{ fontSize: 24 }} /> {/* Ícono agregado */}
-            Responder Solicitudes
+            <InboxIcon sx={{ fontSize: 40 }} /> {/* Ícono agregado */}
+            <span style={{ whiteSpace: 'nowrap' }}>Responder Solicitudes</span> {/* Prevenir salto de línea */}
 
             {/* Punto blanco con animación de desvanecimiento */}
             <span
@@ -252,12 +254,13 @@ const AdminMenu = () => {
                 right: '4px', // Ajustar a la derecha
                 width: '12px',
                 height: '12px',
-                backgroundColor: 'white', // Cambiar a blanco
-                borderRadius: '50%', // Mantenerlo como círculo
+                backgroundColor: 'white',
+                borderRadius: '50%',
                 animation: 'fade 2s ease-in-out infinite', // Animación de desvanecimiento
               }}
             />
           </Button>
+
 
           {/* Avatar que abre el menú */}
           <IconButton onClick={handleMenuOpen}>
@@ -266,8 +269,8 @@ const AdminMenu = () => {
                 backgroundColor: '#fff',
                 color: '#0077b6',
                 border: '1px solid #0077b6',
-                width: 40,
-                height: 40,
+                width: 50,
+                height: 50,
                 '&:hover': {
                   backgroundColor: '#f0f8ff',
                 },
@@ -278,14 +281,17 @@ const AdminMenu = () => {
           </IconButton>
 
           {/* Texto de "Hola, administrador" */}
-          <Typography variant="body1" sx={{ color: 'black' }}>
-            Hola, administrador
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {/* Texto de "Hola, administrador" */}
+            <Typography variant="h6" sx={{ color: 'black', fontSize: '1.0rem', mr: 1 }}>
+              Hola, administrador
+            </Typography>
 
-          {/* Flecha hacia abajo */}
-          <IconButton onClick={handleMenuOpen}>
-            <ArrowDropDownIcon sx={{ color: 'black' }} />
-          </IconButton>
+            {/* Flecha hacia abajo */}
+            <IconButton onClick={handleMenuOpen}>
+              <ArrowDropDownIcon sx={{ color: 'black', fontSize: '2rem' }} />
+            </IconButton>
+          </Box>
         </Box>
 
 
@@ -310,7 +316,14 @@ const AdminMenu = () => {
           open={openMenu}
           onClose={handleMenuClose}
           sx={{
-            mt: 2, // Ajusta la distancia entre el avatar y el menú
+            mt: 3, // Ajusta la distancia entre el avatar y el menú
+            '& .MuiMenuItem-root': {
+              fontSize: '1.0rem', // Aumenta el tamaño de la fuente
+              padding: '9px 11px', // Aumenta el tamaño de los elementos del menú
+            },
+            '& .MuiSvgIcon-root': {
+              fontSize: '1.6rem', // Aumenta el tamaño de los íconos
+            },
           }}
         >
           <MenuItem onClick={handleLogout}>
@@ -389,148 +402,177 @@ const AdminMenu = () => {
       >
         <Typography
           variant="h3"
-          component="h1"
+          component="h1" // Cambié el componente a "h1" para hacerlo más destacado.
           gutterBottom
           sx={{
-            color: '#cfe3ff',  // Corregí el color: '#001b24x' parece tener un error en el código.
+            color: '#001b24',  // Asegurándote de que el color es correcto.
             fontWeight: 'bold',
-            marginTop: '20px', // Para agregar espacio en la parte superior
-            marginBottom: '40px', // Para aumentar el espacio debajo del título
+            fontSize: '3.0rem', // Hacer el texto más grande
+            marginTop: '-px', // Subir el texto un poco más
+            marginLeft: '-400px', // Desplazarlo a la izquierda
+            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)', // Agregar sombra sutil al texto para darle un efecto destacado
           }}
         >
           Informe general
         </Typography>
 
+        <Typography
+          variant="h4"  // Cambié el "h3" a "h4" para que sea más pequeño que el título principal.
+          component="h2" // Cambié el componente a "h2" para mantener una jerarquía adecuada.
+          gutterBottom
+          sx={{
+            color: '#001b24',  // Elegí un color azul para darle contraste con el título principal.
+            fontWeight: 'bold',
+            fontSize: '3.0rem', // Ajusté el tamaño del texto
+            marginTop: '10px', // Menos espacio superior
+            marginLeft: '-400px', // Desplazarlo a la izquierda
+            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)', // Sombra sutil
+          }}
+        >
+          PTC
+        </Typography>
+
+
 
         <motion.div
-      initial={{ opacity: 0, scale: 0.8 }} // Misma animación de las cards
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.8 }}
-      style={{
-        backgroundColor: '#f8f9fa', // Fondo blanco no tan blanco
-        paddingTop: '80px', // Espaciado para no tapar el NavBar
-        minHeight: '100vh',
-      }}
-    >
-      {/* Información general detective */}
-      <Grid container spacing={9} sx={{ padding: '2rem' }}>
-        <Grid item xs={12} md={4}>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-          >
-            <Card
-              sx={{
-                position: 'relative',
-                padding: '2rem',
-                width: '100%',
-                height: '400px',
-                boxShadow: '-1px 15px 30px -12px rgb(32, 32, 32)',
-                borderRadius: '0.9rem',
-                backgroundColor: '#fff',
-                color: '#0077b6',
-                cursor: 'pointer',
-                transition: 'transform 0.3s ease-in-out',
-                overflow: 'hidden',
-              }}
-            >
-              <CardContent>
-                <Typography
-                  variant="h5"
+          initial={{ opacity: 0, scale: 0.8 }} // Misma animación de las cards
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8 }}
+          style={{
+            backgroundColor: '#f8f9fa', // Fondo blanco no tan blanco
+            paddingTop: '80px', // Espaciado para no tapar el NavBar
+            minHeight: '100vh',
+          }}
+        >
+          {/* Información general detective */}
+          <Grid container spacing={9} sx={{ padding: '2rem' }}>
+            <Grid item xs={12} md={4}>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8 }}
+              >
+                <Card
                   sx={{
-                    color: '#08a9ff',
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    fontSize: '3.7rem',
-                    marginTop: '20px',
-                  }}
-                >
-                  Total de Detectives
-                </Typography>
-                <Box
-                  sx={{
-                    fontSize: '4rem',
-                    fontWeight: 'bold',
+                    position: 'relative',
+                    padding: '2rem',
+                    width: '100%',
+                    height: '486px',
+                    boxShadow: '-1px 15px 30px -12px rgb(32, 32, 32)',
+                    borderRadius: '0.9rem',
+                    backgroundColor: '#fff',
                     color: '#0077b6',
-                    animation: 'beepEffect 1s ease-in-out infinite',
-                    opacity: 1,
-                    display: 'inline-block',
-                    textAlign: 'center',
-                    marginTop: '30px',
-                    '@keyframes beepEffect': {
-                      '0%': { transform: 'scale(1)', opacity: 1, color: '#59c1f8' },
-                      '50%': { transform: 'scale(1.2)', opacity: 0.5, color: '#59c1f8' },
-                      '100%': { transform: 'scale(1)', opacity: 1, color: '#59c1f8' },
-                    },
+                    cursor: 'pointer',
+                    transition: 'transform 0.3s ease-in-out',
+                    overflow: 'hidden',
+                    marginTop: '-60px',
                   }}
                 >
-                  {totalDetectives}
-                </Box>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </Grid>
+                  <CardContent>
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        color: '#08a9ff',
+                        fontWeight: 'bold',
+                        textAlign: 'center',
+                        fontSize: '3.7rem',
+                        marginTop: '20px',
+                      }}
+                    >
+                      Total de Detectives
+                    </Typography>
+                    <Box
+                      sx={{
+                        fontSize: '8rem',
+                        fontWeight: 'bold',
+                        color: '#0077b6',
+                        animation: 'beepEffect 1s ease-in-out infinite',
+                        opacity: 1,
+                        display: 'inline-block',
+                        textAlign: 'center',
+                        marginTop: '30px',
+                        '@keyframes beepEffect': {
+                          '0%': { transform: 'scale(1)', opacity: 1, color: '#59c1f8' },
+                          '50%': { transform: 'scale(1.2)', opacity: 1, color: '#59c1f8' },
+                          '100%': { transform: 'scale(1)', opacity: 1, color: '#59c1f8' },
+                        },
+                      }}
+                    >
+                      {totalDetectives}
+                    </Box>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </Grid>
 
-        {/* Cards pequeñas de especialidades */}
-        <Grid item xs={12} md={8}>
-          <Grid container spacing={3}>
-            {Object.entries(data).map(([especialidad, cantidad], index) => (
-              <Grid item xs={12} sm={6} md={4} key={especialidad}>
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.8, delay: index * 0.1 }}
-                >
-                  <Card
-                    sx={{
-                      padding: 2,
-                      backgroundColor: 'rgba(0, 119, 182, 0.1)',
-                      borderRadius: 2,
-                      boxShadow: 3,
-                      backdropFilter: 'blur(10px)',
-                      border: '1px solid rgba(0, 119, 182, 0.2)',
-                      transition: 'background-color 0.3s, transform 0.3s',
-                      '&:hover': {
-                        backgroundColor: 'rgba(0, 85, 119, 0.3)',
-                        transform: 'scale(1.05)',
-                      },
-                    }}
-                  >
-                    <CardContent>
-                      <Typography
-                        variant="h6"
+            {/* Cards pequeñas de especialidades */}
+            <Grid item xs={12} md={8}>
+              <Grid container spacing={10}>
+                {Object.entries(data).map(([especialidad, cantidad], index) => (
+                  <Grid item xs={12} sm={6} md={4} key={especialidad}>
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.8, delay: index * 0.1 }}
+                    >
+
+                      <Card
                         sx={{
-                          color: '#0077b6',
-                          fontFamily: 'Roboto, sans-serif',
-                          fontWeight: 'bold',
-                          letterSpacing: '1px',
+                          padding: 1, // Reduce el espacio interno
+                          marginTop: '-60px',
+                          width: '250px', // Especifica un ancho más pequeño
+                          height: '150px', // Especifica una altura más pequeña
+                          backgroundColor: 'rgba(0, 119, 182, 0.1)',
+                          borderRadius: 1.5, // Reducción del radio de los bordes
+                          boxShadow: 2, // Sombra menos pronunciada
+                          backdropFilter: 'blur(8px)', // Ligera reducción del desenfoque
+                          border: '1px solid rgba(0, 119, 182, 0.2)',
+                          transition: 'background-color 0.3s, transform 0.3s',
+                          '&:hover': {
+                            backgroundColor: 'rgba(0, 85, 119, 0.3)', // Fondo al hacer hover
+                            transform: 'scale(1.05)', // Efecto de escala al pasar el mouse
+                          },
                         }}
                       >
-                        {especialidad}
-                      </Typography>
-                      <Typography
-                        variant="h4"
-                        sx={{
-                          fontWeight: 'bold',
-                          fontFamily: 'Roboto, sans-serif',
-                          marginTop: 1,
-                        }}
-                      >
-                        {cantidad}
-                      </Typography>
-                      <Typography sx={{ mt: 2, fontStyle: 'italic', color: '#555' }}>
-                        Detectives especializados en esta área.
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </motion.div>
+                        <CardContent>
+                          <Typography
+                            variant="h6"
+                            sx={{
+                              color: '#0077b6', // Azul
+                              fontFamily: 'Roboto, sans-serif', // Fuente
+                              fontWeight: 'bold', // Menos audaz
+                              fontSize: '1.0rem', // Tamaño reducido
+                              letterSpacing: '0.5px', // Menor espaciado
+                              marginTop: '-7px',
+
+                            }}
+                          >
+                            {especialidad}
+                          </Typography>
+                          <Typography
+                            variant="h4"
+                            sx={{
+                              color: '#0077b6', // Azul
+                              fontSize: '1.2rem', // Tamaño reducido
+                              fontWeight: 'bold',
+                              fontFamily: 'Roboto, sans-serif',
+                              marginTop: 1,
+                            }}
+                          >
+                            {cantidad}
+                          </Typography>
+                          <Typography sx={{ mt: 2, fontStyle: 'italic', color: '#555' }}>
+                            Detectives especializados en esta área.
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  </Grid>
+                ))}
               </Grid>
-            ))}
+            </Grid>
           </Grid>
-        </Grid>
-      </Grid>
-    </motion.div>
+        </motion.div>
 
 
         <Grid item xs={12} md={4}>
