@@ -402,140 +402,135 @@ const AdminMenu = () => {
         </Typography>
 
 
-
-        {/* Información general detective */}
-        <Grid container spacing={9}>
-          <Grid item xs={4} md={4}>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
+        <motion.div
+      initial={{ opacity: 0, scale: 0.8 }} // Misma animación de las cards
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.8 }}
+      style={{
+        backgroundColor: '#f8f9fa', // Fondo blanco no tan blanco
+        paddingTop: '80px', // Espaciado para no tapar el NavBar
+        minHeight: '100vh',
+      }}
+    >
+      {/* Información general detective */}
+      <Grid container spacing={9} sx={{ padding: '2rem' }}>
+        <Grid item xs={12} md={4}>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            <Card
+              sx={{
+                position: 'relative',
+                padding: '2rem',
+                width: '100%',
+                height: '400px',
+                boxShadow: '-1px 15px 30px -12px rgb(32, 32, 32)',
+                borderRadius: '0.9rem',
+                backgroundColor: '#fff',
+                color: '#0077b6',
+                cursor: 'pointer',
+                transition: 'transform 0.3s ease-in-out',
+                overflow: 'hidden',
+              }}
             >
-              <Card
-                sx={{
-                  position: 'relative',
-                  padding: '2rem',
-                  width: '100%',
-                  height: '400px',
-                  boxShadow: '-1px 15px 30px -12px rgb(32, 32, 32)',
-                  borderRadius: '0.9rem',
-                  backgroundColor: '#fff',
-                  color: '#0077b6',
-                  cursor: 'pointer',
-                  transition: 'transform 0.3s ease-in-out',
-                  overflow: 'hidden',
-                }}
-              >
-                <CardContent>
-                  <Typography
-                    variant="h5"
+              <CardContent>
+                <Typography
+                  variant="h5"
+                  sx={{
+                    color: '#08a9ff',
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    fontSize: '3.7rem',
+                    marginTop: '20px',
+                  }}
+                >
+                  Total de Detectives
+                </Typography>
+                <Box
+                  sx={{
+                    fontSize: '4rem',
+                    fontWeight: 'bold',
+                    color: '#0077b6',
+                    animation: 'beepEffect 1s ease-in-out infinite',
+                    opacity: 1,
+                    display: 'inline-block',
+                    textAlign: 'center',
+                    marginTop: '30px',
+                    '@keyframes beepEffect': {
+                      '0%': { transform: 'scale(1)', opacity: 1, color: '#59c1f8' },
+                      '50%': { transform: 'scale(1.2)', opacity: 0.5, color: '#59c1f8' },
+                      '100%': { transform: 'scale(1)', opacity: 1, color: '#59c1f8' },
+                    },
+                  }}
+                >
+                  {totalDetectives}
+                </Box>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </Grid>
+
+        {/* Cards pequeñas de especialidades */}
+        <Grid item xs={12} md={8}>
+          <Grid container spacing={3}>
+            {Object.entries(data).map(([especialidad, cantidad], index) => (
+              <Grid item xs={12} sm={6} md={4} key={especialidad}>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.8, delay: index * 0.1 }}
+                >
+                  <Card
                     sx={{
-                      color: '#08a9ff',
-                      fontWeight: 'bold',
-                      textAlign: 'center',
-                      fontSize: '3.7rem',
-                      marginTop: '20px'
+                      padding: 2,
+                      backgroundColor: 'rgba(0, 119, 182, 0.1)',
+                      borderRadius: 2,
+                      boxShadow: 3,
+                      backdropFilter: 'blur(10px)',
+                      border: '1px solid rgba(0, 119, 182, 0.2)',
+                      transition: 'background-color 0.3s, transform 0.3s',
+                      '&:hover': {
+                        backgroundColor: 'rgba(0, 85, 119, 0.3)',
+                        transform: 'scale(1.05)',
+                      },
                     }}
                   >
-                    Total de Detectives
-                  </Typography>
-                  <Box
-                    sx={{
-                      fontSize: '4rem',
-                      fontWeight: 'bold',
-                      color: '#0077b6',
-                      animation: 'beepEffect 1s ease-in-out infinite',
-                      opacity: 1,
-                      display: 'inline-block',
-                      textAlign: 'center',
-                      marginTop: '30px',
-                      '@keyframes beepEffect': {
-                        '0%': {
-                          transform: 'scale(1)',
-                          opacity: 1,
-                          color: '#59c1f8',
-                        },
-                        '50%': {
-                          transform: 'scale(1.2)',
-                          opacity: 0.5,
-                          color: '#59c1f8',
-                        },
-                        '100%': {
-                          transform: 'scale(1)',
-                          opacity: 1,
-                          color: '#59c1f8',
-                        }
-                      }
-                    }}
-                  >
-                    {totalDetectives}
-                  </Box>
-
-
-                </CardContent>
-              </Card>
-            </motion.div>
-          </Grid>
-
-
-          {/* Cards pequeñas de especialidades */}
-          <Grid item xs={4} md={8}>
-            <Grid container spacing={3}>
-              {Object.entries(data).map(([especialidad, cantidad], index) => (
-                <Grid item xs={12} sm={6} md={4} key={especialidad}>
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.8, delay: index * 0.1 }}
-                  >
-                    <Card
-                      sx={{
-                        padding: 2,
-                        backgroundColor: 'rgba(0, 119, 182, 0.1)', // Fondo de las tarjetas pequeñas
-                        borderRadius: 2,
-                        boxShadow: 3,
-                        backdropFilter: 'blur(10px)',
-                        border: '1px solid rgba(0, 119, 182, 0.2)',
-                        transition: 'background-color 0.3s, transform 0.3s',
-                        '&:hover': {
-                          backgroundColor: 'rgba(0, 85, 119, 0.3)', // Azul más oscuro al hacer hover
-                          transform: 'scale(1.05)', // Efecto de escala al hacer hover
-                        },
-                      }}
-                    >
-                      <CardContent>
-                        <Typography
-                          variant="h6"
-                          sx={{
-                            color: '#0077b6',
-                            fontFamily: 'Roboto, sans-serif',
-                            fontWeight: 'bold',
-                            letterSpacing: '1px',
-                          }}
-                        >
-                          {especialidad}
-                        </Typography>
-                        <Typography
-                          variant="h4"
-                          sx={{
-                            fontWeight: 'bold',
-                            fontFamily: 'Roboto, sans-serif',
-                            marginTop: 1,
-                          }}
-                        >
-                          {cantidad}
-                        </Typography>
-                        <Typography sx={{ mt: 2, fontStyle: 'italic', color: '#555' }}>
-                          Detectives especializados en esta área.
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                </Grid>
-              ))}
-            </Grid>
+                    <CardContent>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          color: '#0077b6',
+                          fontFamily: 'Roboto, sans-serif',
+                          fontWeight: 'bold',
+                          letterSpacing: '1px',
+                        }}
+                      >
+                        {especialidad}
+                      </Typography>
+                      <Typography
+                        variant="h4"
+                        sx={{
+                          fontWeight: 'bold',
+                          fontFamily: 'Roboto, sans-serif',
+                          marginTop: 1,
+                        }}
+                      >
+                        {cantidad}
+                      </Typography>
+                      <Typography sx={{ mt: 2, fontStyle: 'italic', color: '#555' }}>
+                        Detectives especializados en esta área.
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              </Grid>
+            ))}
           </Grid>
         </Grid>
+      </Grid>
+    </motion.div>
 
 
         <Grid item xs={12} md={4}>

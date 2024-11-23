@@ -51,11 +51,7 @@ const Login = () => {
         localStorage.setItem("email", decodedToken.email); // Guarda el email
         localStorage.setItem("role", decodedToken.role); // Guarda el rol
 
-        Swal.fire({
-          icon: "success",
-          title: "Login exitoso",
-          text: "Bienvenido de nuevo!",
-        });
+        
 
         // Redirige según el rol decodificado del token
         if (decodedToken.role === "administrador") {
