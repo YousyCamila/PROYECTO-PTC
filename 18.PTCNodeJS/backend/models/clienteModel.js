@@ -13,24 +13,23 @@ const clienteSchema = new mongoose.Schema({
     },
     nombre: {
       type: String,
-      required: false // Cambiado a false
+      required: false // Nombre del caso
+    },
+    cantidad: {
+      type: Number,
+      default: 1 // Contador de cuántos casos tiene el cliente
     }
   }],
   contratos: [{
     id: {
       type: mongoose.Schema.Types.ObjectId,
+      required: true,
       ref: 'Contrato'
     },
-    descripcionServicio: {
-      type: String,
-      required: false // Cambiado a false
-    },
-    estado: {
-      type: String,
-      maxlength: 50,
-      required: false // Cambiado a false
-    }
+    descripcionServicio: String,
+    estado: Boolean
   }],
+  
   facturas: [{
     id: {
       type: mongoose.Schema.Types.ObjectId,
@@ -38,12 +37,12 @@ const clienteSchema = new mongoose.Schema({
     },
     total: {
       type: Number,
-      required: false // Cambiado a false
+      required: false // Monto total de la factura
     },
     estado: {
       type: String,
       maxlength: 50,
-      required: false // Cambiado a false
+      required: false // Estado de la factura
     }
   }],
   historials: [{
@@ -53,11 +52,11 @@ const clienteSchema = new mongoose.Schema({
     },
     fecha: {
       type: Date,
-      required: false // Cambiado a false
+      required: false // Fecha del historial
     },
     detalle: {
       type: String,
-      required: false // Cambiado a false
+      required: false // Detalle del historial
     }
   }],
   registroCaso: [{
@@ -67,22 +66,25 @@ const clienteSchema = new mongoose.Schema({
     },
     descripcion: {
       type: String,
-      required: false // Cambiado a false
+      required: false // Descripción del registro de caso
     },
     estadoRegistro: {
       type: String,
       maxlength: 50,
-      required: false // Cambiado a false
+      required: false // Estado del registro de caso
     }
   }],
-  activo: { 
-    type: Boolean, 
-    default: true 
+  activo: {
+    type: Boolean,
+    default: true
   }
 }, { timestamps: true });
 
+
+// Se agrega el schema de persona al cliente
 clienteSchema.add(personaSchema);
 
 // Crea el modelo de Cliente
 const Cliente = mongoose.models.Cliente || mongoose.model('Cliente', clienteSchema);
 module.exports = Cliente;
+

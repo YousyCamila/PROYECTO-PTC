@@ -1,3 +1,4 @@
+const mongoose = require('mongoose'); // Asegúrate de que mongoose esté importado
 const Contrato = require('../models/contratoModel');
 const Cliente = require('../models/clienteModel');
 const Detective = require('../models/detectiveModel');
@@ -6,16 +7,36 @@ async function crearContrato(data) {
   const contrato = new Contrato(data);
   await contrato.save();
 
-  // Actualizar el cliente para agregar el contrato
-  await Cliente.findByIdAndUpdate(data.idCliente, {
-    $push: { contratos: contrato._id } // Agrega el ID del contrato al cliente
-  });
+  // Agregar el contrato al cliente
+  await Cliente.findByIdAndUpdate(
+    data.idCliente,
+    {
+      $push: {
+        contratos: {
+          id: contrato._id, // Asegurarnos de pasar el _id correctamente como id
+          descripcionServicio: contrato.descripcionServicio,
+          estado: contrato.estado
+        }
+      }
+    },
+    { new: true, runValidators: true }
+  );
 
   // Si hay un detective, actualizar también
   if (data.idDetective) {
-    await Detective.findByIdAndUpdate(data.idDetective, {
-      $push: { casos: { id: contrato._id, nombre: contrato.descripcionServicio } } // Agrega el ID y nombre del contrato al detective
-    });
+    await Detective.findByIdAndUpdate(
+      data.idDetective,
+      {
+        $push: {
+          contratos: {
+            id: contrato._id, // Asegurarnos de pasar el _id correctamente como id
+            descripcionServicio: contrato.descripcionServicio,
+            estado: contrato.estado
+          }
+        }
+      },
+      { new: true, runValidators: true }
+    );
   }
 
   return contrato;
