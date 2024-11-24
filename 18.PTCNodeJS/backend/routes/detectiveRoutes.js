@@ -145,7 +145,7 @@ router.put('/:id', detectiveController.actualizarDetective);
 /**
  * @swagger
  * /detectives/{id}:
- *   delete:
+ *   patch:
  *     summary: Desactivar un detective
  *     tags: [Detectives]
  *     parameters:
@@ -161,6 +161,7 @@ router.put('/:id', detectiveController.actualizarDetective);
  *       404:
  *         description: Detective no encontrado
  */
-router.delete('/:id', detectiveController.desactivarDetective);
+router.patch('/:id', detectiveController.desactivarDetective);
+
 
 module.exports = router;

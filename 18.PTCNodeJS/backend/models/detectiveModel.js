@@ -13,16 +13,16 @@ const DetectiveSchema = new mongoose.Schema({
     },
     nombre: {
       type: String,
-      required: true
+      required: false
     },
     descripcion: {
       type: String,
-      required: true
+      required: false
     },
     estado: {
       type: String,
       maxlength: 50,
-      required: true
+      required: false
     }
   }],
   historialCasos: [{
@@ -32,25 +32,25 @@ const DetectiveSchema = new mongoose.Schema({
     },
     fecha: {
       type: Date,
-      required: true
+      required: false
     },
     detalle: {
       type: String,
-      required: true
+      required: false
     }
   }],
   contratos: [{
     id: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      required: false,
       ref: 'Contrato'
     },
     descripcionServicio: String,
     estado: Boolean
   }]
   ,
-  activo: { type: Boolean, default: true },
-}, { timestamps: true });
+  activo: { type: Boolean, default: false },
+}, { timestamps: false });
 
 DetectiveSchema.add(personaSchema);
 

@@ -48,15 +48,34 @@ const actualizarDetective = async (req, res) => {
 
 const desactivarDetective = async (req, res) => {
   try {
-    // Obtén el ID desde los parámetros de la solicitud
     const { id } = req.params;
 
-    // Llama a la lógica para desactivar al detective
-    await clienteService.desactivarDetective(id);
+    // Validar el formato del ID antes de procesar
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({ error: "Formato de ID inválido." });
+    }
 
-    res.status(200).json({ message: "Detective desactivado correctamente." });
+    // Llamar al servicio para desactivar al detective
+    const detectiveDesactivado = await detectiveService.desactivarDetective(id);
+
+    // Respuesta exitosa
+    res.status(200).json({
+      message: "Detective desactivado correctamente.",
+      detective: detectiveDesactivado,
+    });
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    console.error("Error en desactivarDetective:", error);
+
+    // Diferenciar errores según la lógica del servicio
+    if (error.message === "El detective no existe.") {
+      return res.status(404).json({ error: error.message });
+    }
+    if (error.message === "El detective ya está desactivado.") {
+      return res.status(400).json({ error: error.message });
+    }
+
+    // Error interno del servidor
+    res.status(500).json({ error: "Error interno del servidor." });
   }
 };
 

@@ -38,7 +38,7 @@ app.use(cookieParser()); // Middleware para manejar cookies
 
 const corsOptions = {
     origin: 'http://localhost:5173', // Cambia esto al dominio de tu frontend
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT','PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true, // Permitir el envío de cookies y encabezados de autenticación
 };
