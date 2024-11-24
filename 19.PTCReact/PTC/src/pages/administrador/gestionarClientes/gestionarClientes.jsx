@@ -89,9 +89,6 @@ const GestionarClientes = () => {
     setOpenSnackbar(false);
   };
 
-  const handleBack = () => {
-    navigate('/admin-menu'); // Navegar al menú administrativo
-  };
   
 
   return (
@@ -147,17 +144,6 @@ const GestionarClientes = () => {
               }}
             >
               Crear Cliente
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={handleBack}
-              sx={{
-                color: '#0077b6',
-                borderColor: '#0077b6',
-                '&:hover': { backgroundColor: '#e0e0e0' },
-              }}
-            >
-              Volver al Menú
             </Button>
           </Box>
     

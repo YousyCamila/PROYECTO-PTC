@@ -46,7 +46,7 @@ const AdminMenu = () => {
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/cliente')
+    fetch('http://localhost:3000/api/clientes')
       .then((response) => response.json())
       .then((data) => {
         setClientes(data);
