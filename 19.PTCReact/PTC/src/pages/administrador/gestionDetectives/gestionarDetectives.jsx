@@ -20,6 +20,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import NavbarSidebar from '../NavbarSidebar'; // Importa tu NavbarSidebar
 
 const GestionarDetectives = () => {
   const [detectives, setDetectives] = useState([]);
@@ -62,16 +63,29 @@ const GestionarDetectives = () => {
       cancelButtonColor: '#3085d6',
       confirmButtonText: 'Sí, desactivar',
     });
-
+  
     if (confirm.isConfirmed) {
       try {
-        await fetch(`http://localhost:3000/api/detectives/${detectiveId}`, {
-          method: 'DELETE',
+        // Hacer una solicitud PATCH para desactivar el detective
+        const response = await fetch(`http://localhost:3000/api/detectives/${detectiveId}`, {
+          method: 'PATCH',  // Usamos PATCH para actualizar el estado
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            activo: false,  // Cambiamos el estado de activo a false
+          }),
         });
-        setDetectives(prevDetectives => prevDetectives.map(detective => 
-          detective._id === detectiveId ? { ...detective, activo: false } : detective
-        ));
-        Swal.fire('Desactivado!', 'El detective ha sido desactivado.', 'success');
+  
+        if (response.ok) {
+          // Actualizar el estado localmente
+          setDetectives(prevDetectives => prevDetectives.map(detective =>
+            detective._id === detectiveId ? { ...detective, activo: false } : detective
+          ));
+          Swal.fire('Desactivado!', 'El detective ha sido desactivado.', 'success');
+        } else {
+          throw new Error('Error al desactivar el detective');
+        }
       } catch (error) {
         console.error("Error al desactivar detective:", error);
         setSnackbarMessage('No se pudo desactivar el detective.');
@@ -79,7 +93,7 @@ const GestionarDetectives = () => {
       }
     }
   };
-
+  
   const handleCreate = () => {
     navigate('/crear-detective');
   };
@@ -99,14 +113,42 @@ const GestionarDetectives = () => {
         height: '100vh',
         background: 'linear-gradient(to right, #001f3f, #0077b6)',
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        flexDirection: 'column',
       }}
     >
-      <Container maxWidth="lg" sx={{ background: 'white', borderRadius: 2, padding: 4, boxShadow: 3 }}>
-        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#0077b6' }}>
+      {/* NavbarSidebar */}
+      <NavbarSidebar />
+
+      <Container
+        maxWidth="lg"
+        sx={{
+          background: 'white',
+          borderRadius: 2,
+          padding: 4,
+          boxShadow: 3,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          minHeight: '80vh',
+          marginTop: 4,
+        }}
+      >
+        {/* Título */}
+        <Typography
+          variant="h4"
+          component="h1"
+          gutterBottom
+          sx={{
+            textAlign: 'center',
+            color: '#0077b6',
+            fontWeight: 'bold',
+            marginBottom: 4,
+          }}
+        >
           Gestionar Detectives
         </Typography>
+
+        {/* Botones */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
           <Button
             variant="contained"
@@ -130,22 +172,36 @@ const GestionarDetectives = () => {
             Volver al Menú
           </Button>
         </Box>
-        <TableContainer component={Paper}>
-          <Table>
+
+        {/* Tabla con scroll */}
+        <TableContainer component={Paper} sx={{ maxHeight: '400px', overflowY: 'auto' }}>
+          <Table stickyHeader>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}><strong>Nombre</strong></TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}><strong>Activo</strong></TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}><strong>Fecha de Nacimiento</strong></TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}><strong>Acciones</strong></TableCell>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
+                  <strong>Número de Documento</strong>
+                </TableCell>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
+                  <strong>Nombre</strong>
+                </TableCell>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
+                  <strong>Activo</strong>
+                </TableCell>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
+                  <strong>Especialidad</strong>
+                </TableCell>
+                <TableCell align="right" sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
+                  <strong>Acciones</strong>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {detectives.map((detective) => (
                 <TableRow key={detective._id}>
+                  <TableCell>{detective.numeroDocumento}</TableCell>
                   <TableCell>{detective.nombres} {detective.apellidos}</TableCell>
                   <TableCell>{detective.activo ? 'Sí' : 'No'}</TableCell>
-                  <TableCell>{new Date(detective.fechaNacimiento).toLocaleDateString()}</TableCell>
+                  <TableCell>{detective.especialidad || 'N/A'}</TableCell>
                   <TableCell align="right">
                     <Tooltip title="Ver Detalles" arrow>
                       <IconButton onClick={() => handleDetails(detective._id)} color="primary">
