@@ -9,10 +9,14 @@ import {
   List,
   ListItem,
   ListItemText,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
   Divider,
 } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const DetallesCaso = () => {
   const { id } = useParams(); // Obtener el ID del caso de la URL
@@ -57,18 +61,21 @@ const DetallesCaso = () => {
         height: '100vh',
         background: 'linear-gradient(to right, #001f3f, #0077b6)',
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        flexDirection: 'column',
       }}
     >
-      <Container maxWidth="md">
+      <Container maxWidth="lg" sx={{ marginTop: 4 }}>
         <Paper sx={{ padding: 4, borderRadius: 2, boxShadow: 3 }}>
           <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#0077b6' }}>
             Detalles del Caso
           </Typography>
+
+          {/* Información del Caso */}
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#005f91' }}>Información del Caso</Typography>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#005f91' }}>
+                Información del Caso
+              </Typography>
             </Grid>
             <Grid item xs={6}>
               <Typography variant="body1"><strong>ID del Caso:</strong> {caso._id}</Typography>
@@ -89,10 +96,17 @@ const DetallesCaso = () => {
 
           <Divider sx={{ my: 2 }} />
 
-          <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#005f91' }}>Detalles Adicionales</Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography variant="body1"><strong>Evidencias:</strong></Typography>
+          {/* Detalles Adicionales */}
+          <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#005f91' }}>
+            Detalles Adicionales
+          </Typography>
+
+          {/* Evidencias */}
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography>Evidencias ({caso.evidencias.length})</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
               <List>
                 {caso.evidencias.length > 0 ? (
                   caso.evidencias.map((evidencia, index) => (
@@ -104,9 +118,15 @@ const DetallesCaso = () => {
                   <Typography variant="body2">No hay evidencias asociadas.</Typography>
                 )}
               </List>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body1"><strong>Registro de Casos:</strong></Typography>
+            </AccordionDetails>
+          </Accordion>
+
+          {/* Registro de Casos */}
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography>Registro de Casos ({caso.registroCasos.length})</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
               <List>
                 {caso.registroCasos.length > 0 ? (
                   caso.registroCasos.map((registro, index) => (
@@ -118,11 +138,20 @@ const DetallesCaso = () => {
                   <Typography variant="body2">No hay registros de casos asociados.</Typography>
                 )}
               </List>
-            </Grid>
-          </Grid>
+            </AccordionDetails>
+          </Accordion>
 
+          {/* Botón para volver */}
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-            <Button variant="outlined" onClick={handleBack} sx={{ color: '#0077b6', borderColor: '#0077b6', '&:hover': { backgroundColor: '#e0e0e0' } }}>
+            <Button
+              variant="outlined"
+              onClick={handleBack}
+              sx={{
+                color: '#0077b6',
+                borderColor: '#0077b6',
+                '&:hover': { backgroundColor: '#e0e0e0' },
+              }}
+            >
               Volver a la Gestión de Casos
             </Button>
           </Box>

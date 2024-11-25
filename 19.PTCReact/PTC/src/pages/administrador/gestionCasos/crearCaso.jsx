@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Container, Typography, TextField, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
+import { Box, Button, Container, Typography, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import NavbarSidebar from '../NavbarSidebar';
 
 const CrearCaso = () => {
   const [formData, setFormData] = useState({
     nombreCaso: '',
     idCliente: '',
     idDetective: '',
+    nombreCliente: '',
+    nombreDetective: '',
   });
 
   const [clientes, setClientes] = useState([]);
@@ -40,7 +43,25 @@ const CrearCaso = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    // Si se selecciona cliente o detective, extraemos también su nombre
+    if (name === 'idCliente') {
+      const selectedCliente = clientes.find(cliente => cliente._id === value);
+      setFormData({
+        ...formData,
+        idCliente: value,
+        nombreCliente: selectedCliente ? `${selectedCliente.nombres} ${selectedCliente.apellidos}` : '',
+      });
+    } else if (name === 'idDetective') {
+      const selectedDetective = detectives.find(detective => detective._id === value);
+      setFormData({
+        ...formData,
+        idDetective: value,
+        nombreDetective: selectedDetective ? `${selectedDetective.nombres} ${selectedDetective.apellidos}` : '',
+      });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -81,13 +102,23 @@ const CrearCaso = () => {
 
   return (
     <Box
+    sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      minHeight: '100vh',  // Asegura que siempre ocupe al menos el 100% de la altura
+      background: 'linear-gradient(to right, #006f8e, #0097b6)',
+      paddingTop: 'px',
+    }}
+  >
+    <NavbarSidebar /> {/* Navbar arriba */}
+    
+    <Box
       sx={{
-        width: '100vw',
-        height: '100vh',
-        background: 'linear-gradient(to right, #0077b6, #00b4d8)',
+        flex: 10,  // Permite que el contenido ocupe el espacio restante
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        paddingTop: '20px',
       }}
     >
       <Container
@@ -167,6 +198,7 @@ const CrearCaso = () => {
           </Button>
         </form>
       </Container>
+    </Box>
     </Box>
   );
 };
