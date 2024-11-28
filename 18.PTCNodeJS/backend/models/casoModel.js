@@ -5,13 +5,13 @@ const casoSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: [ // Lista de nombres de casos permitidos
-      'cadenaCustodia',
-      'investigacionExtorsion',
-      'estudiosSeguridad',
-      'investigacionInfidelidades',
-      'investigacionRobosEmpresariales',
-      'antecedentes',
-      'recuperacionVehiculos'
+      'Cadena de custodia',
+      'Investigacion de extorsion',
+      'Estudios de seguridad',
+      'Investigacion de infidelidades',
+      'Investigacion de robos empresariales',
+      'Antecedentes',
+      'Recuperacion de vehiculos'
     ],
   },
   idCliente: {
