@@ -5,13 +5,13 @@ const Detective = require('../models/detectiveModel');
 async function crearCaso(datos) {
   // Verificar que el nombre del caso esté permitido
   const nombresPermitidos = [
-    'cadenaCustodia',
-    'investigacionExtorsion',
-    'estudiosSeguridad',
-    'investigacionInfidelidades',
-    'investigacionRobosEmpresariales',
-    'antecedentes',
-    'recuperacionVehiculos'
+    'Cadena de custodia',
+    'Investigación de extorsión',
+    'Estudios de seguridad',
+    'Investigación de infidelidades',
+    'Investigación de robos empresariales',
+    'Antecedentes',
+    'Recuperación de vehículos'
   ];
   
   if (!nombresPermitidos.includes(datos.nombreCaso)) {
