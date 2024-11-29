@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./configDB/db'); // Conexión a la base de datos
 const { swaggerUi, swaggerSpec } = require('./swagger/swagger'); // Configuración de Swagger
 const cookieParser = require('cookie-parser'); // Para manejar cookies
+const path = require('path');
 
 
 dotenv.config(); // Carga las variables del archivo .env
@@ -64,6 +65,7 @@ app.use('/api/registros-mantenimiento', registroMantenimientoRoutes);
 app.use('/api/roles', rolRoutes);
 app.use('/api/tipos-evidencia', tipoEvidenciaRoutes);
 app.use('/api/usuario', usuarioRoutes);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const port = process.env.PORT || 3000;
 

@@ -87,10 +87,28 @@ async function desactivarEvidencia(id) {
   return await evidencia.save();
 }
 
+const crearEvidenciaConArchivo = async ({ fechaEvidencia, descripcion, idCasos, tipoEvidencia, archivo }) => {
+  const nuevaEvidencia = new Evidencia({
+    fechaEvidencia,
+    descripcion,
+    idCasos,
+    tipoEvidencia,
+    archivo: {
+      nombre: archivo.filename,
+      tipo: archivo.mimetype,
+      ruta: archivo.path,
+    },
+  });
+
+  return await nuevaEvidencia.save();
+}
+
+
 module.exports = {
   crearEvidencia,
   listarEvidencias,
   buscarEvidenciaPorId,
   actualizarEvidencia,
-  desactivarEvidencia
+  desactivarEvidencia,
+  crearEvidenciaConArchivo
 };

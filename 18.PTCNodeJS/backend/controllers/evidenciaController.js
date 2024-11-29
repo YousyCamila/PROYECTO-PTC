@@ -1,4 +1,5 @@
 const evidenciaService = require('../logic/evidenciaLogic');
+const { crearEvidenciaConArchivo } = require('../logic/evidenciaLogic');
 
 // Crear evidencia
 const crearEvidencia = async (req, res) => {
@@ -20,7 +21,6 @@ const crearEvidencia = async (req, res) => {
   }
 };
 
-
 // Listar evidencias
 const listarEvidencias = async (req, res) => {
   try {
@@ -37,7 +37,7 @@ const buscarEvidenciaPorId = async (req, res) => {
     const evidencia = await evidenciaService.buscarEvidenciaPorId(req.params.id);
     return res.status(200).json({ evidencia });
   } catch (error) {
-    return res.status(404).json({ message: error.message }); // Cambié el código a 404 para no encontrado
+    return res.status(404).json({ message: error.message });
   }
 };
 
@@ -61,10 +61,55 @@ const desactivarEvidencia = async (req, res) => {
   }
 };
 
+// Subir evidencia
+const subirEvidencia = async (req, res) => {
+  try {
+    const { fechaEvidencia, descripcion, idCasos, tipoEvidencia } = req.body;
+    const archivo = req.file;  // Archivo subido
+
+    // Llama a la función de lógica para crear la evidencia
+    const evidencia = await crearEvidenciaConArchivo({ 
+      fechaEvidencia, 
+      descripcion, 
+      idCasos, 
+      tipoEvidencia, 
+      archivo 
+    });
+
+    // Respuesta exitosa
+    res.status(201).json({ mensaje: 'Evidencia creada con éxito', evidencia });
+  } catch (error) {
+    // Respuesta con error
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Obtener evidencias asociadas a un caso
+// Obtener evidencias por caso
+const obtenerEvidenciasPorCaso = async (req, res) => {
+  try {
+    const idCaso = req.params.idCaso; // Obtener el ID del caso desde los parámetros de la ruta
+    const evidencias = await evidenciaService.obtenerEvidenciasPorCaso(idCaso);
+
+    return res.status(200).json({
+      message: 'Evidencias encontradas',
+      evidencias
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: error.message
+    });
+  }
+};
+
+
+
 module.exports = {
   crearEvidencia,
   listarEvidencias,
   buscarEvidenciaPorId,
   actualizarEvidencia,
-  desactivarEvidencia
+  desactivarEvidencia,
+  subirEvidencia,
+  obtenerEvidenciasPorCaso // Nueva función agregada
 };
