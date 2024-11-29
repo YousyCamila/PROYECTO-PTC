@@ -78,6 +78,7 @@ function App() {
             <Route path="/cliente-menu" element={<MenuCliente />} />
             <Route path="/caso-details" element={<CasoDetailsMenu />} />
             <Route path="/evidencias-crud" element={<EvidenciasCrud />} />
+            <Route path="/agregar-evidencia/:casoId" element={<AgregarEvidencia />} />
           </Route>
 
           {/* Rutas protegidas - solo para detectives */}

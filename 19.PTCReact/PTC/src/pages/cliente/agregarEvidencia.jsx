@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -21,25 +21,77 @@ const AgregarEvidencia = () => {
     descripcion: '',
     idCasos: '', // El usuario debe ingresar el ID del caso manualmente
     tipoEvidencia: '', // Cambiar a una sola opción
+    archivo: null, // Para almacenar el archivo que se subirá
   });
+
+  const [evidencias, setEvidencias] = useState([]); // Para almacenar las evidencias del caso
 
   const tiposEvidencia = ['tipoDocumento', 'tipoFotografia', 'tipoVideo', 'tipoAudio', 'archivosDigitales'];
 
+  // Función para obtener las evidencias de un caso
+  const obtenerEvidencias = async (idCasos) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/evidencias/${idCasos}`);
+      const data = await response.json();
+      if (response.ok) {
+        setEvidencias(data.evidencias); // Suponiendo que el backend devuelve una lista de evidencias
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al obtener evidencias',
+          text: data.error || 'No se pudieron obtener las evidencias.',
+        });
+      }
+    } catch (error) {
+      console.error('Error al obtener evidencias:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Ocurrió un error inesperado al obtener las evidencias.',
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (formData.idCasos) {
+      obtenerEvidencias(formData.idCasos); // Obtener evidencias si hay un ID de caso
+    }
+  }, [formData.idCasos]);
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, type, files } = e.target;
+    if (type === 'file') {
+      setFormData({ ...formData, archivo: files[0] }); // Si es un archivo, guardar el archivo seleccionado
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Verificar si el tipo de evidencia seleccionado es válido
+    if (!tiposEvidencia.includes(formData.tipoEvidencia)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Tipo de Evidencia no Válido',
+        text: 'Selecciona un tipo de evidencia válido.',
+      });
+      return;
+    }
+
+    // Crear una instancia de FormData
+    const data = new FormData();
+    data.append('fechaEvidencia', formData.fechaEvidencia);
+    data.append('descripcion', formData.descripcion);
+    data.append('idCasos', formData.idCasos);
+    data.append('tipoEvidencia', formData.tipoEvidencia);
+    data.append('archivo', formData.archivo); // Aquí agregamos el archivo
+
     try {
-      const response = await fetch("http://localhost:3000/api/evidencias", {
+      const response = await fetch("http://localhost:3000/api/evidencias/upload", {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        body: data,
       });
 
       if (response.ok) {
@@ -145,6 +197,32 @@ const AgregarEvidencia = () => {
               ))}
             </Select>
           </FormControl>
+
+          {/* Campo para seleccionar el archivo */}
+          <Button
+            component="label"
+            fullWidth
+            variant="outlined"
+            sx={{ mt: 3 }}
+          >
+            Subir Archivo
+            <input
+              type="file"
+              hidden
+              name="archivo"
+              accept="application/pdf,image/*,video/*"
+              onChange={handleChange}
+              required
+            />
+          </Button>
+
+          {/* Mostrar el nombre del archivo si ya fue seleccionado */}
+          {formData.archivo && (
+            <Typography variant="body2" sx={{ mt: 1 }}>
+              Archivo seleccionado: {formData.archivo.name}
+            </Typography>
+          )}
+
           <Button
             type="submit"
             fullWidth
@@ -167,6 +245,25 @@ const AgregarEvidencia = () => {
             Volver
           </Button>
         </form>
+
+        {/* Mostrar las evidencias del caso */}
+        {evidencias.length > 0 && (
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="h5" sx={{ textAlign: "center", mb: 2 }}>
+              Evidencias Subidas
+            </Typography>
+            {evidencias.map((evidencia) => (
+              <Box key={evidencia._id} sx={{ mb: 2 }}>
+                <Typography variant="body1"><strong>Tipo:</strong> {evidencia.tipoEvidencia}</Typography>
+                <Typography variant="body1"><strong>Descripción:</strong> {evidencia.descripcion}</Typography>
+                <Typography variant="body1"><strong>Fecha:</strong> {new Date(evidencia.fechaEvidencia).toLocaleDateString()}</Typography>
+                <Button variant="text" href={evidencia.archivo} target="_blank">
+                  Ver Archivo
+                </Button>
+              </Box>
+            ))}
+          </Box>
+        )}
       </Container>
     </Box>
   );

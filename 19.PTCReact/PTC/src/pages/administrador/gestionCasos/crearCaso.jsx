@@ -102,103 +102,105 @@ const CrearCaso = () => {
 
   return (
     <Box
-    sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      minHeight: '100vh',  // Asegura que siempre ocupe al menos el 100% de la altura
-      background: 'linear-gradient(to right, #006f8e, #0097b6)',
-      paddingTop: 'px',
-    }}
-  >
-    <NavbarSidebar /> {/* Navbar arriba */}
-    
-    <Box
       sx={{
-        flex: 10,  // Permite que el contenido ocupe el espacio restante
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingTop: '20px',
+        flexDirection: 'column',
+        minHeight: '100vh',  // Asegura que siempre ocupe al menos el 100% de la altura
+        background: 'linear-gradient(to right, #006f8e, #0097b6)',
+        paddingTop: 'px',
       }}
     >
-      <Container
-        maxWidth="sm"
+      <NavbarSidebar /> {/* Navbar arriba */}
+
+      <Box
         sx={{
-          backgroundColor: 'white',
-          padding: 4,
-          borderRadius: 2,
-          boxShadow: 3,
+          flex: 10,  // Permite que el contenido ocupe el espacio restante
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingTop: '20px',
         }}
       >
-        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#0077b6' }}>
-          Crear Caso
-        </Typography>
-
-        <form onSubmit={handleSubmit}>
-          <FormControl fullWidth margin="normal">
-            <InputLabel id="nombreCaso-label">Nombre del Caso</InputLabel>
-            <Select
-              labelId="nombreCaso-label"
-              name="nombreCaso"
-              value={formData.nombreCaso}
-              onChange={handleChange}
-              required
-            >
-              <MenuItem value="cadenaCustodia">Cadena de Custodia</MenuItem>
-              <MenuItem value="investigacionExtorsion">Investigación de Extorsión</MenuItem>
-              <MenuItem value="estudiosSeguridad">Estudios de Seguridad</MenuItem>
-              <MenuItem value="investigacionInfidelidades">Investigación de Infidelidades</MenuItem>
-              <MenuItem value="investigacionRobosEmpresariales">Investigación de Robos Empresariales</MenuItem>
-              <MenuItem value="antecedentes">Antecedentes</MenuItem>
-              <MenuItem value="recuperacionVehiculos">Recuperación de Vehículos</MenuItem>
-            </Select>
-          </FormControl>
-
-          <FormControl fullWidth margin="normal">
-            <InputLabel id="cliente-label">Cliente</InputLabel>
-            <Select
-              labelId="cliente-label"
-              name="idCliente"
-              value={formData.idCliente}
-              onChange={handleChange}
-              required
-            >
-              {clientes.map(cliente => (
-                <MenuItem key={cliente._id} value={cliente._id}>
-                  {cliente.nombres} {cliente.apellidos}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl fullWidth margin="normal">
-            <InputLabel id="detective-label">Detective</InputLabel>
-            <Select
-              labelId="detective-label"
-              name="idDetective"
-              value={formData.idDetective}
-              onChange={handleChange}
-            >
-              <MenuItem value="">Sin Asignar</MenuItem>
-              {detectives.map(detective => (
-                <MenuItem key={detective._id} value={detective._id}>
-                  {detective.nombres} {detective.apellidos}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <Button
-            type="submit"
-            variant="contained"
-            fullWidth
-            sx={{ mt: 3, backgroundColor: '#0077b6', '&:hover': { backgroundColor: '#005f91' } }}
-          >
+        <Container
+          maxWidth="sm"
+          sx={{
+            backgroundColor: 'white',
+            padding: 4,
+            borderRadius: 2,
+            boxShadow: 3,
+          }}
+        >
+          <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#0077b6' }}>
             Crear Caso
-          </Button>
-        </form>
-      </Container>
-    </Box>
+          </Typography>
+
+          <form onSubmit={handleSubmit}>
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="nombreCaso-label">Nombre del Caso</InputLabel>
+              <Select
+                labelId="nombreCaso-label"
+                name="nombreCaso"
+                value={formData.nombreCaso}
+                onChange={handleChange}
+                required
+              >
+                <MenuItem value="Cadena de custodia">Cadena de Custodia</MenuItem>
+                <MenuItem value="Investigación de extorsión">Investigación de Extorsión</MenuItem>
+                <MenuItem value="Estudios de seguridad">Estudios de Seguridad</MenuItem>
+                <MenuItem value="Investigación de infidelidades">Investigación de Infidelidades</MenuItem>
+                <MenuItem value="Investigación de robos empresariales">Investigación de Robos Empresariales</MenuItem>
+                <MenuItem value="Antecedentes">Antecedentes</MenuItem>
+                <MenuItem value="Recuperación de vehículos">Recuperación de Vehículos</MenuItem>
+              </Select>
+
+            </FormControl>
+
+
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="cliente-label">Cliente</InputLabel>
+              <Select
+                labelId="cliente-label"
+                name="idCliente"
+                value={formData.idCliente}
+                onChange={handleChange}
+                required
+              >
+                {clientes.map(cliente => (
+                  <MenuItem key={cliente._id} value={cliente._id}>
+                    {cliente.nombres} {cliente.apellidos}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="detective-label">Detective</InputLabel>
+              <Select
+                labelId="detective-label"
+                name="idDetective"
+                value={formData.idDetective}
+                onChange={handleChange}
+              >
+                <MenuItem value="">Sin Asignar</MenuItem>
+                {detectives.map(detective => (
+                  <MenuItem key={detective._id} value={detective._id}>
+                    {detective.nombres} {detective.apellidos}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              sx={{ mt: 3, backgroundColor: '#0077b6', '&:hover': { backgroundColor: '#005f91' } }}
+            >
+              Crear Caso
+            </Button>
+          </form>
+        </Container>
+      </Box>
     </Box>
   );
 };
