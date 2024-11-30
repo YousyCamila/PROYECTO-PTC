@@ -13,55 +13,51 @@ import {
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
-const AgregarEvidencia = () => {
+const AgregarEvidencia = ({ casoId }) => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     fechaEvidencia: '',
     descripcion: '',
-    idCasos: '', // El usuario debe ingresar el ID del caso manualmente
-    tipoEvidencia: '', // Cambiar a una sola opción
-    archivo: null, // Para almacenar el archivo que se subirá
+    tipoEvidencia: '',
+    archivo: null,
   });
 
-  const [evidencias, setEvidencias] = useState([]); // Para almacenar las evidencias del caso
-
+  const [caso, setCaso] = useState(null); // Para almacenar el caso relacionado
   const tiposEvidencia = ['tipoDocumento', 'tipoFotografia', 'tipoVideo', 'tipoAudio', 'archivosDigitales'];
 
-  // Función para obtener las evidencias de un caso
-  const obtenerEvidencias = async (idCasos) => {
+  // Obtener el caso relacionado con el cliente o el caso específico
+  const obtenerCaso = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/evidencias/${idCasos}`);
+      const response = await fetch(`http://localhost:3000/api/caso/${casoId}`);
       const data = await response.json();
       if (response.ok) {
-        setEvidencias(data.evidencias); // Suponiendo que el backend devuelve una lista de evidencias
+        setCaso(data); // Guardar el caso obtenido
       } else {
         Swal.fire({
           icon: 'error',
-          title: 'Error al obtener evidencias',
-          text: data.error || 'No se pudieron obtener las evidencias.',
+          title: 'Error al obtener el caso',
+          text: data.error || 'No se pudo obtener el caso.',
         });
       }
     } catch (error) {
-      console.error('Error al obtener evidencias:', error);
+      console.error('Error al obtener el caso:', error);
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Ocurrió un error inesperado al obtener las evidencias.',
+        text: 'Ocurrió un error inesperado al obtener el caso.',
       });
     }
   };
 
   useEffect(() => {
-    if (formData.idCasos) {
-      obtenerEvidencias(formData.idCasos); // Obtener evidencias si hay un ID de caso
-    }
-  }, [formData.idCasos]);
+    obtenerCaso(); // Obtener el caso al cargar el componente
+  }, [casoId]);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === 'file') {
-      setFormData({ ...formData, archivo: files[0] }); // Si es un archivo, guardar el archivo seleccionado
+      setFormData({ ...formData, archivo: files[0] });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -70,7 +66,6 @@ const AgregarEvidencia = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Verificar si el tipo de evidencia seleccionado es válido
     if (!tiposEvidencia.includes(formData.tipoEvidencia)) {
       Swal.fire({
         icon: 'error',
@@ -84,23 +79,46 @@ const AgregarEvidencia = () => {
     const data = new FormData();
     data.append('fechaEvidencia', formData.fechaEvidencia);
     data.append('descripcion', formData.descripcion);
-    data.append('idCasos', formData.idCasos);
+    data.append('idCasos', caso._id); // Asociar automáticamente el caso
     data.append('tipoEvidencia', formData.tipoEvidencia);
-    data.append('archivo', formData.archivo); // Aquí agregamos el archivo
+    data.append('archivo', formData.archivo); // Agregar el archivo
 
     try {
-      const response = await fetch("http://localhost:3000/api/evidencias/upload", {
+      const response = await fetch('http://localhost:3000/api/evidencias/upload', {
         method: 'POST',
         body: data,
       });
 
       if (response.ok) {
+        const responseData = await response.json();  // Obtener datos de la respuesta, como el ID del archivo subido
+
         Swal.fire({
           icon: 'success',
           title: 'Evidencia Agregada',
           text: 'La evidencia se ha agregado exitosamente.',
         });
-        navigate("/cliente-menu"); // Redirigir al menú general de clientes
+
+        // Actualizar el caso con la nueva evidencia, pero en lugar de agregar el FormData, usamos los datos del archivo
+        const updatedCaso = await fetch(`http://localhost:3000/api/caso/${caso._id}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            evidencias: [...caso.evidencias, responseData.evidencia], // Usar la evidencia agregada que viene de la respuesta
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (updatedCaso.ok) {
+          // Redirigir al menú general de clientes
+          navigate('/cliente-menu');
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error al actualizar el caso',
+            text: 'No se pudo actualizar el caso con la nueva evidencia.',
+          });
+        }
       } else {
         const data = await response.json();
         Swal.fire({
@@ -119,21 +137,31 @@ const AgregarEvidencia = () => {
     }
   };
 
+  if (!caso) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <Typography variant="h6" sx={{ color: '#0077b6' }}>
+          Cargando caso...
+        </Typography>
+      </Box>
+    );
+  }
+
   return (
     <Box
       sx={{
-        width: "100vw",
-        height: "100vh",
-        background: "linear-gradient(to right, #0077b6, #00b4d8)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        width: '100vw',
+        height: '100vh',
+        background: 'linear-gradient(to right, #0077b6, #00b4d8)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
     >
       <Container
         maxWidth="sm"
         sx={{
-          backgroundColor: "white",
+          backgroundColor: 'white',
           padding: 4,
           borderRadius: 2,
           boxShadow: 3,
@@ -143,22 +171,11 @@ const AgregarEvidencia = () => {
           minHeight: '80vh',
         }}
       >
-        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: "center", color: "#0077b6", mb: 2 }}>
-          Agregar Evidencia
+        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#0077b6', mb: 2 }}>
+          Agregar Evidencia al Caso: {caso.nombreCaso}
         </Typography>
 
         <form onSubmit={handleSubmit}>
-          {/* Campo para el ID del caso */}
-          <TextField
-            fullWidth
-            label="ID del Caso"
-            name="idCasos"
-            margin="normal"
-            value={formData.idCasos}
-            onChange={handleChange}
-            required
-          />
-          
           <TextField
             fullWidth
             label="Fecha de Evidencia"
@@ -198,13 +215,7 @@ const AgregarEvidencia = () => {
             </Select>
           </FormControl>
 
-          {/* Campo para seleccionar el archivo */}
-          <Button
-            component="label"
-            fullWidth
-            variant="outlined"
-            sx={{ mt: 3 }}
-          >
+          <Button component="label" fullWidth variant="outlined" sx={{ mt: 3 }}>
             Subir Archivo
             <input
               type="file"
@@ -216,7 +227,6 @@ const AgregarEvidencia = () => {
             />
           </Button>
 
-          {/* Mostrar el nombre del archivo si ya fue seleccionado */}
           {formData.archivo && (
             <Typography variant="body2" sx={{ mt: 1 }}>
               Archivo seleccionado: {formData.archivo.name}
@@ -227,43 +237,23 @@ const AgregarEvidencia = () => {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, backgroundColor: "#0077b6", "&:hover": { backgroundColor: "#005f91" } }}
+            sx={{
+              mt: 3,
+              backgroundColor: '#0077b6',
+              '&:hover': { backgroundColor: '#005f91' },
+            }}
           >
             Agregar Evidencia
           </Button>
           <Button
             variant="outlined"
-            onClick={() => navigate("/cliente-menu")} // Redirigir al menú general de clientes
-            sx={{
-              color: '#0077b6',
-              borderColor: '#0077b6',
-              mt: 2,
-              '&:hover': { backgroundColor: '#e0e0e0' },
-              ml: 2,
-            }}
+            fullWidth
+            sx={{ mt: 2 }}
+            onClick={() => navigate('/cliente-menu')}
           >
-            Volver
+            Cancelar
           </Button>
         </form>
-
-        {/* Mostrar las evidencias del caso */}
-        {evidencias.length > 0 && (
-          <Box sx={{ mt: 4 }}>
-            <Typography variant="h5" sx={{ textAlign: "center", mb: 2 }}>
-              Evidencias Subidas
-            </Typography>
-            {evidencias.map((evidencia) => (
-              <Box key={evidencia._id} sx={{ mb: 2 }}>
-                <Typography variant="body1"><strong>Tipo:</strong> {evidencia.tipoEvidencia}</Typography>
-                <Typography variant="body1"><strong>Descripción:</strong> {evidencia.descripcion}</Typography>
-                <Typography variant="body1"><strong>Fecha:</strong> {new Date(evidencia.fechaEvidencia).toLocaleDateString()}</Typography>
-                <Button variant="text" href={evidencia.archivo} target="_blank">
-                  Ver Archivo
-                </Button>
-              </Box>
-            ))}
-          </Box>
-        )}
       </Container>
     </Box>
   );
