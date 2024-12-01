@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Box, Button, Typography, Dialog, DialogActions, DialogContent, Divider } from '@mui/material';
-import EvidenciasCrud from './EvidenciasCrud';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 
 const CasoDetailsMenu = ({ caso, onClose }) => {
-  const [view, setView] = useState('details'); // Para cambiar entre vistas: detalles, evidencias, contrato, registro
+  const [view, setView] = useState('details');
+  const navigate = useNavigate(); // Inicializa useNavigate
 
   const handleViewDetails = () => {
     setView('details');
@@ -18,7 +19,8 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
   };
 
   const handleViewRegistroCasos = () => {
-    setView('registro');
+    // Redirigir a la página de registroCaso
+    navigate('/registroCaso'); // Asegúrate de que la ruta '/registroCaso' esté configurada en tu router
   };
 
   const renderContent = () => {
@@ -29,13 +31,11 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
             <Typography variant="h6" gutterBottom>
               Evidencias
             </Typography>
-            <EvidenciasCrud evidencias={caso.evidencias} casoId={caso._id} />
+            {/* Aquí iría el componente para manejar las evidencias */}
           </Box>
         );
       case 'contrato':
         return <Typography variant="body1">Contrato en construcción...</Typography>;
-      case 'registro':
-        return <Typography variant="body1">Registros de casos en construcción...</Typography>;
       default:
         return (
           <Box sx={{ px: 2 }}>
@@ -50,7 +50,7 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
               <strong>Estado:</strong> {caso.activo ? 'Activo' : 'Inactivo'}
             </Typography>
             <Typography variant="body1" sx={{ mb: 1, color: '#333' }}>
-              <strong>Detective Asignado:</strong> {caso.idDetective?.nombre || 'No asignado'}
+              <strong>Detective Asignado:</strong> {caso.nombreDetective || 'No asignado'}
             </Typography>
             <Typography variant="body1" sx={{ mb: 1, color: '#333' }}>
               <strong>Evidencias:</strong>
@@ -136,7 +136,7 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
               boxShadow: 1,
               '&:hover': { backgroundColor: '#e0e0e0', color: '#005f91' },
             }}
-            onClick={handleViewRegistroCasos}
+            onClick={handleViewRegistroCasos} // Redirige a la página de registroCaso
           >
             Ver Registros del Caso
           </Button>
@@ -151,7 +151,7 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
       </Box>
 
       <DialogActions sx={{ backgroundColor: '#f5faff', padding: 2 }}>
-        <Button onClick={onClose} sx={{ color: '#003b5c', fontWeight: 'bold' }}>Cerrar</Button>
+        <Button onClick={onClose} color="primary" variant="outlined">Cerrar</Button>
       </DialogActions>
     </Dialog>
   );

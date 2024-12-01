@@ -1,17 +1,60 @@
-import { Box, Button, Container, TextField, Typography, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
+import { Box, Button, Container, TextField, Typography, MenuItem, Select, FormControl, InputLabel, Snackbar, IconButton } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2';
+import { Slide } from '@mui/material'; // Para la animación de entrada
+import { MdArrowBack } from 'react-icons/md'; // Cambié ArrowBack por MdArrowBack
+import { motion } from 'framer-motion';
+import { Visibility, VisibilityOff } from '@mui/icons-material'; // Importamos los íconos para ver/ocultar la contraseña
 
-const Register = () => { 
+const Register = () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState(""); // Nuevo estado para confirmar contraseña
   const [role, setRole] = useState("");
+  const [verificationCode, setVerificationCode] = useState(""); // Código de verificación
+  const [showVerification, setShowVerification] = useState(false); // Mostrar cuadro de verificación
+  const [openSnackbar, setOpenSnackbar] = useState(false); // Estado para manejar Snackbar de éxito
+  const [snackbarMessage, setSnackbarMessage] = useState(""); // Mensaje de éxito en Snackbar
+  const [showPassword, setShowPassword] = useState(false); // Estado para controlar la visibilidad de la contraseña
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Estado para controlar la visibilidad de la confirmación de contraseña
   const navigate = useNavigate();
+
+  const ADMIN_CODE = "123456"; // Código de verificación para administrador
+  const DECT_CODE = "09876"; // Código de verificación para detective
 
   const register = async (e) => {
     e.preventDefault();
+
+    // Validar si las contraseñas coinciden
+    if (password !== confirmPassword) {
+      setSnackbarMessage("Contraseñas no coinciden. Por favor, asegúrate de que ambas contraseñas sean iguales.");
+      setOpenSnackbar(true);
+      return; // Detener el proceso de registro si no coinciden
+    }
+
+    // Validar formato del correo
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email) || !email.endsWith(".com")) {
+      setSnackbarMessage("Por favor, ingresa un correo válido que termine en '.com'.");
+      setOpenSnackbar(true);
+      return;
+    }
+
+    // Validar código de verificación si es administrador
+    if (role === "administrador" && verificationCode !== ADMIN_CODE) {
+      setSnackbarMessage("Código de verificación incorrecto.");
+      setOpenSnackbar(true);
+      return; // Detener el proceso si el código es incorrecto
+    }
+
+    // Validar código de verificación si es detective
+    if (role === "detective" && verificationCode !== DECT_CODE) {
+      setSnackbarMessage("Código de verificación incorrecto.");
+      setOpenSnackbar(true);
+      return; // Detener el proceso si el código es incorrecto
+    }
+
     try {
       const response = await fetch("http://localhost:3000/api/usuario/register", {
         method: "POST",
@@ -24,36 +67,27 @@ const Register = () => {
       const data = await response.json();
 
       if (response.ok) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Registro exitoso',
-          text: 'Usuario registrado exitosamente',
-        });
+        setSnackbarMessage("Usuario registrado exitosamente");
+        setOpenSnackbar(true);
 
         // Redirigir según el rol seleccionado
         if (role === "detective") {
-            navigate(`/detective-form?email=${encodeURIComponent(email)}`); // Pasar el correo a través de la URL
-          } else if (role === "cliente") {
-            navigate(`/cliente-form?email=${encodeURIComponent(email)}`); // Redirigir a ClienteForm
-          }else if (role === "administrador") {
-            navigate(`/administrador-form?email=${encodeURIComponent(email)}`);
-          } else {
-            navigate("/dashboard"); // Ruta alternativa para otros roles
+          navigate(`/detective-form?email=${encodeURIComponent(email)}`);
+        } else if (role === "cliente") {
+          navigate(`/cliente-form?email=${encodeURIComponent(email)}`);
+        } else if (role === "administrador") {
+          navigate(`/administrador-form?email=${encodeURIComponent(email)}`);
+        } else {
+          navigate("/dashboard");
         }
       } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error de registro',
-          text: data.error,
-        });
+        setSnackbarMessage(data.error || "Ocurrió un error inesperado.");
+        setOpenSnackbar(true);
       }
     } catch (error) {
       console.error("Error al registrarse:", error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Ocurrió un error inesperado, por favor intenta más tarde.',
-      });
+      setSnackbarMessage("Ocurrió un error inesperado, por favor intenta más tarde.");
+      setOpenSnackbar(true);
     }
   };
 
@@ -61,102 +95,165 @@ const Register = () => {
     <Box
       sx={{
         width: "100vw",
-      height: "100vh",
-      backgroundImage: "url('https://scontent.fbog4-1.fna.fbcdn.net/v/t39.30808-6/312404170_109199351992944_5430879874558801924_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=BxpplRDTj9EQ7kNvgHWi6tN&_nc_zt=23&_nc_ht=scontent.fbog4-1.fna&_nc_gid=A2AKN1EgkgNUcogxmZd092q&oh=00_AYD1yB-yGwsjJNx-xZQwyw0ljfDE6ELkeYLQYGZUUNP0tA&oe=6720401C')", // URL de la imagen
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      position: "relative",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
+        height: "100vh",
+        background: "linear-gradient(to top, #0077b6, #00aaff)",
+        position: "relative",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
-      <Container
-        maxWidth="sm"
+      {/* Navbar */}
+      <Box
         sx={{
-          backgroundColor: "white",
-          padding: 4,
-          borderRadius: 2,
-          boxShadow: 3,
-          position: "relative",
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          backgroundColor: '#0077b6',
+          color: 'white',
+          padding: '10px 20px',
+          position: 'absolute',
+          top: 0,
+          zIndex: 100,
         }}
       >
-        <Box
+        <IconButton
+          onClick={() => navigate('/login')}
+          sx={{ color: 'white', display: 'flex', alignItems: 'center' }}
+        >
+          <MdArrowBack />
+          <Typography variant="body1" sx={{ marginLeft: '20px' }}>
+            Volver
+          </Typography>
+        </IconButton>
+        <Typography variant="h6" sx={{ flexGrow: 1, textAlign: 'center' }}>
+          PTC
+        </Typography>
+      </Box>
+
+      {/* Formulario de Registro */}
+      <motion.div
+        initial={{ y: 50, opacity: 0 }}  // Comienza con 50px abajo y opacidad 0
+        animate={{ y: 0, opacity: 1 }}   // Alcanza la posición original con opacidad 1
+        transition={{ duration: 0.8 }}    // Duración de la animación
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center', // Centrado horizontal
+        }}
+      >
+        <Container
+          maxWidth="sm"
           sx={{
-            position: "absolute",
-            top: 16,
-            right: 16,
-            fontWeight: "bold",
-            fontSize: 24,
-            color: "#0077b6",
+            backgroundColor: "white",
+            padding: 2,
+            borderRadius: 2,
+            boxShadow: 3,
+            marginTop: 2,
           }}
         >
-          PTC
-        </Box>
-
-        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: "center", color: "#0077b6" }}>
-          Registrarse
-        </Typography>
-
-        <form onSubmit={register}>
-          <TextField
-            fullWidth
-            label="Nombre Completo"
-            margin="normal"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            required
-          />
-          <TextField
-            fullWidth
-            label="Correo"
-            margin="normal"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <TextField
-            fullWidth
-            label="Contraseña"
-            type="password"
-            margin="normal"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <FormControl fullWidth margin="normal">
-            <InputLabel id="role-label">Rol</InputLabel>
-            <Select
-              labelId="role-label"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              required
-            >
-              <MenuItem value="cliente">Cliente</MenuItem>
-              <MenuItem value="administrador">Administrador</MenuItem>
-              <MenuItem value="detective">Detective</MenuItem>
-            </Select>
-          </FormControl>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, backgroundColor: "#0077b6", "&:hover": { backgroundColor: "#005f91" } }}
-          >
+          <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: "center", color: "#0077b6" }}>
             Registrarse
-          </Button>
+          </Typography>
 
-          {/* Botón para volver */}
-          <Button
-            onClick={() => navigate("/login")} // Cambia "/login" a la ruta deseada
-            fullWidth
-            variant="outlined"
-            sx={{ mt: 2, backgroundColor: "white", color: "#0077b6", "&:hover": { backgroundColor: "#e0e0e0" } }}
-          >
-            Volver
-          </Button>
-        </form>
-      </Container>
+          <form onSubmit={register}>
+            <TextField
+              fullWidth
+              label="Nombre Completo"
+              margin="normal"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              required
+            />
+            <TextField
+              fullWidth
+              label="Correo"
+              margin="normal"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <TextField
+              fullWidth
+              label="Contraseña"
+              type={showPassword ? "text" : "password"}  // Aquí cambia el tipo del campo
+              margin="normal"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              InputProps={{
+                endAdornment: (
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                ),
+              }}
+            />
+            <TextField
+              fullWidth
+              label="Confirmar Contraseña"
+              type={showConfirmPassword ? "text" : "password"}  // Aquí cambia el tipo del campo
+              margin="normal"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              InputProps={{
+                endAdornment: (
+                  <IconButton
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    edge="end"
+                  >
+                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                ),
+              }}
+            />
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="role-label">Rol</InputLabel>
+              <Select
+                labelId="role-label"
+                value={role}
+                onChange={(e) => {
+                  setRole(e.target.value);
+                  setShowVerification(e.target.value === "administrador" || e.target.value === "detective");
+                }}
+                required
+              >
+                <MenuItem value="cliente">Cliente</MenuItem>
+                <MenuItem value="administrador">Administrador</MenuItem>
+                <MenuItem value="detective">Detective</MenuItem>
+              </Select>
+            </FormControl>
+
+            {showVerification && (
+              <TextField
+                fullWidth
+                label="Código de Verificación"
+                margin="normal"
+                value={verificationCode}
+                onChange={(e) => setVerificationCode(e.target.value)}
+                required
+              />
+            )}
+
+            <Button fullWidth variant="contained" type="submit" sx={{ marginTop: 2, backgroundColor: "#0077b6" }}>
+              Registrarse
+            </Button>
+          </form>
+        </Container>
+      </motion.div>
+
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setOpenSnackbar(false)}
+        message={snackbarMessage}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      />
     </Box>
   );
 };

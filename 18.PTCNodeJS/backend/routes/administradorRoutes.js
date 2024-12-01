@@ -1,13 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const administradorController = require('../controllers/administradorController');
+const  authenticateToken = require ('../middleware/authenticateToken');
+const  authorizeRole = require ('../middleware/authorizeRole');
+
+
 
 /**
  * @swagger
  * /administradors:
  *   post:
  *     summary: Crear un nuevo administrador
- *     tags: [Administradores]
+ *     tags: 
+ *       - Administradores
+ *     security:
+ *       - bearerAuth: []  # Indica que esta ruta requiere autenticación con JWT
  *     requestBody:
  *       required: true
  *       content:
@@ -34,16 +41,18 @@ const administradorController = require('../controllers/administradorController'
  *                 type: string
  *                 format: date
  *                 example: "1990-01-01"
- *               activo:
- *                 type: boolean
- *                 example: true
  *     responses:
  *       201:
  *         description: Administrador creado con éxito
  *       400:
  *         description: Error en la solicitud
+ *       401:
+ *         description: No autenticado, token faltante o inválido
+ *       403:
+ *         description: Acceso denegado, rol insuficiente
  */
 router.post('/', administradorController.crearAdministrador);
+//router.post('/', authenticateToken, authorizeRole(['administrador']), administradorController.crearAdministrador);
 
 /**
  * @swagger
@@ -51,13 +60,15 @@ router.post('/', administradorController.crearAdministrador);
  *   get:
  *     summary: Obtener la lista de administradores
  *     tags: [Administradores]
+ *     security:
+ *       - bearerAuth: []  # Indica que esta ruta requiere autenticación con JWT
  *     responses:
  *       200:
  *         description: Lista de administradores
  *       404:
  *         description: No se encontraron administradores
  */
-router.get('/', administradorController.listarAdministradores);
+router.get('/', authenticateToken, authorizeRole(['administrador']), administradorController.listarAdministradores);
 
 /**
  * @swagger
@@ -65,6 +76,8 @@ router.get('/', administradorController.listarAdministradores);
  *   get:
  *     summary: Buscar un administrador por correo
  *     tags: [Administradores]
+ *     security:
+ *       - bearerAuth: []  # Indica que esta ruta requiere autenticación con JWT
  *     parameters:
  *       - in: path
  *         name: correo
@@ -78,7 +91,7 @@ router.get('/', administradorController.listarAdministradores);
  *       404:
  *         description: Administrador no encontrado
  */
-router.get('/:correo', administradorController.buscarAdministradorPorCorreo);
+router.get('/:correo', authenticateToken, authorizeRole(['administrador']), administradorController.buscarAdministradorPorCorreo);
 
 /**
  * @swagger
@@ -86,6 +99,8 @@ router.get('/:correo', administradorController.buscarAdministradorPorCorreo);
  *   put:
  *     summary: Actualizar un administrador
  *     tags: [Administradores]
+ *     security:
+ *       - bearerAuth: []  # Indica que esta ruta requiere autenticación con JWT
  *     parameters:
  *       - in: path
  *         name: id
@@ -113,16 +128,13 @@ router.get('/:correo', administradorController.buscarAdministradorPorCorreo);
  *                 type: string
  *                 format: date
  *                 example: "1990-01-01"
- *               activo:
- *                 type: boolean
- *                 example: true
  *     responses:
  *       200:
  *         description: Administrador actualizado con éxito
  *       400:
  *         description: Error en la solicitud
  */
-router.put('/:id', administradorController.actualizarAdministrador);
+router.put('/:id', authenticateToken, authorizeRole(['administrador']), administradorController.actualizarAdministrador);
 
 /**
  * @swagger
@@ -130,6 +142,8 @@ router.put('/:id', administradorController.actualizarAdministrador);
  *   delete:
  *     summary: Desactivar un administrador
  *     tags: [Administradores]
+ *     security:
+ *       - bearerAuth: []  # Indica que esta ruta requiere autenticación con JWT
  *     parameters:
  *       - in: path
  *         name: id
@@ -143,6 +157,6 @@ router.put('/:id', administradorController.actualizarAdministrador);
  *       404:
  *         description: Administrador no encontrado
  */
-router.delete('/:id', administradorController.desactivarAdministrador);
+router.delete('/:id', authenticateToken, authorizeRole(['administrador']), administradorController.desactivarAdministrador);
 
 module.exports = router;

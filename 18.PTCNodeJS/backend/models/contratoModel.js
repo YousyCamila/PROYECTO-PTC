@@ -34,9 +34,18 @@ const contratoSchema = new mongoose.Schema({
     ref: 'Cliente',
     required: true
   },
+
+  nombreCliente: {
+    type: String,
+    required: true, // Asegúrate de capturar este dato al crear un caso
+  },
   idDetective: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Detective'
+  },
+  nombreDetective: {
+    type: String,
+    default: null, // Puede ser opcional si el detective no está asignado al inicio
   },
   historial: [{
     fechaDesactivacion: { type: Date, default: Date.now },

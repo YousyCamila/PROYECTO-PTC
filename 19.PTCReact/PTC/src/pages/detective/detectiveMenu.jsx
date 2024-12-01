@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
   Box,
   Container,
@@ -19,170 +19,148 @@ import {
   Snackbar,
   Alert,
   IconButton,
+  Tooltip,
 } from '@mui/material';
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import { AuthContext } from '../../context/AuthContext';
 import Swal from 'sweetalert2';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import AddIcon from '@mui/icons-material/Add';
 
 const DetectiveMenu = () => {
-  const [contratos, setContratos] = useState([]);
-  const [contratoId, setContratoId] = useState('');
-  const [error, setError] = useState('');
-  const [openDialog, setOpenDialog] = useState(false);
+  const { user } = useContext(AuthContext);
+  const [casos, setCasos] = useState([]);
+  const [selectedCaso, setSelectedCaso] = useState(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [casos, setCasos] = useState([]);
+  const [contratoId, setContratoId] = useState('');
+  const [error, setError] = useState('');
 
-  // Función para obtener los contratos del detective
-  const fetchContratos = async () => {
+  if (!user || user.role !== 'detective') {
+    return <Typography variant="h6" color="error">Acceso denegado. Solo los detectives pueden acceder a este menú.</Typography>;
+  }
+
+  // Función para obtener los casos asignados al detective
+  const fetchCasos = async () => {
     try {
-      const response = await fetch('/api/contratos'); // Cambia esta URL según tu API
-      if (!response.ok) throw new Error('Error al cargar contratos');
+      const response = await fetch(`/api/casos/detector/${user._id}`); // Cambia esta URL según tu API
+      if (!response.ok) throw new Error('Error al cargar casos');
       const data = await response.json();
-      setContratos(data);
+      setCasos(data);
     } catch (error) {
       setError(error.message);
+      setSnackbarMessage(`Error: ${error.message}`);
+      setOpenSnackbar(true);
     }
   };
 
-  // Función para obtener un contrato por ID
-  const fetchContratoById = async (id) => {
-    const response = await fetch(`/api/contratos/${id}`);
-    return response.ok ? await response.json() : null;
+  // Manejar la apertura de los detalles del caso
+  const handleOpenCasoDetails = (caso) => {
+    setSelectedCaso(caso);
   };
 
-  // Maneja la visualización del contrato
-  const handleViewContracts = async (e) => {
-    e.preventDefault();
-    const contrato = await fetchContratoById(contratoId);
-
-    if (contrato) {
-      Swal.fire({
-        title: `Detalles del Contrato: ${contrato.id}`,
-        html: `
-          <p><strong>ID:</strong> ${contrato._id}</p>
-          <p><strong>Descripción del Servicio:</strong> ${contrato.descripcionServicio}</p>
-          <p><strong>Fecha de Inicio:</strong> ${new Date(contrato.fechaInicio).toLocaleDateString()}</p>
-          <p><strong>Fecha de Cierre:</strong> ${new Date(contrato.fechaCierre).toLocaleDateString()}</p>
-          <p><strong>Cláusulas:</strong> ${contrato.clausulas || 'No hay cláusulas disponibles.'}</p>
-          <p><strong>Tarifa:</strong> ${contrato.tarifa} (en la moneda correspondiente)</p>
-          <p><strong>Estado:</strong> ${contrato.estado ? 'Activo' : 'Inactivo'}</p>
-          <p><strong>Cliente Asociado:</strong> ${contrato.idCliente || 'No asignado'}</p>
-        `,
-        icon: 'info',
-        confirmButtonText: 'Cerrar',
-      });
-    } else {
-      Swal.fire('No se encontró el contrato.');
-    }
-  };
-
-  // Cargar contratos al montar el componente
   useEffect(() => {
-    fetchContratos();
-  }, []);
+    if (user) {
+      fetchCasos();
+    }
+  }, [user]);
 
   return (
     <Box
       sx={{
         width: '100vw',
         height: '100vh',
-        background: 'linear-gradient(to right, #0077b6, #00b4d8)',
+        background: 'linear-gradient(to right, #ffffff, #e0e0e0)',
         display: 'flex',
-        justifyContent: 'center',
+        flexDirection: 'column',
         alignItems: 'center',
+        position: 'relative',
       }}
     >
-      <Container maxWidth="lg" sx={{ background: 'white', borderRadius: 2, padding: 4, boxShadow: 3 }}>
-        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#0077b6' }}>
+      <Container
+        maxWidth="lg"
+        sx={{
+          background: 'white',
+          borderRadius: 2,
+          padding: 4,
+          boxShadow: 3,
+          marginTop: '80px',
+        }}
+      >
+        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#000000' }}>
           Casos Asociados al Detective
         </Typography>
 
-        <Button variant="outlined" onClick={() => setOpenDialog(true)} sx={{ mb: 2, color: '#0077b6', borderColor: '#0077b6' }}>
-          Agregar ID de Caso
+        <Button variant="outlined" color="primary" onClick={fetchCasos} sx={{ mb: 2 }}>
+          Cargar Casos Asignados
         </Button>
 
-        {/* Campo para ver contratos */}
-        <form onSubmit={handleViewContracts} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-          <TextField
-            label="ID del Contrato"
-            value={contratoId}
-            onChange={(e) => setContratoId(e.target.value)}
-            margin="normal"
-            required
-            sx={{ flex: 1 }}
-          />
-          <Button type="submit" variant="contained" sx={{ backgroundColor: "#0077b6", "&:hover": { backgroundColor: "#005f91" } }}>
-            Ver Contrato
-          </Button>
-        </form>
+        {error && <Alert severity="error">{error}</Alert>}
 
-        {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
-
-        <TableContainer component={Paper} sx={{ mt: 4 }}>
+        <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Nombre del Caso</TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Cliente Asociado</TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Estado</TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>ID del Caso</TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Acciones</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
+                  Nombre del Caso
+                </TableCell>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
+                  Cliente Asociado
+                </TableCell>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
+                  Estado
+                </TableCell>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
+                  Acciones
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {contratos.map((caso) => (
-                <TableRow key={caso._id}>
-                  <TableCell>{caso.nombreCaso}</TableCell>
-                  <TableCell>{caso.idCliente ? `${caso.idCliente.nombres} ${caso.idCliente.apellidos}` : 'No asignado'}</TableCell>
-                  <TableCell>{caso.activo ? 'Activo' : 'Inactivo'}</TableCell>
-                  <TableCell>{caso._id}</TableCell>
-                  <TableCell>
-                    <IconButton onClick={() => handleViewContracts(caso._id)}>
-                      <VisibilityIcon />
-                    </IconButton>
-                    <IconButton onClick={() => console.log("Agregar evidencia")}>
-                      <AddIcon />
-                    </IconButton>
+              {casos.length > 0 ? (
+                casos.map((caso) => (
+                  <TableRow key={caso._id}>
+                    <TableCell>{caso.nombreCaso}</TableCell>
+                    <TableCell>{caso.cliente ? `${caso.cliente.nombre} ${caso.cliente.apellido}` : 'No asignado'}</TableCell>
+                    <TableCell>{caso.estado ? 'Activo' : 'Inactivo'}</TableCell>
+                    <TableCell>
+                      <Tooltip title="Ver detalles del caso" arrow>
+                        <IconButton onClick={() => handleOpenCasoDetails(caso)}>
+                          <MenuOpenIcon color="secondary" />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={4} sx={{ textAlign: 'center' }}>
+                    No hay casos asociados para este detective.
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </TableContainer>
 
-        <Button variant="outlined" onClick={() => console.log("Volver")} sx={{ mt: 2, color: '#0077b6', borderColor: '#0077b6' }}>
-          Volver
-        </Button>
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={6000}
+          onClose={() => setOpenSnackbar(false)}
+          message={snackbarMessage}
+        />
+      </Container>
 
-        {/* Dialog para agregar caso */}
-        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-          <DialogTitle>Agregar Caso por ID</DialogTitle>
+      {selectedCaso && (
+        <Dialog open={Boolean(selectedCaso)} onClose={() => setSelectedCaso(null)}>
+          <DialogTitle>Detalles del Caso</DialogTitle>
           <DialogContent>
-            <TextField
-              autoFocus
-              margin="dense"
-              label="ID del Caso"
-              type="text"
-              fullWidth
-              variant="outlined"
-              value={contratoId}
-              onChange={(e) => setContratoId(e.target.value)}
-              required
-            />
+            <Typography variant="body1"><strong>Nombre:</strong> {selectedCaso.nombreCaso}</Typography>
+            <Typography variant="body1"><strong>Cliente:</strong> {selectedCaso.cliente?.nombre} {selectedCaso.cliente?.apellido}</Typography>
+            <Typography variant="body1"><strong>Estado:</strong> {selectedCaso.estado ? 'Activo' : 'Inactivo'}</Typography>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setOpenDialog(false)}>Cancelar</Button>
-            <Button onClick={() => console.log("Agregar Caso")}>Agregar</Button>
+            <Button onClick={() => setSelectedCaso(null)}>Cerrar</Button>
           </DialogActions>
         </Dialog>
-
-        <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)}>
-          <Alert onClose={() => setOpenSnackbar(false)} severity="error" sx={{ width: '100%' }}>
-            {snackbarMessage}
-          </Alert>
-        </Snackbar>
-      </Container>
+      )}
     </Box>
   );
 };

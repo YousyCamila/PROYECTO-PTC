@@ -2,34 +2,35 @@ import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
-  Typography,
+  IconButton,
+  Paper,
+  Snackbar,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
-  IconButton,
-  Snackbar,
   Tooltip,
-  CircularProgress,
+  Typography,
 } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import VisibilityIcon from '@mui/icons-material/Visibility'; // Icono para ver detalles
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import NavbarSidebar from '../NavbarSidebar';
 
 const GestionarCasos = () => {
   const [casos, setCasos] = useState([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [loading, setLoading] = useState(true); // Estado de carga
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Fetch casos from the API
+  // Fetch casos desde la API
   const fetchCasos = async () => {
     try {
       setLoading(true);
@@ -55,7 +56,7 @@ const GestionarCasos = () => {
   };
 
   const handleDetails = (casoId) => {
-    navigate(`/detalles-caso/${casoId}`); // Redirigir a la página de detalles del caso
+    navigate(`/detalles-caso/${casoId}`);
   };
 
   const handleDeactivate = async (casoId) => {
@@ -89,7 +90,7 @@ const GestionarCasos = () => {
   };
 
   const handleBack = () => {
-    navigate('/admin-menu'); // Navegar al menú administrativo
+    navigate('/admin-menu');
   };
 
   const handleCloseSnackbar = () => {
@@ -103,14 +104,39 @@ const GestionarCasos = () => {
         height: '100vh',
         background: 'linear-gradient(to right, #001f3f, #0077b6)',
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        flexDirection: 'column',
       }}
     >
-      <Container maxWidth="lg" sx={{ background: 'white', borderRadius: 2, padding: 4, boxShadow: 3 }}>
-        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#0077b6' }}>
+      <NavbarSidebar/>
+      
+      <Container
+        maxWidth="lg"
+        sx={{
+          background: 'white',
+          borderRadius: 2,
+          padding: 4,
+          boxShadow: 3,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          minHeight: '80vh',
+          marginTop: 4,
+        }}
+      >
+        <Typography
+          variant="h4"
+          component="h1"
+          gutterBottom
+          sx={{
+            textAlign: 'center',
+            color: '#0077b6',
+            fontWeight: 'bold',
+            marginBottom: 4,
+          }}
+        >
           Gestionar Casos
         </Typography>
+
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
           <Button
             variant="contained"
@@ -134,21 +160,31 @@ const GestionarCasos = () => {
             Volver al Menú
           </Button>
         </Box>
-        
+
         {loading ? (
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
             <CircularProgress />
           </Box>
         ) : (
-          <TableContainer component={Paper}>
-            <Table>
+          <TableContainer component={Paper} sx={{ maxHeight: '400px', overflowY: 'auto' }}>
+            <Table stickyHeader>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Nombre del Caso</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Cliente</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Detective</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Activo</TableCell>
-                  <TableCell align="right" sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>Acciones</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
+                    Nombre del Caso
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
+                    Cliente
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
+                    Detective
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
+                    Activo
+                  </TableCell>
+                  <TableCell align="right" sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
+                    Acciones
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -159,7 +195,9 @@ const GestionarCasos = () => {
                       {caso.idCliente ? `${caso.idCliente.nombres} ${caso.idCliente.apellidos}` : 'Sin asignar'}
                     </TableCell>
                     <TableCell>
-                      {caso.idDetective ? `${caso.idDetective.nombres} ${caso.idDetective.apellidos}` : 'No asignado'}
+                      {caso.idDetective
+                        ? `${caso.idDetective.nombres} ${caso.idDetective.apellidos}`
+                        : 'No asignado'}
                     </TableCell>
                     <TableCell>{caso.activo ? 'Sí' : 'No'}</TableCell>
                     <TableCell align="right">

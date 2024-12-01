@@ -1,27 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Container, TextField, Typography, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
-import Swal from 'sweetalert2';
-import { useLocation, useNavigate } from 'react-router-dom'; // Importa useNavigate
+import { Box, Button, Container, TextField, Typography, MenuItem, Select, InputLabel, FormControl, Grid, IconButton, Snackbar, Alert, Checkbox, ListItemText } from '@mui/material';
+import { ArrowBack } from '@mui/icons-material';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+
+const especialidades = [
+  'Investigación Penal y Criminal',
+  'Cadena de Custodia y Evidencias',
+  'Extorsiones y Secuestros',
+  'Seguridad Residencial y Empresarial',
+  'Asesoría Legal',
+  'Infidelidades',
+  'Fraudes Financieros y Comerciales',
+  'Desapariciones',
+];
 
 const DetectiveForm = () => {
   const location = useLocation();
-  const navigate = useNavigate(); // Inicializa el hook para la navegación
+  const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
-  const email = params.get('email'); // Obtener el email desde la URL
+  const email = params.get('email');
 
   const [formData, setFormData] = useState({
     tipoDocumento: '',
     numeroDocumento: '',
     nombres: '',
     apellidos: '',
-    correo: email, // Usar el correo desde la URL
-    fechaNacimiento: '', // Inicializa como una cadena vacía
-    especialidad: '',
-    activo: true, // Valor por defecto
+    correo: email,
+    fechaNacimiento: '',
+    especialidad: [],
+    activo: true,
   });
 
+  const [showSnackbar, setShowSnackbar] = useState(false);
+
   useEffect(() => {
-    setFormData(prev => ({ ...prev, correo: email }));
+    setFormData((prev) => ({ ...prev, correo: email }));
   }, [email]);
 
   const handleChange = (e) => {
@@ -35,7 +49,6 @@ const DetectiveForm = () => {
     const age = today.getFullYear() - birthDateObj.getFullYear();
     const monthDifference = today.getMonth() - birthDateObj.getMonth();
 
-    // Si la fecha de nacimiento aún no ha ocurrido este año, restar un año
     if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDateObj.getDate())) {
       return age - 1;
     }
@@ -45,198 +58,256 @@ const DetectiveForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validar la edad
     const age = validateAge(formData.fechaNacimiento);
     if (age < 18) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Debes tener al menos 18 años para registrarte.',
-      });
-      return; // Detener el proceso de envío si la edad es menor de 18
+      alert('Debes tener al menos 18 años para registrarte.');
+      return;
     }
 
     try {
-      const response = await fetch("http://localhost:3000/api/detectives", {
+      const formattedData = {
+        ...formData,
+        nombres: formData.nombres.toUpperCase(),
+        apellidos: formData.apellidos.toUpperCase(),
+      };
+
+      const response = await fetch('http://localhost:3000/api/detectives', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formattedData),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Registro exitoso',
-          text: 'Datos del detective guardados correctamente!',
-        });
-        
-        // Redirigir al login después de guardar los datos
-        navigate("/login"); // Redirige a la página de inicio de sesión
+        setShowSnackbar(true);
+        setTimeout(() => navigate('/login'), 2000); // Redirigir después de 2 segundos
       } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: data.error || 'No se pudo guardar los datos.',
-        });
+        alert(data.error || 'No se pudo guardar los datos.');
       }
     } catch (error) {
       console.error('Error al guardar datos:', error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Ocurrió un error inesperado.',
-      });
+      alert('Ocurrió un error inesperado.');
     }
   };
 
-  // Validar que el número de documento solo contenga números
   const handleNumberInput = (e) => {
     const value = e.target.value;
-    if (/^\d*$/.test(value) || value === '') {
-      setFormData({ ...formData, numeroDocumento: value });
+    const isPasaporte = formData.tipoDocumento === "Pasaporte";
+
+    if (isPasaporte) {
+      // Permitir letras, números y espacios para pasaporte
+      if (/^[a-zA-Z0-9\s]*$/.test(value)) {
+        setFormData({ ...formData, [e.target.name]: value });
+      }
     } else {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Entrada no válida',
-        text: 'El número de documento solo puede contener números.',
-      });
+      // Permitir solo números para otros tipos de documento
+      if (/^\d*$/.test(value)) {
+        setFormData({ ...formData, [e.target.name]: value });
+      }
     }
+  };
+
+  const handleTextInput = (e) => {
+    const value = e.target.value;
+    if (/^[a-zA-Z\s]*$/.test(value) || value === '') {
+      setFormData({ ...formData, [e.target.name]: value });
+    } else {
+      alert('Solo se permiten letras y espacios.');
+    }
+  };
+
+  const handleEspecialidadChange = (event) => {
+    const { value } = event.target;
+    setFormData({ ...formData, especialidad: typeof value === 'string' ? value.split(',') : value });
   };
 
   return (
     <Box
       sx={{
-        width: "100vw",
-        height: "100vh",
-        background: "linear-gradient(to right, #0077b6, #00b4d8)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        width: '100vw',
+        height: '100vh',
+        background: 'linear-gradient(to right, #0077b6, #00b4d8)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
-      <Container
-        maxWidth="sm"
+      <Box
         sx={{
-          backgroundColor: "white",
-          padding: 4,
-          borderRadius: 2,
-          boxShadow: 3,
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          backgroundColor: '#0077b6',
+          color: 'white',
+          padding: '10px 20px',
         }}
       >
-        <Box
+        <IconButton
+          onClick={() => navigate('/register')}
+          sx={{ color: 'white', display: 'flex', alignItems: 'center' }}
+        >
+          <ArrowBack />
+          <Typography variant="body1" sx={{ marginLeft: '6px' }}>
+            Volver
+          </Typography>
+        </IconButton>
+        <Typography variant="h6" sx={{ flexGrow: 1, textAlign: 'center' }}>
+          PTC - Registro de Detective
+        </Typography>
+      </Box>
+
+      <motion.div
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        style={{ width: '100%' }}
+      >
+        <Container
+          maxWidth="md"
           sx={{
-            position: "absolute",
-            top: 16,
-            right: 16,
-            fontWeight: "bold",
-            fontSize: 24,
-            color: "#0077b6",
+            backgroundColor: 'white',
+            padding: 4,
+            borderRadius: 2,
+            boxShadow: 3,
+            marginTop: 2,
           }}
         >
-          PTC
-        </Box>
-
-        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: "center", color: "#0077b6" }}>
-          Registro de Detective
-        </Typography>
-
-        <form onSubmit={handleSubmit}>
-          <FormControl fullWidth margin="normal">
-            <InputLabel id="tipoDocumento-label">Tipo de Documento</InputLabel>
-            <Select
-              labelId="tipoDocumento-label"
-              name="tipoDocumento"
-              value={formData.tipoDocumento}
-              onChange={handleChange}
-              required
-            >
-              <MenuItem value="Cédula">Cédula</MenuItem>
-              <MenuItem value="Pasaporte">Pasaporte</MenuItem>
-              <MenuItem value="Cédula de Extranjería">Cédula de Extranjería</MenuItem>
-            </Select>
-          </FormControl>
-          <TextField
-            fullWidth
-            label="Número de Documento"
-            name="numeroDocumento"
-            margin="normal"
-            value={formData.numeroDocumento}
-            onChange={handleNumberInput} // Validación en tiempo real
-            required
-          />
-          <TextField
-            fullWidth
-            label="Nombres"
-            name="nombres"
-            margin="normal"
-            value={formData.nombres}
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            fullWidth
-            label="Apellidos"
-            name="apellidos"
-            margin="normal"
-            value={formData.apellidos}
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            fullWidth
-            label="Correo"
-            name="correo"
-            margin="normal"
-            value={formData.correo}
-            onChange={handleChange}
-            required
-            disabled // No se puede editar
-          />
-          <TextField
-            fullWidth
-            label="Fecha de Nacimiento"
-            type="date"
-            name="fechaNacimiento"
-            margin="normal"
-            value={formData.fechaNacimiento}
-            onChange={handleChange}
-            required
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-          <TextField
-            fullWidth
-            label="Especialidad"
-            name="especialidad"
-            margin="normal"
-            value={formData.especialidad}
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            fullWidth
-            label="Activo"
-            margin="normal"
-            value={formData.activo ? 'Sí' : 'No'} // Mostrar el valor por defecto
-            InputProps={{
-              readOnly: true, // Campo solo lectura
-            }}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, backgroundColor: "#0077b6", "&:hover": { backgroundColor: "#005f91" } }}
+          <Typography
+            variant="h4"
+            component="h1"
+            gutterBottom
+            sx={{ textAlign: 'center', color: '#0077b6', marginBottom: 8 }}
           >
-            Guardar
-          </Button>
-        </form>
-      </Container>
+            Registro de Detective
+          </Typography>
+
+          <form onSubmit={handleSubmit}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={6}>
+                <FormControl fullWidth margin="normal">
+                  <InputLabel id="tipoDocumento-label">Tipo de Documento</InputLabel>
+                  <Select
+                    labelId="tipoDocumento-label"
+                    name="tipoDocumento"
+                    value={formData.tipoDocumento}
+                    onChange={handleChange}
+                    required
+                  >
+                    <MenuItem value="Cédula">Cédula</MenuItem>
+                    <MenuItem value="Pasaporte">Pasaporte</MenuItem>
+                    <MenuItem value="Cédula de Extranjería">Cédula de Extranjería</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Número de Documento"
+                  name="numeroDocumento"
+                  margin="normal"
+                  value={formData.numeroDocumento}
+                  onChange={handleNumberInput}
+                  required
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Nombres"
+                  name="nombres"
+                  margin="normal"
+                  value={formData.nombres}
+                  onChange={handleTextInput}
+                  required
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Apellidos"
+                  name="apellidos"
+                  margin="normal"
+                  value={formData.apellidos}
+                  onChange={handleTextInput}
+                  required
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Correo"
+                  name="correo"
+                  margin="normal"
+                  value={formData.correo}
+                  onChange={handleChange}
+                  required
+                  disabled
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Fecha de Nacimiento"
+                  type="date"
+                  name="fechaNacimiento"
+                  margin="normal"
+                  value={formData.fechaNacimiento}
+                  onChange={handleChange}
+                  required
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl fullWidth margin="normal">
+                  <InputLabel id="especialidad-label">Especialidad</InputLabel>
+                  <Select
+                    labelId="especialidad-label"
+                    name="especialidad"
+                    multiple
+                    value={formData.especialidad}
+                    onChange={handleEspecialidadChange}
+                    renderValue={(selected) => selected.join(', ')}
+                  >
+                    {especialidades.map((especialidad) => (
+                      <MenuItem key={especialidad} value={especialidad}>
+                        <Checkbox checked={formData.especialidad.includes(especialidad)} />
+                        <ListItemText primary={especialidad} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ marginTop: 4, backgroundColor: '#0077b6', color: 'white', width: '100%' }}
+            >
+              Registrar
+            </Button>
+          </form>
+        </Container>
+      </motion.div>
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setShowSnackbar(false)}
+      >
+        <Alert
+          onClose={() => setShowSnackbar(false)}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
+          Registro exitoso. Redirigiendo a inicio de sesión...
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
