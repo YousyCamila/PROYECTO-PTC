@@ -198,7 +198,7 @@ router.get('/cliente/:id', casoController.obtenerCasosPorClienteId);
  * @swagger
  * /caso/cliente/email/{email}:
  *   get:
- *     summary: Obtener casos asociados a un cliente por su correo electrónico.
+ *     summary: Obtener casos, contratos y registros asociados a un cliente por su correo electrónico.
  *     tags: [Casos]
  *     parameters:
  *       - in: path
@@ -207,18 +207,28 @@ router.get('/cliente/:id', casoController.obtenerCasosPorClienteId);
  *           type: string
  *         required: true
  *         description: Correo electrónico del cliente.
- *         example: cliente@example.com
  *     responses:
  *       200:
- *         description: Lista de casos asociados al cliente.
+ *         description: Lista de casos, contratos y registros asociados al cliente.
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 type: object
+ *               type: object
+ *               properties:
+ *                 casos:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                 contratos:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                 registros:
+ *                   type: array
+ *                   items:
+ *                     type: object
  *       404:
- *         description: No se encontraron casos para el cliente especificado.
+ *         description: No se encontraron datos para el cliente especificado.
  *       500:
  *         description: Error interno del servidor.
  */

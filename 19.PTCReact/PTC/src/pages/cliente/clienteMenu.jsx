@@ -10,7 +10,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Button,
   Snackbar,
   IconButton,
   Tooltip,
@@ -22,42 +21,54 @@ import NavbarSidebarCliente from './NavbarSidebarCliente';
 import CasoDetailsMenu from './CasoDetailsMenu';
 
 const ClienteMenu = () => {
-  const { user } = useContext(AuthContext);
-  const [casos, setCasos] = useState([]);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [selectedCaso, setSelectedCaso] = useState(null);
+  const { user } = useContext(AuthContext); // Contexto de autenticación
+  const [casos, setCasos] = useState([]); // Lista de casos asociados al cliente
+  const [openSnackbar, setOpenSnackbar] = useState(false); // Estado para el Snackbar
+  const [snackbarMessage, setSnackbarMessage] = useState(''); // Mensaje del Snackbar
+  const [selectedCaso, setSelectedCaso] = useState(null); // Caso seleccionado para detalles
   const navigate = useNavigate();
 
-  const email = localStorage.getItem('email');
+  const email = localStorage.getItem('email'); // Email del cliente
   const API_URL = 'http://localhost:3000/api';
 
   useEffect(() => {
     if (email) {
-      fetchCasosByEmail(email);
+      fetchCasosByEmail(email); // Cargar casos asociados al cargar el componente
     }
   }, [email]);
 
+  /**
+   * Lógica para obtener casos asociados por email del cliente
+   * @param {string} emailCliente
+   */
   const fetchCasosByEmail = async (emailCliente) => {
     try {
       const response = await fetch(`${API_URL}/caso/cliente/email/${emailCliente}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
+
       const data = await response.json();
+      console.log('Respuesta del backend:', data); // Depuración: Inspección de datos
+
       if (response.ok) {
-        setCasos(data); // Guardamos los casos con el nombreDetective ya incluido
+        setCasos(data.casos || []); // Asegúrate de usar solo la lista de casos
       } else {
         throw new Error(data.message || 'Error al buscar los casos');
       }
     } catch (error) {
+      console.error('Error al obtener los casos:', error);
       setSnackbarMessage(`Error al buscar los casos: ${error.message}`);
       setOpenSnackbar(true);
     }
   };
 
+  /**
+   * Manejo de la selección de un caso para mostrar detalles
+   * @param {Object} caso
+   */
   const handleOpenCasoDetails = (caso) => {
-    setSelectedCaso(caso);
+    setSelectedCaso(caso); // Guardar el caso seleccionado
   };
 
   return (
@@ -72,6 +83,7 @@ const ClienteMenu = () => {
         position: 'relative',
       }}
     >
+      {/* Barra de navegación superior */}
       <NavbarSidebarCliente
         sx={{
           position: 'fixed',
@@ -101,12 +113,7 @@ const ClienteMenu = () => {
           Casos Asociados al Cliente
         </Typography>
 
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-          <Button variant="outlined" color="primary" onClick={() => fetchCasosByEmail(email)}>
-            Cargar Casos Asociados
-          </Button>
-        </Box>
-
+        {/* Tabla de casos */}
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -130,7 +137,11 @@ const ClienteMenu = () => {
                 casos.map((caso) => (
                   <TableRow key={caso._id}>
                     <TableCell>{caso.nombreCaso}</TableCell>
-                    <TableCell>{caso.nombreDetective || 'Detective no asignado'}</TableCell>
+                    <TableCell>
+                      {caso.idDetective
+                        ? `${caso.idDetective.nombres} ${caso.idDetective.apellidos}`
+                        : 'Detective no asignado'}
+                    </TableCell>
                     <TableCell>{caso.activo ? 'Activo' : 'Inactivo'}</TableCell>
                     <TableCell>
                       <Tooltip title="Ver los detalles de este caso" arrow>
@@ -153,6 +164,7 @@ const ClienteMenu = () => {
         </TableContainer>
       </Container>
 
+      {/* Snackbar para errores */}
       <Snackbar
         open={openSnackbar}
         autoHideDuration={6000}
@@ -160,6 +172,7 @@ const ClienteMenu = () => {
         message={snackbarMessage}
       />
 
+      {/* Menú de detalles del caso */}
       {selectedCaso && <CasoDetailsMenu caso={selectedCaso} onClose={() => setSelectedCaso(null)} />}
     </Box>
   );

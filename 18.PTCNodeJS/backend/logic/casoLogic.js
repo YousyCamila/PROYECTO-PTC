@@ -76,17 +76,26 @@ const obtenerCasosPorClienteId = async (idCliente) => {
  */
 const obtenerCasosPorEmailCliente = async (emailCliente) => {
   try {
-    // Verificar si el cliente existe
-    const cliente = await Cliente.findOne({ correo: emailCliente.trim() });
+    // Buscar al cliente por su email
+    const cliente = await Cliente.findOne({ correo: emailCliente });
+
     if (!cliente) {
-      throw new Error(`No se encontró un cliente con el correo: ${emailCliente}`);
+      throw new Error(`No se encontró un cliente con el email: ${emailCliente}`);
     }
 
-    // Buscar casos asociados al cliente
-    const casos = await Caso.find({ idCliente: cliente._id }).populate('idDetective evidencias');
-    return casos;
+    const casos = await Caso.find({ idCliente: cliente._id })
+      .populate('idDetective')
+      .populate('evidencias')
+      .populate('registroCasos')
+      .populate('contratos'); // Traer también los contratos
+
+    return {
+      casos,
+      contratos: cliente.contratos || [],
+      registros: cliente.registroCaso || [],
+    };
   } catch (error) {
-    throw new Error(`Error al obtener casos por correo: ${error.message}`);
+    throw new Error(`Error al obtener datos por email: ${error.message}`);
   }
 };
 
