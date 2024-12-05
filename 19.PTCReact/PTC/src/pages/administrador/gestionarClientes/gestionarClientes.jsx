@@ -14,10 +14,13 @@ import {
   IconButton,
   Snackbar,
   Tooltip,
+  Stack,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import NavbarSidebar from '../NavbarSidebar'; // Importa tu NavbarSidebar
@@ -28,14 +31,14 @@ const GestionarClientes = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const navigate = useNavigate();
 
-  // Fetch clientes from the API
+  // Función para obtener la lista de clientes
   const fetchClientes = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/clientes");
+      const response = await fetch('http://localhost:3000/api/clientes');
       const data = await response.json();
       setClientes(data);
     } catch (error) {
-      console.error("Error fetching clientes:", error);
+      console.error('Error fetching clientes:', error);
       setSnackbarMessage('Error al cargar los clientes');
       setOpenSnackbar(true);
     }
@@ -56,7 +59,7 @@ const GestionarClientes = () => {
   const handleDeactivate = async (clienteId) => {
     const confirm = await Swal.fire({
       title: '¿Estás seguro?',
-      text: "Cambiará el estado del cliente a inactivo.",
+      text: 'Cambiará el estado del cliente a inactivo.',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
@@ -69,12 +72,14 @@ const GestionarClientes = () => {
         await fetch(`http://localhost:3000/api/clientes/${clienteId}`, {
           method: 'DELETE',
         });
-        setClientes(prevClientes => prevClientes.map(cliente => 
-          cliente._id === clienteId ? { ...cliente, activo: false } : cliente
-        ));
+        setClientes((prevClientes) =>
+          prevClientes.map((cliente) =>
+            cliente._id === clienteId ? { ...cliente, activo: false } : cliente
+          )
+        );
         Swal.fire('Desactivado!', 'El cliente ha sido desactivado.', 'success');
       } catch (error) {
-        console.error("Error al desactivar cliente:", error);
+        console.error('Error al desactivar cliente:', error);
         setSnackbarMessage('No se pudo desactivar el cliente.');
         setOpenSnackbar(true);
       }
@@ -85,11 +90,9 @@ const GestionarClientes = () => {
     navigate('/crear-cliente');
   };
 
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
+  const handleBack = () => {
+    navigate('/admin-menu');
   };
-
-  
 
   return (
       <Box
@@ -129,6 +132,7 @@ const GestionarClientes = () => {
               fontWeight: 'bold',
               marginBottom: 4,
             }}
+            startIcon={<ArrowBackIcon />}
           >
             Gestionar Clientes
           </Typography>

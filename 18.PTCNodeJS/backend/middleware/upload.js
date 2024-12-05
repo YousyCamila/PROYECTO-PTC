@@ -7,26 +7,25 @@ const storage = multer.diskStorage({
     cb(null, 'uploads/'); // Carpeta donde se guardarán los archivos
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`); // Nombre único
-  }
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
 });
 
-// Filtro de archivos permitidos
+// Filtro de tipos de archivo permitidos
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = ['image/jpeg', 'image/png', 'video/mp4', 'audio/mpeg', 'application/pdf'];
+  const allowedTypes = ['image/jpeg', 'image/png', 'video/mp4', 'audio/mpeg', 'application/pdf', 'application/msword'];
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error('Tipo de archivo no permitido'), false);  // Maneja el error si el tipo no está permitido
+    cb(new Error('Tipo de archivo no permitido'), false);
   }
 };
 
-// Configuración final de Multer
+// Middleware de multer
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 10 * 1024 * 1024 }, // Limite de 10MB
+  limits: { fileSize: 20 * 1024 * 1024 }, // Límite de 20MB
 });
 
-// Exporta el middleware de Multer
 module.exports = upload;

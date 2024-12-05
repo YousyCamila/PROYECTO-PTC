@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const evidenciaControlador = require('../controllers/evidenciaController');
 const upload = require('../middleware/upload');
+const { check } = require('express-validator');
 
 /**
  * @swagger
@@ -54,11 +55,11 @@ router.post('/', evidenciaControlador.crearEvidencia);
  * @swagger
  * /evidencias:
  *   get:
- *     summary: Listar evidencias
+ *     summary: Listar todas las evidencias
  *     tags: [Evidencias]
  *     responses:
  *       200:
- *         description: Lista de evidencias activas
+ *         description: Lista de evidencias obtenida con éxito
  *         content:
  *           application/json:
  *             schema:
@@ -66,20 +67,53 @@ router.post('/', evidenciaControlador.crearEvidencia);
  *               items:
  *                 type: object
  *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     description: ID de la evidencia
+ *                     example: "648df1239a1b2c456789abcd"
  *                   fechaEvidencia:
  *                     type: string
- *                     format: date-time
+ *                     format: date
+ *                     description: Fecha de la evidencia
+ *                     example: "2024-12-05"
  *                   descripcion:
  *                     type: string
+ *                     description: Descripción de la evidencia
+ *                     example: "Evidencia de prueba"
  *                   idCasos:
  *                     type: string
  *                     format: objectId
+ *                     description: ID del caso relacionado
+ *                     example: "674aa23735f37f69e0aadd58"
  *                   tipoEvidencia:
- *                     type: array
- *                     items:
- *                       type: string
+ *                     type: string
+ *                     description: Tipo de evidencia
+ *                     example: "tipoFotografia"
+ *                   archivo:
+ *                     type: object
+ *                     properties:
+ *                       nombre:
+ *                         type: string
+ *                         description: Nombre del archivo
+ *                         example: "example.jpg"
+ *                       tipo:
+ *                         type: string
+ *                         description: Tipo MIME del archivo
+ *                         example: "image/jpeg"
+ *                       ruta:
+ *                         type: string
+ *                         description: Ruta del archivo
+ *                         example: "uploads/example.jpg"
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: Fecha de creación de la evidencia
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: Última fecha de actualización de la evidencia
  *       500:
- *         description: Error al obtener evidencias
+ *         description: Error interno del servidor
  */
 router.get('/', evidenciaControlador.listarEvidencias);
 
@@ -93,34 +127,70 @@ router.get('/', evidenciaControlador.listarEvidencias);
  *       - name: id
  *         in: path
  *         required: true
- *         description: ID de la evidencia
+ *         description: ID de la evidencia a buscar
  *         schema:
  *           type: string
  *           format: objectId
+ *           example: "648df1239a1b2c456789abcd"
  *     responses:
  *       200:
- *         description: Evidencia encontrada
+ *         description: Evidencia encontrada con éxito
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
+ *                 _id:
+ *                   type: string
+ *                   description: ID de la evidencia
+ *                   example: "648df1239a1b2c456789abcd"
  *                 fechaEvidencia:
  *                   type: string
- *                   format: date-time
+ *                   format: date
+ *                   description: Fecha de la evidencia
+ *                   example: "2024-12-05"
  *                 descripcion:
  *                   type: string
+ *                   description: Descripción de la evidencia
+ *                   example: "Evidencia de prueba"
  *                 idCasos:
  *                   type: string
  *                   format: objectId
+ *                   description: ID del caso relacionado
+ *                   example: "674aa23735f37f69e0aadd58"
  *                 tipoEvidencia:
- *                   type: array
- *                   items:
- *                     type: string
+ *                   type: string
+ *                   description: Tipo de evidencia
+ *                   example: "tipoFotografia"
+ *                 archivo:
+ *                   type: object
+ *                   properties:
+ *                     nombre:
+ *                       type: string
+ *                       description: Nombre del archivo
+ *                       example: "example.jpg"
+ *                     tipo:
+ *                       type: string
+ *                       description: Tipo MIME del archivo
+ *                       example: "image/jpeg"
+ *                     ruta:
+ *                       type: string
+ *                       description: Ruta del archivo
+ *                       example: "uploads/example.jpg"
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                   description: Fecha de creación de la evidencia
+ *                 updatedAt:
+ *                   type: string
+ *                   format: date-time
+ *                   description: Última fecha de actualización de la evidencia
+ *       400:
+ *         description: ID de evidencia inválido
  *       404:
- *         description: Evidencia no encontrada
+ *         description: No se encontró la evidencia
  *       500:
- *         description: Error al obtener la evidencia
+ *         description: Error interno del servidor
  */
 router.get('/:id', evidenciaControlador.buscarEvidenciaPorId);
 
@@ -248,6 +318,7 @@ router.post('/upload', upload.single('archivo'), evidenciaControlador.subirEvide
  *         schema:
  *           type: string
  *           format: objectId
+ *           example: "674aa23735f37f69e0aadd58"
  *     responses:
  *       200:
  *         description: Lista de evidencias asociadas al caso
@@ -256,6 +327,9 @@ router.post('/upload', upload.single('archivo'), evidenciaControlador.subirEvide
  *             schema:
  *               type: object
  *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Evidencias encontradas
  *                 evidencias:
  *                   type: array
  *                   items:
@@ -264,34 +338,43 @@ router.post('/upload', upload.single('archivo'), evidenciaControlador.subirEvide
  *                       _id:
  *                         type: string
  *                         description: ID de la evidencia
+ *                         example: "648df1239a1b2c456789abcd"
  *                       fechaEvidencia:
  *                         type: string
  *                         format: date
  *                         description: Fecha de la evidencia
+ *                         example: "2024-12-05"
  *                       descripcion:
  *                         type: string
  *                         description: Descripción de la evidencia
+ *                         example: "Evidencia de prueba"
  *                       tipoEvidencia:
  *                         type: string
- *                         description: Tipo de evidencia (ej. tipoDocumento, tipoFotografia)
+ *                         description: Tipo de evidencia
+ *                         example: "tipoFotografia"
  *                       archivo:
  *                         type: object
  *                         properties:
  *                           nombre:
  *                             type: string
  *                             description: Nombre del archivo
+ *                             example: "example.jpg"
  *                           tipo:
  *                             type: string
  *                             description: Tipo MIME del archivo
- *                           url:
+ *                             example: "image/jpeg"
+ *                           ruta:
  *                             type: string
- *                             description: URL para acceder al archivo (ubicado en la carpeta /uploads)
+ *                             description: Ruta del archivo
+ *                             example: "uploads/example.jpg"
+ *       400:
+ *         description: ID del caso inválido
  *       404:
- *         description: No se encontraron evidencias para este caso
+ *         description: No se encontraron evidencias para el caso
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/evidencias/caso/:idCaso', evidenciaControlador.obtenerEvidenciasPorCaso);
+router.get('/caso/:idCaso', evidenciaControlador.obtenerEvidenciasPorCaso);
 
 
 

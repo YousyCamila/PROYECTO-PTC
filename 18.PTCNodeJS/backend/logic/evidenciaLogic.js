@@ -1,5 +1,6 @@
 const Evidencia = require('../models/evidenciaModel');
 const Caso = require ('../models/casoModel');
+const mongoose = require('mongoose');
 
 // Lista de tipos de evidencia permitidos
 const tiposEvidenciaPermitidos = [
@@ -62,23 +63,37 @@ async function crearEvidencia(datos) {
 }
 
 
-// Listar evidencias
-async function listarEvidencias() {
-  const evidencias = await Evidencia.find({ activo: true });
-  if (evidencias.length === 0) {
-    throw new Error('No hay evidencias registradas actualmente.');
+const listarEvidencias = async () => {
+  try {
+    // Obtener todas las evidencias
+    const evidencias = await Evidencia.find({});
+    return evidencias;
+  } catch (error) {
+    console.error('Error en la lógica al obtener evidencias:', error);
+    throw new Error('Error al obtener las evidencias');
   }
-  return evidencias;
-}
+};
+
 
 // Buscar evidencia por ID
-async function buscarEvidenciaPorId(id) {
-  const evidencia = await Evidencia.findById(id);
-  if (!evidencia || !evidencia.activo) {
-    throw new Error(`No se encontró una evidencia con el ID: ${id}`);
+const obtenerEvidenciaPorId = async (id) => {
+  try {
+    // Validar que el ID es un ObjectId válido
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      const error = new Error('El ID proporcionado no es válido.');
+      error.status = 400;
+      throw error;
+    }
+
+    // Buscar evidencia por ID
+    const evidencia = await Evidencia.findById(id);
+    return evidencia;
+  } catch (error) {
+    console.error('Error en la lógica al buscar evidencia por ID:', error);
+    throw error;
   }
-  return evidencia;
-}
+};
+
 
 // Actualizar evidencia
 async function actualizarEvidencia(id, datos) {
@@ -107,47 +122,80 @@ async function desactivarEvidencia(id) {
   return await evidencia.save();
 }
 
-const crearEvidenciaConArchivo = async ({ fechaEvidencia, descripcion, idCasos, tipoEvidencia, archivo }) => {
-  const nuevaEvidencia = new Evidencia({
-    fechaEvidencia,
-    descripcion,
-    idCasos,
-    tipoEvidencia,
-    archivo: {
-      nombre: archivo.filename,
-      tipo: archivo.mimetype,
-      ruta: archivo.path,
-    },
-  });
+async function crearEvidenciaConArchivo(datos, archivo) {
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-  return await nuevaEvidencia.save();
-}
+  try {
+    // Crear la nueva evidencia con datos y archivo
+    const nuevaEvidencia = new Evidencia({
+      ...datos,
+      archivo: {
+        nombre: archivo.filename,
+        tipo: archivo.mimetype,
+        ruta: archivo.path,
+      },
+    });
 
+    // Guardar la nueva evidencia en la base de datos
+    const evidenciaGuardada = await nuevaEvidencia.save({ session });
 
-// Lógica para obtener las evidencias asociadas al caso
-async function obtenerEvidenciasPorCaso(idCaso) {
-  // Buscar las evidencias activas del caso
-  const evidencias = await Evidencia.find({ idCasos: idCaso, activo: true });
+    // Verificar que el caso asociado existe
+    const caso = await Caso.findById(datos.idCasos);
+    if (!caso) {
+      throw new Error('No se encontró un caso con el ID proporcionado');
+    }
 
-  if (!evidencias || evidencias.length === 0) {
-    throw new Error(`No se encontraron evidencias para el caso con ID: ${idCaso}`);
+    // Asociar la evidencia al caso
+    caso.evidencias.push(evidenciaGuardada._id);
+
+    // Guardar el caso actualizado
+    await caso.save({ session });
+
+    // Confirmar la transacción
+    await session.commitTransaction();
+    session.endSession();
+
+    return evidenciaGuardada; // Devuelve la evidencia creada
+
+  } catch (error) {
+    // Si ocurre un error, abortar la transacción
+    await session.abortTransaction();
+    session.endSession();
+    throw new Error('Error al crear la evidencia con archivo: ' + error.message);
   }
-
-  // Añadir la URL del archivo a cada evidencia
-  const evidenciasConURL = evidencias.map(evidencia => {
-    evidencia.archivo.urlCompleto = `http://localhost:3000/uploads/${evidencia.archivo.nombre}`; // Asumiendo que usas localhost
-    return evidencia;
-  });
-
-  return evidenciasConURL;
 }
+
+
+const obtenerEvidenciasPorCaso = async (idCaso) => {
+  try {
+    // Validar que el ID es un ObjectId válido
+    if (!mongoose.Types.ObjectId.isValid(idCaso)) {
+      const error = new Error('El ID del caso proporcionado no es válido.');
+      error.status = 400;
+      throw error;
+    }
+
+    // Convertir idCaso a ObjectId
+    const objectIdCaso = new mongoose.Types.ObjectId(idCaso);
+
+    // Ejecutar consulta
+    const evidencias = await Evidencia.find({ idCasos: objectIdCaso});
+
+    return evidencias;
+  } catch (error) {
+    console.error('Error en la lógica al obtener evidencias por caso:', error);
+    throw error;
+  }
+};
+
 
 
 
 module.exports = {
   crearEvidencia,
   listarEvidencias,
-  buscarEvidenciaPorId,
+  obtenerEvidenciaPorId,
   actualizarEvidencia,
   desactivarEvidencia,
   crearEvidenciaConArchivo,
