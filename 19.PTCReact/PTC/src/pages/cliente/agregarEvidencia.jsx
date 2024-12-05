@@ -11,35 +11,49 @@ import {
   MenuItem,
 } from '@mui/material';
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const AgregarEvidencia = () => {
+  const { casoId } = useParams(); // Obtener el casoId desde la URL
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     fechaEvidencia: '',
     descripcion: '',
-    idCasos: '', // El usuario debe ingresar el ID del caso manualmente
-    tipoEvidencia: '', // Cambiar a una sola opción
+    tipoEvidencia: '',
+    archivo: null, // Inicializar el archivo como null
   });
 
   const tiposEvidencia = ['tipoDocumento', 'tipoFotografia', 'tipoVideo', 'tipoAudio', 'archivosDigitales'];
 
+  // Manejar cambios en los campos de texto y selección
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // Manejar la selección del archivo
+  const handleFileChange = (e) => {
+    setFormData({ ...formData, archivo: e.target.files[0] });
+  };
+
+  // Enviar los datos al backend
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const data = new FormData(); // Crear un objeto FormData para enviar archivos
+    data.append('fechaEvidencia', formData.fechaEvidencia);
+    data.append('descripcion', formData.descripcion);
+    data.append('tipoEvidencia', formData.tipoEvidencia);
+    data.append('idCasos', casoId);
+    if (formData.archivo) {
+      data.append('archivo', formData.archivo); // Agregar el archivo al FormData
+    }
+
     try {
-      const response = await fetch("http://localhost:3000/api/evidencias", {
+      const response = await fetch('http://localhost:3000/api/evidencias/upload', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        body: data, // Enviar el objeto FormData
       });
 
       if (response.ok) {
@@ -48,13 +62,13 @@ const AgregarEvidencia = () => {
           title: 'Evidencia Agregada',
           text: 'La evidencia se ha agregado exitosamente.',
         });
-        navigate("/cliente-menu"); // Redirigir al menú general de clientes
+        navigate(`/caso/${casoId}/evidencias`); // Redirigir al listado de evidencias del caso
       } else {
-        const data = await response.json();
+        const errorData = await response.json();
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: data.error || 'No se pudo agregar la evidencia.',
+          text: errorData.message || 'No se pudo agregar la evidencia.',
         });
       }
     } catch (error) {
@@ -68,107 +82,75 @@ const AgregarEvidencia = () => {
   };
 
   return (
-    <Box
-      sx={{
-        width: "100vw",
-        height: "100vh",
-        background: "linear-gradient(to right, #0077b6, #00b4d8)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Container
-        maxWidth="sm"
-        sx={{
-          backgroundColor: "white",
-          padding: 4,
-          borderRadius: 2,
-          boxShadow: 3,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          minHeight: '80vh',
-        }}
-      >
-        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: "center", color: "#0077b6", mb: 2 }}>
-          Agregar Evidencia
-        </Typography>
-
-        <form onSubmit={handleSubmit}>
-          {/* Campo para el ID del caso */}
-          <TextField
-            fullWidth
-            label="ID del Caso"
-            name="idCasos"
-            margin="normal"
-            value={formData.idCasos}
+    <Container>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Agregar Evidencia
+      </Typography>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
+        <TextField
+          fullWidth
+          label="Fecha de Evidencia"
+          type="date"
+          name="fechaEvidencia"
+          margin="normal"
+          value={formData.fechaEvidencia}
+          onChange={handleChange}
+          required
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <TextField
+          fullWidth
+          label="Descripción"
+          name="descripcion"
+          margin="normal"
+          value={formData.descripcion}
+          onChange={handleChange}
+          required
+        />
+        <FormControl fullWidth margin="normal">
+          <InputLabel id="tipoEvidencia-label">Tipo de Evidencia</InputLabel>
+          <Select
+            labelId="tipoEvidencia-label"
+            name="tipoEvidencia"
+            value={formData.tipoEvidencia}
             onChange={handleChange}
             required
-          />
-          
-          <TextField
-            fullWidth
-            label="Fecha de Evidencia"
-            type="date"
-            name="fechaEvidencia"
-            margin="normal"
-            value={formData.fechaEvidencia}
-            onChange={handleChange}
-            required
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-          <TextField
-            fullWidth
-            label="Descripción"
-            name="descripcion"
-            margin="normal"
-            value={formData.descripcion}
-            onChange={handleChange}
-            required
-          />
-          <FormControl fullWidth margin="normal">
-            <InputLabel id="tipoEvidencia-label">Tipo de Evidencia</InputLabel>
-            <Select
-              labelId="tipoEvidencia-label"
-              name="tipoEvidencia"
-              value={formData.tipoEvidencia}
-              onChange={handleChange}
-              required
-            >
-              {tiposEvidencia.map((tipo) => (
-                <MenuItem key={tipo} value={tipo}>
-                  {tipo}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, backgroundColor: "#0077b6", "&:hover": { backgroundColor: "#005f91" } }}
           >
-            Agregar Evidencia
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={() => navigate("/cliente-menu")} // Redirigir al menú general de clientes
-            sx={{
-              color: '#0077b6',
-              borderColor: '#0077b6',
-              mt: 2,
-              '&:hover': { backgroundColor: '#e0e0e0' },
-              ml: 2,
-            }}
-          >
-            Volver
-          </Button>
-        </form>
-      </Container>
-    </Box>
+            {tiposEvidencia.map((tipo) => (
+              <MenuItem key={tipo} value={tipo}>
+                {tipo}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Button
+          variant="contained"
+          component="label" // Esto permite seleccionar un archivo
+          sx={{ mt: 2, mb: 2 }}
+        >
+          Subir Archivo
+          <input
+            type="file"
+            name="archivo"
+            hidden
+            onChange={handleFileChange} // Manejar la selección del archivo
+          />
+        </Button>
+        {formData.archivo && (
+          <Typography variant="body2" sx={{ mb: 2 }}>
+            Archivo seleccionado: {formData.archivo.name}
+          </Typography>
+        )}
+        <Button type="submit" variant="contained" color="primary">
+          Agregar
+        </Button>
+        <Button onClick={() => navigate(`/caso/${casoId}/evidencias`)} variant="outlined" color="secondary" sx={{ ml: 2 }}>
+          Cancelar
+        </Button>
+      </form>
+    </Container>
   );
 };
 

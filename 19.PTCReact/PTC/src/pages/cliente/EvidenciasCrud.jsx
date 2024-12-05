@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Typography,
@@ -20,10 +20,30 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
 
-const EvidenciasCrud = ({ evidencias = [], casoId }) => {
+const EvidenciasCrud = ({ casoId }) => {
+  const [evidencias, setEvidencias] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedEvidencia, setSelectedEvidencia] = useState(null);
   const navigate = useNavigate();
+
+  // Fetch evidencias al cargar el componente
+  useEffect(() => {
+    const fetchEvidencias = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/evidencias/caso/${casoId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setEvidencias(data.evidencias);
+        } else {
+          console.error('Error al obtener evidencias:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error en la solicitud:', error);
+      }
+    };
+
+    fetchEvidencias();
+  }, [casoId]);
 
   const handleViewEvidencia = (evidencia) => {
     setSelectedEvidencia(evidencia);
@@ -36,7 +56,7 @@ const EvidenciasCrud = ({ evidencias = [], casoId }) => {
   };
 
   const handleAddEvidencia = () => {
-    navigate('/agregar-evidencia/:casoId'); // Navega al formulario para agregar evidencia
+    navigate(`/agregar-evidencia/${casoId}`); // Incluye el casoId en la ruta
   };
 
   return (
@@ -68,7 +88,7 @@ const EvidenciasCrud = ({ evidencias = [], casoId }) => {
             {evidencias.length > 0 ? (
               evidencias.map((evidencia, index) => (
                 <TableRow key={index}>
-                  <TableCell>{evidencia.fechaEvidencia}</TableCell>
+                  <TableCell>{new Date(evidencia.fechaEvidencia).toLocaleDateString()}</TableCell>
                   <TableCell>{evidencia.descripcion}</TableCell>
                   <TableCell>{evidencia.tipoEvidencia}</TableCell>
                   <TableCell>
@@ -94,7 +114,7 @@ const EvidenciasCrud = ({ evidencias = [], casoId }) => {
         <DialogContent>
           {selectedEvidencia ? (
             <>
-              <Typography variant="body1"><strong>Fecha:</strong> {selectedEvidencia.fechaEvidencia}</Typography>
+              <Typography variant="body1"><strong>Fecha:</strong> {new Date(selectedEvidencia.fechaEvidencia).toLocaleString()}</Typography>
               <Typography variant="body1"><strong>Descripción:</strong> {selectedEvidencia.descripcion}</Typography>
               <Typography variant="body1"><strong>Tipo de Evidencia:</strong> {selectedEvidencia.tipoEvidencia}</Typography>
             </>
@@ -103,9 +123,6 @@ const EvidenciasCrud = ({ evidencias = [], casoId }) => {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => navigate('/agregar-evidencia')} color="primary">
-            Ver Evidencia
-          </Button>
           <Button onClick={handleCloseDialog} color="secondary">
             Cerrar
           </Button>
