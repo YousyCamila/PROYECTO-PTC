@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Box, 
-  Typography, 
-  Stack, 
-  Paper 
+import {
+  Box,
+  Typography,
+  Stack,
+  Paper
 } from '@mui/material';
-import { 
-  Person as PersonIcon, 
-  Work as WorkIcon, 
-  Group as GroupIcon 
+import {
+  Person as PersonIcon,
+  Work as WorkIcon,
+  Group as GroupIcon
 } from '@mui/icons-material';
 import NavbarSidebar from './NavbarSidebar';
 import { motion } from 'framer-motion';
@@ -20,40 +20,40 @@ const MetricCard = ({ icon, title, value }) => (
     whileTap={{ scale: 0.95 }}
     style={{ width: '250px' }}
   >
-    <Box 
-      sx={{ 
-        p: 2, 
-        display: 'flex', 
-        alignItems: 'center', 
+    <Box
+      sx={{
+        p: 2,
+        display: 'flex',
+        alignItems: 'center',
         backgroundColor: 'rgba(255,255,255,0.9)',
         borderRadius: 2,
         boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
         gap: 2
       }}
     >
-      {React.cloneElement(icon, { 
-        sx: { 
-          fontSize: 40, 
-          color: '#4a90e2' 
-        } 
+      {React.cloneElement(icon, {
+        sx: {
+          fontSize: 40,
+          color: '#4a90e2'
+        }
       })}
       <Box>
-        <Typography 
-          variant="caption" 
-          color="textSecondary" 
-          sx={{ 
-            display: 'block', 
+        <Typography
+          variant="caption"
+          color="textSecondary"
+          sx={{
+            display: 'block',
             textTransform: 'uppercase',
             fontWeight: 600
           }}
         >
           {title}
         </Typography>
-        <Typography 
-          variant="h6" 
-          sx={{ 
-            fontWeight: 'bold', 
-            color: '#2c3e50' 
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 'bold',
+            color: '#2c3e50'
           }}
         >
           {value}
@@ -81,32 +81,34 @@ const AdminMenu = () => {
   }, []);
 
   return (
-    <Box 
-      sx={{ 
-        backgroundColor: '#f4f6f9', 
-        minHeight: '100vh', 
-        position: 'relative' 
+    <Box
+      sx={{
+        backgroundColor: '#f4f6f9',
+        minHeight: '100vh',
+        position: 'relative'
       }}
     >
       <NavbarSidebar />
 
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 5 }}>
-        <Paper 
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 3 }}>
+        <Paper
           elevation={3}
           sx={{
-            p: 3,
+            p: 2,  // Ajuste del padding
             borderRadius: 3,
             backgroundColor: 'white',
-            width: 300
+            width: 300, // Reducción del ancho
+            maxHeight: 400, // Limitar la altura para que no se haga demasiado larga
+            overflow: 'auto', // Permite
           }}
         >
-          <Typography 
-            variant="h5" 
-            sx={{ 
-              mb: 2, 
+          <Typography
+            variant="h5"
+            sx={{
+              mb: 2,
               textAlign: 'center',
               color: '#2c3e50',
-              fontWeight: 'bold' 
+              fontWeight: 'bold'
             }}
           >
             Reporte

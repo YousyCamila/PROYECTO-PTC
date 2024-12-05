@@ -21,6 +21,7 @@ import {
   Work as CaseIcon, 
   TrendingUp as GrowthIcon 
 } from '@mui/icons-material';
+import { motion } from 'framer-motion';
 
 const ClienteCSS = () => {
   const [clientesData, setClientesData] = useState([]);
@@ -41,7 +42,6 @@ const ClienteCSS = () => {
         console.error('Error fetching data:', error);
       }
     };
-    
     fetchData();
   }, []);
 
@@ -59,6 +59,11 @@ const ClienteCSS = () => {
     { name: 'Abr', casos: 40 }
   ];
 
+  const cardMotion = {
+    whileHover: { scale: 1.05 },
+    whileTap: { scale: 0.95 }
+  };
+
   return (
     <Box sx={{ p: 4, backgroundColor: '#f4f6f9', minHeight: '100vh' }}>
       <Typography 
@@ -74,74 +79,68 @@ const ClienteCSS = () => {
       </Typography>
 
       <Grid container spacing={3}>
-        <Grid item xs={12} md={4}>
-          <Paper elevation={3} sx={{ p: 3, height: '100%' }}>
-            <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
-              <ClientIcon sx={{ color: '#0077CC', fontSize: 40 }} />
-              <Typography variant="h6" sx={{ ml: 2, fontWeight: 'bold' }}>
-                Clientes
-              </Typography>
-            </Stack>
-            <Typography variant="h4" sx={{ color: '#0077CC', mb: 2 }}>
-              {clientesData.length} este mes
-            </Typography>
-            <Box sx={{ height: 150 }}>
-              <ResponsiveContainer>
-                <BarChart data={monthlyClientsData}>
-                  <XAxis dataKey="name" />
-                  <Tooltip />
-                  <Bar dataKey="clientes" fill="#0077CC" />
-                </BarChart>
-              </ResponsiveContainer>
-            </Box>
-          </Paper>
-        </Grid>
-        
-        <Grid item xs={12} md={4}>
-          <Paper elevation={3} sx={{ p: 3, height: '100%' }}>
-            <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
-              <CaseIcon sx={{ color: '#28a745', fontSize: 40 }} />
-              <Typography variant="h6" sx={{ ml: 2, fontWeight: 'bold' }}>
-                Casos
-              </Typography>
-            </Stack>
-            <Typography variant="h4" sx={{ color: '#28a745', mb: 2 }}>
-              {casosData.length} este mes
-            </Typography>
-            <Box sx={{ height: 150 }}>
-              <ResponsiveContainer>
-                <LineChart data={monthlyCasesData}>
-                  <XAxis dataKey="name" />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="casos" stroke="#28a745" />
-                </LineChart>
-              </ResponsiveContainer>
-            </Box>
-          </Paper>
-        </Grid>
-        
-        <Grid item xs={12} md={4}>
-          <Paper elevation={3} sx={{ p: 3, height: '100%' }}>
-            <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
-              <GrowthIcon sx={{ color: '#6f42c1', fontSize: 40 }} />
-              <Typography variant="h6" sx={{ ml: 2, fontWeight: 'bold' }}>
-                Crecimiento
-              </Typography>
-            </Stack>
-            <Typography variant="h4" sx={{ color: '#6f42c1', mb: 2 }}>
-              12.5%
-            </Typography>
-            <Box sx={{ height: 150 }}>
-              <ResponsiveContainer>
-                <LineChart data={monthlyClientsData}>
-                  <XAxis dataKey="name" />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="clientes" stroke="#6f42c1" />
-                </LineChart>
-              </ResponsiveContainer>
-            </Box>
-          </Paper>
-        </Grid>
+        {[
+          {
+            title: 'Clientes',
+            icon: <ClientIcon sx={{ color: '#0077CC', fontSize: 40 }} />,
+            value: `${clientesData.length} este mes`,
+            chart: (
+              <BarChart data={monthlyClientsData}>
+                <XAxis dataKey="name" />
+                <Tooltip />
+                <Bar dataKey="clientes" fill="#0077CC" />
+              </BarChart>
+            )
+          },
+          {
+            title: 'Casos',
+            icon: <CaseIcon sx={{ color: '#28a745', fontSize: 40 }} />,
+            value: `${casosData.length} este mes`,
+            chart: (
+              <LineChart data={monthlyCasesData}>
+                <XAxis dataKey="name" />
+                <Tooltip />
+                <Line type="monotone" dataKey="casos" stroke="#28a745" />
+              </LineChart>
+            )
+          },
+          {
+            title: 'Crecimiento',
+            icon: <GrowthIcon sx={{ color: '#6f42c1', fontSize: 40 }} />,
+            value: '12.5%',
+            chart: (
+              <LineChart data={monthlyClientsData}>
+                <XAxis dataKey="name" />
+                <Tooltip />
+                <Line type="monotone" dataKey="clientes" stroke="#6f42c1" />
+              </LineChart>
+            )
+          }
+        ].map((card, index) => (
+          <Grid item xs={12} md={4} key={index}>
+            <motion.div {...cardMotion}>
+              <Paper 
+                elevation={3} 
+                sx={{ p: 3, height: '100%', borderRadius: 3 }}
+              >
+                <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
+                  {card.icon}
+                  <Typography variant="h6" sx={{ ml: 2, fontWeight: 'bold' }}>
+                    {card.title}
+                  </Typography>
+                </Stack>
+                <Typography variant="h4" sx={{ mb: 2, color: card.icon.props.sx.color }}>
+                  {card.value}
+                </Typography>
+                <Box sx={{ height: 150 }}>
+                  <ResponsiveContainer>
+                    {card.chart}
+                  </ResponsiveContainer>
+                </Box>
+              </Paper>
+            </motion.div>
+          </Grid>
+        ))}
       </Grid>
     </Box>
   );
