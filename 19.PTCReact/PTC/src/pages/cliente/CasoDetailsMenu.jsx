@@ -120,21 +120,21 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
               <strong>Detective Asignado:</strong> {caso.idDetective?.nombres || 'No asignado'}
             </Typography>
             <Typography variant="body1" sx={{ mb: 1, color: '#333' }}>
-              <strong>Evidencias:</strong>
-              {caso.evidencias && caso.evidencias.length > 0 ? (
-                <ul>
-                  {caso.evidencias.map((evidencia, index) => (
-                    <li key={index}>
-                      Fecha: {new Date(evidencia.fechaEvidencia).toLocaleDateString()}, 
-                      Descripción: {evidencia.descripcion}, 
-                      Tipo: {evidencia.tipoEvidencia}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                'No hay evidencias asociadas.'
-              )}
-            </Typography>
+  <strong>Evidencias:</strong>
+  {caso.evidencias && caso.evidencias.length > 0 ? (
+    <ul aria-label="Lista de evidencias">
+      {caso.evidencias.map((evidencia) => (
+        <li key={evidencia._id}>
+          Fecha: {new Date(evidencia.fechaEvidencia).toLocaleDateString()}, 
+          Descripción: {evidencia.descripcion}, 
+          Tipo: {evidencia.tipoEvidencia}
+        </li>
+      ))}
+    </ul>
+  ) : (
+    'No hay evidencias asociadas.'
+  )}
+</Typography> 
           </Box>
         );
     }

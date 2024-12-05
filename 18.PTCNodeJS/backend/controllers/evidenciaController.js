@@ -1,5 +1,7 @@
 const evidenciaService = require('../logic/evidenciaLogic');
 const { crearEvidenciaConArchivo } = require('../logic/evidenciaLogic');
+const mongoose = require('mongoose');
+
 
 // Crear evidencia
 const crearEvidencia = async (req, res) => {
@@ -25,19 +27,45 @@ const crearEvidencia = async (req, res) => {
 const listarEvidencias = async (req, res) => {
   try {
     const evidencias = await evidenciaService.listarEvidencias();
-    return res.status(200).json({ evidencias });
+
+    if (!evidencias || evidencias.length === 0) {
+      return res.status(404).json({ message: 'No se encontraron evidencias.' });
+    }
+
+    res.status(200).json({
+      message: 'Evidencias encontradas',
+      evidencias,
+    });
   } catch (error) {
-    return res.status(400).json({ message: error.message });
+    console.error('Error al listar las evidencias:', error);
+    res.status(500).json({ error: 'Error al obtener las evidencias' });
   }
 };
 
 // Buscar evidencia por ID
 const buscarEvidenciaPorId = async (req, res) => {
+  const { id } = req.params;
+
   try {
-    const evidencia = await evidenciaService.buscarEvidenciaPorId(req.params.id);
-    return res.status(200).json({ evidencia });
+    // Llamar a la capa de servicio para buscar la evidencia
+    const evidencia = await evidenciaService.obtenerEvidenciaPorId(id);
+
+    if (!evidencia) {
+      return res.status(404).json({ message: `No se encontró una evidencia con el ID: ${id}` });
+    }
+
+    res.status(200).json({
+      message: 'Evidencia encontrada',
+      evidencia,
+    });
   } catch (error) {
-    return res.status(404).json({ message: error.message });
+    console.error('Error al buscar la evidencia:', error);
+
+    if (error.status) {
+      return res.status(error.status).json({ error: error.message });
+    }
+
+    res.status(500).json({ error: 'Error al obtener la evidencia' });
   }
 };
 
@@ -63,45 +91,48 @@ const desactivarEvidencia = async (req, res) => {
 
 // Subir evidencia
 const subirEvidencia = async (req, res) => {
+  const { fechaEvidencia, descripcion, idCasos, tipoEvidencia } = req.body;
+
   try {
-    const { fechaEvidencia, descripcion, idCasos, tipoEvidencia } = req.body;
-    const archivo = req.file;  // Archivo subido
+    const evidencia = await crearEvidenciaConArchivo(
+      { fechaEvidencia, descripcion, idCasos, tipoEvidencia },
+      req.file // Archivo subido por multer
+    );
 
-    // Llama a la función de lógica para crear la evidencia
-    const evidencia = await crearEvidenciaConArchivo({ 
-      fechaEvidencia, 
-      descripcion, 
-      idCasos, 
-      tipoEvidencia, 
-      archivo 
+    res.status(201).json({
+      message: 'Evidencia creada con éxito',
+      evidencia,
     });
-
-    // Respuesta exitosa
-    res.status(201).json({ mensaje: 'Evidencia creada con éxito', evidencia });
   } catch (error) {
-    // Respuesta con error
+    console.error(error);
     res.status(500).json({ error: error.message });
   }
 };
 
-// Obtener evidencias asociadas a un caso
-// Obtener evidencias por caso
 const obtenerEvidenciasPorCaso = async (req, res) => {
+  const { idCaso } = req.params;
+
   try {
-    const idCaso = req.params.idCaso; // Obtener el ID del caso desde los parámetros de la ruta
     const evidencias = await evidenciaService.obtenerEvidenciasPorCaso(idCaso);
 
-    return res.status(200).json({
+    if (!evidencias || evidencias.length === 0) {
+      return res.status(404).json({ message: `No se encontraron evidencias para el caso con ID: ${idCaso}` });
+    }
+
+    res.status(200).json({
       message: 'Evidencias encontradas',
-      evidencias
+      evidencias,
     });
   } catch (error) {
-    return res.status(400).json({
-      message: error.message
-    });
+    console.error('Error al obtener las evidencias:', error);
+
+    if (error.status) {
+      return res.status(error.status).json({ error: error.message });
+    }
+
+    res.status(500).json({ error: 'Error al obtener las evidencias' });
   }
 };
-
 
 
 module.exports = {

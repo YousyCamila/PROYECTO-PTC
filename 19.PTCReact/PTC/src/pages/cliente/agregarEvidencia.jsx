@@ -9,6 +9,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Divider,
 } from '@mui/material';
 import Swal from 'sweetalert2';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -22,6 +23,8 @@ const AgregarEvidencia = () => {
     descripcion: '',
     tipoEvidencia: '',
     archivo: null, // Inicializar el archivo como null
+    preview: null, // Previsualización del archivo
+    previewType: '', // Tipo de archivo para previsualización
   });
 
   const tiposEvidencia = ['tipoDocumento', 'tipoFotografia', 'tipoVideo', 'tipoAudio', 'archivosDigitales'];
@@ -34,7 +37,35 @@ const AgregarEvidencia = () => {
 
   // Manejar la selección del archivo
   const handleFileChange = (e) => {
-    setFormData({ ...formData, archivo: e.target.files[0] });
+    const file = e.target.files[0];
+    if (file) {
+      let previewType = '';
+
+      if (file.type.startsWith('image/')) {
+        previewType = 'image';
+      } else if (file.type.startsWith('audio/')) {
+        previewType = 'audio';
+      } else if (file.type.startsWith('video/')) {
+        previewType = 'video';
+      }
+
+      setFormData({
+        ...formData,
+        archivo: file,
+        preview: previewType === 'image' ? URL.createObjectURL(file) : file.name, // Mostrar URL para imagen, nombre para otros
+        previewType,
+      });
+    }
+  };
+
+  // Cancelar el archivo seleccionado
+  const handleCancelFile = () => {
+    setFormData({
+      ...formData,
+      archivo: null,
+      preview: null,
+      previewType: '',
+    });
   };
 
   // Enviar los datos al backend
@@ -62,7 +93,7 @@ const AgregarEvidencia = () => {
           title: 'Evidencia Agregada',
           text: 'La evidencia se ha agregado exitosamente.',
         });
-        navigate(`/caso/${casoId}/evidencias`); // Redirigir al listado de evidencias del caso
+        navigate('/cliente-menu'); // Redirigir al menú del cliente
       } else {
         const errorData = await response.json();
         Swal.fire({
@@ -82,10 +113,21 @@ const AgregarEvidencia = () => {
   };
 
   return (
-    <Container>
-      <Typography variant="h4" component="h1" gutterBottom>
+    <Container
+      sx={{
+        mt: 4,
+        p: 4,
+        backgroundColor: '#eaf4fc',
+        borderRadius: 2,
+        boxShadow: 3,
+        color: '#005f91',
+      }}
+    >
+      <Typography variant="h5" sx={{ mb: 2, fontWeight: 'bold', color: '#005f91' }}>
         Agregar Evidencia
       </Typography>
+      <Divider sx={{ mb: 3, backgroundColor: '#d1e0e5' }} />
+
       <form onSubmit={handleSubmit} encType="multipart/form-data">
         <TextField
           fullWidth
@@ -110,13 +152,16 @@ const AgregarEvidencia = () => {
           required
         />
         <FormControl fullWidth margin="normal">
-          <InputLabel id="tipoEvidencia-label">Tipo de Evidencia</InputLabel>
+          <InputLabel id="tipoEvidencia-label" sx={{ color: '#005f91' }}>
+            Tipo de Evidencia
+          </InputLabel>
           <Select
             labelId="tipoEvidencia-label"
             name="tipoEvidencia"
             value={formData.tipoEvidencia}
             onChange={handleChange}
             required
+            sx={{ backgroundColor: '#ffffff', color: '#000000' }}
           >
             {tiposEvidencia.map((tipo) => (
               <MenuItem key={tipo} value={tipo}>
@@ -127,28 +172,88 @@ const AgregarEvidencia = () => {
         </FormControl>
         <Button
           variant="contained"
-          component="label" // Esto permite seleccionar un archivo
-          sx={{ mt: 2, mb: 2 }}
+          component="label"
+          sx={{
+            mt: 2,
+            backgroundColor: '#0077b6',
+            '&:hover': { backgroundColor: '#005f91' },
+          }}
         >
           Subir Archivo
           <input
             type="file"
             name="archivo"
             hidden
-            onChange={handleFileChange} // Manejar la selección del archivo
+            onChange={handleFileChange}
           />
         </Button>
         {formData.archivo && (
-          <Typography variant="body2" sx={{ mb: 2 }}>
-            Archivo seleccionado: {formData.archivo.name}
-          </Typography>
+          <>
+            <Typography variant="body2" sx={{ mt: 2, color: '#005f91' }}>
+              Archivo seleccionado: {formData.archivo.name}
+            </Typography>
+            {formData.previewType === 'image' && (
+              <Box sx={{ mt: 2, textAlign: 'center' }}>
+                <img
+                  src={formData.preview}
+                  alt="Previsualización"
+                  style={{
+                    maxWidth: '100%',
+                    maxHeight: '300px',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                  }}
+                />
+              </Box>
+            )}
+            {formData.previewType === 'audio' && (
+              <Box sx={{ mt: 2, textAlign: 'center' }}>
+                <audio controls>
+                  <source src={formData.preview} type={formData.archivo.type} />
+                  Tu navegador no soporta la reproducción de audio.
+                </audio>
+              </Box>
+            )}
+            {formData.previewType === 'video' && (
+              <Box sx={{ mt: 2, textAlign: 'center' }}>
+                <video controls style={{ maxWidth: '100%', maxHeight: '300px' }}>
+                  <source src={formData.preview} type={formData.archivo.type} />
+                  Tu navegador no soporta la reproducción de video.
+                </video>
+              </Box>
+            )}
+            <Button
+              onClick={handleCancelFile}
+              variant="outlined"
+              sx={{ mt: 2, color: '#d9534f', borderColor: '#d9534f', '&:hover': { borderColor: '#c9302c', color: '#c9302c' } }}
+            >
+              Cancelar Archivo
+            </Button>
+          </>
         )}
-        <Button type="submit" variant="contained" color="primary">
-          Agregar
-        </Button>
-        <Button onClick={() => navigate(`/caso/${casoId}/evidencias`)} variant="outlined" color="secondary" sx={{ ml: 2 }}>
-          Cancelar
-        </Button>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{
+              backgroundColor: '#0077b6',
+              '&:hover': { backgroundColor: '#005f91' },
+            }}
+          >
+            Agregar Evidencia
+          </Button>
+          <Button
+            onClick={() => navigate('/cliente-menu')}
+            variant="outlined"
+            sx={{
+              color: '#005f91',
+              borderColor: '#005f91',
+              '&:hover': { borderColor: '#0077b6', color: '#0077b6' },
+            }}
+          >
+            Volver
+          </Button>
+        </Box>
       </form>
     </Container>
   );
