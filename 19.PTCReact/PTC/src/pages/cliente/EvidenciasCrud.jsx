@@ -26,11 +26,14 @@ const EvidenciasCrud = ({ casoId }) => {
   const [selectedEvidencia, setSelectedEvidencia] = useState(null);
   const navigate = useNavigate();
 
+  // URL base del backend
+  const backendUrl = 'http://localhost:3000';
+
   // Fetch evidencias al cargar el componente
   useEffect(() => {
     const fetchEvidencias = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/evidencias/caso/${casoId}`);
+        const response = await fetch(`${backendUrl}/api/evidencias/caso/${casoId}`);
         if (response.ok) {
           const data = await response.json();
           setEvidencias(data.evidencias);
@@ -117,6 +120,39 @@ const EvidenciasCrud = ({ casoId }) => {
               <Typography variant="body1"><strong>Fecha:</strong> {new Date(selectedEvidencia.fechaEvidencia).toLocaleString()}</Typography>
               <Typography variant="body1"><strong>Descripción:</strong> {selectedEvidencia.descripcion}</Typography>
               <Typography variant="body1"><strong>Tipo de Evidencia:</strong> {selectedEvidencia.tipoEvidencia}</Typography>
+
+              {/* Vista previa de archivo */}
+              {selectedEvidencia.archivo && (
+                <>
+                  <Typography variant="body1" sx={{ mt: 2 }}><strong>Archivo:</strong> {selectedEvidencia.archivo.nombre}</Typography>
+                  {selectedEvidencia.archivo.tipo.startsWith('image/') && (
+                    <img
+                      src={`${backendUrl}/${selectedEvidencia.archivo.ruta}`}
+                      alt={selectedEvidencia.archivo.nombre}
+                      style={{ maxWidth: '100%', maxHeight: '300px', marginTop: '16px', borderRadius: '8px' }}
+                    />
+                  )}
+                  {selectedEvidencia.archivo.tipo === 'application/pdf' && (
+                    <iframe
+                      src={`${backendUrl}/${selectedEvidencia.archivo.ruta}`}
+                      style={{ width: '100%', height: '400px', marginTop: '16px', border: 'none' }}
+                      title="Vista previa PDF"
+                    />
+                  )}
+                  {selectedEvidencia.archivo.tipo.startsWith('audio/') && (
+                    <audio controls style={{ marginTop: '16px' }}>
+                      <source src={`${backendUrl}/${selectedEvidencia.archivo.ruta}`} type={selectedEvidencia.archivo.tipo} />
+                      Tu navegador no soporta la reproducción de audio.
+                    </audio>
+                  )}
+                  {selectedEvidencia.archivo.tipo.startsWith('video/') && (
+                    <video controls style={{ width: '100%', maxHeight: '300px', marginTop: '16px' }}>
+                      <source src={`${backendUrl}/${selectedEvidencia.archivo.ruta}`} type={selectedEvidencia.archivo.tipo} />
+                      Tu navegador no soporta la reproducción de video.
+                    </video>
+                  )}
+                </>
+              )}
             </>
           ) : (
             <Typography>No se seleccionó ninguna evidencia.</Typography>
