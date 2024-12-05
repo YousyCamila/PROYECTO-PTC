@@ -94,80 +94,6 @@ const GestionarClientes = () => {
     navigate('/admin-menu');
   };
 
-<<<<<<< HEAD
-  const handleRefresh = () => {
-    fetchClientes();
-  };
-
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
-  };
-
-  return (
-    <Box
-      sx={{
-        width: '100vw',
-        height: '100vh',
-        background: '#f4f6f8',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Container
-        maxWidth="lg"
-        sx={{
-          background: 'white',
-          borderRadius: 4,
-          padding: 4,
-          boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)',
-          borderLeft: '5px solid #0077b6',
-        }}
-      >
-        <Typography
-          variant="h4"
-          component="h1"
-          gutterBottom
-          sx={{ textAlign: 'center', color: '#333', fontWeight: '700' }}
-        >
-          Gestionar Clientes
-        </Typography>
-
-        {/* Botones de acciones */}
-        <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between', mb: 3 }}>
-          <Stack direction="row" spacing={2}>
-            <Button
-              variant="contained"
-              onClick={handleCreate}
-              sx={{
-                backgroundColor: '#0077b6',
-                color: 'white',
-                fontWeight: 'bold',
-                '&:hover': { backgroundColor: '#005f91' },
-              }}
-            >
-              Crear Cliente
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={handleRefresh}
-              sx={{
-                color: '#0077b6',
-                borderColor: '#0077b6',
-                fontWeight: 'bold',
-                '&:hover': { backgroundColor: '#e0e0e0' },
-              }}
-              startIcon={<RefreshIcon />}
-            >
-              Refrescar
-            </Button>
-          </Stack>
-          <Button
-            variant="outlined"
-            onClick={handleBack}
-=======
-  
-
   return (
       <Box
         sx={{
@@ -200,89 +126,14 @@ const GestionarClientes = () => {
             variant="h4"
             component="h1"
             gutterBottom
->>>>>>> 80171d65a38de9aee9667180688e8699065738ad
             sx={{
               textAlign: 'center',
               color: '#0077b6',
-<<<<<<< HEAD
-              borderColor: '#0077b6',
-              fontWeight: 'bold',
-              '&:hover': { backgroundColor: '#e0e0e0' },
-=======
               fontWeight: 'bold',
               marginBottom: 4,
->>>>>>> 80171d65a38de9aee9667180688e8699065738ad
             }}
             startIcon={<ArrowBackIcon />}
           >
-<<<<<<< HEAD
-            Volver al Menú
-          </Button>
-        </Stack>
-
-        {/* Tabla de clientes */}
-        <TableContainer component={Paper} sx={{ borderRadius: 3, boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)' }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                {['Nombre', 'Activo', 'Fecha de Nacimiento', 'Acciones'].map((header) => (
-                  <TableCell
-                    key={header}
-                    sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white', textAlign: 'center' }}
-                  >
-                    {header}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {clientes.map((cliente) => (
-                <TableRow key={cliente._id} hover>
-                  <TableCell sx={{ textAlign: 'center' }}>{cliente.nombres} {cliente.apellidos}</TableCell>
-                  <TableCell sx={{ textAlign: 'center' }}>{cliente.activo ? 'Sí' : 'No'}</TableCell>
-                  <TableCell sx={{ textAlign: 'center' }}>{new Date(cliente.fechaNacimiento).toLocaleDateString()}</TableCell>
-                  <TableCell sx={{ textAlign: 'center' }}>
-                    <Tooltip title="Ver Detalles" arrow>
-                      <IconButton onClick={() => handleDetails(cliente._id)} sx={{ color: '#0077b6' }}>
-                        <VisibilityIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Editar Cliente" arrow>
-                      <IconButton onClick={() => handleEdit(cliente._id)} sx={{ color: '#005f91' }}>
-                        <EditIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Desactivar Cliente" arrow>
-                      <IconButton onClick={() => handleDeactivate(cliente._id)} sx={{ color: '#d32f2f' }}>
-                        <DeleteIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-
-        {/* Botón para regresar al menú al final */}
-        <Button
-          fullWidth
-          onClick={handleBack}
-          sx={{
-            mt: 4,
-            backgroundColor: '#0077b6',
-            color: 'white',
-            '&:hover': { backgroundColor: '#005f91' },
-          }}
-          startIcon={<ArrowBackIcon />}
-        >
-          Regresar al Menú Anterior
-        </Button>
-
-        <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} message={snackbarMessage} />
-      </Container>
-    </Box>
-=======
             Gestionar Clientes
           </Typography>
     
@@ -358,7 +209,6 @@ const GestionarClientes = () => {
       </Box>
   
     
->>>>>>> 80171d65a38de9aee9667180688e8699065738ad
   );
 };
 
