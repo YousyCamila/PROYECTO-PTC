@@ -39,23 +39,23 @@ const obtenerCasosPorClienteId = async (req, res) => {
 };
 
 /**
- * Controlador para obtener los casos asociados al cliente por correo.
- * @param {Request} req - La solicitud HTTP.
- * @param {Response} res - La respuesta HTTP.
+ * Controlador para obtener casos, contratos y registros asociados al cliente por email.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
  */
 const obtenerCasosPorEmailCliente = async (req, res) => {
-  const emailCliente = req.params.email.trim();
+  const { email } = req.params;
 
   try {
-    const casos = await casosService.obtenerCasosPorEmailCliente(emailCliente);
+    const data = await casosService.obtenerCasosPorEmailCliente(email);
 
-    if (casos.length === 0) {
+    if (!data.casos.length) {
       return res.status(404).json({ message: 'No se encontraron casos para el cliente especificado.' });
     }
 
-    res.status(200).json(casos);
+    res.status(200).json(data);
   } catch (error) {
-    console.error('Error al obtener casos por email del cliente:', error);
+    console.error(`Error al obtener casos por email: ${error.message}`);
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 };

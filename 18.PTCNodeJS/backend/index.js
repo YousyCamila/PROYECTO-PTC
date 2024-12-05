@@ -36,6 +36,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser()); // Middleware para manejar cookies
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const corsOptions = {
     origin: 'http://localhost:5173', // Cambia esto al dominio de tu frontend

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -9,122 +9,97 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Divider,
 } from '@mui/material';
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const AgregarEvidencia = ({ casoId }) => {
+const AgregarEvidencia = () => {
+  const { casoId } = useParams(); // Obtener el casoId desde la URL
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     fechaEvidencia: '',
     descripcion: '',
     tipoEvidencia: '',
-    archivo: null,
+    archivo: null, // Inicializar el archivo como null
+    preview: null, // Previsualización del archivo
+    previewType: '', // Tipo de archivo para previsualización
   });
 
-  const [caso, setCaso] = useState(null); // Para almacenar el caso relacionado
   const tiposEvidencia = ['tipoDocumento', 'tipoFotografia', 'tipoVideo', 'tipoAudio', 'archivosDigitales'];
 
-  // Obtener el caso relacionado con el cliente o el caso específico
-  const obtenerCaso = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/caso/${casoId}`);
-      const data = await response.json();
-      if (response.ok) {
-        setCaso(data); // Guardar el caso obtenido
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al obtener el caso',
-          text: data.error || 'No se pudo obtener el caso.',
-        });
+  // Manejar cambios en los campos de texto y selección
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // Manejar la selección del archivo
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      let previewType = '';
+
+      if (file.type.startsWith('image/')) {
+        previewType = 'image';
+      } else if (file.type.startsWith('audio/')) {
+        previewType = 'audio';
+      } else if (file.type.startsWith('video/')) {
+        previewType = 'video';
       }
-    } catch (error) {
-      console.error('Error al obtener el caso:', error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Ocurrió un error inesperado al obtener el caso.',
+
+      setFormData({
+        ...formData,
+        archivo: file,
+        preview: previewType === 'image' ? URL.createObjectURL(file) : file.name, // Mostrar URL para imagen, nombre para otros
+        previewType,
       });
     }
   };
 
-  useEffect(() => {
-    obtenerCaso(); // Obtener el caso al cargar el componente
-  }, [casoId]);
-
-  const handleChange = (e) => {
-    const { name, value, type, files } = e.target;
-    if (type === 'file') {
-      setFormData({ ...formData, archivo: files[0] });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+  // Cancelar el archivo seleccionado
+  const handleCancelFile = () => {
+    setFormData({
+      ...formData,
+      archivo: null,
+      preview: null,
+      previewType: '',
+    });
   };
 
+  // Enviar los datos al backend
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!tiposEvidencia.includes(formData.tipoEvidencia)) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Tipo de Evidencia no Válido',
-        text: 'Selecciona un tipo de evidencia válido.',
-      });
-      return;
-    }
-
-    // Crear una instancia de FormData
-    const data = new FormData();
+    const data = new FormData(); // Crear un objeto FormData para enviar archivos
     data.append('fechaEvidencia', formData.fechaEvidencia);
     data.append('descripcion', formData.descripcion);
-    data.append('idCasos', caso._id); // Asociar automáticamente el caso
     data.append('tipoEvidencia', formData.tipoEvidencia);
-    data.append('archivo', formData.archivo); // Agregar el archivo
+    data.append('idCasos', casoId);
+    if (formData.archivo) {
+      data.append('archivo', formData.archivo); // Agregar el archivo al FormData
+    }
 
     try {
       const response = await fetch('http://localhost:3000/api/evidencias/upload', {
         method: 'POST',
-        body: data,
+        body: data, // Enviar el objeto FormData
       });
 
       if (response.ok) {
-        const responseData = await response.json();  // Obtener datos de la respuesta, como el ID del archivo subido
-
         Swal.fire({
           icon: 'success',
           title: 'Evidencia Agregada',
           text: 'La evidencia se ha agregado exitosamente.',
         });
-
-        // Actualizar el caso con la nueva evidencia, pero en lugar de agregar el FormData, usamos los datos del archivo
-        const updatedCaso = await fetch(`http://localhost:3000/api/caso/${caso._id}`, {
-          method: 'PUT',
-          body: JSON.stringify({
-            evidencias: [...caso.evidencias, responseData.evidencia], // Usar la evidencia agregada que viene de la respuesta
-          }),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (updatedCaso.ok) {
-          // Redirigir al menú general de clientes
-          navigate('/cliente-menu');
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error al actualizar el caso',
-            text: 'No se pudo actualizar el caso con la nueva evidencia.',
-          });
-        }
+        navigate('/cliente-menu'); // Redirigir al menú del cliente
       } else {
-        const data = await response.json();
+        const errorData = await response.json();
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: data.error || 'No se pudo agregar la evidencia.',
+          text: errorData.message || 'No se pudo agregar la evidencia.',
         });
       }
     } catch (error) {
@@ -137,108 +112,130 @@ const AgregarEvidencia = ({ casoId }) => {
     }
   };
 
-  if (!caso) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <Typography variant="h6" sx={{ color: '#0077b6' }}>
-          Cargando caso...
-        </Typography>
-      </Box>
-    );
-  }
-
   return (
-    <Box
+    <Container
       sx={{
-        width: '100vw',
-        height: '100vh',
-        background: 'linear-gradient(to right, #0077b6, #00b4d8)',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        mt: 4,
+        p: 4,
+        backgroundColor: '#eaf4fc',
+        borderRadius: 2,
+        boxShadow: 3,
+        color: '#005f91',
       }}
     >
-      <Container
-        maxWidth="sm"
-        sx={{
-          backgroundColor: 'white',
-          padding: 4,
-          borderRadius: 2,
-          boxShadow: 3,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          minHeight: '80vh',
-        }}
-      >
-        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#0077b6', mb: 2 }}>
-          Agregar Evidencia al Caso: {caso.nombreCaso}
-        </Typography>
+      <Typography variant="h5" sx={{ mb: 2, fontWeight: 'bold', color: '#005f91' }}>
+        Agregar Evidencia
+      </Typography>
+      <Divider sx={{ mb: 3, backgroundColor: '#d1e0e5' }} />
 
-        <form onSubmit={handleSubmit}>
-          <TextField
-            fullWidth
-            label="Fecha de Evidencia"
-            type="date"
-            name="fechaEvidencia"
-            margin="normal"
-            value={formData.fechaEvidencia}
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
+        <TextField
+          fullWidth
+          label="Fecha de Evidencia"
+          type="date"
+          name="fechaEvidencia"
+          margin="normal"
+          value={formData.fechaEvidencia}
+          onChange={handleChange}
+          required
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <TextField
+          fullWidth
+          label="Descripción"
+          name="descripcion"
+          margin="normal"
+          value={formData.descripcion}
+          onChange={handleChange}
+          required
+        />
+        <FormControl fullWidth margin="normal">
+          <InputLabel id="tipoEvidencia-label" sx={{ color: '#005f91' }}>
+            Tipo de Evidencia
+          </InputLabel>
+          <Select
+            labelId="tipoEvidencia-label"
+            name="tipoEvidencia"
+            value={formData.tipoEvidencia}
             onChange={handleChange}
             required
-            InputLabelProps={{
-              shrink: true,
-            }}
+            sx={{ backgroundColor: '#ffffff', color: '#000000' }}
+          >
+            {tiposEvidencia.map((tipo) => (
+              <MenuItem key={tipo} value={tipo}>
+                {tipo}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Button
+          variant="contained"
+          component="label"
+          sx={{
+            mt: 2,
+            backgroundColor: '#0077b6',
+            '&:hover': { backgroundColor: '#005f91' },
+          }}
+        >
+          Subir Archivo
+          <input
+            type="file"
+            name="archivo"
+            hidden
+            onChange={handleFileChange}
           />
-          <TextField
-            fullWidth
-            label="Descripción"
-            name="descripcion"
-            margin="normal"
-            value={formData.descripcion}
-            onChange={handleChange}
-            required
-          />
-          <FormControl fullWidth margin="normal">
-            <InputLabel id="tipoEvidencia-label">Tipo de Evidencia</InputLabel>
-            <Select
-              labelId="tipoEvidencia-label"
-              name="tipoEvidencia"
-              value={formData.tipoEvidencia}
-              onChange={handleChange}
-              required
-            >
-              {tiposEvidencia.map((tipo) => (
-                <MenuItem key={tipo} value={tipo}>
-                  {tipo}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <Button component="label" fullWidth variant="outlined" sx={{ mt: 3 }}>
-            Subir Archivo
-            <input
-              type="file"
-              hidden
-              name="archivo"
-              accept="application/pdf,image/*,video/*"
-              onChange={handleChange}
-              required
-            />
-          </Button>
-
-          {formData.archivo && (
-            <Typography variant="body2" sx={{ mt: 1 }}>
+        </Button>
+        {formData.archivo && (
+          <>
+            <Typography variant="body2" sx={{ mt: 2, color: '#005f91' }}>
               Archivo seleccionado: {formData.archivo.name}
             </Typography>
-          )}
-
+            {formData.previewType === 'image' && (
+              <Box sx={{ mt: 2, textAlign: 'center' }}>
+                <img
+                  src={formData.preview}
+                  alt="Previsualización"
+                  style={{
+                    maxWidth: '100%',
+                    maxHeight: '300px',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                  }}
+                />
+              </Box>
+            )}
+            {formData.previewType === 'audio' && (
+              <Box sx={{ mt: 2, textAlign: 'center' }}>
+                <audio controls>
+                  <source src={formData.preview} type={formData.archivo.type} />
+                  Tu navegador no soporta la reproducción de audio.
+                </audio>
+              </Box>
+            )}
+            {formData.previewType === 'video' && (
+              <Box sx={{ mt: 2, textAlign: 'center' }}>
+                <video controls style={{ maxWidth: '100%', maxHeight: '300px' }}>
+                  <source src={formData.preview} type={formData.archivo.type} />
+                  Tu navegador no soporta la reproducción de video.
+                </video>
+              </Box>
+            )}
+            <Button
+              onClick={handleCancelFile}
+              variant="outlined"
+              sx={{ mt: 2, color: '#d9534f', borderColor: '#d9534f', '&:hover': { borderColor: '#c9302c', color: '#c9302c' } }}
+            >
+              Cancelar Archivo
+            </Button>
+          </>
+        )}
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
           <Button
             type="submit"
-            fullWidth
             variant="contained"
             sx={{
-              mt: 3,
               backgroundColor: '#0077b6',
               '&:hover': { backgroundColor: '#005f91' },
             }}
@@ -246,16 +243,19 @@ const AgregarEvidencia = ({ casoId }) => {
             Agregar Evidencia
           </Button>
           <Button
-            variant="outlined"
-            fullWidth
-            sx={{ mt: 2 }}
             onClick={() => navigate('/cliente-menu')}
+            variant="outlined"
+            sx={{
+              color: '#005f91',
+              borderColor: '#005f91',
+              '&:hover': { borderColor: '#0077b6', color: '#0077b6' },
+            }}
           >
-            Cancelar
+            Volver
           </Button>
-        </form>
-      </Container>
-    </Box>
+        </Box>
+      </form>
+    </Container>
   );
 };
 
