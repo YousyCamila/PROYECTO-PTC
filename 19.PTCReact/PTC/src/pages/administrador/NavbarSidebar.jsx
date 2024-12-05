@@ -27,6 +27,9 @@ import InboxIcon from '@mui/icons-material/Inbox';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { motion } from 'framer-motion';
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+
 
 
 const NavbarSidebar = () => {
@@ -79,6 +82,7 @@ const NavbarSidebar = () => {
                 boxSizing: 'border-box',
             }}
         >
+
             {/* Botón de menú (sidebar) */}
             <IconButton
                 onClick={() => setSidebarOpen(true)}
@@ -94,8 +98,39 @@ const NavbarSidebar = () => {
                     transition: 'transform 0.3s ease-in-out',
                 }}
             >
+
                 <MenuIcon sx={{ fontSize: 'inherit' }} />
             </IconButton>
+
+          {/* Título Principal con Animación */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              duration: 0.5,
+              ease: "easeInOut"
+            }}
+            style={{
+              textAlign: 'center',
+              padding: '1px 10', // Reduce el padding superior para mover el título hacia arriba
+            }}
+          >
+         
+
+            {/* Título con gradiente */}
+            <Typography
+              variant="h3"
+              sx={{
+                fontWeight: 700,
+                background: 'linear-gradient(0deg, rgba(77,77,77,1) 0%, rgba(0,0,0,1) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                display: 'inline-block',
+              }}
+            >
+              Informe General PTC
+            </Typography>
+          </motion.div>
 
             {/* Botones de acciones (parte superior derecha) */}
             <Box
@@ -107,6 +142,7 @@ const NavbarSidebar = () => {
                     justifyContent: 'flex-end', // Alinea los botones a la derecha
                 }}
             >
+
                 <Button
                     onClick={() => navigate('/responder-solicitudes')}
                     sx={{
@@ -123,6 +159,7 @@ const NavbarSidebar = () => {
                         },
                     }}
                 >
+
                     <InboxIcon sx={{ fontSize: 40 }} />
                     <span style={{ whiteSpace: 'nowrap' }}>Responder Solicitudes</span>
                     <span
@@ -234,12 +271,14 @@ const NavbarSidebar = () => {
                         { text: 'Gestionar Detectives', route: '/gestionar-detectives', icon: <AssignmentIcon /> },
                         { text: 'Gestionar Casos', route: '/gestionar-casos', icon: <FolderSpecialIcon /> },
                         { text: 'Gestionar Contratos', route: '/gestionar-contratos', icon: <ArticleIcon /> },
-                        // Agregado el botón para regresar al menú de administración
+                        // Botón para regresar al menú de administración
                         { text: 'Regresar al Menú de Admin', route: '/admin-menu', icon: <ArrowBackIcon /> },
+                        // Botón para cerrar sesión
+                        { text: 'Cerrar Sesión', action: handleLogout, icon: <LogoutIcon /> },
                     ].map((item, index) => (
                         <ListItem key={index} disablePadding sx={{ mb: 1 }}>
                             <ListItemButton
-                                onClick={() => handleNavigation(item.route)}
+                                onClick={() => item.route ? handleNavigation(item.route) : item.action?.()}
                                 sx={{
                                     '&:hover': {
                                         backgroundColor: '#0077b6',
@@ -255,6 +294,7 @@ const NavbarSidebar = () => {
                     ))}
                 </List>
                 <Divider sx={{ backgroundColor: '#444' }} />
+
             </Drawer>
 
         </Box>
