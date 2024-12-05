@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import NavbarSidebar from '../NavbarSidebar'; // Importa tu NavbarSidebar
 
 const CrearCliente = () => {
   const [nombres, setNombres] = useState('');
@@ -22,6 +23,7 @@ const CrearCliente = () => {
   const [tipoDocumento, setTipoDocumento] = useState('');
   const [fechaNacimiento, setFechaNacimiento] = useState('');
   const navigate = useNavigate();
+  
 
   const validateAge = (birthDate) => {
     const today = new Date();
@@ -29,7 +31,6 @@ const CrearCliente = () => {
     const age = today.getFullYear() - birthDateObj.getFullYear();
     const monthDifference = today.getMonth() - birthDateObj.getMonth();
 
-    // Si la fecha de nacimiento aún no ha ocurrido este año, restar un año
     if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDateObj.getDate())) {
       return age - 1;
     }
@@ -39,7 +40,6 @@ const CrearCliente = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validar la edad
     const age = validateAge(fechaNacimiento);
     if (age < 18) {
       Swal.fire({
@@ -47,7 +47,7 @@ const CrearCliente = () => {
         title: 'Error',
         text: 'Debes tener al menos 18 años para registrarte.',
       });
-      return; // Detener el proceso de envío si la edad es menor de 18
+      return;
     }
 
     const newCliente = { nombres, apellidos, correo, numeroDocumento, tipoDocumento, fechaNacimiento, activo: true };
@@ -67,7 +67,7 @@ const CrearCliente = () => {
           title: 'Creado!',
           text: 'Cliente creado exitosamente.',
         });
-        navigate('/gestion-clientes'); // Redirigir a la lista de clientes
+        navigate('/gestion-clientes');
       } else {
         const data = await response.json();
         throw new Error(data.error);
@@ -84,11 +84,10 @@ const CrearCliente = () => {
 
   const handleNumberInput = (e) => {
     const value = e.target.value;
-    // Permitir solo números si el tipo de documento es "Cédula", y permitir letras y números si es "Pasaporte"
     if (tipoDocumento === "Pasaporte") {
-      setNumeroDocumento(value); // Permitir letras y números
+      setNumeroDocumento(value);
     } else if (/^\d*$/.test(value) || value === '') {
-      setNumeroDocumento(value); // Solo permitir números
+      setNumeroDocumento(value);
     } else {
       Swal.fire({
         icon: 'warning',
@@ -100,13 +99,23 @@ const CrearCliente = () => {
 
   return (
     <Box
+    sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      minHeight: '100vh',  // Asegura que siempre ocupe al menos el 100% de la altura
+      background: 'linear-gradient(to right, #006f8e, #0097b6)',
+      paddingTop: 'px',
+    }}
+  >
+    <NavbarSidebar /> {/* Navbar arriba */}
+    
+    <Box
       sx={{
-        width: '100vw',
-        height: '100vh',
-        background: 'linear-gradient(to right, #001f3f, #0077b6)',
+        flex: 10,  // Permite que el contenido ocupe el espacio restante
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        paddingTop: '20px',
       }}
     >
       <Container maxWidth="sm" sx={{ background: 'white', borderRadius: 2, padding: 4, boxShadow: 3 }}>
@@ -129,12 +138,13 @@ const CrearCliente = () => {
               <MenuItem value="Cédula de Extranjería">Cédula de Extranjería</MenuItem>
             </Select>
           </FormControl>
+
           <TextField
             fullWidth
             label="Número de Documento"
             margin="normal"
             value={numeroDocumento}
-            onChange={handleNumberInput} // Validación en tiempo real
+            onChange={handleNumberInput}
             required
           />
           <TextField
@@ -173,32 +183,35 @@ const CrearCliente = () => {
               shrink: true,
             }}
           />
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{
-              backgroundColor: '#0077b6',
-              '&:hover': { backgroundColor: '#005f91' },
-              mt: 2,
-            }}
-          >
-            Crear Cliente
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={() => navigate(-1)} // Navegar hacia atrás
-            sx={{
-              color: '#0077b6',
-              borderColor: '#0077b6',
-              mt: 2,
-              '&:hover': { backgroundColor: '#e0e0e0' },
-              ml: 2,
-            }}
-          >
-            Volver
-          </Button>
+
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{
+                backgroundColor: '#0077b6',
+                '&:hover': { backgroundColor: '#005f91' },
+                width: '48%',
+              }}
+            >
+              Crear Cliente
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={() => navigate(-1)}
+              sx={{
+                color: '#0077b6',
+                borderColor: '#0077b6',
+                width: '48%',
+                '&:hover': { backgroundColor: '#e0e0e0' },
+              }}
+            >
+              Volver
+            </Button>
+          </Box>
         </form>
       </Container>
+      </Box>
     </Box>
   );
 };

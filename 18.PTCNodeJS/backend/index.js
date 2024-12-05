@@ -5,6 +5,8 @@ const dotenv = require('dotenv');
 const connectDB = require('./configDB/db'); // Conexión a la base de datos
 const { swaggerUi, swaggerSpec } = require('./swagger/swagger'); // Configuración de Swagger
 const cookieParser = require('cookie-parser'); // Para manejar cookies
+const path = require('path');
+
 
 dotenv.config(); // Carga las variables del archivo .env
 
@@ -37,7 +39,7 @@ app.use(cookieParser()); // Middleware para manejar cookies
 
 const corsOptions = {
     origin: 'http://localhost:5173', // Cambia esto al dominio de tu frontend
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT','PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true, // Permitir el envío de cookies y encabezados de autenticación
 };
@@ -63,6 +65,7 @@ app.use('/api/registros-mantenimiento', registroMantenimientoRoutes);
 app.use('/api/roles', rolRoutes);
 app.use('/api/tipos-evidencia', tipoEvidenciaRoutes);
 app.use('/api/usuario', usuarioRoutes);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const port = process.env.PORT || 3000;
 

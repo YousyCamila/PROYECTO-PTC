@@ -2,10 +2,10 @@ const personaSchema = require('./personaModel');
 const mongoose = require('mongoose');
 
 const DetectiveSchema = new mongoose.Schema({
-  especialidad: {
+  especialidad: [{
     type: String,
     required: true
-  },
+  }],
   casos: [{
     id: {
       type: mongoose.Schema.Types.ObjectId,
@@ -13,16 +13,16 @@ const DetectiveSchema = new mongoose.Schema({
     },
     nombre: {
       type: String,
-      required: true
+      required: false
     },
     descripcion: {
       type: String,
-      required: true
+      required: false
     },
     estado: {
       type: String,
       maxlength: 50,
-      required: true
+      required: false
     }
   }],
   historialCasos: [{
@@ -32,19 +32,25 @@ const DetectiveSchema = new mongoose.Schema({
     },
     fecha: {
       type: Date,
-      required: true
+      required: false
     },
     detalle: {
       type: String,
-      required: true
+      required: false
     }
   }],
-  contratos: [{ // Este campo ya está presente
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Contrato'
-  }],
-  activo: { type: Boolean, default: true },
-}, { timestamps: true });
+  contratos: [{
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: false,
+      ref: 'Contrato'
+    },
+    descripcionServicio: String,
+    estado: Boolean
+  }]
+  ,
+  activo: { type: Boolean, default: false },
+}, { timestamps: false });
 
 DetectiveSchema.add(personaSchema);
 

@@ -5,13 +5,13 @@ const Detective = require('../models/detectiveModel');
 async function crearCaso(datos) {
   // Verificar que el nombre del caso esté permitido
   const nombresPermitidos = [
-    'cadenaCustodia',
-    'investigacionExtorsion',
-    'estudiosSeguridad',
-    'investigacionInfidelidades',
-    'investigacionRobosEmpresariales',
-    'antecedentes',
-    'recuperacionVehiculos'
+    'Cadena de custodia',
+    'Investigación de extorsión',
+    'Estudios de seguridad',
+    'Investigación de infidelidades',
+    'Investigación de robos empresariales',
+    'Antecedentes',
+    'Recuperación de vehículos'
   ];
   
   if (!nombresPermitidos.includes(datos.nombreCaso)) {
@@ -53,12 +53,21 @@ async function crearCaso(datos) {
  */
 const obtenerCasosPorClienteId = async (idCliente) => {
   try {
-    const casos = await Caso.find({ idCliente: idCliente.trim() }).populate('idDetective evidencias');
+    const casos = await Caso.find({ idCliente: idCliente.trim() })
+      .populate({
+        path: 'idDetective',
+        select: 'nombre apellido1',
+      })
+      .populate({
+        path: 'evidencias',
+        select: 'descripcion tipoEvidencia archivo.ruta',
+      });
     return casos;
   } catch (error) {
-    throw new Error('Error al obtener casos por ID de cliente');
+    throw new Error('Error al obtener casos por ID de cliente: ' + error.message);
   }
 };
+
 
 /**
  * Obtener casos asociados a un cliente por correo electrónico.

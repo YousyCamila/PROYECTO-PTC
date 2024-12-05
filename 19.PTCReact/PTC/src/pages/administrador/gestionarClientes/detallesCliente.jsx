@@ -10,13 +10,22 @@ import {
   ListItem,
   ListItemText,
   Divider,
+  Tabs,
+  Tab,
+  CircularProgress,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import NavbarSidebar from '../NavbarSidebar'; // Importa tu NavbarSidebar
 
 const DetallesCliente = () => {
   const { id } = useParams(); // Obtener el ID del cliente de la URL
   const [cliente, setCliente] = useState(null);
+  const [tabValue, setTabValue] = useState(0); // Para manejar las pestañas
   const navigate = useNavigate();
 
   // Fetch cliente details from the API
@@ -31,7 +40,7 @@ const DetallesCliente = () => {
         throw new Error(data.error);
       }
     } catch (error) {
-      console.error("Error fetching cliente:", error);
+      console.error('Error fetching cliente:', error);
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -48,7 +57,26 @@ const DetallesCliente = () => {
     navigate('/gestionar-clientes'); // Navegar a la lista de clientes
   };
 
-  if (!cliente) return <div>Cargando...</div>; // Mostrar un mensaje de carga si no se ha cargado el cliente
+  if (!cliente) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
+        <CircularProgress />
+      </Box>
+    ); // Mostrar un indicador de carga si no se ha cargado el cliente
+  }
+
+  // Función para obtener el nombre o descripcionServicio, si es que existen
+  const obtenerDescripcion = (items, tipo) => {
+    return items.map((item, index) => {
+      if (tipo === 'caso') {
+        return item.nombre || 'Nombre de caso no disponible';
+      } else if (tipo === 'contrato') {
+        return item.descripcionServicio || 'Descripción de contrato no disponible';
+      } else {
+        return 'Información no disponible';
+      }
+    });
+  };
 
   return (
     <Box
@@ -57,128 +85,156 @@ const DetallesCliente = () => {
         height: '100vh',
         background: 'linear-gradient(to right, #001f3f, #0077b6)',
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        flexDirection: 'column', // Cambié la dirección de los elementos
       }}
     >
-      <Container maxWidth="md">
+      <NavbarSidebar /> {/* Aquí es donde se coloca el navbar arriba */}
+
+      <Container maxWidth="lg" sx={{ marginTop: 4 }}> {/* Agregado margen superior */}
         <Paper sx={{ padding: 4, borderRadius: 2, boxShadow: 3 }}>
-          <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#0077b6' }}>
+          <Typography
+            variant="h4"
+            component="h1"
+            gutterBottom
+            sx={{ textAlign: 'center', color: '#0077b6' }}
+          >
             Detalles del Cliente
           </Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#005f91' }}>Información Personal</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1"><strong>ID:</strong> {cliente._id}</Typography> {/* Mostrar ID del cliente */}
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1"><strong>Nombres:</strong> {cliente.nombres}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1"><strong>Apellidos:</strong> {cliente.apellidos}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1"><strong>Correo:</strong> {cliente.correo}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1"><strong>Tipo de Documento:</strong> {cliente.tipoDocumento}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1"><strong>Número de Documento:</strong> {cliente.numeroDocumento}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1"><strong>Fecha de Nacimiento:</strong> {new Date(cliente.fechaNacimiento).toLocaleDateString()}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1"><strong>Estado:</strong> {cliente.activo ? 'Activo' : 'Inactivo'}</Typography>
-            </Grid>
-          </Grid>
 
-          {/* Sección de detalles adicionales */}
-          <Divider sx={{ my: 3 }} />
-          <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#005f91' }}>Detalles Adicionales</Typography>
+          {/* Pestañas para organizar la información */}
+          <Tabs value={tabValue} onChange={(e, newValue) => setTabValue(newValue)} centered>
+            <Tab label="Información Personal" />
+            <Tab label="Detalles Adicionales" />
+          </Tabs>
 
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography variant="body1"><strong>Casos:</strong></Typography>
-              <List>
-                {cliente.casos.length > 0 ? (
-                  cliente.casos.map((caso, index) => (
-                    <ListItem key={index}>
-                      <ListItemText primary={`Caso ID: ${caso.id}`} />
-                    </ListItem>
-                  ))
-                ) : (
-                  <Typography variant="body2">No hay casos asociados.</Typography>
-                )}
-              </List>
-            </Grid>
+          {/* Contenido de las Pestañas */}
+          {tabValue === 0 && (
+            <Box>
+              {/* Información Personal */}
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#005f91' }}>
+                    Información Personal
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="body1">
+                    <strong>ID:</strong> {cliente._id}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="body1">
+                    <strong>Nombres:</strong> {cliente.nombres}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="body1">
+                    <strong>Apellidos:</strong> {cliente.apellidos}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="body1">
+                    <strong>Correo:</strong> {cliente.correo}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="body1">
+                    <strong>Tipo de Documento:</strong> {cliente.tipoDocumento}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="body1">
+                    <strong>Número de Documento:</strong> {cliente.numeroDocumento}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="body1">
+                    <strong>Fecha de Nacimiento:</strong>{' '}
+                    {new Date(cliente.fechaNacimiento).toLocaleDateString()}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="body1">
+                    <strong>Estado:</strong> {cliente.activo ? 'Activo' : 'Inactivo'}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Box>
+          )}
 
-            <Grid item xs={12}>
-              <Typography variant="body1"><strong>Contratos:</strong></Typography>
-              <List>
-                {cliente.contratos.length > 0 ? (
-                  cliente.contratos.map((contrato, index) => (
-                    <ListItem key={index}>
-                      <ListItemText primary={`Contrato ID: ${contrato.id}`} />
-                    </ListItem>
-                  ))
-                ) : (
-                  <Typography variant="body2">No hay contratos asociados.</Typography>
-                )}
-              </List>
-            </Grid>
+          {tabValue === 1 && (
+            <Box sx={{ maxHeight: '60vh', overflowY: 'auto' }}>
+              {/* Detalles Adicionales */}
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography>Casos ({cliente.casos.length})</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <List>
+                    {cliente.casos.length > 0 ? (
+                      obtenerDescripcion(cliente.casos, 'caso').map((descripcion, index) => (
+                        <ListItem key={index}>
+                          <ListItemText primary={descripcion} />
+                        </ListItem>
+                      ))
+                    ) : (
+                      <Typography variant="body2">No hay casos asociados.</Typography>
+                    )}
+                  </List>
+                </AccordionDetails>
+              </Accordion>
 
-            <Grid item xs={12}>
-              <Typography variant="body1"><strong>Facturas:</strong></Typography>
-              <List>
-                {cliente.facturas.length > 0 ? (
-                  cliente.facturas.map((factura, index) => (
-                    <ListItem key={index}>
-                      <ListItemText primary={`Factura ID: ${factura.id}`} />
-                    </ListItem>
-                  ))
-                ) : (
-                  <Typography variant="body2">No hay facturas asociadas.</Typography>
-                )}
-              </List>
-            </Grid>
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography>Contratos ({cliente.contratos.length})</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <List>
+                    {cliente.contratos.length > 0 ? (
+                      obtenerDescripcion(cliente.contratos, 'contrato').map((descripcion, index) => (
+                        <ListItem key={index}>
+                          <ListItemText primary={descripcion} />
+                        </ListItem>
+                      ))
+                    ) : (
+                      <Typography variant="body2">No hay contratos asociados.</Typography>
+                    )}
+                  </List>
+                </AccordionDetails>
+              </Accordion>
 
-            <Grid item xs={12}>
-              <Typography variant="body1"><strong>Historiales:</strong></Typography>
-              <List>
-                {cliente.historials.length > 0 ? (
-                  cliente.historials.map((historial, index) => (
-                    <ListItem key={index}>
-                      <ListItemText primary={`Historial ID: ${historial.id}`} />
-                    </ListItem>
-                  ))
-                ) : (
-                  <Typography variant="body2">No hay historiales asociados.</Typography>
-                )}
-              </List>
-            </Grid>
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography>Facturas ({cliente.facturas.length})</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <List>
+                    {cliente.facturas.length > 0 ? (
+                      obtenerDescripcion(cliente.facturas).map((descripcion, index) => (
+                        <ListItem key={index}>
+                          <ListItemText primary={descripcion} />
+                        </ListItem>
+                      ))
+                    ) : (
+                      <Typography variant="body2">No hay facturas asociadas.</Typography>
+                    )}
+                  </List>
+                </AccordionDetails>
+              </Accordion>
+            </Box>
+          )}
 
-            <Grid item xs={12}>
-              <Typography variant="body1"><strong>Registro de Casos:</strong></Typography>
-              <List>
-                {cliente.registroCaso.length > 0 ? (
-                  cliente.registroCaso.map((registro, index) => (
-                    <ListItem key={index}>
-                      <ListItemText primary={`Registro ID: ${registro.id}`} />
-                    </ListItem>
-                  ))
-                ) : (
-                  <Typography variant="body2">No hay registros de casos asociados.</Typography>
-                )}
-              </List>
-            </Grid>
-          </Grid>
-
+          {/* Botón para volver */}
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-            <Button variant="outlined" onClick={handleBack} sx={{ color: '#0077b6', borderColor: '#0077b6', '&:hover': { backgroundColor: '#e0e0e0' } }}>
+            <Button
+              variant="outlined"
+              onClick={handleBack}
+              sx={{
+                color: '#0077b6',
+                borderColor: '#0077b6',
+                '&:hover': { backgroundColor: '#e0e0e0' },
+              }}
+            >
               Volver a la Gestión de Clientes
             </Button>
           </Box>

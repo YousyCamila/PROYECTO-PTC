@@ -48,6 +48,7 @@ const obtenerFormulariosRespondidos = async (req, res) => {
   }
 };
 
+
 const obtenerFormularioPorId = async (req, res) => {
   try {
     const formulario = await formularioLogic.obtenerFormularioPorId(req.params.id);
@@ -84,4 +85,5 @@ module.exports = {
   obtenerFormularioPorId,
   actualizarFormulario,
   eliminarFormulario,
+  
 };
