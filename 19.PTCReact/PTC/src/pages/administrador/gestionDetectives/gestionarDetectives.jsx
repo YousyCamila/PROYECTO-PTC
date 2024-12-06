@@ -1,4 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  ThemeProvider,
+  createTheme,
+  CssBaseline
+} from '@mui/material';
 import {
   Box,
   Button,
@@ -14,36 +19,138 @@ import {
   IconButton,
   Snackbar,
   Tooltip,
+  Chip,
 } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import {
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  Visibility as VisibilityIcon,
+  Search as SearchIcon,
+  Add as AddIcon,
+  ArrowBack as BackIcon,
+  Brightness4 as DarkModeIcon,
+  Brightness7 as LightModeIcon
+} from '@mui/icons-material';
+import { motion } from 'framer-motion';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import NavbarSidebar from '../NavbarSidebar';
 
 const GestionarDetectives = () => {
+  const [mode, setMode] = useState('dark');
   const [detectives, setDetectives] = useState([]);
+  const [filteredDetectives, setFilteredDetectives] = useState([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [highlightedDetective, setHighlightedDetective] = useState(null);
   const navigate = useNavigate();
 
-  // Fetch detectives from the API
-  const fetchDetectives = async () => {
+  // Create theme based on mode
+  const theme = createTheme({
+    palette: {
+      mode: mode,
+      primary: {
+        main: mode === 'dark' ? '#4ecdc4' : '#0077b6',
+        light: mode === 'dark' ? '#6fffd4' : '#5da5e3',
+        dark: mode === 'dark' ? '#00a896' : '#005c8a'
+      },
+      background: {
+        default: mode === 'dark' ? '#121212' : '#f4f7f9',
+        paper: mode === 'dark' ? '#1e1e1e' : '#ffffff'
+      },
+      text: {
+        primary: mode === 'dark' ? '#e0e0e0' : '#2c3e50',
+        secondary: mode === 'dark' ? '#a0a0a0' : '#34495e'
+      },
+      action: {
+        hover: mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,119,182,0.05)'
+      }
+    },
+    typography: {
+      fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+      h4: {
+        fontWeight: 700,
+        color: mode === 'dark' ? '#e0e0e0' : '#2c3e50'
+      }
+    },
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            textTransform: 'none',
+            borderRadius: '12px',
+            fontWeight: 600
+          }
+        }
+      },
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            color: mode === 'dark' ? '#e0e0e0' : '#2c3e50'
+          },
+          head: {
+            fontWeight: 'bold',
+            color: mode === 'dark' ? '#4ecdc4' : '#0077b6'
+          }
+        }
+      }
+    }
+  });
+
+  // Toggle theme mode
+  const toggleThemeMode = () => {
+    setMode(prevMode => prevMode === 'dark' ? 'light' : 'dark');
+  };
+
+  const fetchDetectives = useCallback(async () => {
     try {
       const response = await fetch("http://localhost:3000/api/detectives");
       const data = await response.json();
       setDetectives(data);
+      setFilteredDetectives(data);
     } catch (error) {
       console.error("Error fetching detectives:", error);
       setSnackbarMessage('Error al cargar los detectives');
       setOpenSnackbar(true);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchDetectives();
-  }, []);
+  }, [fetchDetectives]);
+
+  const handleSearch = (term) => {
+    // Resetear el detective destacado
+    setHighlightedDetective(null);
+
+    // Filtrar detectives
+    const filtered = detectives.filter((detective) => {
+      const matchNumeroDocumento = detective.numeroDocumento.includes(term);
+      const matchNombres = detective.nombres.toLowerCase().includes(term.toLowerCase());
+      const matchApellidos = detective.apellidos.toLowerCase().includes(term.toLowerCase());
+      const matchEspecialidad =
+        typeof detective.especialidad === 'string' &&
+        detective.especialidad.toLowerCase().includes(term.toLowerCase());
+
+      // Si encuentra coincidencia exacta por número de documento, resaltar
+      if (matchNumeroDocumento) {
+        setHighlightedDetective(detective._id);
+      }
+
+      return matchNumeroDocumento || matchNombres || matchApellidos || matchEspecialidad;
+    });
+
+    // Actualizar detectives filtrados
+    setFilteredDetectives(filtered);
+    setSearchTerm(term);
+
+    // Mostrar mensaje si no hay resultados
+    if (filtered.length === 0) {
+      setSnackbarMessage('No se encontraron detectives');
+      setOpenSnackbar(true);
+    }
+  };
 
   const handleEdit = (detectiveId) => {
     navigate(`/editar-detective/${detectiveId}`);
@@ -62,6 +169,7 @@ const GestionarDetectives = () => {
       confirmButtonColor: '#d33',
       cancelButtonColor: '#3085d6',
       confirmButtonText: 'Sí, desactivar',
+      cancelButtonText: 'Cancelar'
     });
 
     if (confirm.isConfirmed) {
@@ -75,9 +183,11 @@ const GestionarDetectives = () => {
         });
 
         if (response.ok) {
-          setDetectives(prevDetectives => prevDetectives.map(detective =>
+          const updatedDetectives = detectives.map(detective =>
             detective._id === detectiveId ? { ...detective, activo: false } : detective
-          ));
+          );
+          setDetectives(updatedDetectives);
+          setFilteredDetectives(updatedDetectives);
           Swal.fire('Desactivado!', 'El detective ha sido desactivado.', 'success');
         } else {
           throw new Error('Error al desactivar el detective');
@@ -90,146 +200,220 @@ const GestionarDetectives = () => {
     }
   };
 
-  const handleCreate = () => {
-    navigate('/crear-detective');
-  };
-
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
-  };
-
-  const handleBack = () => {
-    navigate('/admin-menu');
-  };
-
   return (
-    <Box
-      sx={{
-        width: '100vw',
-        height: '100vh',
-        background: 'linear-gradient(to right, #001f3f, #0077b6)',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      <NavbarSidebar />
-
-      <Container
-        maxWidth="lg"
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box
         sx={{
-          background: '#fff',
-          borderRadius: '8px',
-          padding: '2rem',
-          boxShadow: '0px 4px 20px rgba(0,0,0,0.1)',
+          width: '100vw',
+          minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'flex-start',
-          minHeight: '80vh',
-          marginTop: '2rem',
+          position: 'relative',
+          overflow: 'hidden',
+          backgroundColor: theme.palette.background.default,
+          color: theme.palette.text.primary
         }}
       >
-        <Typography
-          variant="h4"
-          component="h1"
-          gutterBottom
+        <NavbarSidebar />
+
+        {/* Add theme toggle button in the top right corner */}
+        <IconButton
+          onClick={toggleThemeMode}
           sx={{
-            textAlign: 'center',
-            color: '#0077b6',
-            fontWeight: 'bold',
-            marginBottom: '2rem',
-            textTransform: 'uppercase'
+            position: 'absolute',
+            top: 80,  // Moved down from 10 to 80
+            right: 10,
+            zIndex: 1000
           }}
         >
-          Gestionar Detectives
-        </Typography>
+          {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+        </IconButton>
 
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-          <Button
-            variant="contained"
-            onClick={handleCreate}
+        <Container
+          maxWidth="lg"
+          component={motion.div}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          sx={{
+            borderRadius: '16px',
+            padding: '2rem',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
+            position: 'relative',
+            zIndex: 10,
+            mt: '6rem',
+            mb: '2rem'
+          }}
+        >
+          <Typography
+            variant="h4"
+            component="h1"
             sx={{
-              backgroundColor: '#0077b6',
-              '&:hover': { backgroundColor: '#005f91' },
-              borderRadius: '20px', // Bordes redondeados
-              paddingX: '2rem'
+              textAlign: 'center',
+              fontWeight: 700,
+              mb: 3,
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              color: theme.palette.text.primary
             }}
           >
-            Crear Detective
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={handleBack}
+            Gestión de Detectives
+          </Typography>
+
+          <Box sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mb: 3
+          }}>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={() => navigate('/crear-detective')}
+                sx={{
+                  backgroundColor: '#0077b6',
+                  '&:hover': { backgroundColor: '#005f91' },
+                  borderRadius: '12px',
+                  textTransform: 'none',
+                  fontWeight: 600
+                }}
+              >
+                Crear Detective
+              </Button>
+              <Button
+                variant="outlined"
+                startIcon={<BackIcon />}
+                onClick={() => navigate('/admin-menu')}
+                sx={{
+                  color: '#0077b6',
+                  borderColor: '#0077b6',
+                  borderRadius: '12px',
+                  textTransform: 'none',
+                  '&:hover': {
+                    backgroundColor: 'rgba(0,119,182,0.1)'
+                  }
+                }}
+              >
+                Volver al Menú
+              </Button>
+            </Box>
+
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  border: '1px solid #0077b6',
+                  borderRadius: '12px',
+                  px: 1,
+                  py: 0.5
+                }}
+              >
+                <SearchIcon sx={{ color: '#0077b6', mr: 1 }} />
+                <input
+                  type="text"
+                  placeholder="Buscar detective"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  style={{
+                    border: 'none',
+                    outline: 'none',
+                    width: '200px',
+                    backgroundColor: 'transparent',
+                    color: '#e0e0e0' // Cambio de color de texto a claro
+                  }}
+                />
+              </Box>
+              <Button
+                variant="contained"
+                onClick={() => handleSearch(searchTerm)} // Llama a la función con el término actual
+                sx={{
+                  backgroundColor: '#0077b6',
+                  color: '#e0e0e0',
+                  borderRadius: '12px',
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  '&:hover': { backgroundColor: '#005f91' },
+                }}
+              >
+                Buscar
+              </Button>
+            </Box>
+          </Box>
+
+          <TableContainer
+            component={Paper}
             sx={{
-              color: '#0077b6',
-              borderColor: '#0077b6',
-              '&:hover': { backgroundColor: '#e0e0e0' },
-              borderRadius: '20px', // Bordes redondeados
-              paddingX: '2rem'
+              borderRadius: '12px',
+              backgroundColor: '#333',
+              boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
             }}
           >
-            Volver al Menú
-          </Button>
-        </Box>
-
-        <TableContainer component={Paper} sx={{ maxHeight: '400px', overflowY: 'auto' }}>
-          <Table stickyHeader>
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: '#fff' }}>
-                  Número de Documento
-                </TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: '#fff' }}>
-                  Nombre
-                </TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: '#fff' }}>
-                  Activo
-                </TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: '#fff' }}>
-                  Especialidad
-                </TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: '#fff' }}>
-                  Acciones
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {detectives.map((detective) => (
-                <TableRow key={detective._id} hover sx={{ '&:hover': { backgroundColor:'#f5f5f5' } }}>
-                  <TableCell>{detective.numeroDocumento}</TableCell>
-                  <TableCell>{detective.nombres} {detective.apellidos}</TableCell>
-                  <TableCell>{detective.activo ? 'Sí' : 'No'}</TableCell>
-                  <TableCell>{detective.especialidad || 'N/A'}</TableCell>
-                  <TableCell align="right">
-                    <Tooltip title="Ver Detalles" arrow>
-                      <IconButton onClick={() => handleDetails(detective._id)} color="primary">
-                        <VisibilityIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Editar Detective" arrow>
-                      <IconButton onClick={() => handleEdit(detective._id)} color="primary">
-                        <EditIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Desactivar Detective" arrow>
-                      <IconButton onClick={() => handleDeactivate(detective._id)} color="error">
-                        <DeleteIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
+            <Table stickyHeader>
+              <TableHead>
+                <TableRow>
+                  {['Número de Documento', 'Nombre', 'Activo', 'Especialidad', 'Acciones'].map((header) => (
+                    <TableCell key={header} sx={{ color: '#0077b6', fontWeight: 'bold', textTransform: 'uppercase' }}>
+                      {header}
+                    </TableCell>
+                  ))}
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {filteredDetectives.map((detective) => (
+                  <TableRow
+                    key={detective._id}
+                    sx={{
+                      backgroundColor: highlightedDetective === detective._id ? '#444' : 'transparent',
+                      '&:hover': { backgroundColor: '#444' }
+                    }}
+                  >
+                    <TableCell sx={{ color: '#e0e0e0' }}>{detective.numeroDocumento}</TableCell>
+                    <TableCell sx={{ color: '#e0e0e0' }}>{detective.nombres} {detective.apellidos}</TableCell>
+                    <TableCell>
+                      <Chip
+                        label={detective.activo ? 'Activo' : 'Inactivo'}
+                        color={detective.activo ? 'success' : 'error'}
+                      />
+                    </TableCell>
+                    <TableCell sx={{ color: '#e0e0e0' }}>
+                      {detective.especialidad ? detective.especialidad : 'N/A'}
+                    </TableCell>
+                    <TableCell>
+                      <Tooltip title="Ver detalles" arrow>
+                        <IconButton onClick={() => handleDetails(detective._id)}>
+                          <VisibilityIcon sx={{ color: '#0077b6' }} />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Editar" arrow>
+                        <IconButton onClick={() => handleEdit(detective._id)}>
+                          <EditIcon sx={{ color: '#0077b6' }} />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Desactivar" arrow>
+                        <IconButton onClick={() => handleDeactivate(detective._id)}>
+                          <DeleteIcon sx={{ color: '#d32f2f' }} />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
 
-        <Snackbar
-          open={openSnackbar}
-          autoHideDuration={6000}
-          onClose={handleCloseSnackbar}
-          message={snackbarMessage}
-        />
-      </Container>
-    </Box>
+          <Snackbar
+            open={openSnackbar}
+            autoHideDuration={3000}
+            onClose={() => setOpenSnackbar(false)}
+            message={snackbarMessage}
+          />
+        </Container>
+      </Box>
+    </ThemeProvider>
+
   );
 };
 

@@ -35,6 +35,7 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import RegistroCaso from './pages/cliente/registroCaso';
 
+
 function App() {
   return (
     <AuthProvider>
