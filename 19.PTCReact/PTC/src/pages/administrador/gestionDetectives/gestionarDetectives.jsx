@@ -20,7 +20,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import NavbarSidebar from '../NavbarSidebar'; // Importa tu NavbarSidebar
+import NavbarSidebar from '../NavbarSidebar';
 
 const GestionarDetectives = () => {
   const [detectives, setDetectives] = useState([]);
@@ -31,7 +31,7 @@ const GestionarDetectives = () => {
   // Fetch detectives from the API
   const fetchDetectives = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/detectives"); // Cambiar a la ruta de detectives
+      const response = await fetch("http://localhost:3000/api/detectives");
       const data = await response.json();
       setDetectives(data);
     } catch (error) {
@@ -63,22 +63,18 @@ const GestionarDetectives = () => {
       cancelButtonColor: '#3085d6',
       confirmButtonText: 'Sí, desactivar',
     });
-  
+
     if (confirm.isConfirmed) {
       try {
-        // Hacer una solicitud PATCH para desactivar el detective
         const response = await fetch(`http://localhost:3000/api/detectives/${detectiveId}`, {
-          method: 'PATCH',  // Usamos PATCH para actualizar el estado
+          method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            activo: false,  // Cambiamos el estado de activo a false
-          }),
+          body: JSON.stringify({ activo: false }),
         });
-  
+
         if (response.ok) {
-          // Actualizar el estado localmente
           setDetectives(prevDetectives => prevDetectives.map(detective =>
             detective._id === detectiveId ? { ...detective, activo: false } : detective
           ));
@@ -93,7 +89,7 @@ const GestionarDetectives = () => {
       }
     }
   };
-  
+
   const handleCreate = () => {
     navigate('/crear-detective');
   };
@@ -103,7 +99,7 @@ const GestionarDetectives = () => {
   };
 
   const handleBack = () => {
-    navigate('/admin-menu'); // Navegar al menú administrativo
+    navigate('/admin-menu');
   };
 
   return (
@@ -116,24 +112,22 @@ const GestionarDetectives = () => {
         flexDirection: 'column',
       }}
     >
-      {/* NavbarSidebar */}
       <NavbarSidebar />
 
       <Container
         maxWidth="lg"
         sx={{
-          background: 'white',
-          borderRadius: 2,
-          padding: 4,
-          boxShadow: 3,
+          background: '#fff',
+          borderRadius: '8px',
+          padding: '2rem',
+          boxShadow: '0px 4px 20px rgba(0,0,0,0.1)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'flex-start',
           minHeight: '80vh',
-          marginTop: 4,
+          marginTop: '2rem',
         }}
       >
-        {/* Título */}
         <Typography
           variant="h4"
           component="h1"
@@ -142,13 +136,13 @@ const GestionarDetectives = () => {
             textAlign: 'center',
             color: '#0077b6',
             fontWeight: 'bold',
-            marginBottom: 4,
+            marginBottom: '2rem',
+            textTransform: 'uppercase'
           }}
         >
           Gestionar Detectives
         </Typography>
 
-        {/* Botones */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
           <Button
             variant="contained"
@@ -156,6 +150,8 @@ const GestionarDetectives = () => {
             sx={{
               backgroundColor: '#0077b6',
               '&:hover': { backgroundColor: '#005f91' },
+              borderRadius: '20px', // Bordes redondeados
+              paddingX: '2rem'
             }}
           >
             Crear Detective
@@ -167,37 +163,38 @@ const GestionarDetectives = () => {
               color: '#0077b6',
               borderColor: '#0077b6',
               '&:hover': { backgroundColor: '#e0e0e0' },
+              borderRadius: '20px', // Bordes redondeados
+              paddingX: '2rem'
             }}
           >
             Volver al Menú
           </Button>
         </Box>
 
-        {/* Tabla con scroll */}
         <TableContainer component={Paper} sx={{ maxHeight: '400px', overflowY: 'auto' }}>
           <Table stickyHeader>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
-                  <strong>Número de Documento</strong>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: '#fff' }}>
+                  Número de Documento
                 </TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
-                  <strong>Nombre</strong>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: '#fff' }}>
+                  Nombre
                 </TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
-                  <strong>Activo</strong>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: '#fff' }}>
+                  Activo
                 </TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
-                  <strong>Especialidad</strong>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: '#fff' }}>
+                  Especialidad
                 </TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
-                  <strong>Acciones</strong>
+                <TableCell align="right" sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: '#fff' }}>
+                  Acciones
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {detectives.map((detective) => (
-                <TableRow key={detective._id}>
+                <TableRow key={detective._id} hover sx={{ '&:hover': { backgroundColor:'#f5f5f5' } }}>
                   <TableCell>{detective.numeroDocumento}</TableCell>
                   <TableCell>{detective.nombres} {detective.apellidos}</TableCell>
                   <TableCell>{detective.activo ? 'Sí' : 'No'}</TableCell>
