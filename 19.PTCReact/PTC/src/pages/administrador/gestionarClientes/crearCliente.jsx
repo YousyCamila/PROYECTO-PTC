@@ -1,18 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Box,
   Button,
   Container,
   Typography,
   TextField,
-  Snackbar,
-  InputLabel,
-  FormControl,
-  MenuItem,
+  Paper,
+  Grid,
+  Avatar,
+  ThemeProvider,
+  createTheme,
+  CssBaseline,
+  IconButton,
   Select,
+  MenuItem,
+  FormControl,
+  InputLabel
 } from '@mui/material';
+import { Person as PersonIcon, ArrowBack as BackIcon, Save as SaveIcon, Brightness4 as DarkModeIcon, Brightness7 as LightModeIcon } from '@mui/icons-material';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import NavbarSidebar from '../NavbarSidebar'; // Importa tu NavbarSidebar
 
 const CrearCliente = () => {
@@ -22,8 +30,39 @@ const CrearCliente = () => {
   const [numeroDocumento, setNumeroDocumento] = useState('');
   const [tipoDocumento, setTipoDocumento] = useState('');
   const [fechaNacimiento, setFechaNacimiento] = useState('');
+  const [mode, setMode] = useState('light');
   const navigate = useNavigate();
-  
+
+  const theme = useMemo(() =>
+    createTheme({
+      palette: {
+        mode,
+        primary: {
+          main: mode === 'light' ? '#2575fc' : '#6a11cb',
+        },
+        background: {
+          default: mode === 'light'
+            ? 'linear-gradient(135deg, #e0e0e0 0%, #ffffff 100%)'
+            : 'linear-gradient(135deg, #121212 0%, #1e1e1e 100%)'
+        }
+      },
+      components: {
+        MuiPaper: {
+          styleOverrides: {
+            root: {
+              background: mode === 'light'
+                ? 'rgba(255, 255, 255, 0.9)'
+                : 'rgba(30, 30, 30, 0.9)',
+            }
+          }
+        }
+      }
+    }), [mode]
+  );
+
+  const toggleThemeMode = () => {
+    setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+  };
 
   const validateAge = (birthDate) => {
     const today = new Date();
@@ -50,7 +89,15 @@ const CrearCliente = () => {
       return;
     }
 
-    const newCliente = { nombres, apellidos, correo, numeroDocumento, tipoDocumento, fechaNacimiento, activo: true };
+    const newCliente = {
+      nombres: nombres.toUpperCase(),
+      apellidos: apellidos.toUpperCase(),
+      correo,
+      numeroDocumento,
+      tipoDocumento,
+      fechaNacimiento,
+      activo: true
+    };
 
     try {
       const response = await fetch("http://localhost:3000/api/clientes", {
@@ -67,7 +114,7 @@ const CrearCliente = () => {
           title: 'Creado!',
           text: 'Cliente creado exitosamente.',
         });
-        navigate('/gestion-clientes');
+        navigate('/gestionar-clientes');
       } else {
         const data = await response.json();
         throw new Error(data.error);
@@ -97,122 +144,190 @@ const CrearCliente = () => {
     }
   };
 
+  const handleTextInput = (e, setter) => {
+    const value = e.target.value;
+    if (/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/.test(value)) {
+      setter(value);
+    } else {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Entrada no válida',
+        text: 'Los nombres y apellidos solo pueden contener letras y espacios.',
+      });
+    }
+  };
+
   return (
-    <Box
-    sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      minHeight: '100vh',  // Asegura que siempre ocupe al menos el 100% de la altura
-      background: 'linear-gradient(to right, #006f8e, #0097b6)',
-      paddingTop: 'px',
-    }}
-  >
-    <NavbarSidebar /> {/* Navbar arriba */}
-    
-    <Box
-      sx={{
-        flex: 10,  // Permite que el contenido ocupe el espacio restante
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box sx={{
+        background: theme.palette.background.default,
+        width: '100%',
+        minHeight: '100vh',
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center',
-        paddingTop: '20px',
-      }}
-    >
-      <Container maxWidth="sm" sx={{ background: 'white', borderRadius: 2, padding: 4, boxShadow: 3 }}>
-        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#0077b6' }}>
-          Crear Cliente
-        </Typography>
+        alignItems: 'flex-start',
+        paddingTop: 8,
+        paddingBottom: 2,
+        overflow: 'auto',
+      }}>
+        <NavbarSidebar />
 
-        <form onSubmit={handleSubmit}>
-          <FormControl fullWidth margin="normal">
-            <InputLabel id="tipoDocumento-label">Tipo de Documento</InputLabel>
-            <Select
-              labelId="tipoDocumento-label"
-              name="tipoDocumento"
-              value={tipoDocumento}
-              onChange={(e) => setTipoDocumento(e.target.value)}
-              required
-            >
-              <MenuItem value="Cédula">Cédula</MenuItem>
-              <MenuItem value="Pasaporte">Pasaporte</MenuItem>
-              <MenuItem value="Cédula de Extranjería">Cédula de Extranjería</MenuItem>
-            </Select>
-          </FormControl>
+        <IconButton
+          onClick={toggleThemeMode}
+          sx={{
+            position: 'absolute',
+            top: 80,
+            right: 10,
+            color: mode === 'light' ? '#2575fc' : '#6a11cb',
+          }}
+        >
+          {mode === 'light' ? <DarkModeIcon /> : <LightModeIcon />}
+        </IconButton>
 
-          <TextField
-            fullWidth
-            label="Número de Documento"
-            margin="normal"
-            value={numeroDocumento}
-            onChange={handleNumberInput}
-            required
-          />
-          <TextField
-            fullWidth
-            label="Nombres"
-            margin="normal"
-            value={nombres}
-            onChange={(e) => setNombres(e.target.value)}
-            required
-          />
-          <TextField
-            fullWidth
-            label="Apellidos"
-            margin="normal"
-            value={apellidos}
-            onChange={(e) => setApellidos(e.target.value)}
-            required
-          />
-          <TextField
-            fullWidth
-            label="Correo"
-            margin="normal"
-            value={correo}
-            onChange={(e) => setCorreo(e.target.value)}
-            required
-          />
-          <TextField
-            fullWidth
-            label="Fecha de Nacimiento"
-            type="date"
-            margin="normal"
-            value={fechaNacimiento}
-            onChange={(e) => setFechaNacimiento(e.target.value)}
-            required
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
-            <Button
-              type="submit"
-              variant="contained"
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          style={{
+            width: '100%',
+            maxWidth: 600,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+          }}
+        >
+          <Container maxWidth="sm" sx={{ width: '100%', py: 4 }}>
+            <Paper
+              elevation={10}
               sx={{
-                backgroundColor: '#0077b6',
-                '&:hover': { backgroundColor: '#005f91' },
-                width: '48%',
+                borderRadius: 4,
+                padding: { xs: 2, sm: 4 },
+                backdropFilter: 'blur(10px)',
+                width: '100%',
               }}
             >
-              Crear Cliente
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={() => navigate(-1)}
-              sx={{
-                color: '#0077b6',
-                borderColor: '#0077b6',
-                width: '48%',
-                '&:hover': { backgroundColor: '#e0e0e0' },
-              }}
-            >
-              Volver
-            </Button>
-          </Box>
-        </form>
-      </Container>
+              <Box display="flex" flexDirection="column" alignItems="center" mb={3}>
+                <Avatar
+                  sx={{
+                    width: { xs: 60, sm: 80 },
+                    height: { xs: 60, sm: 80 },
+                    background: 'linear-gradient(45deg, #6a11cb 0%, #2575fc 100%)',
+                    marginBottom: 2
+                  }}
+                >
+                  <PersonIcon sx={{ fontSize: { xs: 40, sm: 50 } }} />
+                </Avatar>
+                <Typography
+                  variant="h4"
+                  component="h1"
+                  sx={{
+                    color: theme.palette.primary.main,
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    fontSize: { xs: '1.8rem', sm: '2.125rem' }
+                  }}
+                >
+                  Crear Cliente
+                </Typography>
+              </Box>
+
+              <form onSubmit={handleSubmit}>
+                <Grid container spacing={{ xs: 1, sm: 2 }}>
+                  <Grid item xs={12}>
+                    <FormControl fullWidth variant="outlined">
+                      <InputLabel>Tipo de Documento</InputLabel>
+                      <Select
+                        value={tipoDocumento}
+                        onChange={(e) => setTipoDocumento(e.target.value)}
+                        label="Tipo de Documento"
+                      >
+                        <MenuItem value="Cedula">Cédula</MenuItem>
+                        <MenuItem value="Pasaporte">Pasaporte</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <TextField
+                      label="Número de Documento"
+                      variant="outlined"
+                      value={numeroDocumento}
+                      onChange={handleNumberInput}
+                      fullWidth
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <TextField
+                      label="Nombres"
+                      variant="outlined"
+                      value={nombres}
+                      onChange={(e) => handleTextInput(e, setNombres)}
+                      fullWidth
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <TextField
+                      label="Apellidos"
+                      variant="outlined"
+                      value={apellidos}
+                      onChange={(e) => handleTextInput(e, setApellidos)}
+                      fullWidth
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <TextField
+                      label="Correo Electrónico"
+                      variant="outlined"
+                      type="email"
+                      value={correo}
+                      onChange={(e) => setCorreo(e.target.value)}
+                      fullWidth
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <TextField
+                      label="Fecha de Nacimiento"
+                      variant="outlined"
+                      type="date"
+                      value={fechaNacimiento}
+                      onChange={(e) => setFechaNacimiento(e.target.value)}
+                      fullWidth
+                      InputLabelProps={{ shrink: true }}
+                    />
+                  </Grid>
+                </Grid>
+
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 3 }}>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    startIcon={<BackIcon />}
+                    onClick={() => navigate('/gestionar-clientes')}
+                  >
+                    Regresar
+                  </Button>
+
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    startIcon={<SaveIcon />}
+                  >
+                    Guardar
+                  </Button>
+                </Box>
+              </form>
+            </Paper>
+          </Container>
+        </motion.div>
       </Box>
-    </Box>
+    </ThemeProvider>
   );
 };
 
