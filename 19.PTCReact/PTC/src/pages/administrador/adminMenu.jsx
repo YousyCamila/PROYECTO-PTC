@@ -330,10 +330,10 @@ const AdminMenu = () => {
         <IconButton
           onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}
           sx={{
-            position: 'fixed',
-            top: 16,  // Puedes ajustar este valor si deseas cambiar la altura
-            right: 16,  // Alineado a la derecha
-            zIndex: 1200,
+            position: 'absolute',
+            top: 80,  // Puedes ajustar este valor si deseas cambiar la altura
+            right: 10,  // Alineado a la derecha
+            zIndex: 1000,
             bgcolor: 'background.paper',
             borderRadius: '50%',  // Hace que el botón sea circular
             boxShadow: 2,  // Añade sombra para mayor visibilidad

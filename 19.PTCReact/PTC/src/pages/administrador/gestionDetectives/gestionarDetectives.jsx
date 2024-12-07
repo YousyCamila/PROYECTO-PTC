@@ -46,33 +46,33 @@ const GestionarDetectives = () => {
   const [highlightedDetective, setHighlightedDetective] = useState(null);
   const navigate = useNavigate();
 
-  // Create theme based on mode
   const theme = createTheme({
     palette: {
-      mode: mode,
+      mode,
       primary: {
-        main: mode === 'dark' ? '#4ecdc4' : '#0077b6',
-        light: mode === 'dark' ? '#6fffd4' : '#5da5e3',
-        dark: mode === 'dark' ? '#00a896' : '#005c8a'
+        main: mode === 'dark' ? '#3498db' : '#2980b9',
+      },
+      secondary: {
+        main: mode === 'dark' ? '#2ecc71' : '#27ae60',
       },
       background: {
-        default: mode === 'dark' ? '#121212' : '#f4f7f9',
-        paper: mode === 'dark' ? '#1e1e1e' : '#ffffff'
+        default: mode === 'dark' ? '#0a1929' : '#ffffff', // Lighter background for clear mode
+        paper: mode === 'dark' ? '#1a2027' : '#f0f2f5', // Soft background for paper elements
       },
       text: {
-        primary: mode === 'dark' ? '#e0e0e0' : '#2c3e50',
-        secondary: mode === 'dark' ? '#a0a0a0' : '#34495e'
+        primary: mode === 'dark' ? '#ffffff' : '#000000', // Pure white/black for maximum contrast
+        secondary: mode === 'dark' ? '#b2bac2' : '#333333', // Adjusted secondary text color
       },
       action: {
-        hover: mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,119,182,0.05)'
-      }
+        hover: mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,119,182,0.05)',
+      },
     },
     typography: {
       fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
       h4: {
         fontWeight: 700,
-        color: mode === 'dark' ? '#e0e0e0' : '#2c3e50'
-      }
+        color: mode === 'dark' ? '#e0e0e0' : '#2c3e50',
+      },
     },
     components: {
       MuiButton: {
@@ -80,23 +80,33 @@ const GestionarDetectives = () => {
           root: {
             textTransform: 'none',
             borderRadius: '12px',
-            fontWeight: 600
-          }
-        }
+            fontWeight: 600,
+          },
+        },
       },
       MuiTableCell: {
         styleOverrides: {
           root: {
-            color: mode === 'dark' ? '#e0e0e0' : '#2c3e50'
+            color: mode === 'dark' ? '#ffffff' : '#000000', // Ensure maximum readability
+            backgroundColor: mode === 'dark' ? '#1a2027' : '#ffffff',
+            borderColor: mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)', // Clear border
           },
           head: {
             fontWeight: 'bold',
-            color: mode === 'dark' ? '#4ecdc4' : '#0077b6'
-          }
-        }
-      }
-    }
+            color: mode === 'dark' ? '#ffffff' : '#000000', // High contrast for headers
+          },
+        },
+      },
+      MuiTable: {
+        styleOverrides: {
+          root: {
+            backgroundColor: mode === 'dark' ? '#1a2027' : '#ffffff',
+          },
+        },
+      },
+    },
   });
+
 
   // Toggle theme mode
   const toggleThemeMode = () => {
@@ -370,18 +380,23 @@ const GestionarDetectives = () => {
                       '&:hover': { backgroundColor: '#444' }
                     }}
                   >
-                    <TableCell sx={{ color: '#e0e0e0' }}>{detective.numeroDocumento}</TableCell>
-                    <TableCell sx={{ color: '#e0e0e0' }}>{detective.nombres} {detective.apellidos}</TableCell>
+
+
+                    <TableCell sx={{color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',}}>{detective.numeroDocumento}</TableCell>
+                    <TableCell sx={{color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',}}>{detective.nombres} {detective.apellidos}</TableCell>
                     <TableCell>
                       <Chip
                         label={detective.activo ? 'Activo' : 'Inactivo'}
                         color={detective.activo ? 'success' : 'error'}
                       />
                     </TableCell>
-                    <TableCell sx={{ color: '#e0e0e0' }}>
+                    <TableCell sx={{color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',}}>
                       {detective.especialidad ? detective.especialidad : 'N/A'}
                     </TableCell>
                     <TableCell>
+
+
+
                       <Tooltip title="Ver detalles" arrow>
                         <IconButton onClick={() => handleDetails(detective._id)}>
                           <VisibilityIcon sx={{ color: '#0077b6' }} />
