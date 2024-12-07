@@ -15,49 +15,33 @@ import AddIcon from '@mui/icons-material/Add';
 import EvidenciasCrud from './EvidenciasCrud';
 
 const CasoDetailsMenu = ({ caso, onClose }) => {
-  const [view, setView] = useState('details'); // Manejo de vistas
-  const [openCreateDialog, setOpenCreateDialog] = useState(false); // Diálogo para crear registros
+  const [view, setView] = useState('details'); // Para cambiar entre vistas: detalles, evidencias, contrato, registro
+  const [openCreateDialog, setOpenCreateDialog] = useState(false); // Controlar el diálogo para crear registros
   const [newRegistro, setNewRegistro] = useState({
     descripcion: '',
     fechaInicio: '',
     estadoRegistro: '',
   }); // Datos del nuevo registro
 
-  // Constantes para las vistas
-  const VIEWS = {
-    DETAILS: 'details',
-    EVIDENCIAS: 'evidencias',
-    CONTRATO: 'contrato',
-    REGISTRO: 'registro',
-  };
-
-  const handleViewChange = (view) => setView(view);
+  const handleViewDetails = () => setView('details');
+  const handleViewEvidencias = () => setView('evidencias');
+  const handleViewContrato = () => setView('contrato');
+  const handleViewRegistroCasos = () => setView('registro');
 
   const handleOpenCreateDialog = () => setOpenCreateDialog(true);
   const handleCloseCreateDialog = () => {
     setOpenCreateDialog(false);
-    setNewRegistro({ descripcion: '', fechaInicio: '', estadoRegistro: '' }); // Limpiar datos
+    setNewRegistro({ descripcion: '', fechaInicio: '', estadoRegistro: '' }); // Limpiar campos
   };
 
   const handleCreateRegistro = async () => {
-    if (!newRegistro.descripcion || !newRegistro.fechaInicio || !newRegistro.estadoRegistro) {
-      alert('Todos los campos son obligatorios.');
-      return;
-    }
-
-    try {
-      console.log('Creando nuevo registro:', newRegistro);
-      // Lógica para conectar a la API y crear el registro
-    } catch (error) {
-      console.error('Error al crear el registro:', error);
-    } finally {
-      handleCloseCreateDialog();
-    }
+    console.log('Creando nuevo registro:', newRegistro);
+    handleCloseCreateDialog();
   };
 
   const renderContent = () => {
     switch (view) {
-      case VIEWS.EVIDENCIAS:
+      case 'evidencias':
         return (
           <Box>
             <Typography variant="h6" gutterBottom>
@@ -66,7 +50,7 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
             <EvidenciasCrud evidencias={caso.evidencias} casoId={caso._id} />
           </Box>
         );
-      case VIEWS.CONTRATO:
+      case 'contrato':
         return (
           <Box>
             <Typography variant="h6" gutterBottom>
@@ -76,7 +60,7 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
               <ul>
                 {caso.contratos.map((contrato, index) => (
                   <li key={index}>
-                    <strong>Descripción:</strong> {contrato.descripcionServicio || 'Sin descripción'},
+                    <strong>Descripción:</strong> {contrato.descripcionServicio || 'Sin descripción'}, 
                     <strong> Estado:</strong> {contrato.estado || 'No definido'}
                   </li>
                 ))}
@@ -86,7 +70,7 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
             )}
           </Box>
         );
-      case VIEWS.REGISTRO:
+      case 'registro':
         return (
           <Box>
             <Typography variant="h6" gutterBottom>
@@ -96,8 +80,8 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
               <ul>
                 {caso.registroCasos.map((registro, index) => (
                   <li key={index}>
-                    <strong>Descripción:</strong> {registro.descripcion || 'Sin descripción'},
-                    <strong> Estado:</strong> {registro.estadoRegistro || 'No definido'},
+                    <strong>Descripción:</strong> {registro.descripcion || 'Sin descripción'}, 
+                    <strong> Estado:</strong> {registro.estadoRegistro || 'No definido'}, 
                     <strong> Fecha Inicio:</strong> {new Date(registro.fechaInicio).toLocaleDateString()}
                     <IconButton onClick={() => console.log('Ver detalles del registro:', registro)}>
                       <VisibilityIcon color="primary" />
@@ -121,7 +105,7 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
         );
       default:
         return (
-          <Box>
+          <Box sx={{ px: 2 }}>
             <Typography variant="h5" component="h2" sx={{ mb: 2, fontWeight: 'bold', color: '#005f91' }}>
               Detalles del Caso: {caso.nombreCaso}
             </Typography>
@@ -136,21 +120,21 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
               <strong>Detective Asignado:</strong> {caso.idDetective?.nombres || 'No asignado'}
             </Typography>
             <Typography variant="body1" sx={{ mb: 1, color: '#333' }}>
-              <strong>Evidencias:</strong>
-              {caso.evidencias && caso.evidencias.length > 0 ? (
-                <ul aria-label="Lista de evidencias">
-                  {caso.evidencias.map((evidencia) => (
-                    <li key={evidencia._id}>
-                      Fecha: {new Date(evidencia.fechaEvidencia).toLocaleDateString()},
-                      Descripción: {evidencia.descripcion},
-                      Tipo: {evidencia.tipoEvidencia}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                'No hay evidencias asociadas.'
-              )}
-            </Typography>
+  <strong>Evidencias:</strong>
+  {caso.evidencias && caso.evidencias.length > 0 ? (
+    <ul aria-label="Lista de evidencias">
+      {caso.evidencias.map((evidencia) => (
+        <li key={evidencia._id}>
+          Fecha: {new Date(evidencia.fechaEvidencia).toLocaleDateString()}, 
+          Descripción: {evidencia.descripcion}, 
+          Tipo: {evidencia.tipoEvidencia}
+        </li>
+      ))}
+    </ul>
+  ) : (
+    'No hay evidencias asociadas.'
+  )}
+</Typography> 
           </Box>
         );
     }
@@ -162,16 +146,16 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
         {/* Menú lateral */}
         <Box sx={{ width: '250px', backgroundColor: '#005f91', color: '#ffffff', padding: 3, boxShadow: 3 }}>
           <Typography variant="h5" sx={{ mb: 4, fontWeight: 'bold' }}>Opciones del Caso</Typography>
-          <Button fullWidth variant="contained" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91' }} onClick={() => handleViewChange(VIEWS.DETAILS)}>
+          <Button fullWidth variant="contained" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91' }} onClick={handleViewDetails}>
             Ver Detalles del Caso
           </Button>
-          <Button fullWidth variant="contained" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91' }} onClick={() => handleViewChange(VIEWS.EVIDENCIAS)}>
+          <Button fullWidth variant="contained" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91' }} onClick={handleViewEvidencias}>
             Ver Evidencias
           </Button>
-          <Button fullWidth variant="contained" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91' }} onClick={() => handleViewChange(VIEWS.CONTRATO)}>
+          <Button fullWidth variant="contained" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91' }} onClick={handleViewContrato}>
             Ver Contrato
           </Button>
-          <Button fullWidth variant="contained" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91' }} onClick={() => handleViewChange(VIEWS.REGISTRO)}>
+          <Button fullWidth variant="contained" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91' }} onClick={handleViewRegistroCasos}>
             Ver Registros del Caso
           </Button>
         </Box>
