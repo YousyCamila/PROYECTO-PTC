@@ -13,6 +13,7 @@ import {
   Snackbar,
   IconButton,
   Tooltip,
+  CircularProgress,
 } from '@mui/material';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import { useNavigate } from 'react-router-dom';
@@ -22,53 +23,53 @@ import CasoDetailsMenu from './CasoDetailsMenu';
 
 const ClienteMenu = () => {
   const { user } = useContext(AuthContext); // Contexto de autenticación
-  const [casos, setCasos] = useState([]); // Lista de casos asociados al cliente
-  const [openSnackbar, setOpenSnackbar] = useState(false); // Estado para el Snackbar
-  const [snackbarMessage, setSnackbarMessage] = useState(''); // Mensaje del Snackbar
-  const [selectedCaso, setSelectedCaso] = useState(null); // Caso seleccionado para detalles
+  const [casos, setCasos] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Indicador de carga
+  const [hasError, setHasError] = useState(false); // Indicador de error
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [selectedCaso, setSelectedCaso] = useState(null);
   const navigate = useNavigate();
 
-  const email = localStorage.getItem('email'); // Email del cliente
+  const email = user?.email;
   const API_URL = 'http://localhost:3000/api';
 
   useEffect(() => {
-    if (email) {
-      fetchCasosByEmail(email); // Cargar casos asociados al cargar el componente
+    if (!user) {
+      navigate('/login');
+      return;
     }
-  }, [email]);
 
-  /**
-   * Lógica para obtener casos asociados por email del cliente
-   * @param {string} emailCliente
-   */
-  const fetchCasosByEmail = async (emailCliente) => {
-    try {
-      const response = await fetch(`${API_URL}/caso/cliente/email/${emailCliente}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
+    const fetchCasos = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(`${API_URL}/caso/cliente/email/${email}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const data = await response.json();
 
-      const data = await response.json();
-      console.log('Respuesta del backend:', data); // Depuración: Inspección de datos
-
-      if (response.ok) {
-        setCasos(data.casos || []); // Asegúrate de usar solo la lista de casos
-      } else {
-        throw new Error(data.message || 'Error al buscar los casos');
+        if (response.ok) {
+          setCasos(data.casos || []);
+          setHasError(false);
+        } else {
+          throw new Error(data.message || 'Error al buscar los casos');
+        }
+      } catch (error) {
+        console.error('Error al obtener los casos:', error);
+        setSnackbarMessage(`Error al buscar los casos: ${error.message}`);
+        setOpenSnackbar(true);
+        setHasError(true);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error('Error al obtener los casos:', error);
-      setSnackbarMessage(`Error al buscar los casos: ${error.message}`);
-      setOpenSnackbar(true);
-    }
-  };
+    };
 
-  /**
-   * Manejo de la selección de un caso para mostrar detalles
-   * @param {Object} caso
-   */
+    fetchCasos();
+  }, [email, user, navigate, API_URL]);
+
   const handleOpenCasoDetails = (caso) => {
-    setSelectedCaso(caso); // Guardar el caso seleccionado
+    setSelectedCaso(caso);
   };
 
   return (
@@ -83,16 +84,7 @@ const ClienteMenu = () => {
         position: 'relative',
       }}
     >
-      {/* Barra de navegación superior */}
-      <NavbarSidebarCliente
-        sx={{
-          position: 'fixed',
-          top: 0,
-          width: '100%',
-          zIndex: 1000,
-          boxShadow: 3,
-        }}
-      />
+      <NavbarSidebarCliente sx={{ position: 'fixed', top: 0, width: '100%', zIndex: 1000, boxShadow: 3 }} />
 
       <Container
         maxWidth="lg"
@@ -113,58 +105,66 @@ const ClienteMenu = () => {
           Casos Asociados al Cliente
         </Typography>
 
-        {/* Tabla de casos */}
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
-                  Nombre del Caso
-                </TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
-                  Detective Asignado
-                </TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
-                  Estado
-                </TableCell>
-                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
-                  Acciones
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {casos.length > 0 ? (
-                casos.map((caso) => (
-                  <TableRow key={caso._id}>
-                    <TableCell>{caso.nombreCaso}</TableCell>
-                    <TableCell>
-                      {caso.idDetective
-                        ? `${caso.idDetective.nombres} ${caso.idDetective.apellidos}`
-                        : 'Detective no asignado'}
-                    </TableCell>
-                    <TableCell>{caso.activo ? 'Activo' : 'Inactivo'}</TableCell>
-                    <TableCell>
-                      <Tooltip title="Ver los detalles de este caso" arrow>
-                        <IconButton onClick={() => handleOpenCasoDetails(caso)}>
-                          <MenuOpenIcon color="secondary" />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
+        {isLoading ? (
+          <Box sx={{ textAlign: 'center', mt: 4 }}>
+            <CircularProgress />
+          </Box>
+        ) : hasError ? (
+          <Typography sx={{ textAlign: 'center', color: 'red', mt: 2 }}>
+            Ocurrió un error al cargar los casos.
+          </Typography>
+        ) : (
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
                 <TableRow>
-                  <TableCell colSpan={4} sx={{ textAlign: 'center' }}>
-                    No hay casos asociados para este cliente.
+                  <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
+                    Nombre del Caso
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
+                    Detective Asignado
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
+                    Estado
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
+                    Acciones
                   </TableCell>
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {casos.length > 0 ? (
+                  casos.map((caso) => (
+                    <TableRow key={caso._id}>
+                      <TableCell>{caso.nombreCaso}</TableCell>
+                      <TableCell>
+                        {caso.idDetective
+                          ? `${caso.idDetective.nombres} ${caso.idDetective.apellidos}`
+                          : 'Detective no asignado'}
+                      </TableCell>
+                      <TableCell>{caso.activo ? 'Activo' : 'Inactivo'}</TableCell>
+                      <TableCell>
+                        <Tooltip title="Ver los detalles de este caso" arrow>
+                          <IconButton onClick={() => handleOpenCasoDetails(caso)}>
+                            <MenuOpenIcon color="secondary" />
+                          </IconButton>
+                        </Tooltip>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={4} sx={{ textAlign: 'center' }}>
+                      No hay casos asociados para este cliente.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
       </Container>
 
-      {/* Snackbar para errores */}
       <Snackbar
         open={openSnackbar}
         autoHideDuration={6000}
@@ -172,7 +172,6 @@ const ClienteMenu = () => {
         message={snackbarMessage}
       />
 
-      {/* Menú de detalles del caso */}
       {selectedCaso && <CasoDetailsMenu caso={selectedCaso} onClose={() => setSelectedCaso(null)} />}
     </Box>
   );
