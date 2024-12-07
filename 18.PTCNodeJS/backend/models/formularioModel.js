@@ -30,6 +30,11 @@ const formularioSchema = new mongoose.Schema({
     required: true,
     match: /.+\@.+\..+/ // Valida el formato de correo electrónico
   },
+  estado: {
+    type: String,
+    enum: ['pendiente', 'respondido'],
+    default: 'pendiente',
+  },
   respuesta: {  
     type: String,
     trim: true,  // Elimina espacios en los extremos
