@@ -141,7 +141,7 @@ router.get('/:id', contratoController.buscarContratoPorId);
  *       500:
  *         description: Error interno del servidor.
  */
-router.put('/:id/desactivar', contratoController.desactivarContrato);
+router.delete('/:id', contratoController.desactivarContrato);
 
 /**
  * @swagger
