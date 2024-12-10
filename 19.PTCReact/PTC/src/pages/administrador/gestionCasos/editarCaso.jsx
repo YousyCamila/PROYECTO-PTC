@@ -1,47 +1,66 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Box, Container, Typography, FormControl, InputLabel, Select, MenuItem, TextField, Button, Grid
+import { 
+  Box, 
+  Typography, 
+  Container, 
+  Grid, 
+  TextField, 
+  Button, 
+  Paper, 
+  MenuItem, 
+  FormControlLabel, 
+  Switch, 
+  IconButton 
 } from '@mui/material';
-import Swal from 'sweetalert2';
+import { 
+  Save as SaveIcon, 
+  ArrowBack as ArrowBackIcon, 
+  Brightness4 as Brightness4Icon, 
+  Brightness7 as Brightness7Icon 
+} from '@mui/icons-material';
+import { motion } from 'framer-motion';
 import { useParams, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import NavbarSidebar from '../NavbarSidebar';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const EditarCaso = () => {
-  const { id } = useParams(); // Obtener el ID del caso de la URL
-  const navigate = useNavigate(); // Hook para la navegación
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     nombreCaso: '',
     idCliente: '',
     idDetective: '',
-    clienteNombre: '', // Nuevo campo para almacenar el nombre del cliente
-    detectiveNombre: '', // Nuevo campo para almacenar el nombre del detective
+    clienteNombre: '',
+    detectiveNombre: 'No asignado',
     activo: true,
   });
 
-  // Fetch del caso por ID
+  const [darkMode, setDarkMode] = useState(false);
+
+  const theme = createTheme({
+    palette: {
+      mode: darkMode ? 'dark' : 'light',
+    },
+  });
+
   useEffect(() => {
     const fetchCaso = async () => {
       try {
         const response = await fetch(`http://localhost:3000/api/caso/${id}`);
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`Error: ${response.status}`);
         const data = await response.json();
 
-        // Verifica si se encontró el caso y establece los datos en el formulario
-        if (data) {
-          setFormData({
-            nombreCaso: data.nombreCaso,
-            idCliente: data.idCliente._id, // Guarda solo el ID del cliente
-            idDetective: data.idDetective ? data.idDetective._id : '', // Guarda solo el ID del detective
-            clienteNombre: data.nombreCliente, // Nombre del cliente desde el caso
-            detectiveNombre: data.nombreDetective || 'No asignado', // Nombre del detective (si existe)
-            activo: data.activo,
-          });
-        }
+        setFormData({
+          nombreCaso: data.nombreCaso,
+          idCliente: data.idCliente._id,
+          idDetective: data.idDetective ? data.idDetective._id : '',
+          clienteNombre: data.nombreCliente,
+          detectiveNombre: data.nombreDetective || 'No asignado',
+          activo: data.activo,
+        });
       } catch (error) {
-        console.error('Error fetching caso:', error);
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -53,22 +72,18 @@ const EditarCaso = () => {
     fetchCaso();
   }, [id]);
 
-  // Manejar los cambios en los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Enviar el formulario para actualizar el caso
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const response = await fetch(`http://localhost:3000/api/caso/${id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
@@ -78,7 +93,7 @@ const EditarCaso = () => {
           title: 'Caso Actualizado',
           text: 'Los datos del caso han sido actualizados correctamente.',
         });
-        navigate('/gestionar-casos'); // Redirigir a la vista de gestión de casos
+        navigate('/gestionar-casos');
       } else {
         const data = await response.json();
         Swal.fire({
@@ -88,7 +103,6 @@ const EditarCaso = () => {
         });
       }
     } catch (error) {
-      console.error('Error al actualizar caso:', error);
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -98,160 +112,130 @@ const EditarCaso = () => {
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-        background: 'linear-gradient(to right, #006f8e, #0097b6)',
-        paddingTop: '0px',
-      }}
-    >
-      <NavbarSidebar />
-
-      <Box
+    <ThemeProvider theme={theme}>
+      <Box 
         sx={{
-          flex: 10,
+          minHeight: '100vh',
+          background: darkMode ? '#121212' : 'linear-gradient(135deg, #1a237e 0%, #5c6bc0 100%)',
           display: 'flex',
-          justifyContent: 'center',
           alignItems: 'center',
-          paddingTop: '20px',
+          justifyContent: 'center',
+          padding: 0,
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          paddingTop: 8,
         }}
       >
-        <Container
-          maxWidth="sm"
-          sx={{
-            backgroundColor: 'white',
-            padding: 4,
-            borderRadius: 2,
-            boxShadow: 3,
-            zIndex: 2,
-            position: 'relative',
-            transition: 'transform 0.3s ease-in-out',
-            '&:hover': { transform: 'scale(1.02)' },
-          }}
+        <NavbarSidebar />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          <Typography
-            variant="h4"
-            component="h1"
-            gutterBottom
-            sx={{
-              textAlign: 'center',
-              color: '#0097b6',
-              marginBottom: 3,
-            }}
-          >
-            Editar Caso
-          </Typography>
+          <Container maxWidth="md">
+            <Paper 
+              elevation={12} 
+              sx={{ 
+                borderRadius: 4, 
+                padding: 4, 
+                background: darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.95)',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 3 }}>
+                <Typography variant="h4" color={darkMode ? 'white' : 'primary'} fontWeight="bold">
+                  Editar Caso
+                </Typography>
+              </Box>
 
-          <form onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <FormControl fullWidth margin="normal">
-                  <InputLabel id="nombreCaso-label">Nombre del Caso</InputLabel>
-                  <Select
-                    labelId="nombreCaso-label"
-                    name="nombreCaso"
-                    value={formData.nombreCaso}
-                    onChange={handleChange}
-                    required
-                    sx={{
-                      backgroundColor: '#f5f5f5',
-                      '& .MuiSelect-root': { padding: '10px' },
-                    }}
+              <form onSubmit={handleSubmit}>
+                <Grid container spacing={3}>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      label="Nombre del Caso"
+                      name="nombreCaso"
+                      value={formData.nombreCaso}
+                      onChange={handleChange}
+                      variant="outlined"
+                      required
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      label="Cliente"
+                      value={formData.clienteNombre}
+                      variant="outlined"
+                      disabled
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      label="Detective"
+                      value={formData.detectiveNombre}
+                      variant="outlined"
+                      disabled
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={formData.activo}
+                          onChange={(e) => setFormData(prev => ({ ...prev, activo: e.target.checked }))}
+                          color="primary"
+                        />
+                      }
+                      label="Caso Activo"
+                    />
+                  </Grid>
+                </Grid>
+
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 3 }}>
+                  <Button 
+                    variant="outlined" 
+                    startIcon={<ArrowBackIcon />} 
+                    onClick={() => navigate(-1)}
+                    color="primary"
                   >
-                    <MenuItem value="cadenaCustodia">Cadena de Custodia</MenuItem>
-                    <MenuItem value="investigacionExtorsion">Investigación de Extorsión</MenuItem>
-                    <MenuItem value="estudiosSeguridad">Estudios de Seguridad</MenuItem>
-                    <MenuItem value="investigacionInfidelidades">Investigación de Infidelidades</MenuItem>
-                    <MenuItem value="investigacionRobosEmpresariales">Investigación de Robos Empresariales</MenuItem>
-                    <MenuItem value="antecedentes">Antecedentes</MenuItem>
-                    <MenuItem value="recuperacionVehiculos">Recuperación de Vehículos</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
+                    Cancelar
+                  </Button>
 
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Cliente"
-                  margin="normal"
-                  value={formData.clienteNombre}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  sx={{
-                    backgroundColor: '#f5f5f5',
-                    '& .MuiInputBase-root': { padding: '10px' },
-                  }}
-                />
-              </Grid>
+                  <Button 
+                    type="submit" 
+                    variant="contained" 
+                    startIcon={<SaveIcon />} 
+                    color="primary"
+                  >
+                    Guardar cambios
+                  </Button>
+                </Box>
+              </form>
 
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Detective"
-                  margin="normal"
-                  value={formData.detectiveNombre}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  sx={{
-                    backgroundColor: '#f5f5f5',
-                    '& .MuiInputBase-root': { padding: '10px' },
-                  }}
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Activo"
-                  margin="normal"
-                  value={formData.activo ? 'Sí' : 'No'}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  sx={{
-                    backgroundColor: '#f5f5f5',
-                    '& .MuiInputBase-root': { padding: '10px' },
-                  }}
-                />
-              </Grid>
-            </Grid>
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                mt: 3,
-                backgroundColor: '#006f8e',
-                '&:hover': { backgroundColor: '#004f6f' },
-                padding: '10px',
-              }}
-            >
-              Guardar Cambios
-            </Button>
-
-            <Button
-              variant="outlined"
-              onClick={() => navigate(-1)}
-              sx={{
-                mt: 2,
-                color: '#006f8e',
-                borderColor: '#006f8e',
-                '&:hover': { backgroundColor: '#e0f7fa' },
-                padding: '10px',
-                width: '100%',
-              }}
-            >
-              Volver
-            </Button>
-          </form>
-        </Container>
+              <IconButton 
+                sx={{
+                  position: 'absolute', 
+                  top: 16, 
+                  right: 16, 
+                  backgroundColor: darkMode ? '#424242' : '#f0f0f0',
+                }}
+                onClick={() => setDarkMode(!darkMode)}
+              >
+                {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+              </IconButton>
+            </Paper>
+          </Container>
+        </motion.div>
       </Box>
-    </Box>
+    </ThemeProvider>
   );
 };
 
