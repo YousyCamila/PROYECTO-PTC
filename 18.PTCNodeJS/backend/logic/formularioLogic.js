@@ -14,37 +14,39 @@ class FormularioLogic {
     const formulario = new Formulario(body);
     return await formulario.save();
   }
-
   async responderFormulario(id, respuesta) {
     // Validar que la respuesta no esté vacía
     if (!respuesta) {
       throw new Error('La respuesta no puede estar vacía.');
     }
-
+  
     // Buscar y actualizar el formulario con la respuesta y cambiar su estado a 'respondido'
     const formulario = await Formulario.findByIdAndUpdate(
       id,
       {
-        respuesta, 
-        estado: 'respondido', // Cambiar estado a respondido
-        fechaRespuesta: new Date() // Agregar la fecha de respuesta
+        $set: {
+          respuesta, 
+          estado: 'respondido', // Cambiar estado a respondido
+          fechaRespuesta: new Date() // Agregar la fecha de respuesta
+        }
       },
       { new: true } // Devuelve el documento actualizado
     );
-
+  
     if (!formulario) {
       throw new Error('Formulario no encontrado');
     }
-
+  
     // Enviar correo al cliente con la respuesta
     await enviarCorreo(
       formulario.correoCliente,
       'Respuesta a su formulario',
       `Hola ${formulario.nombre},\n\nAquí está la respuesta:\n${respuesta}\n\nGracias.`
     );
-
+  
     return formulario; // Retorna el formulario con su respuesta y estado actualizado
   }
+  
   
   async obtenerFormularios() {
     return await Formulario.find({
