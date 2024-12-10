@@ -33,7 +33,8 @@ import CasoDetailsMenu from './pages/cliente/CasoDetailsMenu';
 import EvidenciasCrud from './pages/cliente/EvidenciasCrud';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
-import RegistroCaso from './pages/cliente/registroCaso';
+import RegistroCaso from './pages/cliente/RegistrosCrud';
+import AgregarRegistrosForm from './pages/cliente/RegistrosCrud';
 
 
 function App() {
@@ -81,7 +82,8 @@ function App() {
             <Route path="/caso-details" element={<CasoDetailsMenu />} />
             <Route path="/evidencias-crud" element={<EvidenciasCrud />} />
             <Route path="/agregar-evidencia/:casoId" element={<AgregarEvidencia />} />
-            <Route path="/registroCaso" element={<RegistroCaso />} />
+            <Route path="/registros-crud" element={<RegistroCaso />} />
+            <Route path='/agregar-registros' element={<AgregarRegistrosForm />} />
 
           </Route>
 

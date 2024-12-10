@@ -7,37 +7,20 @@ import {
   DialogActions,
   DialogContent,
   Divider,
-  IconButton,
-  TextField,
 } from '@mui/material';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import AddIcon from '@mui/icons-material/Add';
+import { useNavigate } from 'react-router-dom';
 import EvidenciasCrud from './EvidenciasCrud';
+import RegistrosCrud from './RegistrosCrud';
 
 const CasoDetailsMenu = ({ caso, onClose }) => {
-  const [view, setView] = useState('details'); // Para cambiar entre vistas: detalles, evidencias, contrato, registro
-  const [openCreateDialog, setOpenCreateDialog] = useState(false); // Controlar el diálogo para crear registros
-  const [newRegistro, setNewRegistro] = useState({
-    descripcion: '',
-    fechaInicio: '',
-    estadoRegistro: '',
-  }); // Datos del nuevo registro
+  const [view, setView] = useState('details'); // Para cambiar entre vistas: detalles, evidencias, contrato, registros
+  const navigate = useNavigate(); // Hook para redirigir
 
+  // Cambiar vistas
   const handleViewDetails = () => setView('details');
   const handleViewEvidencias = () => setView('evidencias');
   const handleViewContrato = () => setView('contrato');
-  const handleViewRegistroCasos = () => setView('registro');
-
-  const handleOpenCreateDialog = () => setOpenCreateDialog(true);
-  const handleCloseCreateDialog = () => {
-    setOpenCreateDialog(false);
-    setNewRegistro({ descripcion: '', fechaInicio: '', estadoRegistro: '' }); // Limpiar campos
-  };
-
-  const handleCreateRegistro = async () => {
-    console.log('Creando nuevo registro:', newRegistro);
-    handleCloseCreateDialog();
-  };
+  const handleViewRegistros = () => setView('registros');
 
   const renderContent = () => {
     switch (view) {
@@ -45,9 +28,9 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
         return (
           <Box>
             <Typography variant="h6" gutterBottom>
-              Evidencias
+              Evidencias del Caso
             </Typography>
-            <EvidenciasCrud evidencias={caso.evidencias} casoId={caso._id} />
+            <EvidenciasCrud casoId={caso._id} />
           </Box>
         );
       case 'contrato':
@@ -70,37 +53,13 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
             )}
           </Box>
         );
-      case 'registro':
+      case 'registros':
         return (
           <Box>
             <Typography variant="h6" gutterBottom>
               Registros del Caso
             </Typography>
-            {caso.registroCasos && caso.registroCasos.length > 0 ? (
-              <ul>
-                {caso.registroCasos.map((registro, index) => (
-                  <li key={index}>
-                    <strong>Descripción:</strong> {registro.descripcion || 'Sin descripción'}, 
-                    <strong> Estado:</strong> {registro.estadoRegistro || 'No definido'}, 
-                    <strong> Fecha Inicio:</strong> {new Date(registro.fechaInicio).toLocaleDateString()}
-                    <IconButton onClick={() => console.log('Ver detalles del registro:', registro)}>
-                      <VisibilityIcon color="primary" />
-                    </IconButton>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <Typography>No hay registros asociados.</Typography>
-            )}
-            <Button
-              startIcon={<AddIcon />}
-              variant="outlined"
-              color="primary"
-              onClick={handleOpenCreateDialog}
-              sx={{ mt: 2 }}
-            >
-              Crear Nuevo Registro
-            </Button>
+            <RegistrosCrud casoId={caso._id} />
           </Box>
         );
       default:
@@ -119,22 +78,6 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
             <Typography variant="body1" sx={{ mb: 1, color: '#333' }}>
               <strong>Detective Asignado:</strong> {caso.idDetective?.nombres || 'No asignado'}
             </Typography>
-            <Typography variant="body1" sx={{ mb: 1, color: '#333' }}>
-  <strong>Evidencias:</strong>
-  {caso.evidencias && caso.evidencias.length > 0 ? (
-    <ul aria-label="Lista de evidencias">
-      {caso.evidencias.map((evidencia) => (
-        <li key={evidencia._id}>
-          Fecha: {new Date(evidencia.fechaEvidencia).toLocaleDateString()}, 
-          Descripción: {evidencia.descripcion}, 
-          Tipo: {evidencia.tipoEvidencia}
-        </li>
-      ))}
-    </ul>
-  ) : (
-    'No hay evidencias asociadas.'
-  )}
-</Typography> 
           </Box>
         );
     }
@@ -155,7 +98,7 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
           <Button fullWidth variant="contained" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91' }} onClick={handleViewContrato}>
             Ver Contrato
           </Button>
-          <Button fullWidth variant="contained" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91' }} onClick={handleViewRegistroCasos}>
+          <Button fullWidth variant="outlined" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91'  }} onClick={handleViewRegistros}>
             Ver Registros del Caso
           </Button>
         </Box>
@@ -169,39 +112,6 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
       <DialogActions sx={{ backgroundColor: '#f5faff', padding: 2 }}>
         <Button onClick={onClose} sx={{ color: '#005f91', fontWeight: 'bold' }}>Cerrar</Button>
       </DialogActions>
-
-      {/* Diálogo para crear un nuevo registro */}
-      <Dialog open={openCreateDialog} onClose={handleCloseCreateDialog}>
-        <DialogContent>
-          <Typography variant="h6" gutterBottom>Crear Nuevo Registro</Typography>
-          <TextField
-            label="Descripción"
-            fullWidth
-            value={newRegistro.descripcion}
-            onChange={(e) => setNewRegistro({ ...newRegistro, descripcion: e.target.value })}
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            label="Fecha de Inicio"
-            type="date"
-            fullWidth
-            value={newRegistro.fechaInicio}
-            onChange={(e) => setNewRegistro({ ...newRegistro, fechaInicio: e.target.value })}
-            sx={{ mb: 2 }}
-            InputLabelProps={{ shrink: true }}
-          />
-          <TextField
-            label="Estado"
-            fullWidth
-            value={newRegistro.estadoRegistro}
-            onChange={(e) => setNewRegistro({ ...newRegistro, estadoRegistro: e.target.value })}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseCreateDialog} color="secondary">Cancelar</Button>
-          <Button onClick={handleCreateRegistro} color="primary">Crear</Button>
-        </DialogActions>
-      </Dialog>
     </Dialog>
   );
 };
