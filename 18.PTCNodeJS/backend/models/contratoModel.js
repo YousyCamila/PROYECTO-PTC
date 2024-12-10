@@ -37,7 +37,7 @@ const contratoSchema = new mongoose.Schema({
 
   nombreCliente: {
     type: String,
-    required: true, // Asegúrate de capturar este dato al crear un caso
+    required: false, // Asegúrate de capturar este dato al crear un caso
   },
   idDetective: {
     type: mongoose.Schema.Types.ObjectId,
