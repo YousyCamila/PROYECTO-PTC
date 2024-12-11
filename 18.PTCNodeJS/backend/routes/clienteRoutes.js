@@ -154,6 +154,7 @@ router.put('/:id', clienteController.actualizarCliente);
  *       404:
  *         description: Cliente no encontrado
  */
-router.delete('/:id', clienteController.desactivarCliente);
+router.patch('/:id', clienteController.desactivarCliente); // Usar PATCH en lugar de DELETE
+
 
 module.exports = router;

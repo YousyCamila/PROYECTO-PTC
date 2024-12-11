@@ -19,7 +19,7 @@ async function crearDetective(datos) {
 }
 
 async function listarDetectives() {
-  const detectives = await Detective.find({ activo: true });
+  const detectives = await Detective.find();
   if (detectives.length === 0) {
     throw new Error('No hay detectives registrados actualmente.');
   }
@@ -45,7 +45,7 @@ async function buscarDetectivePorCorreo(correo) {
 async function actualizarDetective(id, datos) {
   const detective = await Detective.findById(id);
 
-  if (!detective || !detective.activo) {
+  if (!detective ) {
     throw new Error('El detective que intenta actualizar no existe o ha sido desactivado.');
   }
 
