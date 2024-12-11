@@ -166,4 +166,35 @@ router.delete('/:id', contratoController.desactivarContrato);
  */
 router.get('/detective/:id', contratoController.listarContratosPorDetective);
 
+
+/**
+ * @swagger
+ * /contratos/{id}:
+ *   put:
+ *     summary: Actualizar un contrato por ID
+ *     tags: [Contratos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID del contrato
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Contrato'
+ *     responses:
+ *       200:
+ *         description: El contrato ha sido actualizado exitosamente.
+ *       404:
+ *         description: Contrato no encontrado.
+ *       500:
+ *         description: Error interno del servidor.
+ */
+router.put('/:id', contratoController.actualizarContrato);
+
+
 module.exports = router;
