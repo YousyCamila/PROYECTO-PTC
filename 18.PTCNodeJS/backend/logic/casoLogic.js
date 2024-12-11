@@ -87,7 +87,8 @@ const obtenerCasosPorEmailCliente = async (emailCliente) => {
       .populate('idDetective')
       .populate('evidencias')
       .populate('registroCasos')
-      .populate('contratos'); // Traer también los contratos
+      .populate('contratos')
+      .populate ('idCliente'); // Traer también los contratos
 
     return {
       casos,

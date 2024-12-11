@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -17,6 +17,7 @@ import {
   IconButton,
 } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
 
@@ -26,7 +27,6 @@ const RegistrosCrud = ({ casoId }) => {
   const [selectedRegistro, setSelectedRegistro] = useState(null);
   const navigate = useNavigate();
 
-  // URL base del backend
   const backendUrl = 'http://localhost:3000';
 
   // Fetch registros al cargar el componente
@@ -60,6 +60,10 @@ const RegistrosCrud = ({ casoId }) => {
 
   const handleAddRegistro = () => {
     navigate(`/agregar-registros/${casoId}`); // Incluye el casoId en la ruta
+  };
+
+  const handleEditRegistro = (registro) => {
+    navigate(`/editar-registros/${registro._id}`); // Redirigir al formulario de edición
   };
 
   return (
@@ -98,6 +102,9 @@ const RegistrosCrud = ({ casoId }) => {
                     <IconButton onClick={() => handleViewRegistro(registro)}>
                       <VisibilityIcon color="primary" />
                     </IconButton>
+                    <IconButton onClick={() => handleEditRegistro(registro)}>
+                      <EditIcon color="secondary" />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))
@@ -117,9 +124,15 @@ const RegistrosCrud = ({ casoId }) => {
         <DialogContent>
           {selectedRegistro ? (
             <>
-              <Typography variant="body1"><strong>Fecha:</strong> {new Date(selectedRegistro.fechaInicio).toLocaleString()}</Typography>
+              <Typography variant="body1"><strong>Fecha de Inicio:</strong> {new Date(selectedRegistro.fechaInicio).toLocaleDateString()}</Typography>
+              <Typography variant="body1"><strong>Fecha de Finalización:</strong> {selectedRegistro.fechaFinalizacion ? new Date(selectedRegistro.fechaFinalizacion).toLocaleDateString() : 'No definida'}</Typography>
               <Typography variant="body1"><strong>Descripción:</strong> {selectedRegistro.descripcion}</Typography>
               <Typography variant="body1"><strong>Estado:</strong> {selectedRegistro.estadoRegistro}</Typography>
+              <Typography variant="body1">
+                <strong>Seguimiento (%):</strong> {selectedRegistro.seguimientoPorcentaje ? parseFloat(selectedRegistro.seguimientoPorcentaje.toString()) : 'No especificado'}
+              </Typography>
+              <Typography variant="body1"><strong>Cliente:</strong> {selectedRegistro.idCliente ? selectedRegistro.idCliente.nombre : 'No asignado'}</Typography>
+              <Typography variant="body1"><strong>Detective:</strong> {selectedRegistro.idDetective ? selectedRegistro.idDetective.nombre : 'No asignado'}</Typography>
             </>
           ) : (
             <Typography>No se seleccionó ningún registro.</Typography>

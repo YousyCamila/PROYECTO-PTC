@@ -14,8 +14,8 @@ import {
 import Swal from 'sweetalert2';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const AgregarRegistroForm = () => {
-  const { casoId } = useParams(); // Obtener el casoId desde la URL
+const EditarRegistroForm = () => {
+  const { registroId } = useParams(); // Obtener el registroId desde la URL
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -32,6 +32,29 @@ const AgregarRegistroForm = () => {
   const [detectives, setDetectives] = useState([]);
 
   const estadosRegistro = ['Comenzando', 'En Progreso', 'Finalizando'];
+
+  // Fetch datos del registro
+  useEffect(() => {
+    const fetchRegistro = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/registros-caso/${registroId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setFormData({
+            ...data,
+            fechaInicio: data.fechaInicio.split('T')[0], // Formatear fecha para el input
+            fechaFinalizacion: data.fechaFinalizacion ? data.fechaFinalizacion.split('T')[0] : '',
+          });
+        } else {
+          console.error('Error al cargar el registro:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error en la solicitud:', error);
+      }
+    };
+
+    fetchRegistro();
+  }, [registroId]);
 
   // Fetch clientes y detectives
   useEffect(() => {
@@ -68,29 +91,20 @@ const AgregarRegistroForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const payload = {
-      ...formData,
-      idCliente: formData.idCliente || null,
-      idDetective: formData.idDetective || null,
-      idCasos: casoId,
-    };
-
-    console.log("Datos enviados al backend:", payload);
-
     try {
-      const response = await fetch('http://localhost:3000/api/registros-caso', {
-        method: 'POST',
+      const response = await fetch(`http://localhost:3000/api/registros-caso/${registroId}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
         Swal.fire({
           icon: 'success',
-          title: 'Registro Agregado',
-          text: 'El registro se ha agregado exitosamente.',
+          title: 'Registro Actualizado',
+          text: 'El registro se ha actualizado exitosamente.',
         });
         navigate(`/cliente-menu`); // Redirigir a la lista de registros
       } else {
@@ -98,11 +112,11 @@ const AgregarRegistroForm = () => {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: errorData.message || 'No se pudo agregar el registro.',
+          text: errorData.message || 'No se pudo actualizar el registro.',
         });
       }
     } catch (error) {
-      console.error('Error al agregar registro:', error);
+      console.error('Error al actualizar registro:', error);
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -123,55 +137,11 @@ const AgregarRegistroForm = () => {
       }}
     >
       <Typography variant="h5" sx={{ mb: 2, fontWeight: 'bold', color: '#005f91' }}>
-        Agregar Registro
+        Editar Registro
       </Typography>
       <Divider sx={{ mb: 3, backgroundColor: '#d1e0e5' }} />
 
       <form onSubmit={handleSubmit}>
-        <FormControl fullWidth margin="normal">
-          <InputLabel id="cliente-label" sx={{ color: '#005f91' }}>
-            Cliente
-          </InputLabel>
-          <Select
-            labelId="cliente-label"
-            name="idCliente"
-            value={formData.idCliente}
-            onChange={handleChange}
-            sx={{ backgroundColor: '#ffffff', color: '#000000' }}
-          >
-            <MenuItem value="">
-              Ninguno
-            </MenuItem>
-            {clientes.map((cliente) => (
-              <MenuItem key={cliente._id} value={cliente._id}>
-                {cliente.nombre}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <FormControl fullWidth margin="normal">
-          <InputLabel id="detective-label" sx={{ color: '#005f91' }}>
-            Detective (Opcional)
-          </InputLabel>
-          <Select
-            labelId="detective-label"
-            name="idDetective"
-            value={formData.idDetective}
-            onChange={handleChange}
-            sx={{ backgroundColor: '#ffffff', color: '#000000' }}
-          >
-            <MenuItem value="">
-              Ninguno
-            </MenuItem>
-            {detectives.map((detective) => (
-              <MenuItem key={detective._id} value={detective._id}>
-                {detective.nombre}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
         <TextField
           fullWidth
           label="Fecha de Inicio"
@@ -231,9 +201,53 @@ const AgregarRegistroForm = () => {
           name="seguimientoPorcentaje"
           margin="normal"
           type="number"
-          value={formData.seguimientoPorcentaje}
+          value={formData.seguimientoPorcentaje || ''}
           onChange={handleChange}
         />
+
+        <FormControl fullWidth margin="normal">
+          <InputLabel id="cliente-label" sx={{ color: '#005f91' }}>
+            Cliente
+          </InputLabel>
+          <Select
+            labelId="cliente-label"
+            name="idCliente"
+            value={formData.idCliente || ''}
+            onChange={handleChange}
+            sx={{ backgroundColor: '#ffffff', color: '#000000' }}
+          >
+            <MenuItem value="">
+              Ninguno
+            </MenuItem>
+            {clientes.map((cliente) => (
+              <MenuItem key={cliente._id} value={cliente._id}>
+                {cliente.nombre}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <FormControl fullWidth margin="normal">
+          <InputLabel id="detective-label" sx={{ color: '#005f91' }}>
+            Detective (Opcional)
+          </InputLabel>
+          <Select
+            labelId="detective-label"
+            name="idDetective"
+            value={formData.idDetective || ''}
+            onChange={handleChange}
+            sx={{ backgroundColor: '#ffffff', color: '#000000' }}
+          >
+            <MenuItem value="">
+              Ninguno
+            </MenuItem>
+            {detectives.map((detective) => (
+              <MenuItem key={detective._id} value={detective._id}>
+                {detective.nombre}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
           <Button
@@ -244,10 +258,10 @@ const AgregarRegistroForm = () => {
               '&:hover': { backgroundColor: '#005f91' },
             }}
           >
-            Agregar Registro
+            Actualizar Registro
           </Button>
           <Button
-            onClick={() => navigate('/cliente-menu')}
+            onClick={() => navigate(`/cliente-menu`)}
             variant="outlined"
             sx={{
               color: '#005f91',
@@ -263,4 +277,4 @@ const AgregarRegistroForm = () => {
   );
 };
 
-export default AgregarRegistroForm;
+export default EditarRegistroForm;
