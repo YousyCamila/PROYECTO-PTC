@@ -324,7 +324,7 @@ const AdminMenu = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
+      <Box sx={{ minHeight: '100vh',width: '100vw', bgcolor: 'background.default' }}>
         <NavbarSidebar />
 
         <IconButton

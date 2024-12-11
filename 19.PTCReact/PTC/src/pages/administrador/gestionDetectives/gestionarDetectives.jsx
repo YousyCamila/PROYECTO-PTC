@@ -197,6 +197,7 @@ const GestionarDetectives = () => {
             detective._id === detectiveId ? { ...detective, activo: false } : detective
           );
           setDetectives(updatedDetectives);
+          
           setFilteredDetectives(updatedDetectives);
           Swal.fire('Desactivado!', 'El detective ha sido desactivado.', 'success');
         } else {
@@ -388,6 +389,7 @@ const GestionarDetectives = () => {
                       <Chip
                         label={detective.activo ? 'Activo' : 'Inactivo'}
                         color={detective.activo ? 'success' : 'error'}
+                        sx={{ fontWeight: 'bold' }}
                       />
                     </TableCell>
                     <TableCell sx={{color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',}}>

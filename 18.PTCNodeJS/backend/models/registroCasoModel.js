@@ -28,12 +28,12 @@ const registroCasoSchema = new mongoose.Schema({
   idCliente: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Cliente',
-    required: true
+
   },
   idDetective: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Detective',
-    required: true
+
   }
 },
 { timestamps: true });

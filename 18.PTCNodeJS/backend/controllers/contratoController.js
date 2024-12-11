@@ -48,10 +48,20 @@ const listarContratosPorDetective = async (req, res) => {
   }
 };
 
+const actualizarContrato = async (req, res) => {
+  try {
+    const contrato = await contratoService.actualizarContrato(req.params.id, req.body);
+    res.status(200).json(contrato);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
 module.exports = {
   crearContrato,
   listarContratos,
   buscarContratoPorId,
   desactivarContrato,
-  listarContratosPorDetective // Exportar el nuevo controlador
+  listarContratosPorDetective,
+  actualizarContrato
 };
