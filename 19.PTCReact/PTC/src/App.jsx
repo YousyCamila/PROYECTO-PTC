@@ -34,6 +34,7 @@ import EvidenciasCrud from './pages/cliente/EvidenciasCrud';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import RegistroCaso from './pages/cliente/registroCaso';
+import RegistroCasoDetective from './pages/detective/registroCasoDetective';
 
 
 function App() {

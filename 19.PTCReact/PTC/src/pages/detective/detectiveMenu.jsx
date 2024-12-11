@@ -40,7 +40,7 @@ const DetectiveMenu = () => {
 
   const fetchCasosAsignados = async (emailDetective) => {
     try {
-      const response = await fetch(`${API_URL}/caso/detective/email/${emailDetective}`, {
+      const response = await fetch(`${API_URL}/caso/cliente/email/${emailCliente}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -160,7 +160,7 @@ const DetectiveMenu = () => {
         message={snackbarMessage}
       />
 
-      {selectedCaso && <CasoDetailsMenu caso={selectedCaso} onClose={() => setSelectedCaso(null)} />}
+      {selectedCaso && <DetectiveMenuCasoDetailsMenu caso={selectedCaso} onClose={() => setSelectedCaso(null)} />}
     </Box>
   );
 };
