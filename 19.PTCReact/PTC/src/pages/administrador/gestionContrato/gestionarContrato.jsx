@@ -256,11 +256,6 @@ const GestionarContratos = () => {
                           <VisibilityIcon />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Editar">
-                        <IconButton color="secondary" onClick={() => handleEdit(contrato._id)} sx={{ marginRight: 1 }}>
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
                       <Tooltip title="Desactivar">
                         <IconButton color="error" onClick={() => handleDeactivate(contrato._id)}>
                           <DeleteIcon />
