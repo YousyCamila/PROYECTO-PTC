@@ -6,32 +6,38 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      try {
-        const decodedToken = jwt_decode(token);
-        setUser({
-          id: decodedToken.id,
-          email: decodedToken.email,
-          role: decodedToken.role,
-        });
-      } catch (error) {
-        console.error("Error decodificando el token", error);
-        localStorage.removeItem('accessToken');
-      }
-    } else {
+  // Manejar el token en el estado global
+  const login = (token) => {
+    try {
+      const decodedToken = jwt_decode(token);
+      localStorage.setItem('accessToken', token); // Guardar el nuevo token
+      setUser({
+        id: decodedToken.id,
+        email: decodedToken.email,
+        role: decodedToken.role,
+      });
+    } catch (error) {
+      console.error("Error decodificando el token", error);
+      localStorage.removeItem('accessToken');
       setUser(null);
     }
-  }, []);
+  };
 
   const logout = () => {
     localStorage.removeItem('accessToken');
     setUser(null);
   };
 
+  useEffect(() => {
+    // Recuperar el token al cargar la aplicación
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      login(token); // Decodificar y establecer el usuario automáticamente
+    }
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ user, logout }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
