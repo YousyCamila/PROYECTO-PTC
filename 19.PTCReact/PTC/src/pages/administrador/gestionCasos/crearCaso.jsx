@@ -79,13 +79,18 @@ const CrearCaso = () => {
       ]);
       const clientesData = await clientesRes.json();
       const detectivesData = await detectivesRes.json();
-
-      setClientes(clientesData);
-      setDetectives(detectivesData);
+  
+      // Filtra los clientes y detectives activos
+      const clientesActivos = clientesData.filter(cliente => cliente.activo);
+      const detectivesActivos = detectivesData.filter(detective => detective.activo);
+  
+      setClientes(clientesActivos);
+      setDetectives(detectivesActivos);
     } catch (error) {
       console.error('Error al cargar clientes y detectives:', error);
     }
   };
+  
 
   useEffect(() => {
     fetchClientesYDetectives();

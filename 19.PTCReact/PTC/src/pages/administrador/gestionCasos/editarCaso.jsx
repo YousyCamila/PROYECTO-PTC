@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Box, 
-  Typography, 
-  Container, 
-  Grid, 
-  TextField, 
-  Button, 
-  Paper, 
-  MenuItem, 
-  FormControlLabel, 
-  Switch, 
-  IconButton 
+import {
+  Box,
+  Typography,
+  Container,
+  Grid,
+  TextField,
+  Button,
+  Paper,
+  MenuItem,
+  FormControlLabel,
+  Switch,
+  IconButton
 } from '@mui/material';
-import { 
-  Save as SaveIcon, 
-  ArrowBack as ArrowBackIcon, 
-  Brightness4 as Brightness4Icon, 
-  Brightness7 as Brightness7Icon 
+import { Autocomplete } from '@mui/material';
+
+import {
+  Save as SaveIcon,
+  ArrowBack as ArrowBackIcon,
+  Brightness4 as Brightness4Icon,
+  Brightness7 as Brightness7Icon
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -38,6 +40,16 @@ const EditarCaso = () => {
   });
 
   const [darkMode, setDarkMode] = useState(false);
+
+  const nombreCaso = [
+    'Cadena de custodia',
+    'Investigación de extorsión',
+    'Estudios de seguridad',
+    'Investigación de infidelidades',
+    'Investigación de robos empresariales',
+    'Antecedentes',
+    'Recuperación de vehículos'
+  ]
 
   const theme = createTheme({
     palette: {
@@ -79,14 +91,15 @@ const EditarCaso = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(formData); // Verifica los datos enviados
+  
     try {
       const response = await fetch(`http://localhost:3000/api/caso/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-
+  
       if (response.ok) {
         Swal.fire({
           icon: 'success',
@@ -103,6 +116,7 @@ const EditarCaso = () => {
         });
       }
     } catch (error) {
+      console.error(error); // Imprime cualquier error que ocurra durante la solicitud
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -110,10 +124,11 @@ const EditarCaso = () => {
       });
     }
   };
+  
 
   return (
     <ThemeProvider theme={theme}>
-      <Box 
+      <Box
         sx={{
           minHeight: '100vh',
           background: darkMode ? '#121212' : 'linear-gradient(135deg, #1a237e 0%, #5c6bc0 100%)',
@@ -136,11 +151,11 @@ const EditarCaso = () => {
           transition={{ duration: 0.5 }}
         >
           <Container maxWidth="md">
-            <Paper 
-              elevation={12} 
-              sx={{ 
-                borderRadius: 4, 
-                padding: 4, 
+            <Paper
+              elevation={12}
+              sx={{
+                borderRadius: 4,
+                padding: 4,
                 background: darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.95)',
                 backdropFilter: 'blur(10px)',
               }}
@@ -154,16 +169,21 @@ const EditarCaso = () => {
               <form onSubmit={handleSubmit}>
                 <Grid container spacing={3}>
                   <Grid item xs={12} sm={6}>
-                    <TextField
-                      fullWidth
-                      label="Nombre del Caso"
-                      name="nombreCaso"
-                      value={formData.nombreCaso}
-                      onChange={handleChange}
-                      variant="outlined"
-                      required
+                    <Autocomplete
+                      options={nombreCaso}  // Lista de casos predefinidos
+                      value={formData.nombreCaso}  // Establece el valor del caso
+                      onChange={(_, newValue) => setFormData(prev => ({ ...prev, nombreCaso: newValue }))}  // Actualiza el estado
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Nombre del Caso"
+                          variant="outlined"
+                          required
+                        />
+                      )}
                     />
                   </Grid>
+
 
                   <Grid item xs={12} sm={6}>
                     <TextField
@@ -200,19 +220,19 @@ const EditarCaso = () => {
                 </Grid>
 
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 3 }}>
-                  <Button 
-                    variant="outlined" 
-                    startIcon={<ArrowBackIcon />} 
+                  <Button
+                    variant="outlined"
+                    startIcon={<ArrowBackIcon />}
                     onClick={() => navigate(-1)}
                     color="primary"
                   >
                     Cancelar
                   </Button>
 
-                  <Button 
-                    type="submit" 
-                    variant="contained" 
-                    startIcon={<SaveIcon />} 
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    startIcon={<SaveIcon />}
                     color="primary"
                   >
                     Guardar cambios
@@ -220,11 +240,11 @@ const EditarCaso = () => {
                 </Box>
               </form>
 
-              <IconButton 
+              <IconButton
                 sx={{
-                  position: 'absolute', 
-                  top: 16, 
-                  right: 16, 
+                  position: 'absolute',
+                  top: 16,
+                  right: 16,
                   backgroundColor: darkMode ? '#424242' : '#f0f0f0',
                 }}
                 onClick={() => setDarkMode(!darkMode)}
