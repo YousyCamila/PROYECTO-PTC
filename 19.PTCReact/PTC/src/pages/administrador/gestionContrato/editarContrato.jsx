@@ -29,12 +29,13 @@ const EditarContrato = () => {
     const fetchContrato = async () => {
       try {
         const response = await fetch(`http://localhost:3000/api/contratos/${id}`);
+        
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
-        const data = await response.json();
-
-        // Verifica si se encontró el contrato y establece los datos en el formulario
+        
+        const data = await response.json(); // Solo lee el cuerpo como JSON
+    
         if (data) {
           setFormData({
             descripcionServicio: data.descripcionServicio,
@@ -43,8 +44,8 @@ const EditarContrato = () => {
             clausulas: data.clausulas || '',
             tarifa: data.tarifa,
             estado: data.estado,
-            idCliente: data.idCliente._id, // Guarda solo el ID del cliente
-            idDetective: data.idDetective ? data.idDetective._id : '', // Guarda solo el ID del detective
+            idCliente: data.idCliente._id,
+            idDetective: data.idDetective ? data.idDetective._id : '',
           });
         }
       } catch (error) {
@@ -56,6 +57,7 @@ const EditarContrato = () => {
         });
       }
     };
+    
 
     fetchContrato();
   }, [id]);

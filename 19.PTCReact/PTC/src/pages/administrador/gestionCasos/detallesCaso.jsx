@@ -2,28 +2,37 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Container,
-  Typography,
   Paper,
-  Button,
+  Typography,
   Grid,
-  List,
-  ListItem,
-  ListItemText,
+  Tabs,
+  Tab,
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  Button,
+  useTheme,
+  createTheme,
+  ThemeProvider,
+  IconButton,
 } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import DarkModeIcon from '@mui/icons-material/Brightness4';
+import LightModeIcon from '@mui/icons-material/Brightness7';
+import NavbarSidebar from '../NavbarSidebar';
 
 const DetallesCaso = () => {
-  const { id } = useParams(); // Obtener el ID del caso de la URL
+  const { id } = useParams();
   const [caso, setCaso] = useState(null);
   const navigate = useNavigate();
+  const [tabValue, setTabValue] = useState(0);
+  const [darkMode, setDarkMode] = useState(false);
 
-  // Fetch caso details from the API
   const fetchCaso = async () => {
     try {
       const response = await fetch(`http://localhost:3000/api/caso/${id}`);
@@ -49,115 +58,143 @@ const DetallesCaso = () => {
   }, [id]);
 
   const handleBack = () => {
-    navigate('/gestionar-casos'); // Navegar a la lista de casos
+    navigate('/gestionar-casos');
   };
 
-  if (!caso) return <div>Cargando...</div>; // Mostrar un mensaje de carga si no se ha cargado el caso
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
+  const theme = createTheme({
+    palette: {
+      mode: darkMode ? 'dark' : 'light',
+      primary: { main: '#0077b6' },
+      secondary: { main: '#00bcd4' },
+    },
+    typography: {
+      fontFamily: 'Roboto, sans-serif',
+    },
+    components: {
+      MuiPaper: {
+        styleOverrides: {
+          root: {
+            borderRadius: '16px',
+            boxShadow: darkMode
+              ? '0px 4px 20px rgba(0, 0, 0, 0.2)'
+              : '0px 4px 10px rgba(0, 0, 0, 0.1)',
+          },
+        },
+      },
+    },
+  });
+
+  if (!caso) return <div>Cargando...</div>;
 
   return (
-    <Box
-      sx={{
-        width: '100vw',
-        height: '100vh',
-        background: 'linear-gradient(to right, #001f3f, #0077b6)',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      <Container maxWidth="lg" sx={{ marginTop: 4 }}>
-        <Paper sx={{ padding: 4, borderRadius: 2, boxShadow: 3 }}>
-          <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#0077b6' }}>
-            Detalles del Caso
-          </Typography>
-
-          {/* Información del Caso */}
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#005f91' }}>
-                Información del Caso
+    <ThemeProvider theme={theme}>
+      <Box
+        sx={{
+          width: '100vw',
+          height: '100vh',
+          background: darkMode
+            ? '#121212'
+            : 'linear-gradient(to right, #001f3f, #0077b6)',
+          display: 'flex',
+          alignItems: 'flex-start',
+          paddingTop: 15,
+          flexDirection: 'column',
+        }}
+      >
+        <NavbarSidebar />
+        <Container maxWidth="lg" sx={{ marginTop: 4 }}>
+          <Paper sx={{ padding: 4 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#0077b6' }}>
+                Detalles del Caso
               </Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1"><strong>ID del Caso:</strong> {caso._id}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1"><strong>Nombre del Caso:</strong> {caso.nombreCaso}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1"><strong>Cliente:</strong> {caso.idCliente.nombres} {caso.idCliente.apellidos}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1"><strong>Detective:</strong> {caso.idDetective ? `${caso.idDetective.nombres} ${caso.idDetective.apellidos}` : 'No asignado'}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1"><strong>Estado:</strong> {caso.activo ? 'Activo' : 'Inactivo'}</Typography>
-            </Grid>
-          </Grid>
+              <IconButton onClick={toggleDarkMode} color="primary">
+                {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
+              </IconButton>
+            </Box>
 
-          <Divider sx={{ my: 2 }} />
+            <Tabs value={tabValue} onChange={(e, newValue) => setTabValue(newValue)} centered>
+              <Tab label="Información General" />
+              <Tab label="Detalles Adicionales" />
+            </Tabs>
 
-          {/* Detalles Adicionales */}
-          <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#005f91' }}>
-            Detalles Adicionales
-          </Typography>
+            {tabValue === 0 && (
+              <Box>
+                <Grid container spacing={3}>
+                  <Grid item xs={12} md={6}>
+                    <Typography variant="body1">
+                      <strong>ID del Caso:</strong> {caso._id}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Typography variant="body1">
+                      <strong>Nombre:</strong> {caso.nombreCaso}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Typography variant="body1">
+                      <strong>Cliente:</strong> {caso.idCliente.nombres} {caso.idCliente.apellidos}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Typography variant="body1">
+                      <strong>Detective:</strong>{' '}
+                      {caso.detective ? `${caso.idDetective.nombres} ${caso.idDetective.apellidos}` : 'No asignado'}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Typography variant="body1">
+                      <strong>Estado:</strong> {caso.activo ? 'Activo' : 'Inactivo'}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Box>
+            )}
 
-          {/* Evidencias */}
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>Evidencias ({caso.evidencias.length})</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <List>
-                {caso.evidencias.length > 0 ? (
-                  caso.evidencias.map((evidencia, index) => (
-                    <ListItem key={index}>
-                      <ListItemText primary={`Evidencia ID: ${evidencia}`} />
-                    </ListItem>
-                  ))
-                ) : (
-                  <Typography variant="body2">No hay evidencias asociadas.</Typography>
-                )}
-              </List>
-            </AccordionDetails>
-          </Accordion>
+            {tabValue === 1 && (
+              <Box sx={{ maxHeight: '60vh', overflowY: 'auto' }}>
+                <Accordion>
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography>Evidencias ({caso.evidencias.length})</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <List>
+                      {caso.evidencias.length > 0 ? (
+                        caso.evidencias.map((evidencia, index) => (
+                          <ListItem key={index}>
+                            <ListItemText primary={evidencia.nombre} />
+                          </ListItem>
+                        ))
+                      ) : (
+                        <Typography variant="body2">No hay evidencias asociadas.</Typography>
+                      )}
+                    </List>
+                  </AccordionDetails>
+                </Accordion>
+              </Box>
+            )}
 
-          {/* Registro de Casos */}
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>Registro de Casos ({caso.registroCasos.length})</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <List>
-                {caso.registroCasos.length > 0 ? (
-                  caso.registroCasos.map((registro, index) => (
-                    <ListItem key={index}>
-                      <ListItemText primary={`Registro ID: ${registro}`} />
-                    </ListItem>
-                  ))
-                ) : (
-                  <Typography variant="body2">No hay registros de casos asociados.</Typography>
-                )}
-              </List>
-            </AccordionDetails>
-          </Accordion>
-
-          {/* Botón para volver */}
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-            <Button
-              variant="outlined"
-              onClick={handleBack}
-              sx={{
-                color: '#0077b6',
-                borderColor: '#0077b6',
-                '&:hover': { backgroundColor: '#e0e0e0' },
-              }}
-            >
-              Volver a la Gestión de Casos
-            </Button>
-          </Box>
-        </Paper>
-      </Container>
-    </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+              <Button
+                variant="outlined"
+                onClick={handleBack}
+                sx={{
+                  color: '#0077b6',
+                  borderColor: '#0077b6',
+                  '&:hover': { backgroundColor: '#e0e0e0' },
+                }}
+              >
+                Volver a la Gestión de Casos
+              </Button>
+            </Box>
+          </Paper>
+        </Container>
+      </Box>
+    </ThemeProvider>
   );
 };
 
