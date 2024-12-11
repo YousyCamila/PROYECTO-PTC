@@ -14,8 +14,7 @@ import {
 } from '@mui/material';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import { jsPDF } from 'jspdf';
-import 'jspdf-autotable'; // Para tablas más avanzadas
+import generarPDF from './generarPDF'
 
 const CrearContrato = () => {
   const navigate = useNavigate();
@@ -55,20 +54,26 @@ const CrearContrato = () => {
     'Tarifa por Proyecto'
   ];
 
+
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
         const [clientesResponse, detectivesResponse] = await Promise.all([
           fetch("http://localhost:3000/api/clientes"),
-          fetch("http://localhost:3000/api/detectives")
+          fetch("http://localhost:3000/api/detectives"),
         ]);
-
+  
+        if (!clientesResponse.ok || !detectivesResponse.ok) {
+          throw new Error('Error al cargar los datos');
+        }
+  
         const clientesData = await clientesResponse.json();
         const detectivesData = await detectivesResponse.json();
-
+  
         setClientes(clientesData);
         setDetectives(detectivesData);
+  
       } catch (error) {
         console.error("Error fetching data:", error);
         Swal.fire({
@@ -80,9 +85,10 @@ const CrearContrato = () => {
         setLoading(false);
       }
     };
-
+  
     fetchData();
   }, []);
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -143,245 +149,34 @@ const CrearContrato = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!validateForm()) return;
-
+  
     try {
       const response = await fetch('http://localhost:3000/api/contratos', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
-
+  
       if (!response.ok) {
         throw new Error('Error al crear el contrato');
       }
-
-
-
-      /// cambiooooos
-
-      // Obtener la fecha del día de hoy
-      const fechaHoy = new Date();
-      const dia = fechaHoy.getDate().toString().padStart(2, '0'); // Día con dos dígitos
-      const mes = (fechaHoy.getMonth() + 1).toString().padStart(2, '0'); // Mes con dos dígitos
-      const año = fechaHoy.getFullYear();
-
-      // Formatear la fecha en el formato deseado (ejemplo: "12 de diciembre de 2024")
-      const fechaFormateada = `${dia} de ${getMesNombre(mes)} de ${año}`;
-
-      // Función para obtener el nombre del mes
-      function getMesNombre(mes) {
-        const meses = [
-          "enero", "febrero", "marzo", "abril", "mayo", "junio",
-          "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
-        ];
-        return meses[mes - 1];
-      }
-
-      const doc = new jsPDF();
-
-      // Colores y márgenes
-      const COLORS = {
-        DARK_BLUE: [0, 51, 102],
-        LIGHT_GRAY: [240, 240, 240],
-        WHITE: [255, 255, 255]
-      };
-      const MARGINS = {
-        left: 15,
-        right: 195,
-        top: 15,
-        bottom: 280
-      };
-      
-      // Configuración general de la página
-      function addPageBackground(doc) {
-        doc.setFillColor(...COLORS.LIGHT_GRAY);
-        doc.rect(0, 0, 210, 297, 'F');
-      }
-      
-      // Header con gradiente
-      function createHeader(doc) {
-        doc.setFillColor(...COLORS.DARK_BLUE);
-        doc.rect(10, 10, 190, 15, 'F');
-        doc.setTextColor(...COLORS.WHITE);
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(16);
-        doc.text('CONTRATO DE SERVICIOS DE DETECTIVES PRIVADOS', 105, 20, { align: 'center' });
-      }
-      
-      // Sección de encabezados
-      function addSectionHeader(doc, text, yPosition) {
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(14);
-        doc.setTextColor(...COLORS.DARK_BLUE);
-        doc.text(text, 20, yPosition);
-        doc.setTextColor(0, 0, 0);
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(12);
-      }
-      
-      // Sección de detalles de las partes
-      function addPartyDetails(doc, formData) {
-        doc.setFont('helvetica', 'bold');
-        doc.text('COMPARECEN:', 20, 50);
-        doc.setFont('helvetica', 'normal');
-      
-        const parties = [
-          {
-            title: '1. El Cliente',
-            details: [
-              `Nombre: ${formData.cliente.nombres} ${formData.cliente.apellidos}`,
-              `Documento: ${formData.cliente.numeroDocumento}`,
-              `Correo: ${formData.cliente.correo}`
-            ]
-          },
-          {
-            title: '2. El Detective',
-            details: [
-              `Nombre: ${formData.detective.nombres} ${formData.detective.apellidos}`,
-              `Documento: ${formData.detective.numeroDocumento}`,
-              `Correo: ${formData.detective.correo}`,
-              `Especialidad: ${formData.detective.especialidad}`
-            ]
-          }
-        ];
-      
-        let y = 60;
-        parties.forEach(party => {
-          doc.setFont('helvetica', 'bold');
-          doc.text(party.title, 20, y);
-          doc.setFont('helvetica', 'normal');
-          party.details.forEach(detail => {
-            y += 7;
-            doc.text(detail, 20, y);
-          });
-          y += 10;
-        });
-      }
-      
-      // Secciones del contrato
-      function addContractSections(doc, formData) {
-        const sections = [
-          { 
-            title: '1. Objeto del Contrato', 
-            content: 'La Agencia se compromete a prestar servicios de investigación privados conforme a las especificaciones detalladas en el presente contrato.'
-          },
-          { 
-            title: '2. Descripción del Servicio', 
-            content: [
-              `Descripción: ${formData.descripcionServicio}`,
-              `Fecha de inicio: ${formData.fechaInicio}`,
-              `Fecha de cierre: ${formData.fechaCierre}`
-            ]
-          },
-          { 
-            title: '3. Tarifas y Honorarios', 
-            content: [
-              `Tarifa total: $${formData.tarifa}`,
-              `Tipo de tarifa: ${formData.tipoTarifa}`,
-              `Método de pago: ${formData.metodoPago}`,
-              `Plazos de pago: ${formData.plazosPago}`
-            ]
-          }
-        ];
-      
-        let y = 150;
-        sections.forEach(section => {
-          addSectionHeader(doc, section.title, y);
-          y += 10;
-      
-          if (Array.isArray(section.content)) {
-            section.content.forEach(line => {
-              doc.text(line, 20, y);
-              y += 7;
-            });
-          } else {
-            doc.text(section.content, 20, y);
-            y += 10;
-          }
-          y += 5;
-        });
-      
-        return y;
-      }
-      
-      // Sección de firmas
-      function addSignatureSection(doc, formData, startY) {
-        const signatures = [
-          { role: 'Representante de La Agencia', name: "Jeison Villamil" },
-          { role: 'Cliente', name: `${formData.cliente.nombres} ${formData.cliente.apellidos}` },
-          { role: 'Detective', name: `${formData.detective.nombres} ${formData.detective.apellidos}` }
-        ];
-      
-        let y = startY + 20;
-        addSectionHeader(doc, 'FIRMAS', y);
-        y += 15;
-      
-        signatures.forEach(sig => {
-          doc.text(`${sig.role}:`, 20, y);
-          y += 7;
-          doc.text(`Nombre: ${sig.name}`, 20, y);
-          y += 7;
-          doc.setDrawColor(200);
-          doc.line(20, y + 3, 100, y + 3);
-          doc.text('Firma: ___________________________', 20, y);
-          y += 7;
-          doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 20, y);
-          y += 15;
-        });
-      }
-      
-      // Sección de contacto
-      function addContactSection(doc) {
-        const currentY = MARGINS.bottom + 20;
-        addSectionHeader(doc, 'INFORMACIÓN DE CONTACTO', currentY);
-      
-        const contactDetails = [
-          { icon: '📍', text: 'Carrera 15 #79-10' },
-          { icon: '📞', text: '350 5090145' },
-          { icon: '✉️', text: 'ptcinvestigationprivatetec@gmail.com' }
-        ];
-      
-        let y = currentY + 10;
-        contactDetails.forEach(detail => {
-          doc.text(`${detail.icon} ${detail.text}`, 20, y);
-          y += 7;
-        });
-      }
-      
-      // Generar PDF
-      function generatePDF(formData) {
-        addPageBackground(doc);
-        createHeader(doc);
-      
-        doc.setTextColor(0, 0, 0);
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(12);
-      
-        doc.text(`En Bogotá DC, a ${new Date().toLocaleDateString()}`, 105, 40, { align: 'center' });
-      
-        addPartyDetails(doc, formData);
-        const lastSectionY = addContractSections(doc, formData);
-        addSignatureSection(doc, formData, lastSectionY);
-        addContactSection(doc);
-      
-        doc.save('Contrato_Servicios_Detectives.pdf');
-      }
-      
-
-
+  
+      // Llamar a la función que genera el PDF
+      generarPDF(formData); // Aquí le pasas los datos del formulario
+  
       Swal.fire({
         icon: 'success',
         title: 'Contrato Creado',
-        text: 'El contrato se ha generado exitosamente.'
+        text: 'El contrato se ha generado exitosamente.',
       });
-
+  
       // Opcional: navegar después de crear
       navigate('/gestionar-contratos');
-
+  
     } catch (error) {
       console.error('Error:', error);
       Swal.fire({
@@ -391,6 +186,7 @@ const CrearContrato = () => {
       });
     }
   };
+  
 
   if (loading) {
     return <Typography>Cargando...</Typography>;
