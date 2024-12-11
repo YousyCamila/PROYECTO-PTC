@@ -33,9 +33,12 @@ import CasoDetailsMenu from './pages/cliente/CasoDetailsMenu';
 import EvidenciasCrud from './pages/cliente/EvidenciasCrud';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
-import RegistroCaso from './pages/cliente/RegistrosCrud';
-import AgregarRegistrosForm from './pages/cliente/AgregarRegistrosForm';
-import EditarRegistroForm from './pages/cliente/editarRegistroForm';
+import RegistroCaso from './pages/cliente/registroCaso';
+
+import registroCasoDetective from './pages/detective/registroCasoDetective';
+import EvidenciasDetectiveCrud from './pages/detective/EvidenciasDetectiveCrud';
+import NavbarSidebarDetective from './pages/detective/NavbarSidebarDetective';
+import DetectiveCasoDetailsMenu from './pages/detective/DetectiveCasoDetailsMenu';
 
 
 function App() {
@@ -93,6 +96,11 @@ function App() {
           <Route element={<ProtectedRoute roles={['detective']} />}>
             <Route path="/detective-menu" element={<DetectiveMenu />} />
             <Route path="/agregar-evidencia/:casoId" element={<AgregarEvidencia />} />
+            <Route path="/EvidenciasDetectiveCrud" element={<EvidenciasDetectiveCrud/>}/>
+            <Route path="/NavbarSidebarDetective" element={<NavbarSidebarDetective/>}/>
+            <Route path= "/registroCasoDetective" element= {<registroCasoDetective/>}/>
+            <Route path= "/DetectiveCasoDetailsMenu" element= {<DetectiveCasoDetailsMenu/>}/>
+
           </Route>
         </Routes>
       </Router>
