@@ -39,6 +39,23 @@ const DetectiveSchema = new mongoose.Schema({
       required: false
     }
   }],
+  registroCaso: [{
+      id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'RegistroCaso',
+        required: false // El id del registro de caso es opcional
+      },
+      descripcion: {
+        type: String,
+        required: false // Descripción del registro de caso opcional
+      },
+      estadoRegistro: {
+        type: String,
+        maxlength: 50,
+        required: false // Estado del registro de caso opcional
+      }
+    }],
+
   contratos: [{
     id: {
       type: mongoose.Schema.Types.ObjectId,
@@ -49,8 +66,8 @@ const DetectiveSchema = new mongoose.Schema({
     estado: Boolean
   }]
   ,
-  activo: { type: Boolean, default: false },
-}, { timestamps: false });
+  activo: { type: Boolean, default: true },
+}, { timestamps: true });
 
 DetectiveSchema.add(personaSchema);
 

@@ -60,6 +60,28 @@ const obtenerCasosPorEmailCliente = async (req, res) => {
   }
 };
 
+/**
+ * Controlador para obtener casos, contratos y registros asociados al cliente por email.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
+const obtenerCasosPorEmailDetective = async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    const data = await casosService.obtenerCasosPorEmailDetective(email);
+
+    if (!data.casos.length) {
+      return res.status(404).json({ message: 'No se encontraron casos para el detective especificado.' });
+    }
+
+    res.status(200).json(data);
+  } catch (error) {
+    console.error(`Error al obtener casos por email: ${error.message}`);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
+
 // Listar todos los casos
 const listarCasos = async (req, res) => {
   try {
@@ -111,5 +133,6 @@ module.exports = {
   actualizarCaso,
   desactivarCaso,
   obtenerCasosPorClienteId,
-  obtenerCasosPorEmailCliente
+  obtenerCasosPorEmailCliente,
+  obtenerCasosPorEmailDetective
 };
