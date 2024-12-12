@@ -1,25 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Button,
-  Container,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
   Typography,
-  Checkbox,
-  ListItemText,
+  Container,
+  Grid,
+  TextField,
+  Button,
+  Paper,
+  MenuItem,
+  Autocomplete,
+  Chip,
+  FormControlLabel,
+  Switch,
+  IconButton
 } from '@mui/material';
-import Swal from 'sweetalert2';
+import {
+  Person as PersonIcon,
+  Save as SaveIcon,
+  ArrowBack as ArrowBackIcon,
+  Brightness4 as Brightness4Icon,
+  Brightness7 as Brightness7Icon
+} from '@mui/icons-material';
+import { motion } from 'framer-motion';
 import { useParams, useNavigate } from 'react-router-dom';
-import NavbarSidebar from '../NavbarSidebar'; // Importa el componente NavbarSidebar
+import Swal from 'sweetalert2';
+import NavbarSidebar from '../NavbarSidebar';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const EditarDetective = () => {
-  const { id } = useParams(); // Obtener el ID del detective desde la URL
-  const navigate = useNavigate(); // Hook para la navegación
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     tipoDocumento: '',
@@ -32,6 +42,8 @@ const EditarDetective = () => {
     activo: true,
   });
 
+  const [darkMode, setDarkMode] = useState(false);
+
   const especialidades = [
     'Investigación Penal y Criminal',
     'Cadena de Custodia y Evidencias',
@@ -43,7 +55,12 @@ const EditarDetective = () => {
     'Desapariciones',
   ];
 
-  // Fetch inicial para cargar los datos del detective
+  const theme = createTheme({
+    palette: {
+      mode: darkMode ? 'dark' : 'light',
+    },
+  });
+
   useEffect(() => {
     const fetchDetective = async () => {
       try {
@@ -62,7 +79,6 @@ const EditarDetective = () => {
           activo: data.activo,
         });
       } catch (error) {
-        console.error('Error al cargar los datos del detective:', error);
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -74,29 +90,28 @@ const EditarDetective = () => {
     fetchDetective();
   }, [id]);
 
-  // Manejador para los cambios en los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Manejador para el campo de especialidad
-  const handleEspecialidadChange = (event) => {
-    const { value } = event.target;
-    setFormData({ ...formData, especialidad: typeof value === 'string' ? value.split(',') : value });
-  };
-
-  // Manejador para el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Convertir nombres y apellidos a mayúsculas
+    const updatedFormData = {
+      ...formData,
+      nombres: formData.nombres.toUpperCase(),
+      apellidos: formData.apellidos.toUpperCase(),
+      // Unir las especialidades con comas
+      especialidad: formData.especialidad.join(', '),
+    };
 
     try {
       const response = await fetch(`http://localhost:3000/api/detectives/${id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedFormData),
       });
 
       if (response.ok) {
@@ -105,7 +120,7 @@ const EditarDetective = () => {
           title: 'Actualización exitosa',
           text: 'Los datos del detective han sido actualizados.',
         });
-        navigate('/gestionar-detectives'); // Redirige a la lista de detectives
+        navigate('/gestionar-detectives');
       } else {
         const data = await response.json();
         Swal.fire({
@@ -115,7 +130,6 @@ const EditarDetective = () => {
         });
       }
     } catch (error) {
-      console.error('Error al actualizar el detective:', error);
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -125,165 +139,220 @@ const EditarDetective = () => {
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-        background: 'linear-gradient(to right, #006f8e, #0097b6)',
-        paddingTop: '20px',
-      }}
-    >
-      <NavbarSidebar />
-
+    <ThemeProvider theme={theme}>
       <Box
         sx={{
-          flex: 1,
+          minHeight: '100vh',
+          background: darkMode ? '#121212' : 'linear-gradient(135deg, #1a237e 0%, #5c6bc0 100%)',
           display: 'flex',
-          justifyContent: 'center',
           alignItems: 'center',
-          paddingTop: '20px',
+          justifyContent: 'center',
+          padding: 0,
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          paddingTop: 8,
         }}
       >
-        <Container
-          maxWidth="sm"
-          sx={{
-            backgroundColor: 'white',
-            padding: 4,
-            borderRadius: 2,
-            boxShadow: 3,
-            transition: 'transform 0.3s ease-in-out',
-            '&:hover': { transform: 'scale(1.02)' },
-          }}
+        <NavbarSidebar />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          <Typography variant="h4" component="h1" sx={{ textAlign: 'center', color: '#0097b6', marginBottom: 3 }}>
-            Editar Detective
-          </Typography>
-
-          <form onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth margin="normal">
-                  <InputLabel id="tipoDocumento-label">Tipo de Documento</InputLabel>
-                  <Select
-                    labelId="tipoDocumento-label"
-                    name="tipoDocumento"
-                    value={formData.tipoDocumento}
-                    onChange={handleChange}
-                    required
-                  >
-                    <MenuItem value="Cédula">Cédula</MenuItem>
-                    <MenuItem value="Pasaporte">Pasaporte</MenuItem>
-                    <MenuItem value="Cédula de Extranjería">Cédula de Extranjería</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Número de Documento"
-                  name="numeroDocumento"
-                  value={formData.numeroDocumento}
-                  onChange={handleChange}
-                  required
-                />
-              </Grid>
-
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Nombres"
-                  name="nombres"
-                  value={formData.nombres}
-                  onChange={handleChange}
-                  required
-                />
-              </Grid>
-
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Apellidos"
-                  name="apellidos"
-                  value={formData.apellidos}
-                  onChange={handleChange}
-                  required
-                />
-              </Grid>
-
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Correo"
-                  name="correo"
-                  value={formData.correo}
-                  disabled
-                />
-              </Grid>
-
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Fecha de Nacimiento"
-                  type="date"
-                  name="fechaNacimiento"
-                  value={formData.fechaNacimiento}
-                  onChange={handleChange}
-                  required
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <FormControl fullWidth margin="normal">
-                  <InputLabel id="especialidad-label">Especialidad</InputLabel>
-                  <Select
-                    labelId="especialidad-label"
-                    name="especialidad"
-                    multiple
-                    value={formData.especialidad}
-                    onChange={handleEspecialidadChange}
-                    renderValue={(selected) => selected.join(', ')}
-                  >
-                    {especialidades.map((especialidad) => (
-                      <MenuItem key={especialidad} value={especialidad}>
-                        <Checkbox checked={formData.especialidad.includes(especialidad)} />
-                        <ListItemText primary={especialidad} />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-            </Grid>
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, backgroundColor: '#006f8e', '&:hover': { backgroundColor: '#004f6f' } }}
-            >
-              Guardar Cambios
-            </Button>
-
-            <Button
-              variant="outlined"
-              onClick={() => navigate(-1)}
+          <Container maxWidth="md">
+            <Paper
+              elevation={12}
               sx={{
-                mt: 2,
-                color: '#006f8e',
-                borderColor: '#006f8e',
-                '&:hover': { backgroundColor: '#e0f7fa' },
+                borderRadius: 4,
+                padding: 4,
+                background: darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.95)',
+                backdropFilter: 'blur(10px)',
               }}
             >
-              Volver
-            </Button>
-          </form>
-        </Container>
+              <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 3 }}>
+                <PersonIcon sx={{ fontSize: 40, color: darkMode ? '#bbdefb' : '#1a237e', marginRight: 2 }} />
+                <Typography variant="h4" color={darkMode ? 'white' : 'primary'} fontWeight="bold">
+                  Editar Perfil de Detective
+                </Typography>
+              </Box>
+
+              <form onSubmit={handleSubmit}>
+                <Grid container spacing={3}>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      select
+                      label="Tipo de Documento"
+                      name="tipoDocumento"
+                      value={formData.tipoDocumento}
+                      onChange={handleChange}
+                      variant="outlined"
+                      required
+                    >
+                      <MenuItem value="Cédula">Cédula</MenuItem>
+                      <MenuItem value="Pasaporte">Pasaporte</MenuItem>
+                      <MenuItem value="Cédula de Extranjería">Cédula de Extranjería</MenuItem>
+                    </TextField>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      label="Número de Documento"
+                      name="numeroDocumento"
+                      value={formData.numeroDocumento}
+                      onChange={handleChange}
+                      variant="outlined"
+                      required
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      label="Nombres"
+                      name="nombres"
+                      value={formData.nombres}
+                      onChange={handleChange}
+                      variant="outlined"
+                      required
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      label="Apellidos"
+                      name="apellidos"
+                      value={formData.apellidos}
+                      onChange={handleChange}
+                      variant="outlined"
+                      required
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      label="Correo"
+                      name="correo"
+                      value={formData.correo}
+                      onChange={handleChange} // Asegúrate de manejar el cambio
+                      variant="outlined"
+                      required
+                    />
+                  </Grid>
+
+
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      label="Fecha de Nacimiento"
+                      type="date"
+                      name="fechaNacimiento"
+                      value={formData.fechaNacimiento}
+                      onChange={handleChange}
+                      variant="outlined"
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      label="Fecha de Nacimiento"
+                      type="date"
+                      name="fechaNacimiento"
+                      value={formData.fechaNacimiento}
+                      onChange={handleChange}
+                      variant="outlined"
+                      InputLabelProps={{ shrink: true }}
+                      required
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <Autocomplete
+                      multiple
+                      options={especialidades}
+                      value={formData.especialidad}
+                      onChange={(_, newValue) => setFormData(prev => ({ ...prev, especialidad: newValue }))}
+                      renderTags={(value, getTagProps) =>
+                        value.map((option, index) => (
+                          <Chip
+                            variant="outlined"
+                            label={option}
+                            {...getTagProps({ index })}
+                            color="primary"
+                          />
+                        ))
+                      }
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          variant="outlined"
+                          label="Especialidades"
+                          placeholder="Seleccione especialidades"
+                        />
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={formData.activo}
+                          onChange={(e) => setFormData(prev => ({ ...prev, activo: e.target.checked }))}
+                          color="primary"
+                        />
+                      }
+                      label="Detective Activo"
+                    />
+                  </Grid>
+                </Grid>
+
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 3 }}>
+                  <Button
+                    variant="outlined"
+                    startIcon={<ArrowBackIcon />}
+                    onClick={() => navigate(-1)}
+                    color="primary"
+                  >
+                    Cancelar
+                  </Button>
+
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    startIcon={<SaveIcon />}
+                    color="primary"
+                  >
+                    Guardar cambios
+                  </Button>
+                </Box>
+              </form>
+
+              <IconButton
+                sx={{
+                  position: 'absolute',
+                  top: 16,
+                  right: 16,
+                  backgroundColor: darkMode ? '#424242' : '#f0f0f0',
+                }}
+                onClick={() => setDarkMode(!darkMode)}
+              >
+                {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+              </IconButton>
+            </Paper>
+          </Container>
+        </motion.div>
       </Box>
-    </Box>
+    </ThemeProvider>
   );
 };
 

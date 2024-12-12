@@ -86,10 +86,28 @@ async function listarContratosPorDetective(idDetective) {
     .populate('idDetective', 'nombres apellidos'); // Población de Detective
 }
 
+async function actualizarContrato(id, data) {
+  const contrato = await Contrato.findById(id);
+  if (!contrato) throw new Error('Contrato no encontrado');
+
+  // Actualizamos solo los campos permitidos
+  contrato.descripcionServicio = data.descripcionServicio || contrato.descripcionServicio;
+  contrato.fechaInicio = data.fechaInicio || contrato.fechaInicio;
+  contrato.fechaCierre = data.fechaCierre || contrato.fechaCierre;
+  contrato.clausulas = data.clausulas || contrato.clausulas;
+  contrato.tarifa = data.tarifa || contrato.tarifa;
+  contrato.estado = data.estado !== undefined ? data.estado : contrato.estado;
+
+  await contrato.save();
+
+  return contrato;
+}
+
 module.exports = {
   crearContrato,
   listarContratos,
   buscarContratoPorId,
   desactivarContrato,
-  listarContratosPorDetective // Exportar la nueva función
+  listarContratosPorDetective,
+  actualizarContrato
 };

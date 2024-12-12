@@ -17,12 +17,11 @@ const crearFormulario = async (req, res) => {
     handleError(res, error, 'Error al crear el formulario');
   }
 };
-
 const responderFormulario = async (req, res) => {
   try {
     const { respuesta } = req.body;
     const formulario = await formularioLogic.responderFormulario(req.params.id, respuesta);
-    res.status(200).json(formulario);
+    res.status(200).json(formulario); // Retorna el formulario actualizado
   } catch (error) {
     console.error('Error al responder el formulario:', error.message);
     handleError(res, error, 'Error al responder el formulario');

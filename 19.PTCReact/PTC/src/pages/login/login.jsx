@@ -1,7 +1,9 @@
-// src/pages/login/login.jsx
-import { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 import jwt_decode from "jwt-decode";
+import Swal from "sweetalert2";
+
 import {
   Box,
   Button,
@@ -17,10 +19,16 @@ import {
   Alert,
   Tooltip,
 } from "@mui/material";
-import { ArrowBack, Login as LoginIcon, PersonAdd } from "@mui/icons-material";
+
+import { 
+  ArrowBack, 
+  Login as LoginIcon, 
+  PersonAdd,
+  Visibility, 
+  VisibilityOff 
+} from "@mui/icons-material";
+
 import { motion } from "framer-motion";
-import Swal from "sweetalert2";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -28,9 +36,11 @@ const Login = () => {
   const [role, setRole] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
+  
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
-  const login = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch("http://localhost:3000/api/usuario/login", {
@@ -44,19 +54,27 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        const decodedToken = jwt_decode(data.accessToken);
-        localStorage.setItem("accessToken", data.accessToken);
-        localStorage.setItem("userId", decodedToken.id);
-        localStorage.setItem("email", decodedToken.email);
-        localStorage.setItem("role", decodedToken.role);
+        // Llama al método login con el token completo
+        login(data.accessToken);
 
-        if (decodedToken.role === "administrador") {
-          navigate("/admin-menu");
-        } else if (decodedToken.role === "cliente") {
-          navigate("/cliente-menu");
-        } else if (decodedToken.role === "detective") {
-          navigate("/detective-menu");
+        // Redirige según el rol
+        const decodedToken = jwt_decode(data.accessToken);
+        switch(decodedToken.role) {
+          case "administrador":
+            navigate("/admin-menu");
+            break;
+          case "cliente":
+            navigate("/cliente-menu");
+            break;
+          case "detective":
+            navigate("/detective-menu");
+            break;
+          default:
+            navigate("/");
         }
+
+        // Opcional: mostrar snackbar de éxito
+        setShowSnackbar(true);
       } else {
         Swal.fire({
           icon: "error",
@@ -98,11 +116,7 @@ const Login = () => {
           color: "white",
           padding: "10px 20px",
           position: "absolute",
-          top: 0,
-          left: 0,
-          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
-          borderRadius: "0 0 10px 10px",
-          zIndex: 1000,
+          top: "10px",
         }}
       >
         <Tooltip title="Volver">
@@ -136,8 +150,8 @@ const Login = () => {
           sx={{
             backgroundColor: "white",
             padding: 4,
-            borderRadius: 4,
-            boxShadow: "0 6px 15px rgba(0, 0, 0, 0.2)",
+            borderRadius: 2,
+            boxShadow: 3,
             marginTop: 10,
           }}
         >
@@ -150,7 +164,7 @@ const Login = () => {
             Iniciar sesión
           </Typography>
 
-          <form onSubmit={login}>
+          <form onSubmit={handleLogin}>
             <TextField
               fullWidth
               label="Correo"
@@ -245,17 +259,16 @@ const Login = () => {
         autoHideDuration={3000}
         onClose={() => setShowSnackbar(false)}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
->
-          <Alert
-            onClose={() => setShowSnackbar(false)}
-            severity="success"
-            sx={{ width: "100%" }}
-          >
-            Inicio de sesión exitoso
-          </Alert>
-        </Snackbar>
-      </Box>
-    
+      >
+        <Alert
+          onClose={() => setShowSnackbar(false)}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Inicio de sesión exitoso
+        </Alert>
+      </Snackbar>
+    </Box>
   );
 };
 

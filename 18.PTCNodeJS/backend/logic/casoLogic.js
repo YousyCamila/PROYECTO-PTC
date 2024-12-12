@@ -2,6 +2,8 @@ const Caso = require('../models/casoModel');
 const Cliente = require('../models/clienteModel');
 const Detective = require('../models/detectiveModel');
 
+
+
 async function crearCaso(datos) {
   // Verificar que el nombre del caso esté permitido
   const nombresPermitidos = [
@@ -76,19 +78,59 @@ const obtenerCasosPorClienteId = async (idCliente) => {
  */
 const obtenerCasosPorEmailCliente = async (emailCliente) => {
   try {
-    // Verificar si el cliente existe
-    const cliente = await Cliente.findOne({ correo: emailCliente.trim() });
+    // Buscar al cliente por su email
+    const cliente = await Cliente.findOne({ correo: emailCliente });
+
     if (!cliente) {
-      throw new Error(`No se encontró un cliente con el correo: ${emailCliente}`);
+      throw new Error(`No se encontró un cliente con el email: ${emailCliente}`);
     }
 
-    // Buscar casos asociados al cliente
-    const casos = await Caso.find({ idCliente: cliente._id }).populate('idDetective evidencias');
-    return casos;
+    const casos = await Caso.find({ idCliente: cliente._id })
+      .populate('idDetective')
+      .populate('evidencias')
+      .populate('registroCasos')
+      .populate('contratos'); // Traer también los contratos
+
+    return {
+      casos,
+      contratos: cliente.contratos || [],
+      registros: cliente.registroCaso || [],
+    };
   } catch (error) {
-    throw new Error(`Error al obtener casos por correo: ${error.message}`);
+    throw new Error(`Error al obtener datos por email: ${error.message}`);
   }
 };
+
+/**
+ * Obtener casos asociados a un detective por correo electrónico.
+ * @param {string} emailDetective - Correo electrónico del detective.
+ * @returns {Promise<Array>} Lista de casos asociados al detective.
+ */
+const obtenerCasosPorEmailDetective = async (emailDetective) => {
+  try {
+    // Buscar al detective por su email
+    const detective = await Detective.findOne({ correo: emailDetective });
+
+    if (!detective) {
+      throw new Error(`No se encontró el detective con el email: ${emailDetective}`);
+    }
+
+    const casos = await Caso.find({ idDetective: detective._id })
+      .populate('idDetective')
+      .populate('evidencias')
+      .populate('registroCasos')
+      .populate('contratos')
+      .populate ('idCliente'); // Traer también los contratos
+
+    return {
+      casos,
+      contratos: detective.contratos || [],
+      registros: detective.registroCaso || [],
+    };
+  } catch (error) {
+    throw new Error(`Error al obtener datos por email: ${error.message}`);
+  }
+}
 
 // Listar Casos
 async function listarCasos() {
@@ -137,5 +179,6 @@ module.exports = {
   actualizarCaso,
   desactivarCaso,
   obtenerCasosPorClienteId,
-  obtenerCasosPorEmailCliente
+  obtenerCasosPorEmailCliente,
+  obtenerCasosPorEmailDetective
 };

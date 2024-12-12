@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Box,
     IconButton,
@@ -13,8 +13,10 @@ import {
     ListItemIcon,
     ListItemText,
     Divider,
-    Tooltip,
     Button,
+    Paper,
+    useTheme,
+    alpha,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -24,25 +26,24 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import FolderSpecialIcon from '@mui/icons-material/FolderSpecial';
 import ArticleIcon from '@mui/icons-material/Article';
 import InboxIcon from '@mui/icons-material/Inbox';
-import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-
+import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import Swal from 'sweetalert2';
 
 const NavbarSidebar = () => {
     const [anchorEl, setAnchorEl] = useState(null);
-    const [openMenu, setOpenMenu] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [title, setTitle] = useState("Informe General PTC");
     const navigate = useNavigate();
+    const theme = useTheme();
 
-    const handleMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget);
-        setOpenMenu(true);
-    };
-
-    const handleMenuClose = () => {
-        setOpenMenu(false);
-    };
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTitle(prev => prev === "Informe General PTC" ? "Vista General" : "Informe General PTC");
+        }, 6000);
+        return () => clearInterval(interval);
+    }, []);
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -51,213 +52,209 @@ const NavbarSidebar = () => {
             icon: 'success',
             title: 'Sesión cerrada',
             text: 'Has cerrado sesión exitosamente',
-        }).then(() => {
-            navigate('/'); // Navegar a la página de inicio
-        });
+            background: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+        }).then(() => navigate('/'));
     };
 
-    const handleBack = () => {
-        navigate('/admin-menu');
-    };
-
-    const handleNavigation = (route) => {
-        navigate(route);
-        setSidebarOpen(false);
-    };
+    const menuItems = [
+        { text: 'Gestionar Clientes', route: '/gestionar-clientes', icon: <GroupIcon /> },
+        { text: 'Gestionar Detectives', route: '/gestionar-detectives', icon: <AssignmentIcon /> },
+        { text: 'Gestionar Casos', route: '/gestionar-casos', icon: <FolderSpecialIcon /> },
+        { text: 'Gestionar Contratos', route: '/gestionar-contratos', icon: <ArticleIcon /> },
+        { text: 'Regresar al Menú de Admin', route: '/admin-menu', icon: <ArrowBackIcon /> },
+    ];
 
     return (
-        <Box
+        <Paper 
+            elevation={3}
             sx={{
-                width: '100vw',
-                height: '12vh',
-                background: '#4892d4',
-                display: 'flex',
-                justifyContent: 'space-between', // Cambiado de 'center' a 'space-between'
-                alignItems: 'center',
-                position: 'relative',
-                paddingX: 2, // Añadido para darle un espacio en los laterales
-                boxSizing: 'border-box',
+                width: '100%',
+                position: 'fixed',
+                top: 0,
+                zIndex: 1100,
+                background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
             }}
         >
-            {/* Botón de menú (sidebar) */}
-            <IconButton
-                onClick={() => setSidebarOpen(true)}
-                sx={{
-                    backgroundColor: '#0077b6',
-                    color: 'white',
-                    fontSize: '2rem',
-                    padding: '16px',
-                    '&:hover': {
-                        backgroundColor: '#005f91',
-                        transform: 'scale(1.1)',
-                    },
-                    transition: 'transform 0.3s ease-in-out',
-                }}
-            >
-                <MenuIcon sx={{ fontSize: 'inherit' }} />
-            </IconButton>
-
-            {/* Botones de acciones (parte superior derecha) */}
             <Box
                 sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 2,
-                    flexWrap: 'wrap', // Agregado para permitir que los elementos se ajusten cuando se reduce el tamaño
-                    justifyContent: 'flex-end', // Alinea los botones a la derecha
+                    justifyContent: 'space-between',
+                    padding: 2,
+                    height: '70px',
                 }}
             >
-                <Button
-                    onClick={() => navigate('/responder-solicitudes')}
+                <IconButton
+                    onClick={() => setSidebarOpen(true)}
                     sx={{
-                        backgroundColor: '#0077b6',
-                        color: 'white',
-                        textTransform: 'none',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 1,
-                        paddingRight: '10px',
-                        width: '250px',
+                        backgroundColor: alpha(theme.palette.common.white, 0.1),
                         '&:hover': {
-                            backgroundColor: '#005f91',
+                            backgroundColor: alpha(theme.palette.common.white, 0.2),
+                            transform: 'scale(1.1)',
                         },
+                        transition: 'all 0.3s ease',
                     }}
                 >
-                    <InboxIcon sx={{ fontSize: 40 }} />
-                    <span style={{ whiteSpace: 'nowrap' }}>Responder Solicitudes</span>
-                    <span
-                        style={{
-                            position: 'absolute',
-                            top: '4px',
-                            right: '4px',
-                            width: '12px',
-                            height: '12px',
-                            backgroundColor: 'white',
-                            borderRadius: '50%',
-                            animation: 'fade 2s ease-in-out infinite',
-                        }}
-                    />
-                </Button>
-
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Typography variant="h6" sx={{ color: 'black', fontSize: '1.0rem', mr: 1 }}>
-                        Hola, administrador
-                    </Typography>
-
-                    <IconButton onClick={handleMenuOpen}>
-                        <ArrowDropDownIcon sx={{ color: 'black', fontSize: '2rem' }} />
-                    </IconButton>
-                </Box>
-
-                {/* Avatar que abre el menú */}
-                <IconButton onClick={handleMenuOpen}>
-                    <Avatar
-                        sx={{
-                            backgroundColor: '#fff',
-                            color: '#0077b6',
-                            border: '1px solid #0077b6',
-                            width: 50,
-                            height: 50,
-                            '&:hover': {
-                                backgroundColor: '#f0f8ff',
-                            },
-                        }}
-                        src="https://icones.pro/wp-content/uploads/2021/02/symbole-masculin-icone-l-utilisateur-gris.png"
-                        alt="Imagen"
-                    />
+                    <MenuIcon sx={{ color: 'white' }} />
                 </IconButton>
-            </Box>
 
-            <style>
-                {`
-                    @keyframes fade {
-                        0% {
-                            opacity: 1;
-                        }
-                        50% {
-                            opacity: 0;
-                        }
-                        100% {
-                            opacity: 1;
-                        }
-                    }
-                `}
-            </style>
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={title}
+                        initial={{ y: -20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: 20, opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <Typography
+                            variant="h4"
+                            sx={{
+                                fontWeight: 700,
+                                color: 'white',
+                                textShadow: '2px 2px 4px rgba(0,0,0,0.2)',
+                            }}
+                        >
+                            {title}
+                        </Typography>
+                    </motion.div>
+                </AnimatePresence>
 
-            <Menu
-                anchorEl={anchorEl}
-                open={openMenu}
-                onClose={handleMenuClose}
-                sx={{
-                    mt: 3,
-                    '& .MuiMenuItem-root': {
-                        fontSize: '1.0rem',
-                        padding: '9px 11px',
-                    },
-                    '& .MuiSvgIcon-root': {
-                        fontSize: '1.6rem',
-                    },
-                }}
-            >
-                <MenuItem onClick={handleLogout}>
-                    <LogoutIcon sx={{ mr: 1 }} /> Cerrar Sesión
-                </MenuItem>
-            </Menu>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Button
+                        variant="contained"
+                        onClick={() => navigate('/responder-solicitudes')}
+                        startIcon={<InboxIcon />}
+                        sx={{
+                            backgroundColor: alpha(theme.palette.common.white, 0.1),
+                            color: 'white',
+                            '&:hover': {
+                                backgroundColor: alpha(theme.palette.common.white, 0.2),
+                            },
+                            position: 'relative',
+                            padding: '10px 24px',
+                            fontSize: '1rem',
+                            fontWeight: 600,
+                            borderRadius: 3,
+                            boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+                        }}
+                    >
+                        Responder Solicitudes
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                top: 4,
+                                right: 4,
+                                width: 10,
+                                height: 10,
+                                bgcolor: theme.palette.error.main,
+                                borderRadius: '50%',
+                                animation: 'pulse 2s infinite',
+                                '@keyframes pulse': {
+                                    '0%': { transform: 'scale(1)', opacity: 1 },
+                                    '50%': { transform: 'scale(1.5)', opacity: 0.5 },
+                                    '100%': { transform: 'scale(1)', opacity: 1 },
+                                },
+                            }}
+                        />
+                    </Button>
 
-            {/* Sidebar */}
-            <Drawer
-                anchor="left"
-                open={sidebarOpen}
-                onClose={() => setSidebarOpen(false)}
-                sx={{
-                    '& .MuiDrawer-paper': {
-                        width: 240,
-                        backgroundColor: '#000',
-                        color: 'white',
-                    },
-                }}
-            >
-                <Box
-                    sx={{
-                        backgroundColor: '#0077b6',
-                        padding: 2,
-                        textAlign: 'center',
-                    }}
-                >
-                    <Typography variant="h6" sx={{ color: 'white' }}>
-                        PTC
-                    </Typography>
-                </Box>
-                <List sx={{ mt: 2 }}>
-                    {[
-                        { text: 'Gestionar Clientes', route: '/gestionar-clientes', icon: <GroupIcon /> },
-                        { text: 'Gestionar Detectives', route: '/gestionar-detectives', icon: <AssignmentIcon /> },
-                        { text: 'Gestionar Casos', route: '/gestionar-casos', icon: <FolderSpecialIcon /> },
-                        { text: 'Gestionar Contratos', route: '/gestionar-contratos', icon: <ArticleIcon /> },
-                        // Agregado el botón para regresar al menú de administración
-                        { text: 'Regresar al Menú de Admin', route: '/admin-menu', icon: <ArrowBackIcon /> },
-                    ].map((item, index) => (
-                        <ListItem key={index} disablePadding sx={{ mb: 1 }}>
-                            <ListItemButton
-                                onClick={() => handleNavigation(item.route)}
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Typography sx={{ color: 'white' }}>
+                            Hola, administrador
+                        </Typography>
+                        <IconButton
+                            onClick={(e) => setAnchorEl(e.currentTarget)}
+                            sx={{ color: 'white' }}
+                        >
+                            <Avatar
                                 sx={{
-                                    '&:hover': {
-                                        backgroundColor: '#0077b6',
-                                        color: 'white',
-                                    },
-                                    padding: '10px 20px',
+                                    bgcolor: alpha(theme.palette.common.white, 0.1),
+                                    border: `2px solid ${alpha(theme.palette.common.white, 0.2)}`,
                                 }}
                             >
-                                <ListItemIcon sx={{ color: 'white' }}>{item.icon}</ListItemIcon>
-                                <ListItemText primary={item.text} />
+                                AD
+                            </Avatar>
+                        </IconButton>
+                    </Box>
+                </Box>
+
+                <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={() => setAnchorEl(null)}
+                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                >
+                    <MenuItem onClick={handleLogout}>
+                        <ListItemIcon>
+                            <LogoutIcon color="error" />
+                        </ListItemIcon>
+                        <ListItemText primary="Cerrar Sesión" />
+                    </MenuItem>
+                </Menu>
+
+                <Drawer
+                    anchor="left"
+                    open={sidebarOpen}
+                    onClose={() => setSidebarOpen(false)}
+                    PaperProps={{
+                        sx: {
+                            width: 280,
+                            background: theme.palette.background.default,
+                            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))',
+                        }
+                    }}
+                >
+                    <Box sx={{ p: 3, bgcolor: theme.palette.primary.main }}>
+                        <Typography variant="h5" sx={{ color: 'white', fontWeight: 600 }}>
+                            PTC
+                        </Typography>
+                    </Box>
+                    <List sx={{ p: 2 }}>
+                        {menuItems.map((item, index) => (
+                            <ListItem key={index} disablePadding sx={{ mb: 1 }}>
+                                <ListItemButton
+                                    onClick={() => {
+                                        navigate(item.route);
+                                        setSidebarOpen(false);
+                                    }}
+                                    sx={{
+                                        borderRadius: 1,
+                                        '&:hover': {
+                                            bgcolor: alpha(theme.palette.primary.main, 0.1),
+                                        },
+                                    }}
+                                >
+                                    <ListItemIcon sx={{ color: theme.palette.primary.main }}>
+                                        {item.icon}
+                                    </ListItemIcon>
+                                    <ListItemText primary={item.text} />
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                        <Divider sx={{ my: 2 }} />
+                        <ListItem disablePadding>
+                            <ListItemButton
+                                onClick={handleLogout}
+                                sx={{
+                                    borderRadius: 1,
+                                    color: theme.palette.error.main,
+                                    '&:hover': {
+                                        bgcolor: alpha(theme.palette.error.main, 0.1),
+                                    },
+                                }}
+                            >
+                                <ListItemIcon sx={{ color: theme.palette.error.main }}>
+                                    <LogoutIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Cerrar Sesión" />
                             </ListItemButton>
                         </ListItem>
-                    ))}
-                </List>
-                <Divider sx={{ backgroundColor: '#444' }} />
-            </Drawer>
-
-        </Box>
+                    </List>
+                </Drawer>
+            </Box>
+        </Paper>
     );
 };
 

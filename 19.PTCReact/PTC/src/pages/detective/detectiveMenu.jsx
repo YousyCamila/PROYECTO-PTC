@@ -1,10 +1,8 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Container,
   Typography,
-  Button,
-  TextField,
   Table,
   TableBody,
   TableCell,
@@ -12,56 +10,66 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   Snackbar,
-  Alert,
   IconButton,
   Tooltip,
 } from '@mui/material';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
-import Swal from 'sweetalert2';
+import NavbarSidebarDetective from './NavbarSidebarDetective';
+import DetectiveCasoDetailsMenu from './DetectiveCasoDetailsMenu';
 
-const DetectiveMenu = () => {
-  const { user } = useContext(AuthContext);
-  const [casos, setCasos] = useState([]);
-  const [selectedCaso, setSelectedCaso] = useState(null);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [contratoId, setContratoId] = useState('');
-  const [error, setError] = useState('');
+const detectiveMenu = () => {
+  const { user } = useContext(AuthContext); // Contexto de autenticación
+  const [casos, setCasos] = useState([]); // Lista de casos asociados al cliente
+  const [openSnackbar, setOpenSnackbar] = useState(false); // Estado para el Snackbar
+  const [snackbarMessage, setSnackbarMessage] = useState(''); // Mensaje del Snackbar
+  const [selectedCaso, setSelectedCaso] = useState(null); // Caso seleccionado para detalles
+  const navigate = useNavigate();
 
-  if (!user || user.role !== 'detective') {
-    return <Typography variant="h6" color="error">Acceso denegado. Solo los detectives pueden acceder a este menú.</Typography>;
-  }
+  const email = localStorage.getItem('email'); // Email del cliente
+  const API_URL = 'http://localhost:3000/api';
 
-  // Función para obtener los casos asignados al detective
-  const fetchCasos = async () => {
+  useEffect(() => {
+    if (email) {
+      fetchCasosByEmail(email); // Cargar casos asociados al cargar el componente
+    }
+  }, [email]);
+
+  /**
+   * Lógica para obtener casos asociados por email del cliente
+   * @param {string} emailCliente
+   */
+  const fetchCasosByEmail = async (emailDetective) => {
     try {
-      const response = await fetch(`/api/casos/detector/${user._id}`); // Cambia esta URL según tu API
-      if (!response.ok) throw new Error('Error al cargar casos');
+      const response = await fetch(`${API_URL}/caso/detective/email/${emailDetective}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
       const data = await response.json();
-      setCasos(data);
+      console.log('Respuesta del backend:', data); // Depuración: Inspección de datos
+
+      if (response.ok) {
+        setCasos(data.casos || []); // Asegúrate de usar solo la lista de casos
+      } else {
+        throw new Error(data.message || 'Error al buscar los casos');
+      }
     } catch (error) {
-      setError(error.message);
-      setSnackbarMessage(`Error: ${error.message}`);
+      console.error('Error al obtener los casos:', error);
+      setSnackbarMessage(`Error al buscar los casos: ${error.message}`);
       setOpenSnackbar(true);
     }
   };
 
-  // Manejar la apertura de los detalles del caso
+  /**
+   * Manejo de la selección de un caso para mostrar detalles
+   * @param {Object} caso
+   */
   const handleOpenCasoDetails = (caso) => {
-    setSelectedCaso(caso);
+    setSelectedCaso(caso); // Guardar el caso seleccionado
   };
-
-  useEffect(() => {
-    if (user) {
-      fetchCasos();
-    }
-  }, [user]);
 
   return (
     <Box
@@ -75,6 +83,17 @@ const DetectiveMenu = () => {
         position: 'relative',
       }}
     >
+      {/* Barra de navegación superior */}
+      <NavbarSidebarDetective
+        sx={{
+          position: 'fixed',
+          top: 0,
+          width: '100%',
+          zIndex: 1000,
+          boxShadow: 3,
+        }}
+      />
+
       <Container
         maxWidth="lg"
         sx={{
@@ -85,16 +104,16 @@ const DetectiveMenu = () => {
           marginTop: '80px',
         }}
       >
-        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#000000' }}>
-          Casos Asociados al Detective
+        <Typography
+          variant="h4"
+          component="h1"
+          gutterBottom
+          sx={{ textAlign: 'center', color: '#000000' }}
+        >
+          Casos Asociados al Detective 
         </Typography>
 
-        <Button variant="outlined" color="primary" onClick={fetchCasos} sx={{ mb: 2 }}>
-          Cargar Casos Asignados
-        </Button>
-
-        {error && <Alert severity="error">{error}</Alert>}
-
+        {/* Tabla de casos */}
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -103,7 +122,7 @@ const DetectiveMenu = () => {
                   Nombre del Caso
                 </TableCell>
                 <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
-                  Cliente Asociado
+                  Detective Asignado
                 </TableCell>
                 <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
                   Estado
@@ -118,10 +137,14 @@ const DetectiveMenu = () => {
                 casos.map((caso) => (
                   <TableRow key={caso._id}>
                     <TableCell>{caso.nombreCaso}</TableCell>
-                    <TableCell>{caso.cliente ? `${caso.cliente.nombre} ${caso.cliente.apellido}` : 'No asignado'}</TableCell>
-                    <TableCell>{caso.estado ? 'Activo' : 'Inactivo'}</TableCell>
                     <TableCell>
-                      <Tooltip title="Ver detalles del caso" arrow>
+                      {caso.idDetective
+                        ? `${caso.idDetective.nombres} ${caso.idDetective.apellidos}`
+                        : 'Detective no asignado'}
+                    </TableCell>
+                    <TableCell>{caso.activo ? 'Activo' : 'Inactivo'}</TableCell>
+                    <TableCell>
+                      <Tooltip title="Ver los detalles de este caso" arrow>
                         <IconButton onClick={() => handleOpenCasoDetails(caso)}>
                           <MenuOpenIcon color="secondary" />
                         </IconButton>
@@ -132,37 +155,27 @@ const DetectiveMenu = () => {
               ) : (
                 <TableRow>
                   <TableCell colSpan={4} sx={{ textAlign: 'center' }}>
-                    No hay casos asociados para este detective.
+                    No hay casos asociados para este cliente.
                   </TableCell>
                 </TableRow>
               )}
             </TableBody>
           </Table>
         </TableContainer>
-
-        <Snackbar
-          open={openSnackbar}
-          autoHideDuration={6000}
-          onClose={() => setOpenSnackbar(false)}
-          message={snackbarMessage}
-        />
       </Container>
 
-      {selectedCaso && (
-        <Dialog open={Boolean(selectedCaso)} onClose={() => setSelectedCaso(null)}>
-          <DialogTitle>Detalles del Caso</DialogTitle>
-          <DialogContent>
-            <Typography variant="body1"><strong>Nombre:</strong> {selectedCaso.nombreCaso}</Typography>
-            <Typography variant="body1"><strong>Cliente:</strong> {selectedCaso.cliente?.nombre} {selectedCaso.cliente?.apellido}</Typography>
-            <Typography variant="body1"><strong>Estado:</strong> {selectedCaso.estado ? 'Activo' : 'Inactivo'}</Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setSelectedCaso(null)}>Cerrar</Button>
-          </DialogActions>
-        </Dialog>
-      )}
+      {/* Snackbar para errores */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar(false)}
+        message={snackbarMessage}
+      />
+
+      {/* Menú de detalles del caso */}
+      {selectedCaso && <DetectiveCasoDetailsMenu caso={selectedCaso} onClose={() => setSelectedCaso(null)} />}
     </Box>
   );
 };
 
-export default DetectiveMenu;
+export default detectiveMenu;
