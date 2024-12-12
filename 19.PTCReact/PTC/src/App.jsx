@@ -47,14 +47,14 @@ function App() {
           <Route path="/contactanos" element={<Contactanos />} />
           <Route path="/register" element={<Register />} />
           <Route path="/servicios" element={<Servicios />} />
-          <Route path="/admin-menu" element={<AdminMenu />} />
+         
 
           {/* Rutas protegidas - solo para administradores */}
           <Route element={<ProtectedRoute roles={['administrador']} />}>
+          <Route path="/admin-menu" element={<AdminMenu />} />
           <Route path="/detective-form" element={<DetectiveForm />} />
           <Route path="/cliente-form" element={<ClienteForm />} />
           <Route path="/administrador-form" element={<AdministradorForm />} />
-        
             <Route path="/gestionar-clientes" element={<GestionarClientes />} />
             <Route path="/crear-cliente" element={<CrearCliente />} />
             <Route path="/editar-cliente/:id" element={<EditarCliente />} />

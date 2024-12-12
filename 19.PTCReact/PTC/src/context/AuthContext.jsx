@@ -5,6 +5,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Manejar el token en el estado global
   const login = (token) => {
@@ -31,14 +32,41 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     // Recuperar el token al cargar la aplicación
     const token = localStorage.getItem('accessToken');
+    
     if (token) {
-      login(token); // Decodificar y establecer el usuario automáticamente
+      try {
+        // Decodificar el token sin validación estricta
+        const decodedToken = jwt_decode(token);
+        
+        // Establecer el usuario con la información del token
+        setUser({
+          id: decodedToken.id,
+          email: decodedToken.email,
+          role: decodedToken.role,
+        });
+      } catch (error) {
+        console.error("Error procesando el token", error);
+        localStorage.removeItem('accessToken');
+        setUser(null);
+      }
     }
+    
+    // Establecer carga como falsa 
+    setIsLoading(false);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
-      {children}
+    <AuthContext.Provider value={{ 
+      user, 
+      login, 
+      logout,
+      isLoading 
+    }}>
+      {isLoading ? (
+        <div>Cargando...</div> // Puedes reemplazar esto con un spinner de carga
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 };
