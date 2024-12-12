@@ -256,6 +256,7 @@ const AgregarEvidenciaDetective = ({ casoId }) => {
           </Button>
 
         </form>
+        
       </Container>
     </Box>
   )
