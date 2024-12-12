@@ -70,9 +70,12 @@ const CrearContrato = () => {
   
         const clientesData = await clientesResponse.json();
         const detectivesData = await detectivesResponse.json();
+
+        const clientesActivos = clientesData.filter(cliente => cliente.activo);
+        const detectivesActivos = detectivesData.filter(detective => detective.activo);
   
-        setClientes(clientesData);
-        setDetectives(detectivesData);
+        setClientes(clientesActivos);
+        setDetectives(detectivesActivos);
   
       } catch (error) {
         console.error("Error fetching data:", error);
