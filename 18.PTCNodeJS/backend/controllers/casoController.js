@@ -133,11 +133,6 @@ module.exports = {
   actualizarCaso,
   desactivarCaso,
   obtenerCasosPorClienteId,
-<<<<<<< HEAD
   obtenerCasosPorEmailCliente,
   obtenerCasosPorEmailDetective
 };
-=======
-  obtenerCasosPorEmailCliente
-};
->>>>>>> 8847ebd992acf273fdeff60a98747a4c13bba950
