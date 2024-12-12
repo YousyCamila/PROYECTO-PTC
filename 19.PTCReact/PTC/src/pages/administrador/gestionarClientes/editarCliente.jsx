@@ -66,11 +66,18 @@ const EditarCliente = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Convertir nombres y apellidos a mayúsculas
+    const updatedFormData = {
+      ...formData,
+      nombres: formData.nombres.toUpperCase(),
+      apellidos: formData.apellidos.toUpperCase(),
+    };
+
     try {
       const response = await fetch(`http://localhost:3000/api/clientes/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(updatedFormData),
       });
 
       if (response.ok) {
@@ -200,7 +207,7 @@ const EditarCliente = () => {
                       value={formData.correo}
                       onChange={handleChange}
                       variant="outlined"
-                      disabled
+                      required
                     />
                   </Grid>
 

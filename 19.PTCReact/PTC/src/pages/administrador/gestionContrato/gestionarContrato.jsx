@@ -127,12 +127,12 @@ const GestionarContratos = () => {
 
   const handleSearch = (term) => {
     setHighlightedContrato(null);
-  
-      const filtered = contratos.filter((contrato) =>
-        contrato._id.toString().includes(term) 
+
+    const filtered = contratos.filter((contrato) =>
+      contrato._id.toString().includes(term)
 
     );
-  
+
     setFilteredContratos(filtered);
   };
 
@@ -154,13 +154,13 @@ const GestionarContratos = () => {
       cancelButtonColor: '#3085d6',
       confirmButtonText: 'Sí, desactivar',
     });
-  
+
     if (confirm.isConfirmed) {
       try {
         const response = await fetch(`http://localhost:3000/api/contratos/${contratoId}`, {
           method: 'DELETE',
         });
-  
+
         if (response.ok) {
           // Actualiza el estado directamente sin recargar
           setContratos((prevContratos) =>
@@ -168,13 +168,13 @@ const GestionarContratos = () => {
               contrato._id === contratoId ? { ...contrato, estado: false } : contrato
             )
           );
-  
+
           setFilteredContratos((prevFiltered) =>
             prevFiltered.map((contrato) =>
               contrato._id === contratoId ? { ...contrato, estado: false } : contrato
             )
           );
-  
+
           Swal.fire('Desactivado!', 'El contrato ha sido desactivado.', 'success');
         } else {
           throw new Error('Error al desactivar el contrato.');
@@ -185,7 +185,7 @@ const GestionarContratos = () => {
       }
     }
   };
-  
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -237,22 +237,23 @@ const GestionarContratos = () => {
                   <TableRow key={contrato._id} hover sx={{ backgroundColor: highlightedContrato === contrato._id ? 'rgba(0,119,182,0.1)' : 'inherit' }}>
                     <TableCell align="center">{contrato._id}</TableCell>
                     <TableCell>{contrato.descripcionServicio}</TableCell>
-                    <TableCell>{contrato.idCliente ? `${contrato.idCliente.nombres} ${contrato.idCliente.apellidos}` : 'No asignado'}</TableCell>
-                    <TableCell>{contrato.idDetective ? `${contrato.idDetective.nombres} ${contrato.idDetective.apellidos}` : 'No asignado'}</TableCell>
+                    <TableCell>
+                      {contrato.idCliente ? `${contrato.idCliente.nombres} ${contrato.idCliente.apellidos || 'Sin apellido'}` : 'Sin asignar'}
+                    </TableCell>
+                    <TableCell>
+                      {contrato.idDetective ? `${contrato.idDetective.nombres} ${contrato.idDetective.apellidos || 'Sin apellido'}` : 'No asignado'}
+                    </TableCell>
+
+
                     <TableCell>
                       <Chip
-                      label= {contrato.estado ? 'Activo' : 'Inactivo'}
-                      color={contrato.estado ? 'success' : 'error'} />
-                      </TableCell>
+                        label={contrato.estado ? 'Activo' : 'Inactivo'}
+                        color={contrato.estado ? 'success' : 'error'} />
+                    </TableCell>
                     <TableCell align="center">
                       <Tooltip title="Ver detalles">
                         <IconButton color="primary" onClick={() => handleDetails(contrato._id)} sx={{ marginRight: 1 }}>
                           <VisibilityIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Editar">
-                        <IconButton color="secondary" onClick={() => handleEdit(contrato._id)} sx={{ marginRight: 1 }}>
-                          <EditIcon />
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Desactivar">

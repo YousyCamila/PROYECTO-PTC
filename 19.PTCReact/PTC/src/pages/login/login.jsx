@@ -1,6 +1,6 @@
-import { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import jwt_decode from "jwt-decode"; // Importa jwt_decode para decodificar el token JWT
+import jwt_decode from "jwt-decode";
 import {
   Box,
   Button,
@@ -18,7 +18,8 @@ import {
 import { ArrowBack } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
-import { Visibility, VisibilityOff } from "@mui/icons-material"; // Iconos para ver/ocultar la contraseña
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { AuthContext } from '../../context/AuthContext'; // Import the AuthContext
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -28,7 +29,10 @@ const Login = () => {
   const [showSnackbar, setShowSnackbar] = useState(false);
   const navigate = useNavigate();
 
-  const login = async (e) => {
+  // Use the login method from AuthContext
+  const { login } = useContext(AuthContext);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch("http://localhost:3000/api/usuario/login", {
@@ -36,24 +40,17 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password, role }), // Incluye el rol en la solicitud
+        body: JSON.stringify({ email, password, role }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Decodifica el token para obtener email, id y role
-        const decodedToken = jwt_decode(data.accessToken);
-
-        // Guarda los datos en localStorage
-        localStorage.setItem("accessToken", data.accessToken);
-        localStorage.setItem("userId", decodedToken.id); // Guarda el id del usuario
-        localStorage.setItem("email", decodedToken.email); // Guarda el email
-        localStorage.setItem("role", decodedToken.role); // Guarda el rol
-
-        
+        // Use the login method from AuthContext
+        login(data.accessToken);
 
         // Redirige según el rol decodificado del token
+        const decodedToken = jwt_decode(data.accessToken);
         if (decodedToken.role === "administrador") {
           navigate("/admin-menu");
         } else if (decodedToken.role === "cliente") {
@@ -101,8 +98,8 @@ const Login = () => {
           backgroundColor: "#0077b6",
           color: "white",
           padding: "10px 20px",
-          position: "absolute", // Colocando el navbar arriba de todo
-          top: "10px", // Ajustando la distancia desde el top
+          position: "absolute",
+          top: "10px",
         }}
       >
         <IconButton
@@ -132,7 +129,7 @@ const Login = () => {
             padding: 4,
             borderRadius: 2,
             boxShadow: 3,
-            marginTop: 10, // Esto asegura que el formulario no se superponga al navbar
+            marginTop: 10,
           }}
         >
           <Typography
@@ -144,7 +141,7 @@ const Login = () => {
             Iniciar sesión
           </Typography>
 
-          <form onSubmit={login}>
+          <form onSubmit={handleLogin}>
             <TextField
               fullWidth
               label="Correo"
@@ -169,7 +166,7 @@ const Login = () => {
                     onClick={() => setShowPassword(!showPassword)}
                     sx={{ padding: "10px" }}
                   >
-                    {showPassword ? <VisibilityOff /> : <Visibility />} {/* Logo de ver contraseña */}
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 ),
               }}
