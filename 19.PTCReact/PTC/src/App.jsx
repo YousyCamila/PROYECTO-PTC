@@ -40,8 +40,10 @@ import EditarRegistroForm from './pages/cliente/editarRegistroForm';
 import EvidenciasDetectiveCrud from './pages/detective/EvidenciasDetectiveCrud';
 import NavbarSidebarDetective from './pages/detective/NavbarSidebarDetective';
 import DetectiveCasoDetailsMenu from './pages/detective/DetectiveCasoDetailsMenu';
-import RegistroCasoDetective from './pages/detective/registroCasoDetective';
+import RegistroCrudDetective from './pages/detective/registroCrudDetective';
 import AgregarEvidenciaDetective from './pages/detective/agregarEvidenciaDetective';
+import AgregarRegistroFormDetective from './pages/detective/AgregarRegistrosFormDetective';
+import EditarRegistroFormDetective from './pages/detective/editarRegistroFormDetective';
 
 function App() {
   return (
@@ -100,8 +102,10 @@ function App() {
             <Route path="/agregar-evidencia/:casoId" element={<AgregarEvidenciaDetective />} />
             <Route path="/EvidenciasDetectiveCrud" element={<EvidenciasDetectiveCrud/>}/>
             <Route path="/NavbarSidebarDetective" element={<NavbarSidebarDetective/>}/>
-            <Route path= "/registroCasoDetective" element= {<RegistroCasoDetective/>}/>
+            <Route path= "/registroCasoDetective" element= {<RegistroCrudDetective/>}/>
             <Route path= "/DetectiveCasoDetailsMenu" element= {<DetectiveCasoDetailsMenu/>}/>
+            <Route path="/AgregarRegistroFormDetective" element= {<AgregarRegistroFormDetective/>}/>
+            <Route path="/EditarRegistroFromDetective" element= {<EditarRegistroFormDetective/>}/>
 
           </Route>
         </Routes>

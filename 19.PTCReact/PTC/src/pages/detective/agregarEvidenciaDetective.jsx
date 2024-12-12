@@ -110,7 +110,7 @@ const AgregarEvidenciaDetective = ({ casoId }) => {
         });
 
         if (updatedCaso.ok) {
-          navigate('/cliente-menu');
+          navigate('/Detective-menu');
         } else {
           Swal.fire({
             icon: 'error',
