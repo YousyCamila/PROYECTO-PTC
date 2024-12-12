@@ -170,6 +170,78 @@ const generarPDF = (formData) => {
   yPosition += 10;
   yPosition = checkPageOverflow(doc, yPosition);
 
+  // Sección de Tarifas y Honorarios
+addSectionHeader(doc, '3. Tarifas y Honorarios', yPosition);
+yPosition += 8;
+
+const maxWidth = 180; // Ancho máximo permitido para el texto (ajústalo según los márgenes)
+const texto = "El Cliente acuerda pagar a La Agencia una tarifa acordada, en concepto de la modalidad de pago acordada.";
+yPosition = ajustarTexto(doc, texto, yPosition, maxWidth);
+
+yPosition = checkPageOverflow(doc, yPosition); // Verificar si se necesita pasar a una nueva página
+doc.setFont('helvetica', 'bold');
+doc.text('• Tarifa total:', 20, yPosition);
+yPosition += 8;
+doc.setFont('helvetica', 'normal');
+doc.text(`$${formData.tarifa}`, 30, yPosition);
+yPosition += 10;
+yPosition = checkPageOverflow(doc, yPosition);
+
+yPosition = checkPageOverflow(doc, yPosition); // Verificar si se necesita pasar a una nueva página
+doc.setFont('helvetica', 'bold');
+doc.text('El pago deberá realizarse de la siguiente manera:', 20, yPosition);
+yPosition += 8;
+
+yPosition = checkPageOverflow(doc, yPosition); // Verificar si se necesita pasar a una nueva página
+doc.setFont('helvetica', 'bold');
+doc.text('• Tipo de tarifa:', 20, yPosition);
+yPosition += 8;
+doc.setFont('helvetica', 'normal');
+doc.text(`${formData.tipoTarifa}`, 30, yPosition);
+yPosition += 10;
+yPosition = checkPageOverflow(doc, yPosition);
+
+yPosition = checkPageOverflow(doc, yPosition); // Verificar si se necesita pasar a una nueva página
+doc.setFont('helvetica', 'bold');
+doc.text('• Método de pago:', 20, yPosition);
+yPosition += 8;
+doc.setFont('helvetica', 'normal');
+doc.text(`${formData.metodoPago}`, 30, yPosition);
+yPosition += 10;
+yPosition = checkPageOverflow(doc, yPosition);
+
+yPosition = checkPageOverflow(doc, yPosition); // Verificar si se necesita pasar a una nueva página
+
+// Sección de Firmas
+addSectionHeader(doc, 'FIRMAS', yPosition);
+yPosition += 15;
+
+const signatures = [
+  { role: 'Representante de La Agencia', name: 'Jeison Villamil', date: formData.fechaFirmaAgencia },
+  { role: 'Cliente', name: `${formData.cliente.nombres} ${formData.cliente.apellidos}`, date: formData.fechaFirmaCliente },
+  { role: 'Detective', name: `${formData.detective.nombres} ${formData.detective.apellidos}`, date: formData.fechaFirmaDetective }
+];
+
+signatures.forEach(sig => {
+  doc.text(`${sig.role}:`, 20, yPosition);
+  yPosition += 7;
+  doc.text(`Nombre: ${sig.name}`, 20, yPosition);
+  yPosition += 7;
+  doc.text('Firma: ___________________________', 20, yPosition);
+  yPosition += 7;
+  doc.text(`Fecha: ${sig.date}`, 20, yPosition);
+  yPosition += 15;
+  yPosition = checkPageOverflow(doc, yPosition);
+});
+
+// Información de Contacto
+addSectionHeader(doc, 'INFORMACIÓN DE CONTACTO', yPosition);
+yPosition += 10;
+doc.text('Dirección: Carrera 15 #79-10', 20, yPosition);
+yPosition += 7;
+doc.text('Teléfono: 350 5090145', 20, yPosition);
+yPosition += 7;
+doc.text('Email: ptcinvestigationprivatetec@gmail.com', 20, yPosition);
   // Generar el PDF final
   doc.save('Contrato_DetDetective.pdf');
 

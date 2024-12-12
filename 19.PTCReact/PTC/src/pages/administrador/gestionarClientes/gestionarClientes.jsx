@@ -21,6 +21,9 @@ import {
   Tooltip,
   Chip,
 } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
@@ -37,6 +40,23 @@ import NavbarSidebar from '../NavbarSidebar';
 import Swal from 'sweetalert2';
 
 
+const ClienteButton = ({ cliente }) => {
+  const isActive = cliente.activo;
+
+  return (
+    <Button
+      variant="contained"
+      sx={{
+        backgroundColor: isActive ? '#2ecc71' : '#e74c3c',
+        color: '#fff',
+        fontWeight: 'bold',
+        borderRadius: '12px',
+      }}
+    >
+      {isActive ? 'Activo' : 'Inactivo'}
+    </Button>
+  );
+};
 
 const GestionarClientes = () => {
   const [mode, setMode] = useState('dark');
@@ -108,7 +128,7 @@ const GestionarClientes = () => {
     },
   });
 
-  
+
   const toggleThemeMode = () => {
     setMode(prevMode => prevMode === 'dark' ? 'light' : 'dark');
   };
@@ -127,34 +147,32 @@ const GestionarClientes = () => {
   useEffect(() => {
     fetchClientes();
   }, [fetchClientes]);
-
   const handleSearch = (term) => {
-    // Resetear el cliente destacado
     setHighlightedCliente(null);
-  
-    // Filtrar clientes por número de documento
+
+    // Filtrar clientes por número de documento o incluir los inactivos
     const filtered = clientes.filter((cliente) => {
       const matchNumeroDocumento = cliente.numeroDocumento.includes(term);
-      
-      // Si encuentra coincidencia exacta por número de documento, resaltar
-      if (matchNumeroDocumento) {
+      const matchActivo = cliente.activo === false || cliente.activo === true; // Incluir clientes activos e inactivos
+
+      if (matchNumeroDocumento && matchActivo) {
         setHighlightedCliente(cliente._id);
+        return true;
       }
-  
-      return matchNumeroDocumento;
+
+      return false;
     });
-  
-    // Actualizar clientes filtrados
+
     setFilteredClientes(filtered);
     setSearchTerm(term);
-  
-    // Mostrar mensaje si no hay resultados
+
     if (filtered.length === 0) {
       setSnackbarMessage('No se encontraron clientes');
       setOpenSnackbar(true);
     }
   };
-  
+
+
 
   const handleEdit = (clienteId) => {
     navigate(`/editar-cliente/${clienteId}`);
@@ -164,7 +182,7 @@ const GestionarClientes = () => {
     navigate(`/detalles-cliente/${clienteId}`);
   };
 
-  
+
   const handleDeactivate = async (clienteId) => {
     const confirm = await Swal.fire({
       title: '¿Estás seguro?',
@@ -178,14 +196,29 @@ const GestionarClientes = () => {
 
     if (confirm.isConfirmed) {
       try {
-        await fetch(`http://localhost:3000/api/clientes/${clienteId}`, {
-          method: 'DELETE',
+        // Cambiar el método de DELETE a PATCH para actualizar el estado del cliente
+        const response = await fetch(`http://localhost:3000/api/clientes/${clienteId}`, {
+          method: 'PATCH', // Cambiado a PATCH para actualización
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            activo: false, // Cambiar el estado a inactivo
+          }),
         });
+
+        if (!response.ok) {
+          throw new Error('Error al desactivar cliente');
+        }
+
+        // Actualizar el estado de los clientes localmente
         setClientes((prevClientes) =>
           prevClientes.map((cliente) =>
             cliente._id === clienteId ? { ...cliente, activo: false } : cliente
           )
         );
+
+
         Swal.fire('Desactivado!', 'El cliente ha sido desactivado.', 'success');
       } catch (error) {
         console.error('Error al desactivar cliente:', error);
@@ -194,6 +227,8 @@ const GestionarClientes = () => {
       }
     }
   };
+
+  
 
 
   return (
@@ -377,10 +412,18 @@ const GestionarClientes = () => {
                       {cliente.correo}
                     </TableCell>
                     <TableCell sx={{ textAlign: 'center' }}>
-                      <Chip label={cliente.activo ? 'Activo' : 'Inactivo'} color={cliente.activo ? 'success' : 'error'} />
+                      <Chip
+                        label={cliente.activo ? 'Activo' : 'Inactivo'}
+                        color={cliente.activo ? 'success' : 'error'}
+                        size="small"
+                        sx={{
+                          cursor: 'pointer',
+                        }}
+                      />
                     </TableCell>
+
                     <TableCell sx={{ textAlign: 'center' }}>
-                    <Tooltip title="Ver Detalles" arrow>
+                      <Tooltip title="Ver Detalles" arrow>
                         <IconButton onClick={() => handleDetails(cliente._id)} color="primary">
                           <VisibilityIcon />
                         </IconButton>
@@ -388,7 +431,7 @@ const GestionarClientes = () => {
                       <Tooltip title="Editar Cliente" arrow>
                         <IconButton onClick={() => handleEdit(cliente._id)} color="primary">
                           <EditIcon />
-                          </IconButton>
+                        </IconButton>
                       </Tooltip>
                       <Tooltip title="Desactivar Cliente" arrow>
                         <IconButton onClick={() => handleDeactivate(cliente._id)} color="error">

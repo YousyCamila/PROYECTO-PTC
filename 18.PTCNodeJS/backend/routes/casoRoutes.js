@@ -234,6 +234,7 @@ router.get('/cliente/:id', casoController.obtenerCasosPorClienteId);
  */
 router.get('/cliente/email/:email', casoController.obtenerCasosPorEmailCliente);
 
+<<<<<<< HEAD
 
 /**
  * @swagger
@@ -276,3 +277,6 @@ router.get('/cliente/email/:email', casoController.obtenerCasosPorEmailCliente);
 router.get('/detective/email/:email', casoController.obtenerCasosPorEmailDetective);
 
 module.exports = router;
+=======
+module.exports = router;
+>>>>>>> 8847ebd992acf273fdeff60a98747a4c13bba950

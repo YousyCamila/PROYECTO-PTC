@@ -89,8 +89,7 @@ const obtenerCasosPorEmailCliente = async (emailCliente) => {
       .populate('idDetective')
       .populate('evidencias')
       .populate('registroCasos')
-      .populate('contratos')
-      .populate ('idCliente'); // Traer también los contratos
+      .populate('contratos'); // Traer también los contratos
 
     return {
       casos,
@@ -180,6 +179,11 @@ module.exports = {
   actualizarCaso,
   desactivarCaso,
   obtenerCasosPorClienteId,
+<<<<<<< HEAD
   obtenerCasosPorEmailCliente,
   obtenerCasosPorEmailDetective
 };
+=======
+  obtenerCasosPorEmailCliente
+};
+>>>>>>> 8847ebd992acf273fdeff60a98747a4c13bba950

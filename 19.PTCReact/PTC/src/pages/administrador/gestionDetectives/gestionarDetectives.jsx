@@ -365,7 +365,7 @@ const GestionarDetectives = () => {
             <Table stickyHeader>
               <TableHead>
                 <TableRow>
-                  {['Número de Documento', 'Nombre', 'Activo', 'Especialidad', 'Acciones'].map((header) => (
+                  {['Número de Documento', 'Nombre', 'Especialidad','Activo', 'Acciones'].map((header) => (
                     <TableCell key={header} sx={{ color: '#0077b6', fontWeight: 'bold', textTransform: 'uppercase' }}>
                       {header}
                     </TableCell>
@@ -385,15 +385,16 @@ const GestionarDetectives = () => {
 
                     <TableCell sx={{color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',}}>{detective.numeroDocumento}</TableCell>
                     <TableCell sx={{color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',}}>{detective.nombres} {detective.apellidos}</TableCell>
+                  
+                    <TableCell sx={{color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',}}>
+                      {detective.especialidad ? detective.especialidad : 'N/A'}
+                    </TableCell>
                     <TableCell>
                       <Chip
                         label={detective.activo ? 'Activo' : 'Inactivo'}
                         color={detective.activo ? 'success' : 'error'}
                         sx={{ fontWeight: 'bold' }}
                       />
-                    </TableCell>
-                    <TableCell sx={{color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',}}>
-                      {detective.especialidad ? detective.especialidad : 'N/A'}
                     </TableCell>
                     <TableCell>
 

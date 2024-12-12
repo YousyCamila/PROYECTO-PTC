@@ -21,7 +21,7 @@ async function crearCliente(datos) {
 }
 
 async function listarClientes() {
-  const clientes = await Cliente.find({ activo: true });
+  const clientes = await Cliente.find();
   if (clientes.length === 0) {
     throw new Error('No hay clientes registrados actualmente.');
   }
@@ -48,7 +48,7 @@ async function buscarClientePorCorreo(correo) {
 async function actualizarCliente(id, datos) {
   const cliente = await Cliente.findById(id);
 
-  if (!cliente || !cliente.activo) {
+  if (!cliente ) {
     throw new Error('El cliente que intenta actualizar no existe o ha sido desactivado.');
   }
 

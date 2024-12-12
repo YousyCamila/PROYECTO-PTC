@@ -79,13 +79,18 @@ const CrearCaso = () => {
       ]);
       const clientesData = await clientesRes.json();
       const detectivesData = await detectivesRes.json();
-
-      setClientes(clientesData);
-      setDetectives(detectivesData);
+  
+      // Filtra los clientes y detectives activos
+      const clientesActivos = clientesData.filter(cliente => cliente.activo);
+      const detectivesActivos = detectivesData.filter(detective => detective.activo);
+  
+      setClientes(clientesActivos);
+      setDetectives(detectivesActivos);
     } catch (error) {
       console.error('Error al cargar clientes y detectives:', error);
     }
   };
+  
 
   useEffect(() => {
     fetchClientesYDetectives();
@@ -99,7 +104,7 @@ const CrearCaso = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { nombreCaso, idCliente, idDetective } = formData;
-
+  
     if (!nombreCaso || !idCliente || !idDetective) {
       Swal.fire({
         icon: 'error',
@@ -108,13 +113,29 @@ const CrearCaso = () => {
       });
       return;
     }
-
+  
+    // Buscar los nombres de cliente y detective en los arrays cargados
+    const clienteSeleccionado = clientes.find(cliente => cliente._id === idCliente);
+    const detectiveSeleccionado = detectives.find(detective => detective._id === idDetective);
+  
+    // Asegurarse de que se obtuvieron correctamente los nombres
+    if (!clienteSeleccionado || !detectiveSeleccionado) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Cliente o Detective no válidos.',
+      });
+      return;
+    }
+  
     const newCaso = {
       nombreCaso,
       idCliente,
+      nombreCliente: `${clienteSeleccionado.nombres} ${clienteSeleccionado.apellidos}`,
       idDetective,
+      nombreDetective: `${detectiveSeleccionado.nombres} ${detectiveSeleccionado.apellidos}`,
     };
-
+  
     try {
       const response = await fetch('http://localhost:3000/api/caso', {
         method: 'POST',
@@ -123,7 +144,7 @@ const CrearCaso = () => {
         },
         body: JSON.stringify(newCaso),
       });
-
+  
       if (response.ok) {
         Swal.fire({
           icon: 'success',
@@ -144,6 +165,7 @@ const CrearCaso = () => {
       });
     }
   };
+  
 
   return (
     <ThemeProvider theme={theme}>

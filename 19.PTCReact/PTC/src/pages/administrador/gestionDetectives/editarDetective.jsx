@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { 
-  Box, 
-  Typography, 
-  Container, 
-  Grid, 
-  TextField, 
-  Button, 
-  Paper, 
-  MenuItem, 
-  Autocomplete, 
-  Chip, 
-  FormControlLabel, 
-  Switch, 
-  IconButton 
+import {
+  Box,
+  Typography,
+  Container,
+  Grid,
+  TextField,
+  Button,
+  Paper,
+  MenuItem,
+  Autocomplete,
+  Chip,
+  FormControlLabel,
+  Switch,
+  IconButton
 } from '@mui/material';
-import { 
-  Person as PersonIcon, 
-  Save as SaveIcon, 
-  ArrowBack as ArrowBackIcon, 
-  Brightness4 as Brightness4Icon, 
-  Brightness7 as Brightness7Icon 
+import {
+  Person as PersonIcon,
+  Save as SaveIcon,
+  ArrowBack as ArrowBackIcon,
+  Brightness4 as Brightness4Icon,
+  Brightness7 as Brightness7Icon
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -98,11 +98,20 @@ const EditarDetective = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Convertir nombres y apellidos a mayúsculas
+    const updatedFormData = {
+      ...formData,
+      nombres: formData.nombres.toUpperCase(),
+      apellidos: formData.apellidos.toUpperCase(),
+      // Unir las especialidades con comas
+      especialidad: formData.especialidad.join(', '),
+    };
+
     try {
       const response = await fetch(`http://localhost:3000/api/detectives/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(updatedFormData),
       });
 
       if (response.ok) {
@@ -131,7 +140,7 @@ const EditarDetective = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box 
+      <Box
         sx={{
           minHeight: '100vh',
           background: darkMode ? '#121212' : 'linear-gradient(135deg, #1a237e 0%, #5c6bc0 100%)',
@@ -154,11 +163,11 @@ const EditarDetective = () => {
           transition={{ duration: 0.5 }}
         >
           <Container maxWidth="md">
-            <Paper 
-              elevation={12} 
-              sx={{ 
-                borderRadius: 4, 
-                padding: 4, 
+            <Paper
+              elevation={12}
+              sx={{
+                borderRadius: 4,
+                padding: 4,
                 background: darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.95)',
                 backdropFilter: 'blur(10px)',
               }}
@@ -231,8 +240,24 @@ const EditarDetective = () => {
                       label="Correo"
                       name="correo"
                       value={formData.correo}
+                      onChange={handleChange} // Asegúrate de manejar el cambio
                       variant="outlined"
-                      disabled
+                      required
+                    />
+                  </Grid>
+
+
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      label="Fecha de Nacimiento"
+                      type="date"
+                      name="fechaNacimiento"
+                      value={formData.fechaNacimiento}
+                      onChange={handleChange}
+                      variant="outlined"
+                      InputLabelProps={{ shrink: true }}
+                      required
                     />
                   </Grid>
 
@@ -258,19 +283,19 @@ const EditarDetective = () => {
                       onChange={(_, newValue) => setFormData(prev => ({ ...prev, especialidad: newValue }))}
                       renderTags={(value, getTagProps) =>
                         value.map((option, index) => (
-                          <Chip 
-                            variant="outlined" 
-                            label={option} 
-                            {...getTagProps({ index })} 
+                          <Chip
+                            variant="outlined"
+                            label={option}
+                            {...getTagProps({ index })}
                             color="primary"
                           />
                         ))
                       }
                       renderInput={(params) => (
-                        <TextField 
-                          {...params} 
-                          variant="outlined" 
-                          label="Especialidades" 
+                        <TextField
+                          {...params}
+                          variant="outlined"
+                          label="Especialidades"
                           placeholder="Seleccione especialidades"
                         />
                       )}
@@ -292,19 +317,19 @@ const EditarDetective = () => {
                 </Grid>
 
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 3 }}>
-                  <Button 
-                    variant="outlined" 
-                    startIcon={<ArrowBackIcon />} 
+                  <Button
+                    variant="outlined"
+                    startIcon={<ArrowBackIcon />}
                     onClick={() => navigate(-1)}
                     color="primary"
                   >
                     Cancelar
                   </Button>
 
-                  <Button 
-                    type="submit" 
-                    variant="contained" 
-                    startIcon={<SaveIcon />} 
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    startIcon={<SaveIcon />}
                     color="primary"
                   >
                     Guardar cambios
@@ -312,11 +337,11 @@ const EditarDetective = () => {
                 </Box>
               </form>
 
-              <IconButton 
+              <IconButton
                 sx={{
-                  position: 'absolute', 
-                  top: 16, 
-                  right: 16, 
+                  position: 'absolute',
+                  top: 16,
+                  right: 16,
                   backgroundColor: darkMode ? '#424242' : '#f0f0f0',
                 }}
                 onClick={() => setDarkMode(!darkMode)}
