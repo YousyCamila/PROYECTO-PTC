@@ -89,7 +89,8 @@ const obtenerCasosPorEmailCliente = async (emailCliente) => {
       .populate('idDetective')
       .populate('evidencias')
       .populate('registroCasos')
-      .populate('contratos'); // Traer también los contratos
+      .populate('contratos') // Traer también los contratos
+      .populate ('idCliente');
 
     return {
       casos,
@@ -106,6 +107,7 @@ const obtenerCasosPorEmailCliente = async (emailCliente) => {
  * @param {string} emailDetective - Correo electrónico del detective.
  * @returns {Promise<Array>} Lista de casos asociados al detective.
  */
+
 const obtenerCasosPorEmailDetective = async (emailDetective) => {
   try {
     // Buscar al detective por su email
