@@ -10,7 +10,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Button,
   Snackbar,
   IconButton,
   Tooltip,
@@ -19,45 +18,57 @@ import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import NavbarSidebarDetective from './NavbarSidebarDetective';
-import CasoDetailsMenu from './DetectiveCasoDetailsMenu';
+import DetectiveCasoDetailsMenu from './DetectiveCasoDetailsMenu';
 
-const DetectiveMenu = () => {
-  const { user } = useContext(AuthContext);
-  const [casos, setCasos] = useState([]);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [selectedCaso, setSelectedCaso] = useState(null);
+const detectiveMenu = () => {
+  const { user } = useContext(AuthContext); // Contexto de autenticación
+  const [casos, setCasos] = useState([]); // Lista de casos asociados al cliente
+  const [openSnackbar, setOpenSnackbar] = useState(false); // Estado para el Snackbar
+  const [snackbarMessage, setSnackbarMessage] = useState(''); // Mensaje del Snackbar
+  const [selectedCaso, setSelectedCaso] = useState(null); // Caso seleccionado para detalles
   const navigate = useNavigate();
 
-  const email = localStorage.getItem('email');
+  const email = localStorage.getItem('email'); // Email del cliente
   const API_URL = 'http://localhost:3000/api';
 
   useEffect(() => {
     if (email) {
-      fetchCasosAsignados(email);
+      fetchCasosByEmail(email); // Cargar casos asociados al cargar el componente
     }
   }, [email]);
 
-  const fetchCasosAsignados = async (emailDetective) => {
+  /**
+   * Lógica para obtener casos asociados por email del cliente
+   * @param {string} emailCliente
+   */
+  const fetchCasosByEmail = async (emailDetective) => {
     try {
-      const response = await fetch(`${API_URL}/caso/cliente/email/${emailCliente}`, {
+      const response = await fetch(`${API_URL}/caso/detective/email/${emailDetective}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
+
       const data = await response.json();
+      console.log('Respuesta del backend:', data); // Depuración: Inspección de datos
+
       if (response.ok) {
-        setCasos(data); // Guardamos los casos asignados al detective
+        setCasos(data.casos || []); // Asegúrate de usar solo la lista de casos
       } else {
         throw new Error(data.message || 'Error al buscar los casos');
       }
     } catch (error) {
+      console.error('Error al obtener los casos:', error);
       setSnackbarMessage(`Error al buscar los casos: ${error.message}`);
       setOpenSnackbar(true);
     }
   };
 
+  /**
+   * Manejo de la selección de un caso para mostrar detalles
+   * @param {Object} caso
+   */
   const handleOpenCasoDetails = (caso) => {
-    setSelectedCaso(caso);
+    setSelectedCaso(caso); // Guardar el caso seleccionado
   };
 
   return (
@@ -72,6 +83,7 @@ const DetectiveMenu = () => {
         position: 'relative',
       }}
     >
+      {/* Barra de navegación superior */}
       <NavbarSidebarDetective
         sx={{
           position: 'fixed',
@@ -98,15 +110,10 @@ const DetectiveMenu = () => {
           gutterBottom
           sx={{ textAlign: 'center', color: '#000000' }}
         >
-          Casos Asignados al Detective
+          Casos Asociados al Detective 
         </Typography>
 
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-          <Button variant="outlined" color="primary" onClick={() => fetchCasosAsignados(email)}>
-            Cargar Casos Asignados
-          </Button>
-        </Box>
-
+        {/* Tabla de casos */}
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -115,7 +122,7 @@ const DetectiveMenu = () => {
                   Nombre del Caso
                 </TableCell>
                 <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
-                  Cliente Asociado
+                  Detective Asignado
                 </TableCell>
                 <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
                   Estado
@@ -130,7 +137,11 @@ const DetectiveMenu = () => {
                 casos.map((caso) => (
                   <TableRow key={caso._id}>
                     <TableCell>{caso.nombreCaso}</TableCell>
-                    <TableCell>{caso.nombreCliente}</TableCell>
+                    <TableCell>
+                      {caso.idDetective
+                        ? `${caso.idDetective.nombres} ${caso.idDetective.apellidos}`
+                        : 'Detective no asignado'}
+                    </TableCell>
                     <TableCell>{caso.activo ? 'Activo' : 'Inactivo'}</TableCell>
                     <TableCell>
                       <Tooltip title="Ver los detalles de este caso" arrow>
@@ -144,7 +155,7 @@ const DetectiveMenu = () => {
               ) : (
                 <TableRow>
                   <TableCell colSpan={4} sx={{ textAlign: 'center' }}>
-                    No hay casos asignados a este detective.
+                    No hay casos asociados para este cliente.
                   </TableCell>
                 </TableRow>
               )}
@@ -153,6 +164,7 @@ const DetectiveMenu = () => {
         </TableContainer>
       </Container>
 
+      {/* Snackbar para errores */}
       <Snackbar
         open={openSnackbar}
         autoHideDuration={6000}
@@ -160,9 +172,10 @@ const DetectiveMenu = () => {
         message={snackbarMessage}
       />
 
-      {selectedCaso && <DetectiveMenuCasoDetailsMenu caso={selectedCaso} onClose={() => setSelectedCaso(null)} />}
+      {/* Menú de detalles del caso */}
+      {selectedCaso && <DetectiveCasoDetailsMenu caso={selectedCaso} onClose={() => setSelectedCaso(null)} />}
     </Box>
   );
 };
 
-export default DetectiveMenu;
+export default detectiveMenu;

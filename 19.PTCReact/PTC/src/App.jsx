@@ -32,11 +32,16 @@ import MensajesRespondidos from './pages/administrador/GestionarSolicitudes/Mens
 import CasoDetailsMenu from './pages/cliente/CasoDetailsMenu';
 import EvidenciasCrud from './pages/cliente/EvidenciasCrud';
 import { AuthProvider } from './context/AuthContext';
+import RegistrosCrud from './pages/cliente/RegistrosCrud';
 import ProtectedRoute from './components/ProtectedRoute';
-import RegistroCaso from './pages/cliente/RegistrosCrud';
 import AgregarRegistrosForm from './pages/cliente/AgregarRegistrosForm';
 import EditarRegistroForm from './pages/cliente/editarRegistroForm';
 
+import EvidenciasDetectiveCrud from './pages/detective/EvidenciasDetectiveCrud';
+import NavbarSidebarDetective from './pages/detective/NavbarSidebarDetective';
+import DetectiveCasoDetailsMenu from './pages/detective/DetectiveCasoDetailsMenu';
+import RegistroCasoDetective from './pages/detective/registroCasoDetective';
+import AgregarEvidenciaDetective from './pages/detective/agregarEvidenciaDetective';
 
 function App() {
   return (
@@ -48,7 +53,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/contactanos" element={<Contactanos />} />
           <Route path="/register" element={<Register />} />
-          
+        
           <Route path="/servicios" element={<Servicios />} />
 
           {/* Rutas protegidas - solo para administradores */}
@@ -83,7 +88,7 @@ function App() {
             <Route path="/caso-details" element={<CasoDetailsMenu />} />
             <Route path="/evidencias-crud" element={<EvidenciasCrud />} />
             <Route path="/agregar-evidencia/:casoId" element={<AgregarEvidencia />} />
-            <Route path="/registros-crud" element={<RegistroCaso />} />
+            <Route path="/registros-crud" element={<RegistrosCrud />} />
             <Route path='/agregar-registros/:casoId' element={<AgregarRegistrosForm />} />
             <Route path='/editar-registros/:registroId' element={<EditarRegistroForm />} />
 
@@ -92,7 +97,12 @@ function App() {
           {/* Rutas protegidas - solo para detectives */}
           <Route element={<ProtectedRoute roles={['detective']} />}>
             <Route path="/detective-menu" element={<DetectiveMenu />} />
-            <Route path="/agregar-evidencia/:casoId" element={<AgregarEvidencia />} />
+            <Route path="/agregar-evidencia/:casoId" element={<AgregarEvidenciaDetective />} />
+            <Route path="/EvidenciasDetectiveCrud" element={<EvidenciasDetectiveCrud/>}/>
+            <Route path="/NavbarSidebarDetective" element={<NavbarSidebarDetective/>}/>
+            <Route path= "/registroCasoDetective" element= {<RegistroCasoDetective/>}/>
+            <Route path= "/DetectiveCasoDetailsMenu" element= {<DetectiveCasoDetailsMenu/>}/>
+
           </Route>
         </Routes>
       </Router>

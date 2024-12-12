@@ -14,7 +14,7 @@ import {
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
-const AgregarEvidencia = ({ casoId }) => {
+const AgregarEvidenciaDetective = ({ casoId }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fechaEvidencia: '',
@@ -261,4 +261,4 @@ const AgregarEvidencia = ({ casoId }) => {
   )
 };
 
-export default DetectiveMenu;
+export default AgregarEvidenciaDetective;
