@@ -33,15 +33,15 @@ const detectiveMenu = () => {
 
   useEffect(() => {
     if (email) {
-      fetchCasosByEmail(email); // Cargar casos asociados al cargar el componente
+      fetchCasosByEmailDetective(email); // Cargar casos asociados al cargar el componente
     }
   }, [email]);
 
   /**
    * Lógica para obtener casos asociados por email del cliente
-   * @param {string} emailCliente
+   * @param {string} emailDetective
    */
-  const fetchCasosByEmail = async (emailDetective) => {
+  const fetchCasosByEmailDetective = async (emailDetective) => {
     try {
       const response = await fetch(`${API_URL}/caso/detective/email/${emailDetective}`, {
         method: 'GET',
