@@ -1,6 +1,7 @@
+// src/pages/login/login.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import jwt_decode from "jwt-decode"; // Importa jwt_decode para decodificar el token JWT
+import jwt_decode from "jwt-decode";
 import {
   Box,
   Button,
@@ -14,11 +15,12 @@ import {
   IconButton,
   Snackbar,
   Alert,
+  Tooltip,
 } from "@mui/material";
-import { ArrowBack } from "@mui/icons-material";
+import { ArrowBack, Login as LoginIcon, PersonAdd } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
-import { Visibility, VisibilityOff } from "@mui/icons-material"; // Iconos para ver/ocultar la contraseña
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -36,24 +38,18 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password, role }), // Incluye el rol en la solicitud
+        body: JSON.stringify({ email, password, role }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Decodifica el token para obtener email, id y role
         const decodedToken = jwt_decode(data.accessToken);
-
-        // Guarda los datos en localStorage
         localStorage.setItem("accessToken", data.accessToken);
-        localStorage.setItem("userId", decodedToken.id); // Guarda el id del usuario
-        localStorage.setItem("email", decodedToken.email); // Guarda el email
-        localStorage.setItem("role", decodedToken.role); // Guarda el rol
+        localStorage.setItem("userId", decodedToken.id);
+        localStorage.setItem("email", decodedToken.email);
+        localStorage.setItem("role", decodedToken.role);
 
-        
-
-        // Redirige según el rol decodificado del token
         if (decodedToken.role === "administrador") {
           navigate("/admin-menu");
         } else if (decodedToken.role === "cliente") {
@@ -62,7 +58,6 @@ const Login = () => {
           navigate("/detective-menu");
         }
       } else {
-        // Mostrar mensaje de error si hay problema con el rol o credenciales
         Swal.fire({
           icon: "error",
           title: "Error de inicio de sesión",
@@ -84,11 +79,12 @@ const Login = () => {
       sx={{
         width: "100vw",
         height: "100vh",
-        background: "linear-gradient(to top, #0077b6, #00aaff)",
+        backgroundColor: "white",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
+        padding: "20px",
       }}
     >
       {/* NavBar */}
@@ -98,22 +94,32 @@ const Login = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          backgroundColor: "#0077b6",
+          background: "linear-gradient(to left, rgba(0, 0, 139, 1), rgba(0, 0, 0, 0.911), rgba(0, 0, 139, 1))",
           color: "white",
           padding: "10px 20px",
-          position: "absolute", // Colocando el navbar arriba de todo
-          top: "10px", // Ajustando la distancia desde el top
+          position: "absolute",
+          top: 0,
+          left: 0,
+          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+          borderRadius: "0 0 10px 10px",
+          zIndex: 1000,
         }}
       >
-        <IconButton
-          onClick={() => navigate("/")}
-          sx={{ color: "white", display: "flex", alignItems: "center" }}
-        >
-          <ArrowBack />
-          <Typography variant="body1" sx={{ marginLeft: "6px" }}>
-            Volver
-          </Typography>
-        </IconButton>
+        <Tooltip title="Volver">
+          <IconButton
+            onClick={() => navigate("/")}
+            sx={{
+              color: "white",
+              display: "flex",
+              alignItems: "center",
+              "&:hover": {
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
+              },
+            }}
+          >
+            <ArrowBack />
+          </IconButton>
+        </Tooltip>
         <Typography variant="h6" sx={{ flexGrow: 1, textAlign: "center" }}>
           PTC - Iniciar Sesión
         </Typography>
@@ -130,16 +136,16 @@ const Login = () => {
           sx={{
             backgroundColor: "white",
             padding: 4,
-            borderRadius: 2,
-            boxShadow: 3,
-            marginTop: 10, // Esto asegura que el formulario no se superponga al navbar
+            borderRadius: 4,
+            boxShadow: "0 6px 15px rgba(0, 0, 0, 0.2)",
+            marginTop: 10,
           }}
         >
           <Typography
             variant="h4"
             component="h1"
             gutterBottom
-            sx={{ textAlign: "center", color: "#0077b6", marginBottom: 8 }}
+            sx={{ textAlign: "center", color: "#003366", marginBottom: 4 }}
           >
             Iniciar sesión
           </Typography>
@@ -152,7 +158,11 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              sx={{ marginBottom: "16px" }}
+              helperText="Por favor, ingresa tu correo electrónico"
+              sx={{
+                marginBottom: "16px",
+                input: { color: "#003366" },
+              }}
             />
             <TextField
               fullWidth
@@ -162,14 +172,18 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              sx={{ marginBottom: "16px" }}
+              helperText="Ingresa tu contraseña"
+              sx={{
+                marginBottom: "16px",
+                input: { color: "#003366" },
+              }}
               InputProps={{
                 endAdornment: (
                   <IconButton
                     onClick={() => setShowPassword(!showPassword)}
                     sx={{ padding: "10px" }}
                   >
-                    {showPassword ? <VisibilityOff /> : <Visibility />} {/* Logo de ver contraseña */}
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 ),
               }}
@@ -195,11 +209,15 @@ const Login = () => {
               sx={{
                 mt: 2,
                 mb: 2,
-                backgroundColor: "#0077b6",
-                "&:hover": { backgroundColor: "#005f91" },
+                backgroundColor: "#003366",
+                color: "white",
+                "&:hover": { backgroundColor: "#002244" },
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
               }}
             >
-              Iniciar sesión
+              <LoginIcon /> Iniciar sesión
             </Button>
 
             <Button
@@ -207,13 +225,16 @@ const Login = () => {
               variant="outlined"
               sx={{
                 mb: 2,
-                color: "#0077b6",
-                borderColor: "#0077b6",
+                color: "#003366",
+                borderColor: "#003366",
                 "&:hover": { backgroundColor: "#e0e0e0" },
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
               }}
               onClick={() => navigate("/register")}
             >
-              ¿No tienes cuenta? Regístrate
+              <PersonAdd /> ¿No tienes cuenta? Regístrate
             </Button>
           </form>
         </Container>
@@ -224,12 +245,17 @@ const Login = () => {
         autoHideDuration={3000}
         onClose={() => setShowSnackbar(false)}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert severity="success" sx={{ width: "100%" }}>
-          ¡Login exitoso!
-        </Alert>
-      </Snackbar>
-    </Box>
+>
+          <Alert
+            onClose={() => setShowSnackbar(false)}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            Inicio de sesión exitoso
+          </Alert>
+        </Snackbar>
+      </Box>
+    
   );
 };
 
