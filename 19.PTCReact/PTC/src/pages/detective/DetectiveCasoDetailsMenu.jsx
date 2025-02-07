@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import EvidenciasDetectiveCrud from './EvidenciasDetectiveCrud';
-import registroCrudDetective from './registroCrudDetective';
+import RegistrosCrudDetective from './RegistrosCrudDetective';
 
 const DetectiveCasoDetailsMenu = ({ caso, onClose }) => {
   const [view, setView] = useState('details'); // Para cambiar entre vistas: detalles, evidencias, contrato, registros
@@ -59,7 +59,7 @@ const DetectiveCasoDetailsMenu = ({ caso, onClose }) => {
             <Typography variant="h6" gutterBottom>
               Registros del Caso
             </Typography>
-            <registroCrudDetective casoId={caso._id} />
+            <RegistrosCrudDetective casoId={caso._id} />
           </Box>
         );
       default:

@@ -20,7 +20,7 @@ import { AuthContext } from '../../context/AuthContext';
 import NavbarSidebarDetective from './NavbarSidebarDetective';
 import DetectiveCasoDetailsMenu from './DetectiveCasoDetailsMenu';
 
-const detectiveMenu = () => {
+const DetectiveMenu = () => {
   const { user } = useContext(AuthContext); // Contexto de autenticación
   const [casos, setCasos] = useState([]); // Lista de casos asociados al cliente
   const [openSnackbar, setOpenSnackbar] = useState(false); // Estado para el Snackbar
@@ -28,7 +28,9 @@ const detectiveMenu = () => {
   const [selectedCaso, setSelectedCaso] = useState(null); // Caso seleccionado para detalles
   const navigate = useNavigate();
 
-  const email = localStorage.getItem('email'); // Email del cliente
+  const email = localStorage.getItem('email_detective'); // Email del cliente
+  console.log('Email obtenido:', email); // Verificar si se recibe el email
+
   const API_URL = 'http://localhost:3000/api';
 
   useEffect(() => {
@@ -155,7 +157,7 @@ const detectiveMenu = () => {
               ) : (
                 <TableRow>
                   <TableCell colSpan={4} sx={{ textAlign: 'center' }}>
-                    No hay casos asociados para este cliente.
+                    No hay casos asociados para este Detective.
                   </TableCell>
                 </TableRow>
               )}
@@ -178,4 +180,4 @@ const detectiveMenu = () => {
   );
 };
 
-export default detectiveMenu;
+export default DetectiveMenu;
