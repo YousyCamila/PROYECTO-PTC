@@ -28,7 +28,8 @@ const ClienteMenu = () => {
   const [selectedCaso, setSelectedCaso] = useState(null); // Caso seleccionado para detalles
   const navigate = useNavigate();
 
-  const email = localStorage.getItem('email'); // Email del cliente
+  const email = localStorage.getItem('email_cliente'); // Email del cliente
+  console.log('Email obtenido:', email); // Verificar si se recibe el email
   const API_URL = 'http://localhost:3000/api';
 
   useEffect(() => {
