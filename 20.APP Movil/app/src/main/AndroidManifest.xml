@@ -16,17 +16,17 @@
             android:name=".Views.Contrato.MainActivity3"
             android:exported="false" />
         <activity
-            android:name=".Views.Contrato.ContratoAdapter"
+            android:name=".Views.Administrador.Contrato.ContratoAdapter"
             android:exported="false"
             tools:ignore="Instantiatable" />
         <activity
-            android:name=".Views.Contrato.ListarContratoActivity"
+            android:name=".Views.Administrador.Contrato.ListarContratoActivity"
             android:exported="false" />
         <activity
-            android:name=".Views.Contrato.HomeContratoActivity"
+            android:name=".Views.Administrador.Contrato.HomeContratoActivity"
             android:exported="false" />
         <activity
-            android:name=".Views.Contrato.CrearContratoActivity"
+            android:name=".Views.Administrador.Contrato.CrearContratoActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
