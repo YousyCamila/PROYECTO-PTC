@@ -1,4 +1,4 @@
-package com.example.aplicacionptc.Views.Contrato
+package com.example.aplicacionptc.Views.Administrador.Contrato
 
 import android.content.Intent
 import android.os.Bundle
