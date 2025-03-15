@@ -1,4 +1,4 @@
-package com.example.aplicacionptc.Views.Contrato
+package com.example.aplicacionptc.Views.Administrador.Contrato
 
 import android.annotation.SuppressLint
 import android.os.Bundle
