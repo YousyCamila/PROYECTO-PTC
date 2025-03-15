@@ -67,7 +67,7 @@ class ContratoController {
             contrato.setTarifa(nuevaTarifa)
             contrato.setEstado(nuevoEstado)
 
-            "c Contrato actualizado correctamente para el cliente ${contrato.getCliente().personas.nombre}."
+            " Contrato actualizado correctamente para el cliente ${contrato.getCliente().personas.nombre}."
         } else {
             " Índice inválido. No se pudo actualizar el contrato."
         }
