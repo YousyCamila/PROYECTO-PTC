@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+            android:id="@+id/main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/blancoHueso"
+            android:padding="24dp">
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Crear Contrato"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:paddingBottom="24dp" />
+
+        <Spinner
+                android:id="@+id/spinnerCliente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+        <Spinner
+                android:id="@+id/spinnerDetective"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+        <EditText
+                android:id="@+id/etDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Descripción"
+                android:layout_marginBottom="16dp"
+                android:inputType="textMultiLine"
+                android:minLines="3" />
+
+        <EditText
+                android:id="@+id/etFechaIni"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Fecha Inicio (dd/MM/yyyy)"
+                android:layout_marginBottom="16dp"
+                android:inputType="date" />
+
+        <EditText
+                android:id="@+id/etFechaFin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Fecha Fin (dd/MM/yyyy)"
+                android:layout_marginBottom="16dp"
+                android:inputType="date" />
+
+        <EditText
+                android:id="@+id/etClausulas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Cláusulas"
+                android:layout_marginBottom="16dp"
+                android:inputType="textMultiLine"
+                android:minLines="3" />
+
+        <EditText
+                android:id="@+id/etTarifa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tarifa"
+                android:layout_marginBottom="24dp"
+                android:inputType="numberDecimal" />
+
+        <Button
+                android:id="@+id/btnGuardarContrato"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Guardar Contrato"
+                android:backgroundTint="@color/lila"
+                android:textColor="@android:color/white" />
+
+    </LinearLayout>
+</ScrollView>
