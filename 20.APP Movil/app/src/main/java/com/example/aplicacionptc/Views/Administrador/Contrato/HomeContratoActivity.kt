@@ -35,7 +35,7 @@ class HomeContratoActivity : AppCompatActivity() {
 
         volverDashboard.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
-            finish() // opcional: para cerrar HomeContratoActivity y no volver atrás con back
+            finish()
         }
 
 

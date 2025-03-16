@@ -39,7 +39,6 @@ class ContratoAdapter(
 
         txtNombre.text = contrato.getDescripcionServicio()
 
-
         txtFecha.text = "Creado el: ${dateFormatter.format(contrato.getFechaCreacion())}"
 
 
