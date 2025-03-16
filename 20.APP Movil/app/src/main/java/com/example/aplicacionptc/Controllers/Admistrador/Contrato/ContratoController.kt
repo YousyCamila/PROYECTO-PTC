@@ -83,6 +83,15 @@ class ContratoController {
             " Índice inválido. No se pudo desactivar el contrato."
         }
     }
+    fun activarContrato(indice: Int): String {
+        return if (indice in listaContratos.indices) {
+            val contrato = listaContratos[indice]
+            contrato.setEstado(true)
+            "Contrato del cliente ${contrato.getCliente().personas.nombre} activado correctamente."
+        } else {
+            " Índice inválido. No se pudo desactivar el contrato."
+        }
+    }
 
 
     private fun convertirFecha(fechaStr: String): Date {

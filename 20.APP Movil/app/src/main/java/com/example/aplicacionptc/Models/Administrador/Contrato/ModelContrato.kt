@@ -41,4 +41,5 @@ class ModelContrato(
     fun setDetective(det: Detectives) { detective = det }
 
     fun getFechaCreacion() = fechaCreacion
+
 }
