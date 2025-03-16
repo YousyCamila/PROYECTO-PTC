@@ -1,6 +1,7 @@
 package com.example.aplicacionptc.Views.Administrador.Contrato
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -14,10 +15,14 @@ import com.example.aplicacionptc.Views.Contrato.ContratoAdapter
 import com.example.ptc_app.Models.Administrador.Cliente.Clientes
 import com.example.ptc_app.Models.Administrador.Detective.Detectives
 import com.example.ptc_app.Models.Administrador.Contrato.ModelContrato
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.chip.ChipGroup
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ListarContratoActivity : AppCompatActivity() {
 
-    private lateinit var radioGroupTipoPersona: RadioGroup
+    private lateinit var radioGroupTipoPersona: ChipGroup
     private lateinit var spinnerPersonas: Spinner
     private lateinit var listViewContratos: ListView
 
@@ -28,6 +33,7 @@ class ListarContratoActivity : AppCompatActivity() {
     private var personaSeleccionada: Any? = null
 
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -39,7 +45,18 @@ class ListarContratoActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val btnCrearContratoN = findViewById<ExtendedFloatingActionButton>(R.id.btnCrearContratoN)
+        val btnVolverHome = findViewById<ImageButton>(R.id.btnVolverHome)
 
+
+        btnCrearContratoN.setOnClickListener{
+            startActivity(Intent(this, CrearContratoActivity::class.java))
+        }
+
+        btnVolverHome.setOnClickListener {
+            startActivity(Intent(this, HomeContratoActivity::class.java))
+            finish()
+        }
 
         radioGroupTipoPersona = findViewById(R.id.radioGroupTipoPersona)
         spinnerPersonas = findViewById(R.id.spinnerPersonas)
@@ -56,7 +73,7 @@ class ListarContratoActivity : AppCompatActivity() {
 
         spinnerPersonas.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                personaSeleccionada = if (radioGroupTipoPersona.checkedRadioButtonId == R.id.radioCliente) {
+                personaSeleccionada = if (radioGroupTipoPersona.checkedChipId  == R.id.radioCliente) {
                     listaClientes[position]
                 } else {
                     listaDetectives[position]

@@ -1,7 +1,9 @@
 package com.example.aplicacionptc.Views.Contrato
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.content.Context
+import android.icu.util.Calendar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,7 @@ import android.widget.*
 import com.example.aplicacionptc.Controllers.Admistrador.Contrato.ContratoController
 import com.example.ptc_app.Models.Administrador.Contrato.ModelContrato
 import com.example.aplicacionptc.R
+import com.google.android.material.switchmaterial.SwitchMaterial
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -104,7 +107,8 @@ class ContratoAdapter(
         val inputFechaCierre = dialogView.findViewById<EditText>(R.id.inputFechaCierreEditar)
         val inputClausulas = dialogView.findViewById<EditText>(R.id.inputClausulasEditar)
         val inputTarifa = dialogView.findViewById<EditText>(R.id.inputTarifaEditar)
-        val checkEstado = dialogView.findViewById<CheckBox>(R.id.checkEstadoEditar)
+        val checkEstado = dialogView.findViewById<SwitchMaterial>(R.id.checkEstadoEditar)
+
 
 
         inputDescripcion.setText(contrato.getDescripcionServicio())
@@ -112,6 +116,26 @@ class ContratoAdapter(
         inputClausulas.setText(contrato.getClausulas())
         inputTarifa.setText(contrato.getTarifa().toString())
         checkEstado.isChecked = contrato.getEstado()
+
+        checkEstado.setOnCheckedChangeListener { _, isChecked ->
+            val estado = if (isChecked) "Contrato activo" else "Contrato inactivo"
+            Toast.makeText(context, estado, Toast.LENGTH_SHORT).show()
+        }
+
+        inputFechaCierre.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val datePickerDialog = DatePickerDialog(
+                context,
+                { _, year, month, dayOfMonth ->
+
+                    inputFechaCierre.setText(String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year))
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            )
+            datePickerDialog.show()
+        }
 
         AlertDialog.Builder(context).apply {
             setTitle("Editar Contrato")
@@ -126,11 +150,16 @@ class ContratoAdapter(
                     index,
                     inputDescripcion.text.toString(),
                     fechaActual,
-                    inputFechaCierre.text.toString(),
+                    inputFechaCierre.text.toString().trim(),
                     inputClausulas.text.toString(),
                     inputTarifa.text.toString().toFloat(),
                     checkEstado.isChecked
                 )
+                contrato.setDescripcionServicio(inputDescripcion.text.toString())
+                contrato.setFechaCierre(dateFormatter.parse(inputFechaCierre.text.toString().trim()))
+                contrato.setClausulas(inputClausulas.text.toString())
+                contrato.setTarifa(inputTarifa.text.toString().toFloat())
+                contrato.setEstado(checkEstado.isChecked)
                 Toast.makeText(context, resultado, Toast.LENGTH_SHORT).show()
                 notifyDataSetChanged()
             }

@@ -1,55 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/main"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:background="@color/blancoHueso"
-              android:padding="24dp">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                     xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                     android:layout_width="match_parent"
+                                                     android:layout_height="match_parent"
+                                                     android:background="@color/blancoHueso">
 
-    <TextView
+    <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Listar Contratos"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:paddingBottom="16dp" />
+            android:background="@color/lila" android:id="@+id/appBarLayout">
 
-    <RadioGroup
-            android:id="@+id/radioGroupTipoPersona"
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="4dp">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                <ImageButton
+                        android:id="@+id/btnVolverHome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Volver"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_arrow_back"/>
+
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Listar Contratos"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
+
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+            android:id="@+id/main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <RadioButton
-                android:id="@+id/radioCliente"
-                android:layout_width="0dp"
+        <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Cliente" />
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
 
-        <RadioButton
-                android:id="@+id/radioDetective"
-                android:layout_width="0dp"
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Filtrar por"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/lila"
+                        android:layout_marginBottom="12dp" />
+
+                <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/radioGroupTipoPersona"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:singleSelection="true"
+                        app:selectionRequired="true">
+
+                    <com.google.android.material.chip.Chip
+                            android:id="@+id/radioCliente"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cliente"
+                            app:chipBackgroundColor="@color/chip_background_selector"
+                            app:chipIcon="@drawable/ic_person"
+                            android:checked="true"
+                            style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                            android:id="@+id/radioDetective"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Detective"
+                            app:chipBackgroundColor="@color/chip_background_selector"
+                            app:chipIcon="@drawable/ic_person"
+                            style="@style/Widget.MaterialComponents.Chip.Choice" />
+                </com.google.android.material.chip.ChipGroup>
+
+
+                    <Spinner
+                            android:id="@+id/spinnerPersonas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"/>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <ListView
+                android:id="@+id/listViewContratos"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Mostrando todos los contratos"
+                android:textStyle="italic"
+                android:textSize="14sp"
+                android:gravity="end"
+                android:layout_marginBottom="8dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewContratos"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="Detective" />
-    </RadioGroup>
+                android:clipToPadding="false"
+                android:paddingBottom="8dp" />
 
-    <Spinner
-            android:id="@+id/spinnerPersonas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp" />
+        <TextView
+                android:id="@+id/tvEmptyState"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="No hay contratos disponibles"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:visibility="gone" />
 
-    <ListView
-            android:id="@+id/listViewContratos"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:divider="@android:color/darker_gray"
-            android:dividerHeight="1dp" />
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/btnCrearContratoN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="16dp"
+                android:text="Nuevo Contrato"
+                app:icon="@drawable/ic_add"
+                app:iconTint="@android:color/white"
+                android:textColor="@android:color/white"
+                app:backgroundTint="@color/lila" />
 
-</LinearLayout>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
