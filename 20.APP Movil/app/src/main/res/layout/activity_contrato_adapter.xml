@@ -4,9 +4,9 @@
                                    android:layout_width="match_parent"
                                    android:layout_height="wrap_content"
                                    android:layout_margin="8dp"
+                                   android:background="@color/white"
                                    card_view:cardCornerRadius="16dp"
-                                   card_view:cardElevation="6dp"
-                                   android:background="@color/white">
+                                   card_view:cardElevation="6dp">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -14,7 +14,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-        <!-- Nombre del Contrato -->
+
         <TextView
                 android:id="@+id/txtNombreContrato"
                 android:layout_width="match_parent"
@@ -23,33 +23,33 @@
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:ellipsize="end"
-                android:maxLines="2" />
+                android:maxLines="2"
+                android:ellipsize="end" />
 
-        <!-- Fecha del Contrato -->
+
         <TextView
                 android:id="@+id/txtFechaContrato"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Fecha: 2024-03-15"
+
                 android:textColor="@color/azul"
                 android:textSize="14sp"
                 android:layout_marginTop="4dp" />
 
-        <!-- Línea Divisoria -->
+
         <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/gris"
-                android:layout_marginVertical="12dp" />
+                android:layout_marginVertical="12dp"
+                android:background="@color/gris" />
 
-        <!-- Botones de acción -->
+
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="end"
-                android:layout_marginTop="4dp">
+                android:gravity="end">
+
 
             <Button
                     android:id="@+id/btnEditar"
@@ -60,7 +60,10 @@
                     android:textSize="14sp"
                     android:backgroundTint="@color/amarillo"
                     android:textColor="@color/black"
-                    android:layout_marginEnd="8dp"/>
+                    android:layout_marginEnd="8dp"
+                    android:drawableStart="@drawable/ic_edit"
+                    android:drawablePadding="4dp"/>
+
 
             <Button
                     android:id="@+id/btnVerDetalle"
@@ -70,8 +73,11 @@
                     android:textAllCaps="false"
                     android:textSize="14sp"
                     android:backgroundTint="@color/verde"
-                    android:textColor="@color/black"
-                    android:layout_marginEnd="8dp"/>
+                    android:textColor="@color/white"
+                    android:layout_marginEnd="8dp"
+                    android:drawableStart="@drawable/ic_info"
+                    android:drawablePadding="4dp"/>
+
 
             <Button
                     android:id="@+id/btnDesactivar"
@@ -81,7 +87,9 @@
                     android:textAllCaps="false"
                     android:textSize="14sp"
                     android:backgroundTint="@color/rojo"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white"
+                    android:drawableStart="@drawable/ic_block"
+                    android:drawablePadding="4dp"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
