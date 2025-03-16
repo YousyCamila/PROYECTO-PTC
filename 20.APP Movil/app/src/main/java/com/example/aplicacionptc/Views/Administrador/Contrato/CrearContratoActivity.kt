@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -47,7 +48,7 @@ class CrearContratoActivity : AppCompatActivity() {
         val etClausulas = findViewById<EditText>(R.id.etClausulas)
         val etTarifa = findViewById<EditText>(R.id.etTarifa)
         val btnGuardarContrato = findViewById<MaterialButton>(R.id.btnGuardarContrato)
-        val btnVolverHome = findViewById<MaterialButton>(R.id.btnVolverHome)
+        val btnVolverHome = findViewById<ImageButton>(R.id.btnVolverHome)
 
         // Adaptadores para clientes y detectives
         val adapterClientes = ArrayAdapter(

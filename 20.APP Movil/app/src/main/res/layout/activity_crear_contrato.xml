@@ -20,14 +20,14 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                <com.google.android.material.button.MaterialButton
+                <ImageButton
                         android:id="@+id/btnVolverHome"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/lila"
-                        android:icon="@drawable/ic_arrow_back"
-                        android:text="Volver"
-                        android:padding="8dp"/>
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Volver"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_arrow_back"/>
 
                 <TextView
                         android:layout_width="0dp"
