@@ -64,7 +64,7 @@ class ContratoAdapter(
                             "Cláusulas: ${contrato.getClausulas()}\n" +
                             "Tarifa: \$${contrato.getTarifa()}\n" +
                             "Estado: ${if (contrato.getEstado()) "Activo" else "Inactivo"}\n\n" +
-                            "Cliente asignado: ${contrato.getCliente().personas.nombre}\n" +
+                            "Cliente asignado: ${contrato.getCliente().nombre}\n" +
                             "Detective asignado: ${contrato.getDetective().personas.nombre}"
                 )
                 setPositiveButton("Cerrar", null)

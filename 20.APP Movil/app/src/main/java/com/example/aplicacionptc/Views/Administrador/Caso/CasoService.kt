@@ -22,7 +22,7 @@ class CasoService {
         }
 
         // Buscar cliente y detective por su ID
-        val cliente = Clientes.Companion.clientes.firstOrNull { it.personas.id == datos.idCliente }
+        val cliente = Clientes.Companion.clientes.firstOrNull { it.id == datos.idCliente }
         val detective = Detectives.Companion.listaDetectives.firstOrNull { it.personas.id == datos.idDetective }
 
         if (cliente == null || detective == null) {
@@ -38,10 +38,10 @@ class CasoService {
     }
 
     fun obtenerCasosPorEmailCliente(emailCliente: String): List<Caso> {
-        val cliente = Clientes.Companion.clientes.firstOrNull { it.personas.correo == emailCliente }
+        val cliente = Clientes.Companion.clientes.firstOrNull { it.correo == emailCliente }
             ?: throw IllegalArgumentException("No se encontró un cliente con el email: $emailCliente")
 
-        return BaseDatosTemporal.casos.filter { it.idCliente == cliente.personas.id }
+        return BaseDatosTemporal.casos.filter { it.idCliente == cliente.id }
     }
 
     fun obtenerCasosPorEmailDetective(emailDetective: String): List<Caso> {

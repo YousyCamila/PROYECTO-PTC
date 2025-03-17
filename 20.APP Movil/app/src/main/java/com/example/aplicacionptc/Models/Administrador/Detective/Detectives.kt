@@ -25,7 +25,7 @@ class Detectives(val personas: Personas) {
                 Personas(
                     "1",
                     "Ludwig Smirh",
-                    321269946,
+                    "321269946",
                     "calle 25 s",
                     "ludwig@gmail.com"
                 )
@@ -34,7 +34,7 @@ class Detectives(val personas: Personas) {
                 Personas(
                     "2",
                     "Wolfgang Steve",
-                    321264566,
+                    "321264566",
                     "calle 60 n",
                     "wolfgang@gmail.com"
                 )
@@ -43,7 +43,7 @@ class Detectives(val personas: Personas) {
                 Personas(
                     "3",
                     "Cristian Cardona",
-                    311600120,
+                    "311600120",
                     "avenida el dorado",
                     "cristian@gmail.com"
                 )

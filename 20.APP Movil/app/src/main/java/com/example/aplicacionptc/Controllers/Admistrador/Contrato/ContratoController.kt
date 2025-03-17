@@ -45,7 +45,7 @@ class ContratoController {
 
         listaContratos.add(nuevoContrato)
 
-        return "✅ Contrato creado con éxito para el cliente ${clienteSeleccionado.personas.nombre}."
+        return "✅ Contrato creado con éxito para el cliente ${clienteSeleccionado.nombre}."
     }
 
 
@@ -67,7 +67,7 @@ class ContratoController {
             contrato.setTarifa(nuevaTarifa)
             contrato.setEstado(nuevoEstado)
 
-            " Contrato actualizado correctamente para el cliente ${contrato.getCliente().personas.nombre}."
+            " Contrato actualizado correctamente para el cliente ${contrato.getCliente().nombre}."
         } else {
             " Índice inválido. No se pudo actualizar el contrato."
         }
@@ -78,7 +78,7 @@ class ContratoController {
         return if (indice in listaContratos.indices) {
             val contrato = listaContratos[indice]
             contrato.setEstado(false)
-            "Contrato del cliente ${contrato.getCliente().personas.nombre} desactivado correctamente."
+            "Contrato del cliente ${contrato.getCliente().nombre} desactivado correctamente."
         } else {
             " Índice inválido. No se pudo desactivar el contrato."
         }
@@ -87,7 +87,7 @@ class ContratoController {
         return if (indice in listaContratos.indices) {
             val contrato = listaContratos[indice]
             contrato.setEstado(true)
-            "Contrato del cliente ${contrato.getCliente().personas.nombre} activado correctamente."
+            "Contrato del cliente ${contrato.getCliente().nombre} activado correctamente."
         } else {
             " Índice inválido. No se pudo desactivar el contrato."
         }

@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/blancoHueso"
+        tools:context=".Views.Administrador.Cliente.GestionClientesActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/lila">
+
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:titleTextColor="@android:color/white">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnVolverHome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:padding="8dp"
+                        android:contentDescription="Volver atrás"
+                        android:backgroundTint="@android:color/transparent"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:insetLeft="0dp"
+                        android:insetRight="0dp"
+                        app:icon="@drawable/ic_arrow_back"
+                        app:iconTint="@android:color/white"
+                        app:iconPadding="0dp"
+                        app:cornerRadius="50dp"
+                        app:strokeWidth="0dp"
+                        app:iconGravity="textStart"
+                        app:rippleColor="?attr/colorControlHighlight"
+                        android:minHeight="0dp"
+                        android:minWidth="0dp" />
+
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gestión de Clientes"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/white"/>
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+
+            <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="8dp">
+
+                    <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_search"
+                            android:tint="@color/lila"
+                            android:layout_marginEnd="8dp" />
+
+                    <EditText
+                            android:id="@+id/etBuscarCliente"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:hint="Buscar cliente..."
+                            android:textSize="16sp"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:padding="8dp" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+
+                    <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                        <TextView
+                                android:id="@+id/tvTotalClientes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textSize="24sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/lila" />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Clientes"
+                                android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="#E0E0E0" />
+
+                    <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                        <TextView
+                                android:id="@+id/tvClientesActivos"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textSize="24sp"
+                                android:textStyle="bold"
+                                android:textColor="#4CAF50" />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Clientes Activos"
+                                android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRegresar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Regresar al menú principal"
+                    android:textColor="@android:color/white"
+                    app:icon="@drawable/ic_arrow_back"
+                    app:iconGravity="start"
+                    android:layout_marginBottom="16dp"
+                    app:cornerRadius="8dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    app:strokeColor="@color/lila"
+                    android:textAlignment="textStart"
+                    android:padding="12dp" />
+
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lista de Clientes"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:layout_marginBottom="8dp" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerClientes"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:scrollbars="vertical" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:gravity="center_vertical">
+
+        <!-- Texto al lado del botón -->
+        <TextView
+                android:id="@+id/textoCrearCliente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nuevo Cliente"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_marginEnd="8dp" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btnCrearCliente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add"
+                app:backgroundTint="@color/lila"
+                app:tint="@android:color/white" />
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

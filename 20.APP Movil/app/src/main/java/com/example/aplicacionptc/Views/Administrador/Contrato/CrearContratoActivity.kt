@@ -50,10 +50,10 @@ class CrearContratoActivity : AppCompatActivity() {
         val btnGuardarContrato = findViewById<MaterialButton>(R.id.btnGuardarContrato)
         val btnVolverHome = findViewById<ImageButton>(R.id.btnVolverHome)
 
-        // Adaptadores para clientes y detectives
+
         val adapterClientes = ArrayAdapter(
             this, android.R.layout.simple_dropdown_item_1line,
-            Clientes.clientes.map { it.personas.nombre }
+            Clientes.clientes.map { it.nombre }
         )
         spinnerCliente.setAdapter(adapterClientes)
 
@@ -63,7 +63,7 @@ class CrearContratoActivity : AppCompatActivity() {
         )
         spinnerDetective.setAdapter(adapterDetectives)
 
-        // Configuración de fecha actual por defecto
+
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         etFechaIni.setText(dateFormat.format(calendar.time))
@@ -77,7 +77,7 @@ class CrearContratoActivity : AppCompatActivity() {
             datePickerDialog.show()
         }
 
-        // Fecha fin
+
         etFechaFin.isFocusable = false
         etFechaFin.isClickable = true
         etFechaFin.setOnClickListener {
@@ -87,7 +87,7 @@ class CrearContratoActivity : AppCompatActivity() {
             datePickerDialog.show()
         }
 
-        // Guardar contrato
+
         btnGuardarContrato.setOnClickListener {
             val descripcion = etDescripcion.text.toString().trim()
             val fechaInicioStr = etFechaIni.text.toString().trim()
@@ -106,7 +106,7 @@ class CrearContratoActivity : AppCompatActivity() {
             val tarifa = tarifaStr.toFloatOrNull() ?: 0f
 
             val nombreCliente = spinnerCliente.text.toString()
-            val clienteSeleccionado = Clientes.clientes.firstOrNull { it.personas.nombre == nombreCliente }
+            val clienteSeleccionado = Clientes.clientes.firstOrNull { it.nombre == nombreCliente }
 
             val nombreDetective = spinnerDetective.text.toString()
             val detectiveSeleccionado = Detectives.listaDetectives.firstOrNull { it.personas.nombre == nombreDetective }
@@ -127,12 +127,12 @@ class CrearContratoActivity : AppCompatActivity() {
                 detective = detectiveSeleccionado
             )
 
-            // Usar la lista estática del modelo
+
             ContratoController.listaContratos.add(nuevoContrato)
 
             Toast.makeText(this, "Contrato creado exitosamente", Toast.LENGTH_SHORT).show()
 
-            // Limpiar campos
+
             etDescripcion.text.clear()
             etFechaIni.setText(dateFormat.format(Date()))
             etFechaFin.text.clear()
@@ -140,7 +140,7 @@ class CrearContratoActivity : AppCompatActivity() {
             etTarifa.text.clear()
         }
 
-        // Volver al home
+
         btnVolverHome.setOnClickListener {
             startActivity(Intent(this, HomeContratoActivity::class.java))
             finish()
