@@ -16,6 +16,8 @@
     <color name="amarilloCla">#F8E96A</color>
 
 
+    <color name="background_color">#F3F3F3</color>
+    <color name="primary">#1976D2</color> <!-- Azul Material Design -->
 
 
 </resources>
