@@ -33,6 +33,18 @@
             android:elevation="4dp" />
 
     <Button
+            android:id="@+id/btnClientes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gestión de Clientes"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#3B82F6"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp"
+            android:elevation="4dp" />
+
+    <Button
             android:id="@+id/btnSalir"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

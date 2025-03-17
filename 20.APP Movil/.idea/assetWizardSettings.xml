@@ -299,7 +299,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/add/baseline_add_24.xml" />
+                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/circle/baseline_circle_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -309,7 +309,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_add" />
+                            <entry key="outputName" value="circle_background" />
                             <entry key="sourceFile" value="C:\PTC-POYECTO\PROYECTO-PTC\20.APP Movil" />
                           </map>
                         </option>

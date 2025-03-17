@@ -65,7 +65,7 @@ class ListarContratoActivity : AppCompatActivity() {
 
         radioGroupTipoPersona.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-                R.id.radioCliente -> cargarPersonas(listaClientes.map { it.personas.nombre })
+                R.id.radioCliente -> cargarPersonas(listaClientes.map { it.nombre })
                 R.id.radioDetective -> cargarPersonas(listaDetectives.map { it.personas.nombre })
             }
         }
@@ -87,7 +87,7 @@ class ListarContratoActivity : AppCompatActivity() {
         }
 
 
-        cargarPersonas(listaClientes.map { it.personas.nombre })
+        cargarPersonas(listaClientes.map { it.nombre })
         personaSeleccionada = listaClientes.firstOrNull()
         mostrarContratos(personaSeleccionada)
     }
@@ -103,7 +103,7 @@ class ListarContratoActivity : AppCompatActivity() {
     private fun mostrarContratos(persona: Any?) {
         val contratosFiltrados: List<ModelContrato> = listaContratos.filter { contrato ->
             when (persona) {
-                is Clientes -> contrato.getCliente().personas.nombre == persona.personas.nombre
+                is Clientes -> contrato.getCliente().nombre == persona.nombre
                 is Detectives -> contrato.getDetective().personas.nombre == persona.personas.nombre
                 else -> false
             }

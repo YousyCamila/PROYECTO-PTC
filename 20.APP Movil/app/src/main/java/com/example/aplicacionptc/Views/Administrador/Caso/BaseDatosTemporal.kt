@@ -15,8 +15,8 @@ object BaseDatosTemporal {
         casos.addAll(listOf(caso1, caso2))
 
         // Asociar casos con clientes y detectives
-        val cliente1 = Clientes.Companion.clientes.find { it.personas.id == "4" }
-        val cliente2 = Clientes.Companion.clientes.find { it.personas.id == "5" }
+        val cliente1 = Clientes.Companion.clientes.find { it.id == "4" }
+        val cliente2 = Clientes.Companion.clientes.find { it.id == "5" }
 
         val detective1 = Detectives.Companion.listaDetectives.find { it.personas.id == "1" }
         val detective2 = Detectives.Companion.listaDetectives.find { it.personas.id == "2" }

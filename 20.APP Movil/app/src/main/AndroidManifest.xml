@@ -12,36 +12,41 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.AplicacionPTC"
             tools:targetApi="31">
-
-
+        <activity
+                android:name=".Views.Administrador.Cliente.EditarClienteActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".Views.Administrador.Cliente.CrearClienteActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".Views.Administrador.Cliente.AdpaterClientes"
+                android:exported="false"/>
+        <activity
+                android:name=".Views.Administrador.Cliente.GestionClientesActivity"
+                android:exported="false"/>
         <activity
                 android:name=".Views.Administrador.Contrato.ContratoAdapter"
                 android:exported="false"
-                tools:ignore="Instantiatable" />
-
+                tools:ignore="Instantiatable"/>
         <activity
                 android:name=".Views.Administrador.Contrato.ListarContratoActivity"
-                android:exported="false" />
-
+                android:exported="false"/>
         <activity
                 android:name=".Views.Administrador.Contrato.HomeContratoActivity"
-                android:exported="false" />
-
+                android:exported="false"/>
         <activity
                 android:name=".Views.Administrador.Contrato.CrearContratoActivity"
-                android:windowSoftInputMode="adjustResize|stateHidden"
-                android:exported="true" />
-
-
+                android:exported="true"
+                android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity
                 android:name=".MainActivity"
                 android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

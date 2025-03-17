@@ -225,7 +225,7 @@
                             android:minLines="3"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Botón final permanece igual -->
+
 
 
                 <com.google.android.material.textfield.TextInputLayout
