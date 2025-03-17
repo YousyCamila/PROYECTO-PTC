@@ -179,20 +179,7 @@
             </androidx.cardview.widget.CardView>
 
 
-            <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnRegresar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Regresar al menú principal"
-                    android:textColor="@android:color/white"
-                    app:icon="@drawable/ic_arrow_back"
-                    app:iconGravity="start"
-                    android:layout_marginBottom="16dp"
-                    app:cornerRadius="8dp"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    app:strokeColor="@color/lila"
-                    android:textAlignment="textStart"
-                    android:padding="12dp" />
+
 
 
             <TextView
