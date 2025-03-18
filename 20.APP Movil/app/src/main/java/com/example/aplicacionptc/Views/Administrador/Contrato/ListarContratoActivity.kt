@@ -27,7 +27,7 @@ class ListarContratoActivity : AppCompatActivity() {
     private lateinit var listViewContratos: ListView
 
     private var listaClientes = Clientes.clientes
-    private var listaDetectives = Detectives.listaDetectives
+    private var listaDetectives = Detectives.detectives
     private var listaContratos = ContratoController.listaContratos
 
     private var personaSeleccionada: Any? = null
@@ -66,7 +66,7 @@ class ListarContratoActivity : AppCompatActivity() {
         radioGroupTipoPersona.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.radioCliente -> cargarPersonas(listaClientes.map { it.nombre })
-                R.id.radioDetective -> cargarPersonas(listaDetectives.map { it.personas.nombre })
+                R.id.radioDetective -> cargarPersonas(listaDetectives.map { it.nombre })
             }
         }
 
@@ -104,7 +104,7 @@ class ListarContratoActivity : AppCompatActivity() {
         val contratosFiltrados: List<ModelContrato> = listaContratos.filter { contrato ->
             when (persona) {
                 is Clientes -> contrato.getCliente().nombre == persona.nombre
-                is Detectives -> contrato.getDetective().personas.nombre == persona.personas.nombre
+                is Detectives -> contrato.getDetective().nombre == persona.nombre
                 else -> false
             }
         }
