@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.aplicacionptc.Views.Administrador.Caso.HomeCasoActivity
 import com.example.aplicacionptc.Views.Administrador.Cliente.GestionClientesActivity
 import com.example.aplicacionptc.Views.Administrador.Contrato.HomeContratoActivity
 import com.example.aplicacionptc.Views.Administrador.Detective.GestionDetectivesActivity
@@ -42,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         val btnClientes = findViewById<Button>(R.id.btnClientes)
         val btnLogout = findViewById<Button>(R.id.btnLogout)
         val btnDetectives = findViewById<Button>(R.id.btnDetectives)
+        val btnCasos = findViewById<Button>(R.id.btnCasos)
 
         btnContratos.setOnClickListener {
             startActivity(Intent(this, HomeContratoActivity::class.java))
@@ -54,6 +56,11 @@ class MainActivity : AppCompatActivity() {
         btnDetectives.setOnClickListener {
             startActivity(Intent(this, GestionDetectivesActivity::class.java))
         }
+
+        btnCasos.setOnClickListener {
+            startActivity(Intent(this, HomeCasoActivity::class.java))
+        }
+
         btnLogout.setOnClickListener {
             // Cerrar sesión
             sharedPref.edit().apply {
