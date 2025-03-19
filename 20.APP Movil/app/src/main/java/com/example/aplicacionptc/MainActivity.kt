@@ -1,5 +1,6 @@
 package com.example.aplicacionptc
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -10,9 +11,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.aplicacionptc.Views.Administrador.Cliente.GestionClientesActivity
 import com.example.aplicacionptc.Views.Administrador.Contrato.HomeContratoActivity
+import com.example.aplicacionptc.Views.Administrador.Detective.GestionDetectivesActivity
 
 
 class MainActivity : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,7 +40,8 @@ class MainActivity : AppCompatActivity() {
 
         val btnContratos = findViewById<Button>(R.id.btnContratos)
         val btnClientes = findViewById<Button>(R.id.btnClientes)
-        val btnLogout = findViewById<Button>(R.id.btnLogout) // Agregado botón de cerrar sesión
+        val btnLogout = findViewById<Button>(R.id.btnLogout)
+        val btnDetectives = findViewById<Button>(R.id.btnDetectives)
 
         btnContratos.setOnClickListener {
             startActivity(Intent(this, HomeContratoActivity::class.java))
@@ -47,6 +51,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, GestionClientesActivity::class.java))
         }
 
+        btnDetectives.setOnClickListener {
+            startActivity(Intent(this, GestionDetectivesActivity::class.java))
+        }
         btnLogout.setOnClickListener {
             // Cerrar sesión
             sharedPref.edit().apply {

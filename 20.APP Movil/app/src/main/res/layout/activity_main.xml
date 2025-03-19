@@ -45,15 +45,17 @@
             android:elevation="4dp" />
 
     <Button
-            android:id="@+id/btnSalir"
+            android:id="@+id/btnDetectives"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Salir"
+            android:text="Gestión de Detectives"
             android:textSize="18sp"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/rojo"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#3B82F6"
             android:padding="16dp"
+            android:layout_marginBottom="16dp"
             android:elevation="4dp" />
+
     <Button
             android:id="@+id/btnLogout"
             android:layout_width="wrap_content"

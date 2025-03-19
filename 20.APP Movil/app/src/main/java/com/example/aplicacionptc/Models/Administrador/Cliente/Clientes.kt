@@ -13,7 +13,7 @@ class Clientes(
 ) : Personas(id, nombre, celular, direccion, correo) {
 
 
-    private val casos = mutableListOf<Caso>()
+     val casos = mutableListOf<Caso>()
 
 
     fun datosCliente() {
