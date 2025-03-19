@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/bg_case_item"
+    android:layout_margin="8dp"
+    android:elevation="2dp">
+
+    <TextView
+        android:id="@+id/txtNombreCaso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Caso: Nombre del Caso"
+        android:textSize="18sp"
+        android:textColor="@color/dark_blue"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif"
+        android:letterSpacing="0.03"/>
+
+    <TextView
+        android:id="@+id/txtCliente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cliente: Nombre del Cliente"
+        android:textSize="16sp"
+        android:textColor="@color/dark_gray"
+        android:layout_marginTop="4dp"
+        android:fontFamily="sans-serif-medium"/>
+
+    <TextView
+        android:id="@+id/txtDetective"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Detective: Nombre del Detective"
+        android:textSize="16sp"
+        android:textColor="@color/dark_gray"
+        android:layout_marginTop="4dp"
+        android:fontFamily="sans-serif-medium"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:gravity="end">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnVerDetalles"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="Ver Detalles"
+            app:cornerRadius="8dp"
+            app:strokeColor="@color/tech_blue"
+            app:strokeWidth="1dp"
+            app:backgroundTint="@android:color/transparent"
+            android:textColor="@color/tech_blue"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif"
+            app:iconTint="@color/tech_blue"
+            app:iconSize="18dp"
+            app:iconPadding="4dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDesactivar"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:text="Desactivar"
+            app:cornerRadius="8dp"
+            app:backgroundTint="@color/error_red"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif"
+            app:icon="@drawable/ic_block"
+            app:iconTint="@color/white"
+            app:iconSize="18dp"
+            app:iconPadding="4dp"
+            app:elevation="2dp"/>
+
+    </LinearLayout>
+</LinearLayout>

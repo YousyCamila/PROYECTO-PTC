@@ -1,3 +1,12 @@
 <resources>
+
     <string name="app_name">AplicacionPTC</string>
+    <string name="crear_caso">Crear Caso</string>
+    <string name="id_caso_hint">Ingrese el ID del caso</string>
+    <string name="nombre_caso_hint">Ingrese el nombre del caso</string>
+    <string name="seleccionar_detective">Seleccionar Detective</string>
+    <string name="seleccionar_cliente">Seleccionar Cliente</string>
+
+
+    <string name="volver">Volver</string>
 </resources>

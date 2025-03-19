@@ -14,10 +14,26 @@
     <color name="moradoClarito">#DCCCEB</color>
     <color name="verdeOz">#114304</color>
     <color name="amarilloCla">#F8E96A</color>
+    <color name="red">#FF0000</color>
+    <color name="dark_red">#B71C1C</color> <!-- Rojo oscuro al presionar -->
+
+    <color name="dark_gray">#1A1A1A</color>
+    <color name="tech_blue">#1473E6</color>
+    <color name="dark_blue">#0D47A1</color>
+
+    <color name="dark_bluee">#0D47A1</color>
+    <color name="dark_grayy">#424242</color>
+    <color name="error_red">#D32F2F</color>
+
+
 
 
     <color name="background_color">#F3F3F3</color>
     <color name="primary">#1976D2</color> <!-- Azul Material Design -->
+
+    <color name="primaryColor">#6200EE</color>
+    <color name="primaryDarkColor">#3700B3</color>
+    <color name="accentColor">#03DAC5</color>
 
 
 </resources>

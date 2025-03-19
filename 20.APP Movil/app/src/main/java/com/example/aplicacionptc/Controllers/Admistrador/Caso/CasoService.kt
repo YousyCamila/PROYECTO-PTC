@@ -1,4 +1,4 @@
-package com.example.ptc_app.Views.Caso
+package com.example.aplicacionptc.Controllers.Admistrador.Caso
 
 import com.example.ptc_app.Models.Administrador.Caso.Caso
 import com.example.ptc_app.Models.Administrador.Cliente.Clientes
