@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:marginBottom="8dp">
+
+    <TextView
+        android:id="@+id/txtNombreCaso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Caso: Nombre del Caso"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtCliente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cliente: Nombre del Cliente"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/txtDetective"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Detective: Nombre del Detective"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/btnVerDetalles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ver Detalles"
+            android:textSize="14sp"
+            android:backgroundTint="#3B82F6"
+            android:textColor="#FFFFFF"
+            android:padding="8dp"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/btnDesactivar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Desactivar"
+            android:textSize="14sp"
+            android:backgroundTint="#EF4444"
+            android:textColor="#FFFFFF"
+            android:padding="8dp" />
+    </LinearLayout>
+</LinearLayout>

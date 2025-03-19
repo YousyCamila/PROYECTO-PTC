@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Título -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/crear_caso"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="16dp"/>
+
+        <!-- Campo para ID del Caso -->
+        <EditText
+            android:id="@+id/editTextIdCaso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:hint="@string/id_caso_hint"
+            android:inputType="text"
+            android:autofillHints="username"/>
+
+        <!-- Campo para Nombre del Caso -->
+        <EditText
+            android:id="@+id/editTextNombreCaso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:hint="@string/nombre_caso_hint"
+            android:inputType="text"
+            android:autofillHints="name"/>
+
+        <!-- Spinner para Detectives -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/seleccionar_detective"/>
+
+        <Spinner
+            android:id="@+id/spinnerDetectives"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:padding="8dp"/>
+
+        <!-- Spinner para Clientes -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/seleccionar_cliente"/>
+
+        <Spinner
+            android:id="@+id/spinnerClientes"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:padding="8dp"/>
+
+        <!-- Botón para Crear Caso -->
+        <Button
+            android:id="@+id/btnCrearCaso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/crear_caso"/>
+    </LinearLayout>
+</ScrollView>
