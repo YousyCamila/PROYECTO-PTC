@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/blancoHueso"
-        tools:context=".Views.Administrador.Cliente.GestionClientesActivity">
+        tools:context=".Views.Administrador.Detective.GestionDetectivesActivity">
 
     <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
@@ -35,31 +35,22 @@
                         android:padding="8dp"
                         android:contentDescription="Volver atrás"
                         android:backgroundTint="@android:color/transparent"
-                        android:insetTop="0dp"
-                        android:insetBottom="0dp"
-                        android:insetLeft="0dp"
-                        android:insetRight="0dp"
                         app:icon="@drawable/ic_arrow_back"
                         app:iconTint="@android:color/white"
                         app:iconPadding="0dp"
                         app:cornerRadius="50dp"
                         app:strokeWidth="0dp"
                         app:iconGravity="textStart"
-                        app:rippleColor="?attr/colorControlHighlight"
-                        android:minHeight="0dp"
-                        android:minWidth="0dp" />
-
+                        app:rippleColor="?attr/colorControlHighlight" />
 
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Gestión de Clientes"
+                        android:text="Gestión de Detectives"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"/>
-
             </LinearLayout>
-
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -74,7 +65,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="16dp">
-
 
             <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -98,11 +88,11 @@
                             android:layout_marginEnd="8dp" />
 
                     <EditText
-                            android:id="@+id/etBuscarCliente"
+                            android:id="@+id/etBuscarDetective"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@null"
-                            android:hint="Buscar cliente..."
+                            android:hint="Buscar detective..."
                             android:textSize="16sp"
                             android:inputType="text"
                             android:maxLines="1"
@@ -110,7 +100,6 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-
 
             <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -133,7 +122,7 @@
                             android:gravity="center">
 
                         <TextView
-                                android:id="@+id/tvTotalClientes"
+                                android:id="@+id/tvTotalDetectives"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0"
@@ -144,7 +133,7 @@
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Total Clientes"
+                                android:text="Total Detectives"
                                 android:textSize="14sp" />
                     </LinearLayout>
 
@@ -161,7 +150,7 @@
                             android:gravity="center">
 
                         <TextView
-                                android:id="@+id/tvClientesActivos"
+                                android:id="@+id/tvDetectivesActivos"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0"
@@ -172,28 +161,23 @@
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Clientes Activos"
+                                android:text="Detectives Activos"
                                 android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-
-
-
-
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Lista de Clientes"
+                    android:text="Lista de Detectives"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@android:color/black"
                     android:layout_marginBottom="8dp" />
 
-
             <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerClientes"
+                    android:id="@+id/recyclerDetectives"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
@@ -210,19 +194,17 @@
             android:layout_margin="16dp"
             android:gravity="center_vertical">
 
-        <!-- Texto al lado del botón -->
         <TextView
-                android:id="@+id/textoCrearCliente"
+                android:id="@+id/textoCrearDetective"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nuevo Cliente"
+                android:text="Nuevo Detective"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
                 android:layout_marginEnd="8dp" />
 
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/btnCrearCliente"
+                android:id="@+id/btnCrearDetective"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_add"

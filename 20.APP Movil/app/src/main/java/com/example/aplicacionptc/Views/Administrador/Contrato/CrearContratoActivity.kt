@@ -59,7 +59,7 @@ class CrearContratoActivity : AppCompatActivity() {
 
         val adapterDetectives = ArrayAdapter(
             this, android.R.layout.simple_dropdown_item_1line,
-            Detectives.listaDetectives.map { it.personas.nombre }
+            Detectives.detectives.map { it.nombre }
         )
         spinnerDetective.setAdapter(adapterDetectives)
 
@@ -109,7 +109,7 @@ class CrearContratoActivity : AppCompatActivity() {
             val clienteSeleccionado = Clientes.clientes.firstOrNull { it.nombre == nombreCliente }
 
             val nombreDetective = spinnerDetective.text.toString()
-            val detectiveSeleccionado = Detectives.listaDetectives.firstOrNull { it.personas.nombre == nombreDetective }
+            val detectiveSeleccionado = Detectives.detectives.firstOrNull { it.nombre == nombreDetective }
 
             if (clienteSeleccionado == null || detectiveSeleccionado == null) {
                 Toast.makeText(this, "Seleccione un cliente y un detective válidos", Toast.LENGTH_SHORT).show()
