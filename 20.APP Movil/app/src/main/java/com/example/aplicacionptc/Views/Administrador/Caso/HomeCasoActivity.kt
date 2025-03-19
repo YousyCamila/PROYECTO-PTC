@@ -20,23 +20,21 @@ class HomeCasoActivity : AppCompatActivity() {
         val botonCrearCaso = findViewById<Button>(R.id.btnCrearCaso)
         val botonVolver = findViewById<ImageButton>(R.id.btnVolver)
 
+        // Obtener casos y asignar información de cliente y detective
         val casos = CasoService().listarCasos()?.map { caso ->
             val cliente = Clientes.clientes.find { it.id == caso.idCliente }
             val detective = Detectives.detectives.find { it.id == caso.idDetective }
-            "Caso: ${caso.nombreCaso}\nCliente: ${cliente?.nombre ?: "Desconocido"} \nDetective: ${detective?.nombre ?: "Desconocido"}"
-        } ?: listOf("No hay casos disponibles")
+            CasoInfo(
+                id = caso.id.toString(),
+                nombre = caso.nombreCaso,
+                cliente = cliente?.nombre ?: "Desconocido",
+                detective = detective?.nombre ?: "Desconocido"
+            )
+        } ?: listOf()
 
-        val adapter = android.widget.ArrayAdapter(this, android.R.layout.simple_list_item_1, casos)
+        // Adaptador personalizado con los botones de "Ver Detalles" y "Desactivar"
+        val adapter = CasosAdapter(this, casos)
         listaCasos.adapter = adapter
-
-        listaCasos.setOnItemClickListener { _, _, position, _ ->
-            val casosList = CasoService().listarCasos()
-            if (position < casosList.size) {
-                val intent = Intent(this, DetallesCasoActivity::class.java)
-                intent.putExtra("CASO_ID", casosList[position].id)
-                startActivity(intent)
-            }
-        }
 
         botonCrearCaso.setOnClickListener {
             startActivity(Intent(this, CrearCasoActivity::class.java))
@@ -47,5 +45,8 @@ class HomeCasoActivity : AppCompatActivity() {
         }
     }
 }
+
+// Clase para manejar la información del caso
+data class CasoInfo(val id: String, val nombre: String, val cliente: String, val detective: String)
 
 
