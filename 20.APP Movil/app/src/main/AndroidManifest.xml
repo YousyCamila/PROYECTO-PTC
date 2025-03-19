@@ -59,6 +59,21 @@
                 android:name=".Views.Administrador.Contrato.CrearContratoActivity"
                 android:exported="true"
                 android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity
+            android:name=".Views.Administrador.Caso.HomeCasoActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".Views.Administrador.Caso.CasoAdapter"
+            android:exported="false" tools:ignore="Instantiatable"/>
+
+        <activity
+            android:name=".Views.Administrador.Caso.DetallesCasoActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".Views.Administrador.Caso.CrearCasoActivity"
+            android:exported="false"/>
+
     </application>
 
 </manifest>
