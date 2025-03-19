@@ -63,7 +63,7 @@
             android:name=".Views.Administrador.Caso.HomeCasoActivity"
             android:exported="false"/>
         <activity
-            android:name=".Views.Administrador.Caso.CasoAdapter"
+            android:name=".Views.Administrador.Caso.CasosAdapter"
             android:exported="false" tools:ignore="Instantiatable"/>
 
         <activity
