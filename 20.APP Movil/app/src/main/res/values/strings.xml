@@ -9,4 +9,11 @@
 
 
     <string name="volver">Volver</string>
+
+
+        <string name="nombre_caso">Caso: %s</string>
+        <string name="cliente">Cliente: %s</string>
+        <string name="detective">Detective: %s</string>
+        <string name="desactivar">Desactivar</string>
+        <string name="desactivado">Desactivado</string>
 </resources>

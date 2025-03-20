@@ -13,9 +13,9 @@ class DetallesCasoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detalles_caso)
 
         val txtDetalles = findViewById<TextView>(R.id.txtDetallesCaso)
-        val casoId = intent.getIntExtra("CASO_ID", -1)
+        val casoId = intent.getStringExtra("CASO_ID")
 
-        if (casoId != -1) {
+        if (!casoId.isNullOrEmpty()) {
             txtDetalles.text = "Detalles del Caso con ID: $casoId"
         } else {
             txtDetalles.text = "Error: Caso no encontrado"
