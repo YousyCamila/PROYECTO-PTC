@@ -9,8 +9,8 @@ object BaseDatosTemporal {
 
     init {
         // Crear casos y asociarlos con clientes y detectives existentes
-        val caso1 = Caso("101", "Estudios de seguridad", "4", "1")  // Cliente ID = 4, Detective ID = 1
-        val caso2 = Caso("102", "Investigación de infidelidades", "5", "2") // Cliente ID = 5, Detective ID = 2
+        val caso1 = Caso("101", "Estudios de seguridad", "4", "1", fechaCreacion = "12/02/2024")  // Cliente ID = 4, Detective ID = 1
+        val caso2 = Caso("102", "Investigación de infidelidades", "5", "2", fechaCreacion = "15/06/2023") // Cliente ID = 5, Detective ID = 2
 
         casos.addAll(listOf(caso1, caso2))
 

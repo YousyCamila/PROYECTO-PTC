@@ -21,7 +21,7 @@
 
     <!-- Lista de Casos - Estilo tipo tarjetas tecnológicas -->
     <ListView
-        android:id="@+id/listaCasos"
+        android:id="@+id/listViewCasos"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

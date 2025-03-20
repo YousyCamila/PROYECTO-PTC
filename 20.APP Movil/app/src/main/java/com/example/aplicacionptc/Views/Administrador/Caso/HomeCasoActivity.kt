@@ -12,26 +12,28 @@ import com.example.ptc_app.Models.Administrador.Detective.Detectives
 import com.example.aplicacionptc.Controllers.Admistrador.Caso.CasoService
 import com.example.ptc_app.Models.Administrador.Caso.Caso
 
+
 class HomeCasoActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_caso)
 
-        val listaCasos = findViewById<ListView>(R.id.listaCasos)
+        val listViewCasos = findViewById<ListView>(R.id.listViewCasos)
         val botonCrearCaso = findViewById<Button>(R.id.btnCrearCaso)
         val botonVolver = findViewById<ImageButton>(R.id.btnVolver)
 
-        // Obtener casos y asignar información de cliente y detective
-        val casos: MutableList<Caso> = CasoService().listarCasos().toMutableList()
-
-        // Adaptador personalizado
+        val casos: MutableList<Caso> = CasoService().listarCasos()?.toMutableList() ?: mutableListOf()
+        // Asignar el adaptador al ListView
         val adapter = CasosAdapter(this, casos)
-        listaCasos.adapter = adapter
+        listViewCasos.adapter = adapter
 
+        // Botón para crear un nuevo caso
         botonCrearCaso.setOnClickListener {
             startActivity(Intent(this, CrearCasoActivity::class.java))
         }
 
+        // Botón para volver
         botonVolver.setOnClickListener {
             finish()
         }
