@@ -4,14 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.TextView
-import android.widget.Button
+import android.widget.*
 import android.content.Intent
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.aplicacionptc.R
 import com.example.ptc_app.Models.Administrador.Caso.Caso
+import com.example.ptc_app.Models.Administrador.Cliente.Clientes
+import com.example.ptc_app.Models.Administrador.Detective.Detectives
 import com.example.aplicacionptc.Controllers.Admistrador.Caso.CasoService
 
 class CasosAdapter(private val context: Context, private val casos: List<Caso>) : BaseAdapter() {
@@ -31,15 +30,19 @@ class CasosAdapter(private val context: Context, private val casos: List<Caso>) 
         val btnVerDetalles = view.findViewById<Button>(R.id.btnVerDetalles)
         val btnDesactivar = view.findViewById<Button>(R.id.btnDesactivar)
 
-        // Configurar los textos con valores correctos
-        txtNombreCaso.text = context.getString(R.string.nombre_caso, caso.nombreCaso)
-        txtCliente.text = context.getString(R.string.cliente, caso.idCliente.toString())
-        txtDetective.text = context.getString(R.string.detective, caso.idDetective.toString())
-        txtFechaCreacion.text = context.getString(R.string.fechaCreacion, caso.fechaCreacion ?: "Desconocida")
+        // Buscar el nombre del cliente y detective basado en su ID
+        val nombreCliente = Clientes.clientes.find { it.id == caso.idCliente }?.nombre ?: "Desconocido"
+        val nombreDetective = Detectives.detectives.find { it.id == caso.idDetective }?.nombre ?: "Desconocido"
+
+        // Configurar los textos con los nombres correctos
+        txtNombreCaso.text = "Caso: ${caso.nombreCaso}"
+        txtCliente.text = "Cliente: $nombreCliente"
+        txtDetective.text = "Detective: $nombreDetective"
+        txtFechaCreacion.text = "Fecha de creación: ${caso.fechaCreacion ?: "Desconocida"}"
 
         // Verificar si el caso está activo o desactivado y cambiar la UI
         if (caso.activo) {
-            btnDesactivar.text = context.getString(R.string.desactivar)
+            btnDesactivar.text = "Desactivar"
             btnDesactivar.isEnabled = true
             btnDesactivar.setBackgroundColor(ContextCompat.getColor(context, R.color.error_red))
         } else {
@@ -48,7 +51,7 @@ class CasosAdapter(private val context: Context, private val casos: List<Caso>) 
             txtCliente.setTextColor(ContextCompat.getColor(context, R.color.dark_gray))
             txtDetective.setTextColor(ContextCompat.getColor(context, R.color.dark_gray))
 
-            btnDesactivar.text = context.getString(R.string.desactivado)
+            btnDesactivar.text = "Desactivado"
             btnDesactivar.isEnabled = false
             btnDesactivar.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray))
         }
