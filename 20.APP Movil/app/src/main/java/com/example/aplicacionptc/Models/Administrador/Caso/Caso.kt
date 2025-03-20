@@ -5,7 +5,7 @@ data class Caso(
     val nombreCaso: String,
     val idCliente: String,
     val idDetective: String,
-    var activo: Boolean = true
-
+    var activo: Boolean = true,
+    val fechaCreacion: String
 
 )

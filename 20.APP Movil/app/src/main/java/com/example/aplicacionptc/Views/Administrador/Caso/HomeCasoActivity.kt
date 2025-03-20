@@ -6,47 +6,36 @@ import com.example.aplicacionptc.R
 import android.content.Intent
 import android.widget.Button
 import android.widget.ListView
+import android.widget.ImageButton
 import com.example.ptc_app.Models.Administrador.Cliente.Clientes
 import com.example.ptc_app.Models.Administrador.Detective.Detectives
 import com.example.aplicacionptc.Controllers.Admistrador.Caso.CasoService
-import android.widget.ImageButton
+import com.example.ptc_app.Models.Administrador.Caso.Caso
+
 
 class HomeCasoActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_caso)
 
-        val listaCasos = findViewById<ListView>(R.id.listaCasos)
+        val listViewCasos = findViewById<ListView>(R.id.listViewCasos)
         val botonCrearCaso = findViewById<Button>(R.id.btnCrearCaso)
         val botonVolver = findViewById<ImageButton>(R.id.btnVolver)
 
-        // Obtener casos y asignar información de cliente y detective
-        val casos = CasoService().listarCasos()?.map { caso ->
-            val cliente = Clientes.clientes.find { it.id == caso.idCliente }
-            val detective = Detectives.detectives.find { it.id == caso.idDetective }
-            CasoInfo(
-                id = caso.id.toString(),
-                nombre = caso.nombreCaso,
-                cliente = cliente?.nombre ?: "Desconocido",
-                detective = detective?.nombre ?: "Desconocido"
-            )
-        } ?: listOf()
-
-        // Adaptador personalizado con los botones de "Ver Detalles" y "Desactivar"
+        val casos: MutableList<Caso> = CasoService().listarCasos()?.toMutableList() ?: mutableListOf()
+        // Asignar el adaptador al ListView
         val adapter = CasosAdapter(this, casos)
-        listaCasos.adapter = adapter
+        listViewCasos.adapter = adapter
 
+        // Botón para crear un nuevo caso
         botonCrearCaso.setOnClickListener {
             startActivity(Intent(this, CrearCasoActivity::class.java))
         }
 
+        // Botón para volver
         botonVolver.setOnClickListener {
             finish()
         }
     }
 }
-
-// Clase para manejar la información del caso
-data class CasoInfo(val id: String, val nombre: String, val cliente: String, val detective: String)
-
-
