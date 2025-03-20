@@ -65,8 +65,24 @@ class CasosAdapter(private val context: Context, private val casos: List<Caso>) 
 
         // Evento para desactivar caso
         btnDesactivar.setOnClickListener {
-            CasoService().desactivarCaso(caso.id)
-            Toast.makeText(context, "Caso ${caso.nombreCaso} desactivado", Toast.LENGTH_SHORT).show()
+            val builder = android.app.AlertDialog.Builder(context)
+            builder.setTitle("Confirmar desactivación")
+            builder.setMessage("¿Estás seguro de que deseas desactivar este caso? Esta acción es permanente.")
+
+            builder.setPositiveButton("Sí, desactivar") { _, _ ->
+                CasoService().desactivarCaso(caso.id) // Lógica para desactivar el caso
+                caso.activo = false // Actualizamos el estado localmente
+                notifyDataSetChanged() // Refrescamos la lista
+
+                Toast.makeText(context, "Caso ${caso.nombreCaso} desactivado", Toast.LENGTH_SHORT).show()
+            }
+
+            builder.setNegativeButton("Cancelar") { dialog, _ ->
+                dialog.dismiss() // Cerrar el diálogo sin hacer nada
+            }
+
+            val alertDialog = builder.create()
+            alertDialog.show()
         }
 
         return view

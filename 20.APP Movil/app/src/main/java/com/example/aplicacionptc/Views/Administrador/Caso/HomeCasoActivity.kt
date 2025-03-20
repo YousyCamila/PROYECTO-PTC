@@ -7,13 +7,12 @@ import android.content.Intent
 import android.widget.Button
 import android.widget.ListView
 import android.widget.ImageButton
-import com.example.ptc_app.Models.Administrador.Cliente.Clientes
-import com.example.ptc_app.Models.Administrador.Detective.Detectives
-import com.example.aplicacionptc.Controllers.Admistrador.Caso.CasoService
 import com.example.ptc_app.Models.Administrador.Caso.Caso
-
+import com.example.aplicacionptc.Controllers.Admistrador.Caso.CasoService
 
 class HomeCasoActivity : AppCompatActivity() {
+    private lateinit var adapter: CasosAdapter
+    private lateinit var casos: MutableList<Caso>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,19 +22,27 @@ class HomeCasoActivity : AppCompatActivity() {
         val botonCrearCaso = findViewById<Button>(R.id.btnCrearCaso)
         val botonVolver = findViewById<ImageButton>(R.id.btnVolver)
 
-        val casos: MutableList<Caso> = CasoService().listarCasos()?.toMutableList() ?: mutableListOf()
-        // Asignar el adaptador al ListView
-        val adapter = CasosAdapter(this, casos)
+        casos = CasoService().listarCasos()?.toMutableList() ?: mutableListOf()
+        adapter = CasosAdapter(this, casos)
         listViewCasos.adapter = adapter
 
-        // Botón para crear un nuevo caso
         botonCrearCaso.setOnClickListener {
             startActivity(Intent(this, CrearCasoActivity::class.java))
         }
 
-        // Botón para volver
         botonVolver.setOnClickListener {
             finish()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refrescarListaCasos()
+    }
+
+    private fun refrescarListaCasos() {
+        casos.clear()
+        casos.addAll(CasoService().listarCasos()?.toMutableList() ?: mutableListOf())
+        adapter.notifyDataSetChanged()
     }
 }
