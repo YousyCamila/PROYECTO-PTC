@@ -9,6 +9,9 @@ import com.example.ptc_app.Models.Administrador.Caso.Caso
 import com.example.ptc_app.Models.Administrador.Cliente.Clientes
 import com.example.ptc_app.Models.Administrador.Detective.Detectives
 import com.example.aplicacionptc.R
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class CrearCasoActivity : AppCompatActivity() {
 
@@ -45,8 +48,8 @@ class CrearCasoActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val nuevoCaso = Caso(idCaso, nombreCaso, clienteSeleccionado.id, detectiveSeleccionado.id)
-
+            val fechaCreacion = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
+            val nuevoCaso = Caso(idCaso, nombreCaso, clienteSeleccionado.id, detectiveSeleccionado.id, true, fechaCreacion)
             // Agregar el caso a la base de datos temporal
             clienteSeleccionado.agregarCaso(nuevoCaso)
             detectiveSeleccionado.agregarCaso(nuevoCaso)
