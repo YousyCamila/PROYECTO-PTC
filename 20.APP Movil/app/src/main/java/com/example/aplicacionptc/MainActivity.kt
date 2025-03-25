@@ -9,7 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.aplicacionptc.Views.Administrador.Caso.HomeCasoActivity
+//import com.example.aplicacionptc.Views.Administrador.Caso.HomeCasoActivity
 import com.example.aplicacionptc.Views.Administrador.Cliente.GestionClientesActivity
 import com.example.aplicacionptc.Views.Administrador.Contrato.HomeContratoActivity
 import com.example.aplicacionptc.Views.Administrador.Detective.GestionDetectivesActivity
@@ -57,9 +57,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, GestionDetectivesActivity::class.java))
         }
 
-        btnCasos.setOnClickListener {
-            startActivity(Intent(this, HomeCasoActivity::class.java))
-        }
+//        btnCasos.setOnClickListener {
+//            startActivity(Intent(this, HomeCasoActivity::class.java))
+//        }
 
         btnLogout.setOnClickListener {
             // Cerrar sesión

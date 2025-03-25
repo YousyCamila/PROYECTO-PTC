@@ -1,71 +1,103 @@
 package com.example.aplicacionptc.Views.Administrador.Cliente
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.aplicacionptc.Api.RetrofitClient
 import com.example.aplicacionptc.R
 import com.example.ptc_app.Models.Administrador.Cliente.Clientes
 import com.google.android.material.button.MaterialButton
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class EditarClienteActivity : AppCompatActivity() {
     private lateinit var etNombre: EditText
-    private lateinit var etCelular: EditText
-    private lateinit var etDireccion: EditText
+    private lateinit var etApellido: EditText
     private lateinit var etCorreo: EditText
     private lateinit var btnGuardar: Button
 
-    private var posicion: Int = -1
+    private var clienteId: String? = null
+    private var tipoDocumento: String? = null
+    private var numeroDocumento: String? = null
+    private var activo: Boolean = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_editar_cliente)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-        val btnVolverGestion= findViewById<MaterialButton>(R.id.btnVolverGestion)
 
-        btnVolverGestion.setOnClickListener {
-            startActivity(Intent(this, GestionClientesActivity::class.java))
-        }
         etNombre = findViewById(R.id.etNombre)
-        etCelular = findViewById(R.id.etCelular)
-        etDireccion = findViewById(R.id.etDireccion)
+        etApellido = findViewById(R.id.etApellido)
         etCorreo = findViewById(R.id.etCorreo)
         btnGuardar = findViewById(R.id.btnGuardar)
 
+        // Obtener datos del intent
+        clienteId = intent.getStringExtra("id")
+        tipoDocumento = intent.getStringExtra("tipoDocumento")
+        numeroDocumento = intent.getStringExtra("numeroDocumento")
+        etNombre.setText(intent.getStringExtra("nombres"))
+        etApellido.setText(intent.getStringExtra("apellidos"))
+        etCorreo.setText(intent.getStringExtra("correo"))
+        activo = intent.getBooleanExtra("activo", true)
 
-        posicion = intent.getIntExtra("posicion", -1)
-        val nombre = intent.getStringExtra("nombre")
-        val celular = intent.getStringExtra("celular")
-        val direccion = intent.getStringExtra("direccion")
-        val correo = intent.getStringExtra("correo")
-
-
-        etNombre.setText(nombre)
-        etCelular.setText(celular)
-        etDireccion.setText(direccion)
-        etCorreo.setText(correo)
-
+        findViewById<MaterialButton>(R.id.btnVolverGestion).setOnClickListener {
+            finish() // Evita crear una nueva actividad innecesaria
+        }
 
         btnGuardar.setOnClickListener {
-            if (posicion != -1) {
-
-                val cliente = Clientes.clientes[posicion]
-                cliente.nombre = etNombre.text.toString()
-                cliente.celular = etCelular.text.toString()
-                cliente.direccion = etDireccion.text.toString()
-                cliente.correo = etCorreo.text.toString()
-
-
-                finish()
-            }
+            validarYActualizarCliente()
         }
+    }
+
+    private fun validarYActualizarCliente() {
+        if (clienteId.isNullOrEmpty()) {
+            Toast.makeText(this, "Error: ID del cliente no encontrado", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (etNombre.text.isNullOrEmpty() || etApellido.text.isNullOrEmpty() || etCorreo.text.isNullOrEmpty()) {
+            Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val clienteActualizado = Clientes(
+            id = clienteId!!,
+            tipoDocumento = tipoDocumento.orEmpty(),
+            numeroDocumento = numeroDocumento.orEmpty(),
+            nombres = etNombre.text.toString().trim(),
+            apellidos = etApellido.text.toString().trim(),
+            correo = etCorreo.text.toString().trim(),
+            fechaNacimiento = "",
+            activo = activo
+        )
+
+        RetrofitClient.instance.actualizarCliente(clienteId!!, clienteActualizado)
+            .enqueue(object : Callback<Clientes> {
+                override fun onResponse(call: Call<Clientes>, response: Response<Clientes>) {
+                    if (response.isSuccessful) {
+                        mostrarDialogoExito()
+                    } else {
+                        Toast.makeText(this@EditarClienteActivity, "Error al actualizar cliente", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Clientes>, t: Throwable) {
+                    Toast.makeText(this@EditarClienteActivity, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+    private fun mostrarDialogoExito() {
+        AlertDialog.Builder(this)
+            .setTitle("Cliente actualizado")
+            .setMessage("El cliente ha sido actualizado correctamente.")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+                finish() // Cierra la actividad después de actualizar
+            }
+            .show()
     }
 }

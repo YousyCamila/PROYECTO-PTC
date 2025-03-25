@@ -1,22 +1,34 @@
 package com.example.aplicacionptc.Views.Administrador.Cliente
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.aplicacionptc.Controllers.Admistrador.Cliente.ControladorCliente
+import com.example.aplicacionptc.Api.RetrofitClient
 import com.example.aplicacionptc.R
 import com.example.ptc_app.Models.Administrador.Cliente.Clientes
 import com.google.android.material.button.MaterialButton
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class CrearClienteActivity : AppCompatActivity() {
 
-    private lateinit var controladorCliente: ControladorCliente
+    private lateinit var etNombre: EditText
+    private lateinit var etApellido: EditText
+    private lateinit var etTipoDocumento: EditText
+    private lateinit var etNumeroDocumento: EditText
+    private lateinit var etCorreo: EditText
+    private lateinit var btnGuardar: Button
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -28,39 +40,59 @@ class CrearClienteActivity : AppCompatActivity() {
             insets
         }
 
+        etNombre = findViewById(R.id.etNombre)
+        etApellido = findViewById(R.id.etApellido)
+        etTipoDocumento = findViewById(R.id.etTipoDocumento)
+        etNumeroDocumento = findViewById(R.id.etNumeroDocumento)
+        etCorreo = findViewById(R.id.etCorreo)
+        btnGuardar = findViewById(R.id.btnGuardarCliente)
 
-        controladorCliente = ControladorCliente()
-
-
-        val edtNombre = findViewById<EditText>(R.id.edtNombre)
-        val edtId = findViewById<EditText>(R.id.edtId)
-        val edtTelefono = findViewById<EditText>(R.id.edtTelefono)
-        val edtDireccion = findViewById<EditText>(R.id.edtDireccion)
-        val edtCorreo = findViewById<EditText>(R.id.edtCorreo)
-        val btnGuardar = findViewById<Button>(R.id.btnGuardarCliente)
         val btnVolverGestion = findViewById<MaterialButton>(R.id.btnVolverGestion)
-
-
-        btnGuardar.setOnClickListener {
-
-            val nombre = edtNombre.text.toString()
-            val id = (Clientes.clientes.size + 1).toString()
-            val telefono = edtTelefono.text.toString()
-            val direccion = edtDireccion.text.toString()
-            val correo = edtCorreo.text.toString()
-
-
-            val nuevoCliente = Clientes(id, nombre, telefono, direccion, correo)
-
-
-            Clientes.clientes.add(nuevoCliente)
-
-
-            finish()
-        }
-
         btnVolverGestion.setOnClickListener {
             startActivity(Intent(this, GestionClientesActivity::class.java))
         }
+
+        btnGuardar.setOnClickListener {
+            crearCliente()
+        }
+    }
+
+    private fun crearCliente() {
+        val nuevoCliente = Clientes(
+            id = "", // Se genera automáticamente en el backend
+            tipoDocumento = etTipoDocumento.text.toString(),
+            numeroDocumento = etNumeroDocumento.text.toString(),
+            nombres = etNombre.text.toString(),
+            apellidos = etApellido.text.toString(),
+            correo = etCorreo.text.toString(),
+            fechaNacimiento = "", // No es obligatorio
+            activo = true
+        )
+
+        RetrofitClient.instance.crearCliente(nuevoCliente)
+            .enqueue(object : Callback<Clientes> {
+                override fun onResponse(call: Call<Clientes>, response: Response<Clientes>) {
+                    if (response.isSuccessful) {
+                        mostrarDialogoExito()
+                    } else {
+                        Toast.makeText(this@CrearClienteActivity, "Error al crear cliente", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Clientes>, t: Throwable) {
+                    Toast.makeText(this@CrearClienteActivity, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+    private fun mostrarDialogoExito() {
+        AlertDialog.Builder(this)
+            .setTitle("Cliente creado")
+            .setMessage("El cliente ha sido registrado exitosamente.")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+                finish()
+            }
+            .show()
     }
 }

@@ -53,10 +53,11 @@ class GestionClientesActivity : AppCompatActivity() {
 
         adapter = ClientesAdapter(
             listaClientes,
-            onEditar = { position -> editarCliente(position) },
-            onEliminar = { position -> eliminarCliente(position) },
-            onDetalles = { position -> verDetallesCliente(position) }
+            onEditar = { cliente -> editarCliente(cliente) },
+            onEliminar = { cliente, position -> eliminarCliente(cliente, position) },
+            onDetalles = { cliente -> verDetallesCliente(cliente) }
         )
+
         recyclerView.adapter = adapter
 
         btnCrearCliente.setOnClickListener {
@@ -85,8 +86,7 @@ class GestionClientesActivity : AppCompatActivity() {
         })
     }
 
-    private fun editarCliente(posicion: Int) {
-        val cliente = listaClientes[posicion]
+    private fun editarCliente(cliente: Clientes) {
         val intent = Intent(this, EditarClienteActivity::class.java).apply {
             putExtra("id", cliente.id)
             putExtra("nombre", cliente.nombres)
@@ -95,9 +95,7 @@ class GestionClientesActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun eliminarCliente(posicion: Int) {
-        val cliente = listaClientes[posicion]
-
+    private fun eliminarCliente(cliente: Clientes, posicion: Int) {
         controladorCliente.desactivarCliente(cliente.id).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
@@ -115,8 +113,7 @@ class GestionClientesActivity : AppCompatActivity() {
         })
     }
 
-    private fun verDetallesCliente(posicion: Int) {
-        val cliente = listaClientes[posicion]
+    private fun verDetallesCliente(cliente: Clientes) {
         val mensaje = """
             Nombre: ${cliente.nombres}
             ID: ${cliente.id}
