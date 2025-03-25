@@ -75,7 +75,8 @@ class CrearClienteActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         mostrarDialogoExito()
                     } else {
-                        Toast.makeText(this@CrearClienteActivity, "Error al crear cliente", Toast.LENGTH_SHORT).show()
+                        // Mostrar la respuesta completa del error
+                        Toast.makeText(this@CrearClienteActivity, "Error al crear cliente: ${response.errorBody()?.string()}", Toast.LENGTH_SHORT).show()
                     }
                 }
 
