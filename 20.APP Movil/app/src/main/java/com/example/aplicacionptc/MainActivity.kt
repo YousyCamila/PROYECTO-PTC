@@ -19,17 +19,6 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val sharedPref = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
-        val isLoggedIn = sharedPref.getBoolean("isLoggedIn", false)
-
-        // Si el usuario no ha iniciado sesión, redirigirlo al login
-        if (!isLoggedIn) {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-            return
-        }
-
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
@@ -61,14 +50,5 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, HomeCasoActivity::class.java))
         }
 
-        btnLogout.setOnClickListener {
-            // Cerrar sesión
-            sharedPref.edit().apply {
-                putBoolean("isLoggedIn", false) // Eliminar sesión
-                apply()
-            }
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
     }
 }

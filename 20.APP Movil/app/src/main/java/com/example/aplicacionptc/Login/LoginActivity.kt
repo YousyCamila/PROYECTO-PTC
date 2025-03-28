@@ -14,12 +14,10 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val sharedPref = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
-        val isLoggedIn = sharedPref.getBoolean("isLoggedIn", false)
 
-        // Si el usuario ya inició sesión, redirige directamente a MainActivity
-        if (isLoggedIn) {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+        // Si el usuario ya inició sesión, redirigir a MainActivity
+        if (sharedPref.getBoolean("isLoggedIn", false)) {
+            goToMainActivity()
             return
         }
 
@@ -29,28 +27,41 @@ class LoginActivity : AppCompatActivity() {
         val etPassword = findViewById<EditText>(R.id.etPassword)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
 
-        val savedUser = sharedPref.getString("username", "admin")
-        val savedPass = sharedPref.getString("password", "1234")
+        val defaultUser = "admin"
+        val defaultPass = "1234"
 
         btnLogin.setOnClickListener {
             val username = etUsername.text.toString()
             val password = etPassword.text.toString()
 
-            if (username == savedUser && password == savedPass) {
-                // Guardar la sesión
+            if (username == defaultUser && password == defaultPass) {
                 sharedPref.edit().apply {
                     putBoolean("isLoggedIn", true)
                     apply()
                 }
-
                 Toast.makeText(this, "Login exitoso", Toast.LENGTH_SHORT).show()
-
-                // Redirigir a MainActivity
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
+                goToMainActivity()
             } else {
                 Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun goToMainActivity() {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
+
+    companion object {
+        fun logout(context: Context) {
+            val sharedPref = context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
+            sharedPref.edit().apply {
+                putBoolean("isLoggedIn", false)
+                apply()
+            }
+            val intent = Intent(context, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            context.startActivity(intent)
         }
     }
 }
