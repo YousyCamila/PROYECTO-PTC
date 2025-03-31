@@ -11,19 +11,22 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.aplicacionptc.Controllers.Admistrador.Detective.ControladorDetectiv
+import com.example.aplicacionptc.Api.RetrofitDetective
 import com.example.aplicacionptc.MainActivity
 import com.example.aplicacionptc.R
 import com.example.ptc_app.Models.Administrador.Detective.Detectives
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class GestionDetectivesActivity : AppCompatActivity() {
 
-    private lateinit var controladorDetective: ControladorDetectiv
     private lateinit var recyclerView: RecyclerView
     private lateinit var btnCrearDetective: FloatingActionButton
     private lateinit var adapter: DetectivesAdapter
+    private var listaDetectives: MutableList<Detectives> = mutableListOf()
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,68 +45,80 @@ class GestionDetectivesActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
         }
 
-        // Inicializamos el controlador
-        controladorDetective = ControladorDetectiv()
-
         recyclerView = findViewById(R.id.recyclerDetectives)
         btnCrearDetective = findViewById(R.id.btnCrearDetective)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
-
         adapter = DetectivesAdapter(
-            Detectives.detectives,
+            listaDetectives,
             onEditar = { position -> editarDetective(position) },
             onEliminar = { position -> eliminarDetective(position) },
             onDetalles = { position -> verDetallesDetective(position) }
         )
         recyclerView.adapter = adapter
 
-        // Botón para ir a crear un nuevo detective
         btnCrearDetective.setOnClickListener {
             val intent = Intent(this, CrearDetectivesActivity::class.java)
             startActivity(intent)
         }
+
+        cargarDetectives()
     }
 
-    private fun actualizarLista() {
-        adapter.notifyDataSetChanged()
+    private fun cargarDetectives() {
+        RetrofitDetective.instance.obtenerDetectives().enqueue(object : Callback<List<Detectives>> {
+            override fun onResponse(call: Call<List<Detectives>>, response: Response<List<Detectives>>) {
+                if (response.isSuccessful) {
+                    listaDetectives.clear()
+                    listaDetectives.addAll(response.body() ?: emptyList())
+                    adapter.notifyDataSetChanged()
+                } else {
+                    Toast.makeText(this@GestionDetectivesActivity, "Error al obtener detectives", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Detectives>>, t: Throwable) {
+                Toast.makeText(this@GestionDetectivesActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun editarDetective(posicion: Int) {
-        val detective = Detectives.detectives[posicion]
-
-        val intent = Intent(this, EditarDetectivesActivity::class.java)
-        intent.putExtra("posicion", posicion)
-        intent.putExtra("nombre", detective.nombre)
-        intent.putExtra("celular", detective.celular)
-        intent.putExtra("direccion", detective.direccion)
-        intent.putExtra("correo", detective.correo)
+        val detective = listaDetectives[posicion]
+        val intent = Intent(this, EditarDetectivesActivity::class.java).apply {
+            putExtra("id", detective.id)
+            putExtra("nombres", detective.nombres)
+            putExtra("correo", detective.correo)
+        }
         startActivity(intent)
     }
 
     private fun eliminarDetective(posicion: Int) {
-        val detective = Detectives.detectives[posicion]
-        val idDetective = detective.id
+        val detective = listaDetectives[posicion]
+        RetrofitDetective.instance.desactivarDetectives(detective.id).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    listaDetectives.removeAt(posicion)
+                    adapter.notifyItemRemoved(posicion)
+                    Toast.makeText(this@GestionDetectivesActivity, "Detective desactivado", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@GestionDetectivesActivity, "Error al desactivar detective", Toast.LENGTH_SHORT).show()
+                }
+            }
 
-        controladorDetective.eliminar(idDetective)
-
-        Detectives.detectives.removeAt(posicion)
-
-        adapter.notifyItemRemoved(posicion)
-
-        Toast.makeText(this, "Detective eliminado", Toast.LENGTH_SHORT).show()
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Toast.makeText(this@GestionDetectivesActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun verDetallesDetective(posicion: Int) {
-        val detective = Detectives.detectives[posicion]
-
+        val detective = listaDetectives[posicion]
         val mensaje = """
-        Nombre: ${detective.nombre}
-        ID: ${detective.id}
-        Teléfono: ${detective.celular}
-        Dirección: ${detective.direccion}
-        Correo: ${detective.correo}
-    """.trimIndent()
+            Nombre: ${detective.nombres}
+            ID: ${detective.id}
+            Correo: ${detective.correo}
+        """.trimIndent()
 
         AlertDialog.Builder(this)
             .setTitle("Detalles del Detective")
@@ -114,6 +129,6 @@ class GestionDetectivesActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        actualizarLista()
+        cargarDetectives()
     }
 }

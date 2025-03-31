@@ -1,141 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/blancoHueso"
-        android:fillViewport="true">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blancoHueso"
+    android:fillViewport="true">
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Información del Detective"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:textColor="@color/lila"
-                android:layout_marginBottom="24dp"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Información del Cliente"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/lila"
+            android:layout_marginBottom="24dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:boxStrokeColor="@color/black"
-                app:hintTextColor="@color/gris"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtNombre"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Nombre completo"
-                    android:inputType="textPersonName"
-                    android:drawableStart="@drawable/ic_person"
-                    android:drawablePadding="8dp"/>
+                android:id="@+id/edtNombres"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre"
+                android:inputType="text"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:boxStrokeColor="@color/black"
-                app:hintTextColor="@color/gris"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Número de Identificación"
-                    android:inputType="text"
-                    android:drawableStart="@drawable/ic_card"
-                    android:drawablePadding="8dp"/>
+                android:id="@+id/edtApellidos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Apellido"
+                android:inputType="text"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:boxStrokeColor="@color/black"
-                app:hintTextColor="@color/gris"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtTelefono"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Número de Teléfono"
-                    android:inputType="phone"
-                    android:drawableStart="@drawable/ic_phone"
-                    android:drawablePadding="8dp"/>
+                android:id="@+id/edtTipoDocumento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tipo de Documento"
+                android:inputType="text"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:boxStrokeColor="@color/black"
-                app:hintTextColor="@color/gris"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtDireccion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Dirección"
-                    android:inputType="textPostalAddress"
-                    android:drawablePadding="8dp"/>
+                android:id="@+id/edtNumeroDocumento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Número de Documento"
+                android:inputType="number"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                app:boxStrokeColor="@color/black"
-                app:hintTextColor="@color/gris"
-                app:errorEnabled="true"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtCorreo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Correo electrónico"
-                    android:inputType="textEmailAddress"
-                    android:drawablePadding="8dp"/>
+                android:id="@+id/edtCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Correo Electrónico"
+                android:inputType="textEmailAddress"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtFechaNacimiento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Fecha de Nacimiento"
+                android:inputType="date"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Spinner para elegir especialidad -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <android.widget.Spinner
+                android:id="@+id/spinnerEspecialidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
-                android:layout_width="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVolverGestion"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="end">
+                android:text="Cancelar"
+                android:textColor="@color/rojo"/>
 
             <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnVolverGestion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cancelar"
-                    android:textColor="@color/rojo"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_marginEnd="8dp"/>
-
-            <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnGuardarDetective"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Guardar Detective"
-                    android:padding="12dp"
-                    app:cornerRadius="8dp"
-                    android:backgroundTint="@color/lila"
-                    android:textColor="@android:color/white"/>
+                android:id="@+id/btnGuardarCliente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Guardar Cliente"
+                android:backgroundTint="@color/lila"
+                android:textColor="@android:color/white"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

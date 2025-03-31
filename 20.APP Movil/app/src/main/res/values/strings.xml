@@ -18,4 +18,15 @@
         <string name="desactivado">Desactivado</string>
     <string name="fechaCreacion">Fecha de creación: %s</string>
 
+    <string-array name="especialidades_array">
+        <item>cadenaCustodia</item>
+        <item>investigacionExtorsion</item>
+        <item>estudiosSeguridad</item>
+        <item>investigacionInfidelidades</item>
+        <item>investigacionRobosEmpresariales</item>
+        <item>antecedentes</item>
+        <item>recuperacionVehiculos</item>
+    </string-array>
+
 </resources>
+

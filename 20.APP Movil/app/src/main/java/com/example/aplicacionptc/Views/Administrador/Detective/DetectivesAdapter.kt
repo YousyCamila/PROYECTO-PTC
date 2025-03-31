@@ -30,7 +30,7 @@ class DetectivesAdapter(
 
     override fun onBindViewHolder(holder: DetectiveViewHolder, position: Int) {
         val detective = detectives[position]
-        holder.txtNombre.text = detective.nombre
+        holder.txtNombre.text = detective.nombres
 
         holder.btnEditar.setOnClickListener { onEditar(position) }
         holder.btnEliminar.setOnClickListener { onEliminar(position) }
