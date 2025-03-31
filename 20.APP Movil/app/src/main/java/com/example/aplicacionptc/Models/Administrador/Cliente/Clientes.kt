@@ -16,7 +16,5 @@ data class Clientes(
     val activo: Boolean
 )
 
-     val casos = mutableListOf<Caso>()
-
 
 

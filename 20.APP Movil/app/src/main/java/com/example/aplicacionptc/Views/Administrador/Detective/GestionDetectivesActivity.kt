@@ -11,7 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.aplicacionptc.Controllers.Admistrador.Detective.ControladorDetective
+import com.example.aplicacionptc.Controllers.Admistrador.Detective.ControladorDetectiv
 import com.example.aplicacionptc.MainActivity
 import com.example.aplicacionptc.R
 import com.example.ptc_app.Models.Administrador.Detective.Detectives
@@ -20,7 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class GestionDetectivesActivity : AppCompatActivity() {
 
-    private lateinit var controladorDetective: ControladorDetective
+    private lateinit var controladorDetective: ControladorDetectiv
     private lateinit var recyclerView: RecyclerView
     private lateinit var btnCrearDetective: FloatingActionButton
     private lateinit var adapter: DetectivesAdapter
@@ -43,7 +43,7 @@ class GestionDetectivesActivity : AppCompatActivity() {
         }
 
         // Inicializamos el controlador
-        controladorDetective = ControladorDetective()
+        controladorDetective = ControladorDetectiv()
 
         recyclerView = findViewById(R.id.recyclerDetectives)
         btnCrearDetective = findViewById(R.id.btnCrearDetective)

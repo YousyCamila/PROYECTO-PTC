@@ -8,14 +8,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.aplicacionptc.Controllers.Admistrador.Detective.ControladorDetective
+import com.example.aplicacionptc.Controllers.Admistrador.Detective.ControladorDetectiv
 import com.example.aplicacionptc.R
 import com.example.ptc_app.Models.Administrador.Detective.Detectives
 import com.google.android.material.button.MaterialButton
 
 class CrearDetectivesActivity : AppCompatActivity() {
 
-    private lateinit var controladorDetective: ControladorDetective
+    private lateinit var controladorDetective: ControladorDetectiv
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +28,7 @@ class CrearDetectivesActivity : AppCompatActivity() {
             insets
         }
 
-        controladorDetective = ControladorDetective()
+        controladorDetective = ControladorDetectiv()
 
         val edtNombre = findViewById<EditText>(R.id.edtNombre)
         val edtId = findViewById<EditText>(R.id.edtId)
