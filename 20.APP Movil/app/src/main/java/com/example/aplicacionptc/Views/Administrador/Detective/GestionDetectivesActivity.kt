@@ -95,21 +95,28 @@ class GestionDetectivesActivity : AppCompatActivity() {
 
     private fun eliminarDetective(posicion: Int) {
         val detective = listaDetectives[posicion]
-        RetrofitDetective.instance.desactivarDetectives(detective.id).enqueue(object : Callback<Void> {
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                if (response.isSuccessful) {
-                    listaDetectives.removeAt(posicion)
-                    adapter.notifyItemRemoved(posicion)
-                    Toast.makeText(this@GestionDetectivesActivity, "Detective desactivado", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this@GestionDetectivesActivity, "Error al desactivar detective", Toast.LENGTH_SHORT).show()
-                }
-            }
 
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-                Toast.makeText(this@GestionDetectivesActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
-            }
-        })
+        // Verificar si el id es nulo antes de intentar hacer la llamada
+        val idDetective = detective.id
+        if (idDetective != null) {
+            RetrofitDetective.instance.desactivarDetectives(idDetective).enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        listaDetectives.removeAt(posicion)
+                        adapter.notifyItemRemoved(posicion)
+                        Toast.makeText(this@GestionDetectivesActivity, "Detective desactivado", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this@GestionDetectivesActivity, "Error al desactivar detective", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Toast.makeText(this@GestionDetectivesActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+        } else {
+            Toast.makeText(this@GestionDetectivesActivity, "ID de detective es nulo", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun verDetallesDetective(posicion: Int) {

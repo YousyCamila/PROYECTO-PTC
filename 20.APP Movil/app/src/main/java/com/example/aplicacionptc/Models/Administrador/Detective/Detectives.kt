@@ -5,7 +5,7 @@ import com.example.ptc_app.Models.Administrador.Caso.Caso
 import com.google.gson.annotations.SerializedName
 
 data class Detectives(
-    @SerializedName("_id") val id: String,
+    @SerializedName("_id") val id: String? = null,
     val tipoDocumento: String,
     val numeroDocumento: String,
     val nombres: String,

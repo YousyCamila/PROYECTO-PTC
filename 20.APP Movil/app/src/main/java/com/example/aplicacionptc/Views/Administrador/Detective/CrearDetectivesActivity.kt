@@ -68,9 +68,16 @@ class CrearDetectivesActivity : AppCompatActivity() {
 
             // Crear el detective
             val nuevoDetective = Detectives(
-                "", tipoDocumento, numeroDocumento, nombres, apellidos,
-                correo, fechaNacimiento, activo, listOf(especialidadSeleccionada)
+                tipoDocumento = tipoDocumento,
+                numeroDocumento = numeroDocumento,
+                nombres = nombres,
+                apellidos = apellidos,
+                correo = correo,
+                fechaNacimiento = fechaNacimiento,
+                activo = activo,
+                especialidad = listOf(especialidadSeleccionada)
             )
+
 
             controladorDetective.crearDetective(nuevoDetective).enqueue(object : Callback<Detectives> {
                 override fun onResponse(call: Call<Detectives>, response: Response<Detectives>) {
@@ -78,9 +85,12 @@ class CrearDetectivesActivity : AppCompatActivity() {
                         Toast.makeText(this@CrearDetectivesActivity, "Detective creado exitosamente", Toast.LENGTH_SHORT).show()
                         finish()
                     } else {
-                        Toast.makeText(this@CrearDetectivesActivity, "Error al crear detective", Toast.LENGTH_SHORT).show()
+                        // Mostrar el cuerpo de la respuesta para más detalles
+                        val errorMessage = response.errorBody()?.string() ?: "Error desconocido"
+                        Toast.makeText(this@CrearDetectivesActivity, "Error al crear detective: $errorMessage", Toast.LENGTH_SHORT).show()
                     }
                 }
+
 
                 override fun onFailure(call: Call<Detectives>, t: Throwable) {
                     Toast.makeText(this@CrearDetectivesActivity, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
