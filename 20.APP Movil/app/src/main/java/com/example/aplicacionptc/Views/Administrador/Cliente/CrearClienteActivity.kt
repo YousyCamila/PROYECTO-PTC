@@ -25,6 +25,7 @@ class CrearClienteActivity : AppCompatActivity() {
     private lateinit var etApellido: EditText
     private lateinit var etTipoDocumento: EditText
     private lateinit var etNumeroDocumento: EditText
+    private lateinit var etFechaNacimiento: EditText
     private lateinit var etCorreo: EditText
     private lateinit var btnGuardar: Button
 
@@ -40,18 +41,22 @@ class CrearClienteActivity : AppCompatActivity() {
             insets
         }
 
-        etNombre = findViewById(R.id.etNombre)
-        etApellido = findViewById(R.id.etApellido)
+        // Inicialización de campos
+        etNombre = findViewById(R.id.etNombres)
+        etApellido = findViewById(R.id.etApellidos)
         etTipoDocumento = findViewById(R.id.etTipoDocumento)
         etNumeroDocumento = findViewById(R.id.etNumeroDocumento)
+        etFechaNacimiento = findViewById(R.id.etFechaNacimiento)
         etCorreo = findViewById(R.id.etCorreo)
         btnGuardar = findViewById(R.id.btnGuardarCliente)
 
+        // Botón de volver a la gestión de clientes
         val btnVolverGestion = findViewById<MaterialButton>(R.id.btnVolverGestion)
         btnVolverGestion.setOnClickListener {
             startActivity(Intent(this, GestionClientesActivity::class.java))
         }
 
+        // Botón para guardar cliente
         btnGuardar.setOnClickListener {
             crearCliente()
         }
@@ -59,7 +64,6 @@ class CrearClienteActivity : AppCompatActivity() {
 
     private fun crearCliente() {
         val nuevoCliente = Clientes(
-            id = "", // Se genera automáticamente en el backend
             tipoDocumento = etTipoDocumento.text.toString(),
             numeroDocumento = etNumeroDocumento.text.toString(),
             nombres = etNombre.text.toString(),
@@ -69,13 +73,14 @@ class CrearClienteActivity : AppCompatActivity() {
             activo = true
         )
 
+        // Llamada a la API para crear el cliente
         Retrofit.clienteInstance.crearCliente(nuevoCliente)
             .enqueue(object : Callback<Clientes> {
                 override fun onResponse(call: Call<Clientes>, response: Response<Clientes>) {
                     if (response.isSuccessful) {
                         mostrarDialogoExito()
                     } else {
-                        // Mostrar la respuesta completa del error
+                        // Mostrar el cuerpo del error
                         Toast.makeText(this@CrearClienteActivity, "Error al crear cliente: ${response.errorBody()?.string()}", Toast.LENGTH_SHORT).show()
                     }
                 }
