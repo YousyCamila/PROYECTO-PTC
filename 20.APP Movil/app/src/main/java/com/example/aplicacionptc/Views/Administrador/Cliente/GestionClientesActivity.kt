@@ -96,21 +96,26 @@ class GestionClientesActivity : AppCompatActivity() {
     }
 
     private fun eliminarCliente(cliente: Clientes, posicion: Int) {
-        controladorCliente.desactivarCliente(cliente.id).enqueue(object : Callback<Void> {
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                if (response.isSuccessful) {
-                    listaClientes.removeAt(posicion)
-                    adapter.notifyItemRemoved(posicion)
-                    Toast.makeText(this@GestionClientesActivity, "Cliente desactivado", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this@GestionClientesActivity, "Error al desactivar cliente", Toast.LENGTH_SHORT).show()
+        val idCliente = cliente.id
+        if (idCliente != null) {
+            controladorCliente.desactivarCliente(idCliente).enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        listaClientes.removeAt(posicion)
+                        adapter.notifyItemRemoved(posicion)
+                        Toast.makeText(this@GestionClientesActivity, "Cliente desactivado", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this@GestionClientesActivity, "Error al desactivar cliente", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-                Toast.makeText(this@GestionClientesActivity, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
-            }
-        })
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Toast.makeText(this@GestionClientesActivity, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+        } else {
+            Toast.makeText(this@GestionClientesActivity, "ID de cliente es nulo", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun verDetallesCliente(cliente: Clientes) {

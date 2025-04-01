@@ -60,7 +60,6 @@ class EditarDetectivesActivity : AppCompatActivity() {
         etNombre = findViewById(R.id.edtNombre)
         etApellidos = findViewById(R.id.edtApellidos)
         etId = findViewById(R.id.edtId)
-        etTelefono = findViewById(R.id.edtTelefono)
         etCorreo = findViewById(R.id.edtCorreo)
         etTipoDocumento = findViewById(R.id.edtTipoDocumento)
         etNumeroDocumento = findViewById(R.id.edtNumeroDocumento)
