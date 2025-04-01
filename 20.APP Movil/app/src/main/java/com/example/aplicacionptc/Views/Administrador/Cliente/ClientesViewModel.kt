@@ -3,9 +3,8 @@ package com.example.aplicacionptc.Views.Administrador.Cliente
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.aplicacionptc.Api.RetrofitClient
+import com.example.aplicacionptc.Api.Retrofit
 import com.example.ptc_app.Models.Administrador.Cliente.Clientes
-import com.example.aplicacionptc.Controllers.Admistrador.Cliente.ControladorCliente
 import retrofit2.Call
 import android.util.Log
 import retrofit2.Callback
@@ -18,7 +17,7 @@ class ClientesViewModel : ViewModel() {
     fun obtenerClientes() {
         Log.d("ClientesViewModel", "Iniciando petición para obtener clientes...")
 
-        RetrofitClient.instance.obtenerClientes().enqueue(object : Callback<List<Clientes>> {
+        Retrofit.clienteInstance.obtenerClientes().enqueue(object : Callback<List<Clientes>> {
             override fun onResponse(call: Call<List<Clientes>>, response: Response<List<Clientes>>) {
                 if (response.isSuccessful) {
                     _clientes.value = response.body() ?: emptyList()

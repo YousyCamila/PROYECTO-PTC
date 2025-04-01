@@ -11,7 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.aplicacionptc.Api.RetrofitDetective
+import com.example.aplicacionptc.Api.Retrofit
 import com.example.aplicacionptc.MainActivity
 import com.example.aplicacionptc.R
 import com.example.ptc_app.Models.Administrador.Detective.Detectives
@@ -66,7 +66,7 @@ class GestionDetectivesActivity : AppCompatActivity() {
     }
 
     private fun cargarDetectives() {
-        RetrofitDetective.instance.obtenerDetectives().enqueue(object : Callback<List<Detectives>> {
+        Retrofit.detectiveInstance.obtenerDetectives().enqueue(object : Callback<List<Detectives>> {
             override fun onResponse(call: Call<List<Detectives>>, response: Response<List<Detectives>>) {
                 if (response.isSuccessful) {
                     listaDetectives.clear()
@@ -99,7 +99,7 @@ class GestionDetectivesActivity : AppCompatActivity() {
         // Verificar si el id es nulo antes de intentar hacer la llamada
         val idDetective = detective.id
         if (idDetective != null) {
-            RetrofitDetective.instance.desactivarDetectives(idDetective).enqueue(object : Callback<Void> {
+            Retrofit.detectiveInstance.desactivarDetectives(idDetective).enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
                         listaDetectives.removeAt(posicion)

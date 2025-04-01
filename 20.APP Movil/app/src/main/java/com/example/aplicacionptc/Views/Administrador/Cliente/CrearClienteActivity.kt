@@ -11,7 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.aplicacionptc.Api.RetrofitClient
+import com.example.aplicacionptc.Api.Retrofit
 import com.example.aplicacionptc.R
 import com.example.ptc_app.Models.Administrador.Cliente.Clientes
 import com.google.android.material.button.MaterialButton
@@ -69,7 +69,7 @@ class CrearClienteActivity : AppCompatActivity() {
             activo = true
         )
 
-        RetrofitClient.instance.crearCliente(nuevoCliente)
+        Retrofit.clienteInstance.crearCliente(nuevoCliente)
             .enqueue(object : Callback<Clientes> {
                 override fun onResponse(call: Call<Clientes>, response: Response<Clientes>) {
                     if (response.isSuccessful) {

@@ -11,7 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.aplicacionptc.Api.RetrofitClient
+import com.example.aplicacionptc.Api.Retrofit
 import com.example.aplicacionptc.MainActivity
 import com.example.aplicacionptc.R
 import com.example.ptc_app.Models.Administrador.Cliente.Clientes
@@ -23,7 +23,7 @@ import retrofit2.Response
 
 class GestionClientesActivity : AppCompatActivity() {
 
-    private val controladorCliente = RetrofitClient.instance
+    private val controladorCliente = Retrofit.clienteInstance
     private lateinit var recyclerView: RecyclerView
     private lateinit var btnCrearCliente: FloatingActionButton
     private lateinit var adapter: ClientesAdapter

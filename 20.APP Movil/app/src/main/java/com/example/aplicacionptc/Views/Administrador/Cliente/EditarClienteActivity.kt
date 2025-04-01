@@ -1,13 +1,12 @@
 package com.example.aplicacionptc.Views.Administrador.Cliente
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.aplicacionptc.Api.RetrofitClient
+import com.example.aplicacionptc.Api.Retrofit
 import com.example.aplicacionptc.R
 import com.example.ptc_app.Models.Administrador.Cliente.Clientes
 import com.google.android.material.button.MaterialButton
@@ -74,7 +73,7 @@ class EditarClienteActivity : AppCompatActivity() {
             activo = activo
         )
 
-        RetrofitClient.instance.actualizarCliente(clienteId!!, clienteActualizado)
+        Retrofit.clienteInstance.actualizarCliente(clienteId!!, clienteActualizado)
             .enqueue(object : Callback<Clientes> {
                 override fun onResponse(call: Call<Clientes>, response: Response<Clientes>) {
                     if (response.isSuccessful) {

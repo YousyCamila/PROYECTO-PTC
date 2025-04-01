@@ -10,8 +10,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.aplicacionptc.Api.Retrofit
 import com.example.ptc_app.Models.Administrador.Detective.Detectives
-import com.example.aplicacionptc.Api.RetrofitDetective
 import com.example.aplicacionptc.Controllers.Admistrador.Detective.ControladorDetective
 import com.example.aplicacionptc.R
 import com.google.android.material.button.MaterialButton
@@ -47,7 +47,7 @@ class EditarDetectivesActivity : AppCompatActivity() {
             insets
         }
 
-        controladorDetective = RetrofitDetective.instance
+        controladorDetective = Retrofit.detectiveInstance
 
         // Configuración del botón para regresar a la vista de gestión de detectives
         val btnVolverGestion = findViewById<MaterialButton>(R.id.btnVolverGestion)
