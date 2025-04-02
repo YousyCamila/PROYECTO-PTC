@@ -4,6 +4,10 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +32,9 @@ class GestionClientesActivity : AppCompatActivity() {
     private lateinit var btnCrearCliente: FloatingActionButton
     private lateinit var adapter: ClientesAdapter
     private var listaClientes = mutableListOf<Clientes>()
+    private lateinit var etBuscarCliente: EditText
+    private lateinit var btnBuscarCliente: Button
+    private var listaClientesOriginal = mutableListOf<Clientes>()
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +48,26 @@ class GestionClientesActivity : AppCompatActivity() {
             insets
         }
 
+        etBuscarCliente = findViewById(R.id.etBuscarCliente)
+
+        etBuscarCliente.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                filtrarClientes(s.toString().trim())
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+        btnBuscarCliente = findViewById(R.id.btnBuscarCliente)
+        btnBuscarCliente.setOnClickListener {
+            filtrarClientes(etBuscarCliente.text.toString().trim())
+        }
+
+        obtenerClientes()
+
+
+
+
         val btnVolverHome = findViewById<MaterialButton>(R.id.btnVolverHome)
         btnVolverHome.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
@@ -48,7 +75,6 @@ class GestionClientesActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recyclerClientes)
         btnCrearCliente = findViewById(R.id.btnCrearCliente)
-
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         adapter = ClientesAdapter(
@@ -59,10 +85,8 @@ class GestionClientesActivity : AppCompatActivity() {
         )
 
         recyclerView.adapter = adapter
-
         btnCrearCliente.setOnClickListener {
-            val intent = Intent(this, CrearClienteActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, CrearClienteActivity::class.java))
         }
 
         obtenerClientes()
@@ -73,7 +97,11 @@ class GestionClientesActivity : AppCompatActivity() {
             override fun onResponse(call: Call<List<Clientes>>, response: Response<List<Clientes>>) {
                 if (response.isSuccessful) {
                     listaClientes.clear()
-                    response.body()?.let { listaClientes.addAll(it) }
+                    response.body()?.let {
+                        listaClientes.addAll(it)
+                        listaClientesOriginal.clear()
+                        listaClientesOriginal.addAll(it) // Guardamos la lista original
+                    }
                     adapter.notifyDataSetChanged()
                 } else {
                     Toast.makeText(this@GestionClientesActivity, "Error al obtener clientes", Toast.LENGTH_SHORT).show()
@@ -84,6 +112,25 @@ class GestionClientesActivity : AppCompatActivity() {
                 Toast.makeText(this@GestionClientesActivity, "Fallo en la conexión: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun filtrarClientes(textoBuscar: String) {
+        val clientesFiltrados = if (textoBuscar.isEmpty()) {
+            listaClientesOriginal // Restauramos la lista original
+        } else {
+            listaClientesOriginal.filter {
+                val nombreCompleto = "${it.nombres} ${it.apellidos ?: ""}".trim()
+                nombreCompleto.contains(textoBuscar, ignoreCase = true) || it.numeroDocumento.contains(textoBuscar)
+            }
+        }
+        actualizarLista(clientesFiltrados)
+    }
+
+    // Método para actualizar la lista del RecyclerView
+    private fun actualizarLista(clientes: List<Clientes>) {
+        listaClientes.clear()
+        listaClientes.addAll(clientes)
+        adapter.notifyDataSetChanged()
     }
 
     private fun editarCliente(cliente: Clientes) {

@@ -39,6 +39,12 @@ class ClientesAdapter(
 
     override fun getItemCount(): Int = clientes.size
 
+    fun actualizarLista(nuevaLista: List<Clientes>) {
+        clientes.clear()
+        clientes.addAll(nuevaLista)
+        notifyDataSetChanged()
+    }
+
     // Método para eliminar un cliente de la lista sin necesidad de lógica de API aquí
     fun eliminarCliente(position: Int) {
         clientes.removeAt(position)
