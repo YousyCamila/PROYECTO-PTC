@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@color/dark_gray">
+    android:padding="16dp">
 
     <!-- Botón de Volver -->
     <ImageButton
@@ -21,7 +20,7 @@
 
     <!-- Campo Nombre del Caso -->
     <EditText
-        android:id="@+id/etNombreCaso"
+        android:id="@+id/edtNombreCaso"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Nombre del Caso"
@@ -31,42 +30,7 @@
         android:textColor="@color/dark_blue"
         android:layout_marginBottom="16dp"/>
 
-    <!-- Campo ID del Cliente -->
-    <EditText
-        android:id="@+id/etIdCliente"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="ID del Cliente"
-        android:padding="15dp"
-        android:background="@drawable/bg_edit_text"
-        android:textSize="16sp"
-        android:textColor="@color/dark_blue"
-        android:layout_marginBottom="16dp"/>
-
-
-    <!-- Campo ID del Detective -->
-    <EditText
-        android:id="@+id/etIdDetective"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="ID del Detective"
-        android:padding="15dp"
-        android:background="@drawable/bg_edit_text"
-        android:textSize="16sp"
-        android:textColor="@color/dark_blue"
-        android:layout_marginBottom="16dp"/>
-    <!-- Switch para Estado Activo -->
-
-
-    <Switch
-        android:id="@+id/switchActivo"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="16dp"
-        android:padding="8dp"
-        android:thumbTint="@color/tech_blue"
-        android:trackTint="@color/light_gray" />
-
+    <!-- Botón Guardar -->
     <Button
         android:id="@+id/btnGuardar"
         android:layout_width="match_parent"
@@ -76,5 +40,4 @@
         android:textColor="@android:color/white"
         android:background="@color/tech_blue"
         android:layout_marginTop="24dp"/>
-
 </LinearLayout>

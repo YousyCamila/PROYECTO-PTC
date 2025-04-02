@@ -1,21 +1,22 @@
 <resources>
 
     <string name="app_name">AplicacionPTC</string>
-    <string name="crear_caso">Crear Caso</string>
     <string name="id_caso_hint">Ingrese el ID del caso</string>
     <string name="nombre_caso_hint">Ingrese el nombre del caso</string>
     <string name="seleccionar_detective">Seleccionar Detective</string>
     <string name="seleccionar_cliente">Seleccionar Cliente</string>
 
 
-    <string name="volver">Volver</string>
-
-
-        <string name="nombre_caso">Caso: %s</string>
-        <string name="cliente">Cliente: %s</string>
-        <string name="detective">Detective: %s</string>
-        <string name="desactivar">Desactivar</string>
-        <string name="desactivado">Desactivado</string>
+    <string name="nombre_caso">Caso: %s</string>
+    <string name="cliente">Cliente: %s</string>
+    <string name="detective">Detective: %s</string>
+    <string name="desactivado">Desactivado</string>
     <string name="fechaCreacion">Fecha de creación: %s</string>
+
+
+    <string name="ver_detalles">Ver detalles del caso</string>
+    <string name="desactivar">Desactivar este caso</string>
+    <string name="volver">Volver a la pantalla principal</string>
+    <string name="crear_caso">Crear un nuevo caso</string>
 
 </resources>

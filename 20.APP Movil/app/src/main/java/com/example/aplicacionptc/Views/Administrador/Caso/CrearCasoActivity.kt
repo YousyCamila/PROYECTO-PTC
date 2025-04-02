@@ -2,61 +2,70 @@ package com.example.aplicacionptc.Views.Administrador.Caso
 
 import android.app.Activity
 import android.os.Bundle
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.aplicacionptc.Controllers.Admistrador.Caso.BaseDatosTemporal
-import com.example.ptc_app.Models.Administrador.Caso.Caso
-import com.example.ptc_app.Models.Administrador.Cliente.Clientes
-import com.example.ptc_app.Models.Administrador.Detective.Detectives
+import com.example.aplicacionptc.Api.Retrofit
+import com.example.aplicacionptc.Controllers.Admistrador.Cliente.ControladorCaso
 import com.example.aplicacionptc.R
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import com.example.ptc_app.Models.Administrador.Caso.Caso
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class CrearCasoActivity : AppCompatActivity() {
+
+    private lateinit var controladorCaso: ControladorCaso
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crear_caso)
 
-        val editTextIdCaso = findViewById<EditText>(R.id.editTextIdCaso)
-        val editTextNombreCaso = findViewById<EditText>(R.id.editTextNombreCaso)
-        val spinnerClientes = findViewById<Spinner>(R.id.spinnerClientes)
-        val spinnerDetectives = findViewById<Spinner>(R.id.spinnerDetectives)
-        val btnCrearCaso = findViewById<Button>(R.id.btnCrearCaso)
+        controladorCaso = Retrofit.retrofit.create(ControladorCaso::class.java)
 
-        // Poblar los Spinners con los nombres de clientes y detectives
-        val clientes = Clientes.clientes
-        val detectives = Detectives.detectives
+        val edtNombreCaso = findViewById<EditText>(R.id.etNombreCaso)
+        val edtIdCliente = findViewById<EditText>(R.id.etIdCliente)
+        val edtIdDetective = findViewById<EditText>(R.id.etIdDetective)
+        val btnGuardar = findViewById<Button>(R.id.btnGuardar)
+        val btnVolver = findViewById<ImageButton>(R.id.btnVolver)
 
-        val clientesAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, clientes.map { it.nombre })
-        clientesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerClientes.adapter = clientesAdapter
+        btnGuardar.setOnClickListener {
+            val nombreCaso = edtNombreCaso.text.toString()
+            val idCliente = edtIdCliente.text.toString()
+            val idDetective = edtIdDetective.text.toString().takeIf { it.isNotEmpty() }
 
-        val detectivesAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, detectives.map { it.nombre })
-        detectivesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerDetectives.adapter = detectivesAdapter
-
-        btnCrearCaso.setOnClickListener {
-            val idCaso = editTextIdCaso.text.toString()
-            val nombreCaso = editTextNombreCaso.text.toString()
-            val clienteSeleccionado = clientes[spinnerClientes.selectedItemPosition]
-            val detectiveSeleccionado = detectives[spinnerDetectives.selectedItemPosition]
-
-            if (idCaso.isEmpty() || nombreCaso.isEmpty()) {
-                Toast.makeText(this, "Por favor, complete todos los campos.", Toast.LENGTH_SHORT).show()
+            if (nombreCaso.isEmpty() || idCliente.isEmpty()) {
+                Toast.makeText(this, "Por favor, complete los campos obligatorios", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val fechaCreacion = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
-            val nuevoCaso = Caso(idCaso, nombreCaso, clienteSeleccionado.id, detectiveSeleccionado.id, true, fechaCreacion)
-            // Agregar el caso a la base de datos temporal
-            clienteSeleccionado.agregarCaso(nuevoCaso)
-            detectiveSeleccionado.agregarCaso(nuevoCaso)
-            BaseDatosTemporal.casos.add(nuevoCaso)
+            val caso = Caso(
+                nombreCaso = nombreCaso,
+                idCliente = idCliente,
+                idDetective = idDetective
+                // Los demás campos se inicializan con sus valores por defecto
+            )
 
-            Toast.makeText(this, "Caso creado exitosamente", Toast.LENGTH_SHORT).show()
-            setResult(Activity.RESULT_OK)
+            controladorCaso.crearCaso(caso).enqueue(object : Callback<Caso> {
+                override fun onResponse(call: Call<Caso>, response: Response<Caso>) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(this@CrearCasoActivity, "Caso creado exitosamente", Toast.LENGTH_SHORT).show()
+                        setResult(Activity.RESULT_OK)
+                        finish()
+                    } else {
+                        Toast.makeText(this@CrearCasoActivity, "Error al crear el caso", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Caso>, t: Throwable) {
+                    Toast.makeText(this@CrearCasoActivity, "Error de conexión", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+
+        btnVolver.setOnClickListener {
             finish()
         }
     }

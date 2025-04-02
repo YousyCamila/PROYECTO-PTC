@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/dark_gray">
+
+    <!-- Botón de Volver -->
+    <ImageButton
+        android:id="@+id/btnVolverHome"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_arrow_back"
+        android:background="@drawable/bg_round_button"
+        android:contentDescription="@string/volver"
+        app:tint="@color/tech_blue"
+        android:elevation="2dp"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- Buscador de Casos -->
+    <EditText
+        android:id="@+id/etBuscarCaso"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Buscar Caso..."
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="@drawable/bg_search_input"
+        android:textSize="16sp"
+        android:textColor="@color/dark_blue"
+        android:drawableLeft="@drawable/ic_search"
+        android:drawablePadding="8dp"
+        android:layout_marginBottom="16dp"
+        android:elevation="4dp"/>
+
+    <!-- Botón para Buscar Caso -->
+    <Button
+        android:id="@+id/btnBuscarCaso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Buscar"
+        android:textColor="@color/tech_blue"
+        android:background="@android:color/transparent"
+        android:textSize="16sp"
+        android:layout_gravity="end"/>
+
+    <!-- RecyclerView para Mostrar Casos -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerCasos"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="vertical"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="16dp"
+        android:paddingTop="8dp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Botón para Crear Caso -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnCrearCaso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add"
+        android:contentDescription="@string/crear_caso"
+        app:tint="@android:color/white"
+        android:layout_gravity="end|bottom"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"/>
+</LinearLayout>
