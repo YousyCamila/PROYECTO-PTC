@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -35,6 +36,8 @@ class GestionClientesActivity : AppCompatActivity() {
     private lateinit var etBuscarCliente: EditText
     private lateinit var btnBuscarCliente: Button
     private var listaClientesOriginal = mutableListOf<Clientes>()
+    private lateinit var tvTotalClientes: TextView
+    private lateinit var tvClientesActivos: TextView
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +50,8 @@ class GestionClientesActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        tvTotalClientes = findViewById(R.id.tvTotalClientes)
+        tvClientesActivos = findViewById(R.id.tvClientesActivos)
 
         etBuscarCliente = findViewById(R.id.etBuscarCliente)
 
@@ -103,6 +108,7 @@ class GestionClientesActivity : AppCompatActivity() {
                         listaClientesOriginal.addAll(it) // Guardamos la lista original
                     }
                     adapter.notifyDataSetChanged()
+                    actualizarContadores()
                 } else {
                     Toast.makeText(this@GestionClientesActivity, "Error al obtener clientes", Toast.LENGTH_SHORT).show()
                 }
@@ -163,6 +169,12 @@ class GestionClientesActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this@GestionClientesActivity, "ID de cliente es nulo", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun actualizarContadores() {
+        tvTotalClientes.text = listaClientes.size.toString()
+        val clientesActivos = listaClientes.count { it.activo == true }
+        tvClientesActivos.text = clientesActivos.toString()
     }
 
     private fun verDetallesCliente(cliente: Clientes) {
