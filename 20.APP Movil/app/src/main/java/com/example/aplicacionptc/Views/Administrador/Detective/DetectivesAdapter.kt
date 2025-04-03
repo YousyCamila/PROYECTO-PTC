@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aplicacionptc.R
+import com.example.ptc_app.Models.Administrador.Cliente.Clientes
 import com.example.ptc_app.Models.Administrador.Detective.Detectives
 
 class DetectivesAdapter(
@@ -38,4 +39,16 @@ class DetectivesAdapter(
     }
 
     override fun getItemCount(): Int = detectives.size
+
+    fun actualizarLista(nuevaLista: List<Detectives>) {
+        detectives.clear()
+        detectives.addAll(nuevaLista)
+        notifyDataSetChanged()
+    }
+
+    // Método para eliminar un cliente de la lista sin necesidad de lógica de API aquí
+    fun eliminarDetective(position: Int) {
+        detectives.removeAt(position)
+        notifyItemRemoved(position)
+    }
 }

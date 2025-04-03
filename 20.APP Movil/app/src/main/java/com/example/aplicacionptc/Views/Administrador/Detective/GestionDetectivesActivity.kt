@@ -4,6 +4,10 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +31,11 @@ class GestionDetectivesActivity : AppCompatActivity() {
     private lateinit var btnCrearDetective: FloatingActionButton
     private lateinit var adapter: DetectivesAdapter
     private var listaDetectives: MutableList<Detectives> = mutableListOf()
+    private lateinit var etBuscarDetective: EditText
+    private lateinit var btnBuscarDetective: Button
+    private var listaDetectivesOriginal = mutableListOf<Detectives>()
+
+
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +48,23 @@ class GestionDetectivesActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        etBuscarDetective = findViewById(R.id.etBuscarDetective)
+
+        etBuscarDetective.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                filtrarDetectives(s.toString().trim())
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+        btnBuscarDetective = findViewById(R.id.btnBuscarDetective)
+        btnBuscarDetective.setOnClickListener {
+            filtrarDetectives(etBuscarDetective.text.toString().trim())
+        }
+
+        cargarDetectives()
 
         val btnVolverHome = findViewById<MaterialButton>(R.id.btnVolverHome)
         btnVolverHome.setOnClickListener {
@@ -70,7 +96,10 @@ class GestionDetectivesActivity : AppCompatActivity() {
             override fun onResponse(call: Call<List<Detectives>>, response: Response<List<Detectives>>) {
                 if (response.isSuccessful) {
                     listaDetectives.clear()
-                    listaDetectives.addAll(response.body() ?: emptyList())
+                    listaDetectivesOriginal.clear() // Limpiar la lista original antes de llenarla
+                    val detectives = response.body() ?: emptyList()
+                    listaDetectives.addAll(detectives)
+                    listaDetectivesOriginal.addAll(detectives) // Guardar la lista original
                     adapter.notifyDataSetChanged()
                 } else {
                     Toast.makeText(this@GestionDetectivesActivity, "Error al obtener detectives", Toast.LENGTH_SHORT).show()
@@ -81,6 +110,27 @@ class GestionDetectivesActivity : AppCompatActivity() {
                 Toast.makeText(this@GestionDetectivesActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+
+
+    private fun filtrarDetectives(textoBuscar: String) {
+        val detectivesFiltrados = if (textoBuscar.isEmpty()) {
+            listaDetectivesOriginal // Restauramos la lista original
+        } else {
+            listaDetectivesOriginal.filter {
+                val nombreCompleto = "${it.nombres} ${it.apellidos ?: ""}".trim()
+                nombreCompleto.contains(textoBuscar, ignoreCase = true) || it.numeroDocumento.contains(textoBuscar)
+            }
+        }
+        actualizarLista(detectivesFiltrados)
+    }
+
+    // Método para actualizar la lista del RecyclerView
+    private fun actualizarLista(detectives: List<Detectives>) {
+        listaDetectives.clear()
+        listaDetectives.addAll(detectives)
+        adapter.notifyDataSetChanged()
     }
 
     private fun editarDetective(posicion: Int) {
