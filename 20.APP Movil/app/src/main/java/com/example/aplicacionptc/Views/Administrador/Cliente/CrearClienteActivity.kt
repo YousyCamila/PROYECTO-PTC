@@ -18,12 +18,17 @@ import com.google.android.material.button.MaterialButton
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.app.DatePickerDialog
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import java.util.Calendar
+
 
 class CrearClienteActivity : AppCompatActivity() {
 
     private lateinit var etNombre: EditText
     private lateinit var etApellido: EditText
-    private lateinit var etTipoDocumento: EditText
+    private lateinit var etTipoDocumento: AutoCompleteTextView
     private lateinit var etNumeroDocumento: EditText
     private lateinit var etFechaNacimiento: EditText
     private lateinit var etCorreo: EditText
@@ -41,6 +46,9 @@ class CrearClienteActivity : AppCompatActivity() {
             insets
         }
 
+
+
+
         // Inicialización de campos
         etNombre = findViewById(R.id.etNombres)
         etApellido = findViewById(R.id.etApellidos)
@@ -49,6 +57,29 @@ class CrearClienteActivity : AppCompatActivity() {
         etFechaNacimiento = findViewById(R.id.etFechaNacimiento)
         etCorreo = findViewById(R.id.etCorreo)
         btnGuardar = findViewById(R.id.btnGuardarCliente)
+
+        val opcionesTipoDocumento = arrayOf("Cédula", "Pasaporte")
+        val adapterTipoDocumento = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, opcionesTipoDocumento)
+        etTipoDocumento.setAdapter(adapterTipoDocumento)
+        etTipoDocumento.setOnClickListener {
+            etTipoDocumento.showDropDown()
+        }
+
+
+
+        etFechaNacimiento.setOnClickListener {
+            val calendario = Calendar.getInstance()
+            val anio = calendario.get(Calendar.YEAR)
+            val mes = calendario.get(Calendar.MONTH)
+            val dia = calendario.get(Calendar.DAY_OF_MONTH)
+
+            val datePicker = DatePickerDialog(this, { _, year, month, dayOfMonth ->
+                val fechaSeleccionada = String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year)
+                etFechaNacimiento.setText(fechaSeleccionada)
+            }, anio, mes, dia)
+
+            datePicker.show()
+        }
 
         // Botón de volver a la gestión de clientes
         val btnVolverGestion = findViewById<MaterialButton>(R.id.btnVolverGestion)
