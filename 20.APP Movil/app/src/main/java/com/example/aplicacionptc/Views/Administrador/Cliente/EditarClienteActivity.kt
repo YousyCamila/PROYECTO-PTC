@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -23,11 +25,10 @@ class EditarClienteActivity : AppCompatActivity() {
     private lateinit var etNombre: EditText
     private lateinit var etApellidos: EditText
     private lateinit var etId: EditText
-    private lateinit var etTelefono: EditText
     private lateinit var etCorreo: EditText
     private lateinit var etTipoDocumento: EditText
     private lateinit var etNumeroDocumento: EditText
-    private lateinit var etActivo: EditText
+    private lateinit var etActivo: AutoCompleteTextView
     private lateinit var btnGuardar: Button
     private lateinit var controladorCliente: ControladorCliente
     private var idCliente: String? = null
@@ -55,6 +56,17 @@ class EditarClienteActivity : AppCompatActivity() {
         etActivo = findViewById(R.id.edtActivo)
         btnGuardar = findViewById(R.id.btnGuardar)
 
+        val etActivo = findViewById<AutoCompleteTextView>(R.id.edtActivo)
+        val opcionesEstado = arrayOf("Activo", "Inactivo")
+        val adapterEstado = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, opcionesEstado)
+
+        etActivo.setAdapter(adapterEstado)
+        etActivo.setOnClickListener {
+            etActivo.showDropDown()
+        }
+
+
+
         // Obtener datos del intent
         idCliente = intent.getStringExtra("id")
         if (idCliente!= null) {
@@ -80,7 +92,23 @@ class EditarClienteActivity : AppCompatActivity() {
                         etNumeroDocumento.setText(cliente.numeroDocumento)
                         etTipoDocumento.setText(cliente.tipoDocumento)
                         etCorreo.setText(cliente.correo)
-                        etActivo.setText(if (cliente.activo) "Activo" else "Inactivo")
+                        val estadoActual = if (cliente.activo) "Activo" else "Inactivo"
+
+                        // Opciones del desplegable
+                        val opcionesEstado = arrayOf("Activo", "Inactivo")
+                        val adapterEstado = ArrayAdapter(
+                            this@EditarClienteActivity,
+                            android.R.layout.simple_dropdown_item_1line,
+                            opcionesEstado
+                        )
+
+                        etActivo.setAdapter(adapterEstado)
+                        etActivo.setText(estadoActual, false) // Establecer el estado actual sin abrir el dropdown
+
+                        etActivo.setOnClickListener {
+                            etActivo.showDropDown() // Mostrar siempre las opciones al tocar
+                        }
+
 
                     } else {
                         Toast.makeText(this@EditarClienteActivity, "No se encontró el cliente", Toast.LENGTH_SHORT).show()
