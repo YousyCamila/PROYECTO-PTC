@@ -1,27 +1,28 @@
 package com.example.aplicacionptc.Controllers.Admistrador.Detective
-
-import Persona.Personas
 import com.example.ptc_app.Models.Administrador.Detective.Detectives
-import com.example.ptc_app.Views.Detective.FunAdministrador
+import retrofit2.Call
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.PATCH
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
 
-class ControladorDetective : FunAdministrador<Detectives>() {
+interface ControladorDetective {
+    @GET("detectives")
+    fun obtenerDetectives(): Call<List<Detectives>>
 
-    override val lista = mutableListOf<Detectives>()
+    @GET("detectives/{id}")
+    fun buscarDetectivePorId(@Path("id") id: String): Call<Detectives>
 
-    fun listarDetectives(): List<Detectives> {
-        return lista
-    }
+    @POST("detectives")
+    fun crearDetective(@Body detective: Detectives): Call<Detectives>
 
-    fun buscarPorId(id: String): Detectives? {
-        return lista.find { it.id == id }
-    }
 
-    fun obtenerDetalleDetective(index: Int): String {
-        return if (index in lista.indices) {
-            val detective = lista[index]
-            "ID: ${detective.id}, Nombre: ${detective.nombre}, Celular: ${detective.celular}, Dirección: ${detective.direccion}, Correo: ${detective.correo}"
-        } else {
-            "Detective no encontrado."
-        }
-    }
+    @PUT("detectives/{id}")
+    fun actualizarDetective(@Path("id") id: String, @Body detective: Detectives): Call<Detectives>
+
+    @PATCH("detectives/{id}")
+    fun desactivarDetectives(@Path("id") id: String): Call<Void>
+
 }

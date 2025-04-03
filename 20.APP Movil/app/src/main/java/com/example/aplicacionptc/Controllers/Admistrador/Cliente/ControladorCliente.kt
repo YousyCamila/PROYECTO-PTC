@@ -1,28 +1,24 @@
 package com.example.aplicacionptc.Controllers.Admistrador.Cliente
 
-import Persona.Personas
+
 import com.example.ptc_app.Models.Administrador.Cliente.Clientes
-import com.example.ptc_app.Views.Detective.FunAdministrador
+import retrofit2.Call
+import retrofit2.http.*
 
-class ControladorCliente : FunAdministrador<Clientes>() {
+interface ControladorCliente {
+    @GET("clientes")
+    fun obtenerClientes(): Call<List<Clientes>>
 
-        override val lista = mutableListOf<Clientes>()
+    @GET("clientes/{id}")
+    fun buscarClientePorId(@Path("id") id: String): Call<Clientes>
 
+    @POST("clientes")
+    fun crearCliente(@Body cliente: Clientes): Call<Clientes>
 
+    @PUT("clientes/{id}")
+    fun actualizarCliente(@Path("id") id: String, @Body cliente: Clientes): Call<Clientes>
 
-    fun listarClientes(): List<Clientes> {
-        return lista
-    }
-        fun buscarPorId(id: String): Clientes? {
-            return lista.find { it.id == id }
-        }
+    @PATCH("clientes/{id}")
+    fun desactivarCliente(@Path("id") id: String): Call<Void>
+}
 
-        fun obtenerDetalleCliente(index: Int): String {
-            return if (index in lista.indices) {
-                val cliente = lista[index]
-                "ID: ${cliente.id}, Nombre: ${cliente.nombre}, Celular: ${cliente.celular}, Dirección: ${cliente.direccion}, Correo: ${cliente.correo}"
-            } else {
-                "Cliente no encontrado."
-            }
-        }
-    }

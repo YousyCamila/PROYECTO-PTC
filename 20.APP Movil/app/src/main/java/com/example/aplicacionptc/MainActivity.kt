@@ -9,9 +9,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.aplicacionptc.Views.Administrador.Caso.HomeCasoActivity
+//import com.example.aplicacionptc.Views.Administrador.Caso.HomeCasoActivity
 import com.example.aplicacionptc.Views.Administrador.Cliente.GestionClientesActivity
-import com.example.aplicacionptc.Views.Administrador.Contrato.HomeContratoActivity
+//import com.example.aplicacionptc.Views.Administrador.Contrato.HomeContratoActivity
 import com.example.aplicacionptc.Views.Administrador.Detective.GestionDetectivesActivity
 
 
@@ -45,9 +45,9 @@ class MainActivity : AppCompatActivity() {
         val btnDetectives = findViewById<Button>(R.id.btnDetectives)
         val btnCasos = findViewById<Button>(R.id.btnCasos)
 
-        btnContratos.setOnClickListener {
-            startActivity(Intent(this, HomeContratoActivity::class.java))
-        }
+//        btnContratos.setOnClickListener {
+//            startActivity(Intent(this, HomeContratoActivity::class.java))
+//        }
 
         btnClientes.setOnClickListener {
             startActivity(Intent(this, GestionClientesActivity::class.java))
@@ -57,9 +57,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, GestionDetectivesActivity::class.java))
         }
 
-        btnCasos.setOnClickListener {
-            startActivity(Intent(this, HomeCasoActivity::class.java))
-        }
+//        btnCasos.setOnClickListener {
+//            startActivity(Intent(this, HomeCasoActivity::class.java))
+//        }
 
         btnLogout.setOnClickListener {
             // Cerrar sesión
