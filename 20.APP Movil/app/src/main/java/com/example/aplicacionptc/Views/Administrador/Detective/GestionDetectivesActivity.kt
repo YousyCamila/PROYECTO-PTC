@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -34,6 +35,8 @@ class GestionDetectivesActivity : AppCompatActivity() {
     private lateinit var etBuscarDetective: EditText
     private lateinit var btnBuscarDetective: Button
     private var listaDetectivesOriginal = mutableListOf<Detectives>()
+    private lateinit var tvTotalDetectives: TextView
+    private lateinit var tvDetectivesActivos: TextView
 
 
 
@@ -48,6 +51,9 @@ class GestionDetectivesActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        tvTotalDetectives= findViewById(R.id.tvTotalDetectives)
+        tvDetectivesActivos= findViewById(R.id.tvDetectivesActivos)
 
         etBuscarDetective = findViewById(R.id.etBuscarDetective)
 
@@ -101,6 +107,7 @@ class GestionDetectivesActivity : AppCompatActivity() {
                     listaDetectives.addAll(detectives)
                     listaDetectivesOriginal.addAll(detectives) // Guardar la lista original
                     adapter.notifyDataSetChanged()
+                    actualizarContadores()
                 } else {
                     Toast.makeText(this@GestionDetectivesActivity, "Error al obtener detectives", Toast.LENGTH_SHORT).show()
                 }
@@ -167,6 +174,12 @@ class GestionDetectivesActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this@GestionDetectivesActivity, "ID de detective es nulo", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun actualizarContadores() {
+        tvTotalDetectives.text = listaDetectives.size.toString()
+        val detectivesActivos = listaDetectives.count { it.activo == true }
+        tvDetectivesActivos.text = detectivesActivos.toString()
     }
 
     private fun verDetallesDetective(posicion: Int) {
