@@ -9,6 +9,7 @@
     android:layout_margin="8dp"
     android:elevation="2dp">
 
+    <!-- Nombre del Caso -->
     <TextView
         android:id="@+id/txtNombreCaso"
         android:layout_width="match_parent"
@@ -20,6 +21,7 @@
         android:fontFamily="sans-serif"
         android:letterSpacing="0.03"/>
 
+    <!-- Nombre del Cliente -->
     <TextView
         android:id="@+id/txtCliente"
         android:layout_width="match_parent"
@@ -30,6 +32,7 @@
         android:layout_marginTop="4dp"
         android:fontFamily="sans-serif-medium"/>
 
+    <!-- Nombre del Detective -->
     <TextView
         android:id="@+id/txtDetective"
         android:layout_width="match_parent"
@@ -40,14 +43,7 @@
         android:layout_marginTop="4dp"
         android:fontFamily="sans-serif-medium"/>
 
-    <TextView
-        android:id="@+id/txtFechaCreacion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fecha: --"
-        android:textSize="14sp"
-        android:textColor="@android:color/darker_gray"/>
-
+    <!-- Botones de Acción (Ver Detalles, Desactivar) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,6 +51,7 @@
         android:layout_marginTop="16dp"
         android:gravity="end">
 
+        <!-- Botón para Ver Detalles -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnVerDetalles"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -71,8 +68,10 @@
             android:fontFamily="sans-serif"
             app:iconTint="@color/tech_blue"
             app:iconSize="18dp"
-            app:iconPadding="4dp"/>
+            app:iconPadding="4dp"
+            android:contentDescription="@string/ver_detalles"/>
 
+        <!-- Botón para Desactivar -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDesactivar"
             android:layout_width="wrap_content"
@@ -89,7 +88,7 @@
             app:iconTint="@color/white"
             app:iconSize="18dp"
             app:iconPadding="4dp"
-            app:elevation="2dp"/>
-
+            app:elevation="2dp"
+            android:contentDescription="@string/desactivar"/>
     </LinearLayout>
 </LinearLayout>

@@ -10,5 +10,5 @@ data class Caso(
     val evidencias: List<String> = emptyList(),
     val registroCasos: List<String> = emptyList(),
     val contratos: List<String> = emptyList(),
-    val activo: Boolean = true
+    var activo: Boolean = true
 )
