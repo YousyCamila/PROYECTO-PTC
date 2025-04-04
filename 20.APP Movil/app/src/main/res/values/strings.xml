@@ -28,5 +28,7 @@
         <item>recuperacionVehiculos</item>
     </string-array>
 
+    <string name="ver_detalles">Ver detalles del caso</string>
+
 </resources>
 
