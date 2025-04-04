@@ -1,5 +1,6 @@
 package com.example.aplicacionptc.Api
 
+import com.example.aplicacionptc.Controllers.Admistrador.Caso.ControladorCaso
 import com.example.aplicacionptc.Controllers.Admistrador.Cliente.ControladorCliente
 import com.example.aplicacionptc.Controllers.Admistrador.Detective.ControladorDetective
 import retrofit2.Retrofit
@@ -20,5 +21,8 @@ object Retrofit {
      }
     val detectiveInstance: ControladorDetective by lazy {
         retrofit.create(ControladorDetective::class.java)
+    }
+    val casoInstance: ControladorCaso by lazy {
+        retrofit.create(ControladorCaso::class.java)
     }
 }
