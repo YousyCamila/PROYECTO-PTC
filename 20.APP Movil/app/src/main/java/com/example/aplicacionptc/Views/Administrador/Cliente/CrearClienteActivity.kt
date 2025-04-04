@@ -126,8 +126,6 @@ class CrearClienteActivity : AppCompatActivity() {
         if (!correo.esEmailValido()) {
             etCorreo.error = "Correo inválido. Debe terminar en .com"
             esValido = false
-        } else {
-            correo = correo.toUpperCaseSafe()
         }
 
         if (!fechaNacimiento.esMayorDeEdad()) {
