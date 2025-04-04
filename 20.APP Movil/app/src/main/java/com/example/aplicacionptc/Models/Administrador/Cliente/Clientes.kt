@@ -13,7 +13,7 @@ data class Clientes(
     val apellidos: String,
     val correo: String,
     val fechaNacimiento: String,
-    val activo: Boolean
+    var activo: Boolean
 )
 
 

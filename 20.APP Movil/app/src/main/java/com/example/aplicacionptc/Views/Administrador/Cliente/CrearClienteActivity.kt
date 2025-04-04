@@ -22,11 +22,17 @@ import android.app.DatePickerDialog
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import java.util.Calendar
+import com.example.aplicacionptc.Validaciones.Validaciones
+import com.example.aplicacionptc.Validaciones.Validaciones.esEmailValido
+import com.example.aplicacionptc.Validaciones.Validaciones.esMayorDeEdad
+import com.example.aplicacionptc.Validaciones.Validaciones.esNombreValido
+import com.example.aplicacionptc.Validaciones.Validaciones.toUpperCaseSafe
 
 
 class CrearClienteActivity : AppCompatActivity() {
 
     private lateinit var etNombre: EditText
+
     private lateinit var etApellido: EditText
     private lateinit var etTipoDocumento: AutoCompleteTextView
     private lateinit var etNumeroDocumento: EditText
@@ -94,24 +100,59 @@ class CrearClienteActivity : AppCompatActivity() {
     }
 
     private fun crearCliente() {
+        var nombre = etNombre.text.toString().trim()
+        var apellido = etApellido.text.toString().trim()
+        var correo = etCorreo.text.toString().trim()
+        var tipoDocumento = etTipoDocumento.text.toString().trim()
+        var numeroDocumento = etNumeroDocumento.text.toString().trim()
+        var fechaNacimiento = etFechaNacimiento.text.toString().trim()
+
+        var esValido = true
+
+        if (!nombre.esNombreValido()) {
+            etNombre.error = "Nombre inválido. Solo letras y tildes."
+            esValido = false
+        } else {
+            nombre = nombre.toUpperCaseSafe()
+        }
+
+        if (!apellido.esNombreValido()) {
+            etApellido.error = "Apellido inválido. Solo letras y tildes."
+            esValido = false
+        } else {
+            apellido = apellido.toUpperCaseSafe()
+        }
+
+        if (!correo.esEmailValido()) {
+            etCorreo.error = "Correo inválido. Debe terminar en .com"
+            esValido = false
+        } else {
+            correo = correo.toUpperCaseSafe()
+        }
+
+        if (!fechaNacimiento.esMayorDeEdad()) {
+            etFechaNacimiento.error = "Debes ser mayor de 18 años."
+            esValido = false
+        }
+
+        if (!esValido) return
+
         val nuevoCliente = Clientes(
-            tipoDocumento = etTipoDocumento.text.toString(),
-            numeroDocumento = etNumeroDocumento.text.toString(),
-            nombres = etNombre.text.toString(),
-            apellidos = etApellido.text.toString(),
-            correo = etCorreo.text.toString(),
-            fechaNacimiento = "", // No es obligatorio
+            tipoDocumento = tipoDocumento,
+            numeroDocumento = numeroDocumento,
+            nombres = nombre,
+            apellidos = apellido,
+            correo = correo,
+            fechaNacimiento = fechaNacimiento,
             activo = true
         )
 
-        // Llamada a la API para crear el cliente
         Retrofit.clienteInstance.crearCliente(nuevoCliente)
             .enqueue(object : Callback<Clientes> {
                 override fun onResponse(call: Call<Clientes>, response: Response<Clientes>) {
                     if (response.isSuccessful) {
                         mostrarDialogoExito()
                     } else {
-                        // Mostrar el cuerpo del error
                         Toast.makeText(this@CrearClienteActivity, "Error al crear cliente: ${response.errorBody()?.string()}", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -128,6 +169,8 @@ class CrearClienteActivity : AppCompatActivity() {
             .setMessage("El cliente ha sido registrado exitosamente.")
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
+                val intent = Intent()
+                setResult(RESULT_OK, intent)
                 finish()
             }
             .show()

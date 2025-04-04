@@ -12,14 +12,12 @@ import com.example.ptc_app.Models.Administrador.Cliente.Clientes
 class ClientesAdapter(
     private val clientes: MutableList<Clientes>,
     private val onEditar: (Clientes) -> Unit,
-    private val onEliminar: (Clientes, Int) -> Unit,
     private val onDetalles: (Clientes) -> Unit
 ) : RecyclerView.Adapter<ClientesAdapter.ClienteViewHolder>() {
 
     inner class ClienteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val txtNombre: TextView = view.findViewById(R.id.txtNombreCliente)
         val btnEditar: Button = view.findViewById(R.id.btnEditar)
-        val btnEliminar: Button = view.findViewById(R.id.btnEliminar)
         val btnDetalles: Button = view.findViewById(R.id.btnDetalles)
     }
 
@@ -33,7 +31,6 @@ class ClientesAdapter(
         holder.txtNombre.text = "${cliente.nombres} ${cliente.apellidos ?: ""}".trim()
 
         holder.btnEditar.setOnClickListener { onEditar(cliente) }
-        holder.btnEliminar.setOnClickListener { onEliminar(cliente, position) }
         holder.btnDetalles.setOnClickListener { onDetalles(cliente) }
     }
 
@@ -43,11 +40,5 @@ class ClientesAdapter(
         clientes.clear()
         clientes.addAll(nuevaLista)
         notifyDataSetChanged()
-    }
-
-    // Método para eliminar un cliente de la lista sin necesidad de lógica de API aquí
-    fun eliminarCliente(position: Int) {
-        clientes.removeAt(position)
-        notifyItemRemoved(position)
     }
 }
