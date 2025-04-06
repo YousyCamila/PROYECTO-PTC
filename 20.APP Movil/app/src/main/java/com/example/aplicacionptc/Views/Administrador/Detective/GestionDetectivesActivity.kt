@@ -99,7 +99,8 @@ class GestionDetectivesActivity : AppCompatActivity() {
 
     private fun cargarDetectives() {
         Retrofit.detectiveInstance.obtenerDetectives().enqueue(object : Callback<List<Detectives>> {
-            override fun onResponse(call: Call<List<Detectives>>, response: Response<List<Detectives>>) {
+            override fun onResponse(call: Call<List<Detectives>>, response: Response<List<Detectives>>)
+            {
                 if (response.isSuccessful) {
                     listaDetectives.clear()
                     listaDetectivesOriginal.clear() // Limpiar la lista original antes de llenarla
