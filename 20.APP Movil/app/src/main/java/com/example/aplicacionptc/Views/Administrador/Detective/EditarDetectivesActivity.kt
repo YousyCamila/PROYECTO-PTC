@@ -3,6 +3,8 @@ package com.example.aplicacionptc.Views.Administrador.Detective
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -14,6 +16,10 @@ import com.example.aplicacionptc.Api.Retrofit
 import com.example.ptc_app.Models.Administrador.Detective.Detectives
 import com.example.aplicacionptc.Controllers.Admistrador.Detective.ControladorDetective
 import com.example.aplicacionptc.R
+import com.example.aplicacionptc.Validaciones.Validaciones.esCedulaValida
+import com.example.aplicacionptc.Validaciones.Validaciones.esEmailValido
+import com.example.aplicacionptc.Validaciones.Validaciones.esNombreValido
+import com.example.aplicacionptc.Validaciones.Validaciones.toUpperCaseSafe
 import com.google.android.material.button.MaterialButton
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,8 +33,13 @@ class EditarDetectivesActivity : AppCompatActivity() {
     private lateinit var etCorreo: EditText
     private lateinit var etTipoDocumento: EditText
     private lateinit var etNumeroDocumento: EditText
-    private lateinit var etActivo: EditText
+    private lateinit var etActivo: AutoCompleteTextView
+
+    private lateinit var especialidadesArray: Array<String>
+    private lateinit var seleccionadas: BooleanArray
+    private val listaEspecialidadesSeleccionadas = mutableListOf<String>()
     private lateinit var etEspecialidad: EditText
+
     private lateinit var btnGuardar: Button
 
     private lateinit var controladorDetective: ControladorDetective
@@ -65,7 +76,52 @@ class EditarDetectivesActivity : AppCompatActivity() {
         etNumeroDocumento = findViewById(R.id.edtNumeroDocumento)
         etActivo = findViewById(R.id.edtActivo)
         etEspecialidad = findViewById(R.id.edtEspecialidad)
+
+        especialidadesArray = resources.getStringArray(R.array.especialidades_array)
+        seleccionadas = BooleanArray(especialidadesArray.size)
+
+        etEspecialidad.setOnClickListener {
+            val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+            builder.setTitle("Selecciona las especialidades")
+
+            builder.setMultiChoiceItems(especialidadesArray, seleccionadas) { _, which, isChecked ->
+                if (isChecked) {
+                    if (!listaEspecialidadesSeleccionadas.contains(especialidadesArray[which])) {
+                        listaEspecialidadesSeleccionadas.add(especialidadesArray[which])
+                    }
+                } else {
+                    listaEspecialidadesSeleccionadas.remove(especialidadesArray[which])
+                }
+            }
+
+            builder.setPositiveButton("Aceptar") { _, _ ->
+                etEspecialidad.setText(listaEspecialidadesSeleccionadas.joinToString(", "))
+            }
+
+            builder.setNegativeButton("Cancelar", null)
+
+            builder.show()
+        }
+
+
         btnGuardar = findViewById(R.id.btnGuardarDetective)
+
+        etId.isEnabled = false
+        etId.isFocusable = false
+        etTipoDocumento.isEnabled = false
+        etTipoDocumento.isFocusable = false
+
+        etId.setTextColor(resources.getColor(R.color.gris, theme))
+        etTipoDocumento.setTextColor(resources.getColor(R.color.gris, theme))
+
+        val opcionesEstado = arrayOf("Activo", "Inactivo")
+        val adapterEstado = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, opcionesEstado)
+
+        etActivo.setAdapter(adapterEstado)
+        etActivo.setOnClickListener {
+            etActivo.showDropDown()
+        }
+
 
         // Obtener ID del detective desde el Intent
         idDetective = intent.getStringExtra("id")
@@ -96,23 +152,62 @@ class EditarDetectivesActivity : AppCompatActivity() {
                         etNumeroDocumento.setText(detective.numeroDocumento)
                         etTipoDocumento.setText(detective.tipoDocumento)
                         etCorreo.setText(detective.correo)
-                        etActivo.setText(if (detective.activo) "Activo" else "Inactivo")
+                        val estadoActual = if (detective.activo) "Activo" else "Inactivo"
+                        etActivo.setText(estadoActual, false) // Seteamos sin abrir el dropdown
+
                         etEspecialidad.setText(detective.especialidad?.joinToString(", ") ?: "")
+                        // Llenar los datos en la lista y el boolean array
+                        val especialidadesDetective = detective.especialidad ?: listOf()
+
+                        listaEspecialidadesSeleccionadas.clear() // Limpiar antes de añadir nuevas
+                        listaEspecialidadesSeleccionadas.addAll(especialidadesDetective)
+
+                        for (i in especialidadesArray.indices) {
+                            seleccionadas[i] = especialidadesDetective.contains(especialidadesArray[i])
+                        }
+
                     } else {
-                        Toast.makeText(this@EditarDetectivesActivity, "No se encontró el detective", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@EditarDetectivesActivity, "No se encontró el detective", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
 
                 override fun onFailure(call: Call<Detectives>, t: Throwable) {
-                    Toast.makeText(this@EditarDetectivesActivity, "Error al cargar los datos", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@EditarDetectivesActivity, "Error al cargar los datos", Toast.LENGTH_SHORT)
+                        .show()
                 }
             })
     }
 
     private fun actualizarDetective() {
-        // Validación de los campos
         if (etNombre.text.isBlank() || etCorreo.text.isBlank()) {
             Toast.makeText(this, "El nombre y el correo son obligatorios", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Validaciones personalizadas
+        val nombre = etNombre.text.toString().trim()
+        val apellidos = etApellidos.text.toString().trim()
+        val correo = etCorreo.text.toString().trim()
+        val cedula = etNumeroDocumento.text.toString().trim()
+
+        if (!nombre.esNombreValido()) {
+            Toast.makeText(this, "Nombre inválido (solo letras y espacios)", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (!apellidos.esNombreValido()) {
+            Toast.makeText(this, "Apellidos inválidos (solo letras y espacios)", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (!correo.esEmailValido()) {
+            Toast.makeText(this, "Correo inválido (debe terminar en .com)", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (!cedula.esCedulaValida()) {
+            Toast.makeText(this, "Cédula inválida (debe tener 10 dígitos)", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -121,25 +216,26 @@ class EditarDetectivesActivity : AppCompatActivity() {
             return
         }
 
-        // Crear el objeto 'Detectives' con los campos modificados
+        // Crear el objeto 'Detectives' con los campos modificados (conversión a mayúsculas en nombres y apellidos)
         val detectiveActualizado = Detectives(
-            id = idDetective!!,  // Mantener el mismo ID
-            tipoDocumento = etTipoDocumento.text.toString(),  // Asignar el tipo de documento ingresado
-            numeroDocumento = etNumeroDocumento.text.toString(),  // Usar el número de documento ingresado
-            nombres = etNombre.text.toString(),
-            apellidos = etApellidos.text.toString(),
-            correo = etCorreo.text.toString(),
-            fechaNacimiento = "",  // Mantener la fecha de nacimiento si no se necesita editar
-            activo = etActivo.text.toString().equals("Activo", ignoreCase = true),  // Convertir a booleano
-            especialidad = etEspecialidad.text.toString().split(",").map { it.trim() } // Convertir a lista
+            id = idDetective!!,
+            tipoDocumento = etTipoDocumento.text.toString(),
+            numeroDocumento = cedula,
+            nombres = nombre.toUpperCaseSafe(),
+            apellidos = apellidos.toUpperCaseSafe(),
+            correo = correo,
+            fechaNacimiento = "",  // Si no se usa, déjalo vacío o usa el anterior
+            activo = etActivo.text.toString().equals("Activo", ignoreCase = true),
+            especialidad = etEspecialidad.text.toString().split(",").map { it.trim() }
         )
 
-        // Llamar al servicio para actualizar los datos del detective
+        // Llamada a Retrofit para actualizar
         controladorDetective.actualizarDetective(idDetective!!, detectiveActualizado)
             .enqueue(object : Callback<Detectives> {
                 override fun onResponse(call: Call<Detectives>, response: Response<Detectives>) {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@EditarDetectivesActivity, "Detective actualizado", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@EditarDetectivesActivity, "Detective actualizado", Toast.LENGTH_SHORT)
+                            .show()
                         finish()
                     } else {
                         Toast.makeText(this@EditarDetectivesActivity, "Error al actualizar", Toast.LENGTH_SHORT).show()
