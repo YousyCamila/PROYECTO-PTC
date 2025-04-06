@@ -17,7 +17,7 @@ class DetectivesAdapter(
     private val detectives: MutableList<Detectives>,
     private val onEditar: (Int) -> Unit,
     private val onEliminar: (Int) -> Unit,
-    private val onDetalles: (Int) -> Unit
+    private val onDetalles: (Detectives) -> Unit
 ) : RecyclerView.Adapter<DetectivesAdapter.DetectiveViewHolder>() {
 
     class DetectiveViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -37,7 +37,7 @@ class DetectivesAdapter(
         holder.txtNombre.text = "${detective.nombres} ${detective.apellidos ?: ""}".trim()
 
         holder.btnEditar.setOnClickListener { onEditar(position) }
-        holder.btnDetalles.setOnClickListener { onDetalles(position) }
+        holder.btnDetalles.setOnClickListener { onDetalles(detective) }
 
         val context = holder.itemView.context
 
