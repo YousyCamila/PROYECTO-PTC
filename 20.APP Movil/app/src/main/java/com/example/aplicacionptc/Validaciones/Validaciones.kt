@@ -14,6 +14,11 @@ object Validaciones {
         return this.matches(Regex("^[\\w.-]+@[\\w.-]+\\.com$"))
     }
 
+    fun String.esCedulaValida(): Boolean {
+        return this.matches(Regex("^\\d{10}$"))
+    }
+
+
     fun String.toUpperCaseSafe(): String {
         return this.uppercase(Locale.getDefault())
     }
