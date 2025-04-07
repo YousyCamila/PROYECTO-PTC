@@ -19,6 +19,10 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import NavbarSidebarCliente from './NavbarSidebarCliente';
 import CasoDetailsMenu from './CasoDetailsMenu';
+import HistorialCasoDetailsMenu from './historial/HistorialCasoDetailsMenu';
+import HistoryIcon from '@mui/icons-material/History';
+import ArticleIcon from '@mui/icons-material/Article';
+
 
 const ClienteMenu = () => {
   const { user } = useContext(AuthContext); // Contexto de autenticación
@@ -26,6 +30,7 @@ const ClienteMenu = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false); // Estado para el Snackbar
   const [snackbarMessage, setSnackbarMessage] = useState(''); // Mensaje del Snackbar
   const [selectedCaso, setSelectedCaso] = useState(null); // Caso seleccionado para detalles
+  const [selectedHistorialCaso, setSelectedHistorialCaso] = useState(null);
   const navigate = useNavigate();
 
   const email = localStorage.getItem('email_cliente'); // Email del cliente
@@ -71,6 +76,11 @@ const ClienteMenu = () => {
   const handleOpenCasoDetails = (caso) => {
     setSelectedCaso(caso); // Guardar el caso seleccionado
   };
+
+  const handleOpenHistorialCaso = (caso) => {
+    setSelectedHistorialCaso(caso);
+  };
+  
 
   return (
     <Box
@@ -150,6 +160,11 @@ const ClienteMenu = () => {
                           <MenuOpenIcon color="secondary" />
                         </IconButton>
                       </Tooltip>
+                      <Tooltip title="Ver historial del caso" arrow>
+                        <IconButton onClick={() => handleOpenHistorialCaso(caso)}>
+                          <ArticleIcon  color="primary" />
+                        </IconButton>
+                      </Tooltip>
                     </TableCell>
                   </TableRow>
                 ))
@@ -175,6 +190,9 @@ const ClienteMenu = () => {
 
       {/* Menú de detalles del caso */}
       {selectedCaso && <CasoDetailsMenu caso={selectedCaso} onClose={() => setSelectedCaso(null)} />}
+
+      {selectedHistorialCaso && ( <HistorialCasoDetailsMenu caso={selectedHistorialCaso} onClose={() => setSelectedHistorialCaso(null)} /> )}
+
     </Box>
   );
 };
