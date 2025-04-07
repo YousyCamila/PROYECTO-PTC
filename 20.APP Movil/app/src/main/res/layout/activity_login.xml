@@ -99,7 +99,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Selecciona tu Rol"
-                        android:padding="12dp"/>
+                        android:padding="12dp"
+                        android:inputType="none"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:longClickable="false" />
+
                 </com.google.android.material.textfield.TextInputLayout>
 
 
