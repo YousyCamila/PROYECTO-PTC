@@ -3,7 +3,7 @@ const Caso = require('../models/casoModel');
 const Evidencia = require('../models/evidenciaModel');
 const User = require('../models/UsuarioModel');
 
-// Crear un historial al crear un nuevo caso
+
 /**
  * Crea un historial para un caso si aún no existe.
  * Solo el campo `idCaso` es obligatorio.
@@ -16,30 +16,36 @@ const User = require('../models/UsuarioModel');
  * @returns {Promise<Object>} - Historial creado
  */
 async function crearHistorial({ idCaso, nombreCliente = '', descripcionObjetivo = '', informacionInicial = '' }) {
-    // Verifica si el caso existe
-    const caso = await Caso.findById(idCaso).populate('idCliente idDetective');
-    if (!caso) {
-      throw new Error('Caso no encontrado');
+    try {
+
+      const caso = await Caso.findById(idCaso).populate('idCliente idDetective');
+      if (!caso) {
+        throw new Error('Caso no encontrado');
+      }
+  
+
+      const historialExistente = await HistorialCaso.findOne({ idCaso });
+      if (historialExistente) {
+        throw new Error('Ya existe un historial para este caso');
+      }
+  
+      // Crea el historial con los campos opcionales (vacíos si no se proporcionan)
+      const nuevoHistorial = new HistorialCaso({
+        idCaso,
+        nombreCliente,
+        descripcionObjetivo,
+        informacionInicial,
+        estadoCaso: 'Abierto'
+      });
+  
+      await nuevoHistorial.save();
+      return nuevoHistorial;
+    } catch (error) {
+      console.error('Error al crear historial:', error.message);
+      throw error; 
     }
-  
-    // Verifica si ya existe un historial para este caso
-    const historialExistente = await HistorialCaso.findOne({ idCaso });
-    if (historialExistente) {
-      throw new Error('Ya existe un historial para este caso');
-    }
-  
-    // Crea el historial con los campos opcionales (vacíos si no se proporcionan)
-    const nuevoHistorial = new HistorialCaso({
-      idCaso,
-      nombreCliente,
-      descripcionObjetivo,
-      informacionInicial,
-      estadoCaso: 'Abierto'
-    });
-  
-    await nuevoHistorial.save();
-    return nuevoHistorial;
   }
+  
   
 // Obtener un historial completo por ID de caso
 async function obtenerHistorialCompleto(idCaso) {
