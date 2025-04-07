@@ -41,6 +41,97 @@ const historialCasoController = require('../controllers/historialCasoController'
  */
 router.post('/', historialCasoController.crearHistorial);
 
+
+/**
+ * @swagger
+ * /historiales/editar/{id}:
+ *   put:
+ *     summary: Editar un historial de caso por su ID
+ *     tags: [Historiales]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del historial de caso a editar
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       description: Campos a actualizar del historial
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombreCliente:
+ *                 type: string
+ *               descripcionObjetivo:
+ *                 type: string
+ *               informacionInicial:
+ *                 type: string
+ *               contextoCaso:
+ *                 type: string
+ *               desarrolloInvestigacion:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     actividad:
+ *                       type: string
+ *                     fechaHora:
+ *                       type: string
+ *                       format: date-time
+ *                     observaciones:
+ *                       type: string
+ *                     personasContactadas:
+ *                       type: string
+ *                     metodosUtilizados:
+ *                       type: string
+ *               pruebasEvidencias:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     descripcion:
+ *                       type: string
+ *                     relevancia:
+ *                       type: string
+ *                     lugarRecopilacion:
+ *                       type: string
+ *                     fechaRecopilacion:
+ *                       type: string
+ *                       format: date
+ *               conclusionesResultados:
+ *                 type: object
+ *                 properties:
+ *                   hallazgosImportantes:
+ *                     type: string
+ *                   conclusiones:
+ *                     type: string
+ *                   recomendaciones:
+ *                     type: string
+ *               cierreCaso:
+ *                 type: object
+ *                 properties:
+ *                   fechaCierre:
+ *                     type: string
+ *                     format: date
+ *                   resultadoFinal:
+ *                     type: string
+ *               estadoCaso:
+ *                 type: string
+ *                 enum: [Abierto, En Proceso, Cerrado]
+ *     responses:
+ *       200:
+ *         description: Historial actualizado correctamente
+ *       404:
+ *         description: Historial no encontrado
+ *       500:
+ *         description: Error interno del servidor
+ */
+router.put('/editar/:id', historialCasoController.editarHistorial);
+
+
 /**
  * @swagger
  * /historiales/id/{id}:
@@ -208,5 +299,5 @@ router.post('/accion/automatica', historialCasoController.registrarAccionAutomat
  *         description: Historial encontrado con éxito.
  */
 router.get('/caso/:idCaso', historialCasoController.obtenerHistorialCompleto);
-    
+
 module.exports = router;

@@ -45,6 +45,28 @@ async function crearHistorial({ idCaso, nombreCliente = '', descripcionObjetivo 
       throw error; 
     }
   }
+
+  async function editarHistorial(historialId, camposAActualizar) {
+    try {
+        const historial = await HistorialCaso.findById(historialId);
+        if (!historial) {
+            throw new Error('Historial no encontrado');
+        }
+
+        // Solo actualiza los campos que fueron enviados
+        Object.keys(camposAActualizar).forEach((campo) => {
+            if (camposAActualizar[campo] !== undefined) {
+                historial[campo] = camposAActualizar[campo];
+            }
+        });
+
+        await historial.save();
+        return historial;
+    } catch (error) {
+        console.error('Error al editar historial:', error.message);
+        throw error;
+    }
+}
   
   
 // Obtener un historial completo por ID de caso
@@ -190,6 +212,7 @@ async function obtenerInformacionRelacionadaHistorial(idCaso) {
 
 module.exports = {
     crearHistorial,
+    editarHistorial,
     obtenerHistorialCompleto,
     obtenerHistorialPorId,
     obtenerTodosLosHistoriales,

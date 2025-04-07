@@ -11,6 +11,22 @@ async function crearHistorial(req, res) {
     }
 }
 
+async function editarHistorial (req, res){
+    const historialId = req.params.id;
+    const campos = req.body;
+    try {
+        const historialActualizado = await historialCasoLogic.editarHistorial(historialId, campos);
+        res.status(200).json(historialActualizado);
+      } catch (error) {
+        console.error('Error al editar historial:', error.message);
+        if (error.message.includes('no encontrado')) {
+          res.status(404).json({ mensaje: error.message });
+        } else {
+          res.status(500).json({ mensaje: 'Error al editar el historial' });
+        }
+      }
+};
+
 // Obtener historial completo por ID de caso
 async function obtenerHistorialCompleto(req, res) {
     try {
@@ -100,6 +116,7 @@ async function obtenerInformacionRelacionadaHistorial(req, res) {
 
 module.exports = {
     crearHistorial,
+    editarHistorial,
     obtenerHistorialCompleto,
     obtenerHistorialPorId,
     obtenerTodosLosHistoriales,
