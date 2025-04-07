@@ -4,25 +4,43 @@ const Evidencia = require('../models/evidenciaModel');
 const User = require('../models/UsuarioModel');
 
 // Crear un historial al crear un nuevo caso
-async function crearHistorial({ idCaso, nombreCliente, descripcionObjetivo, informacionInicial }) {
+/**
+ * Crea un historial para un caso si aún no existe.
+ * Solo el campo `idCaso` es obligatorio.
+ * 
+ * @param {Object} params
+ * @param {string} params.idCaso - ID del caso asociado (obligatorio)
+ * @param {string} [params.nombreCliente] - Nombre del cliente (opcional)
+ * @param {string} [params.descripcionObjetivo] - Descripción del objetivo (opcional)
+ * @param {string} [params.informacionInicial] - Información inicial (opcional)
+ * @returns {Promise<Object>} - Historial creado
+ */
+async function crearHistorial({ idCaso, nombreCliente = '', descripcionObjetivo = '', informacionInicial = '' }) {
+    // Verifica si el caso existe
     const caso = await Caso.findById(idCaso).populate('idCliente idDetective');
-
     if (!caso) {
-        throw new Error('Caso no encontrado');
+      throw new Error('Caso no encontrado');
     }
-
-    const historialCaso = new HistorialCaso({
-        idCaso,
-        nombreCliente,
-        descripcionObjetivo,
-        informacionInicial,
-        estadoCaso: 'Abierto'
+  
+    // Verifica si ya existe un historial para este caso
+    const historialExistente = await HistorialCaso.findOne({ idCaso });
+    if (historialExistente) {
+      throw new Error('Ya existe un historial para este caso');
+    }
+  
+    // Crea el historial con los campos opcionales (vacíos si no se proporcionan)
+    const nuevoHistorial = new HistorialCaso({
+      idCaso,
+      nombreCliente,
+      descripcionObjetivo,
+      informacionInicial,
+      estadoCaso: 'Abierto'
     });
-
-    await historialCaso.save();
-    return historialCaso;
-}
-
+  
+    await nuevoHistorial.save();
+    return nuevoHistorial;
+  }
+  
 // Obtener un historial completo por ID de caso
 async function obtenerHistorialCompleto(idCaso) {
     const historialCaso = await HistorialCaso.findOne({ idCaso })

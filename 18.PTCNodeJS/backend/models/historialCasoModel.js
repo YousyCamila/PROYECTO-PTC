@@ -17,11 +17,11 @@ const historialCasoSchema = new mongoose.Schema({
   },
   descripcionObjetivo: {
     type: String,
-    required: true
+    required: false
   },
   informacionInicial: {
     type: String,
-    required: true
+    required: false
   },
   contextoCaso: {
     type: String,
