@@ -36,6 +36,7 @@ import RegistrosCrud from './pages/cliente/RegistrosCrud';
 import ProtectedRoute from './components/ProtectedRoute';
 import AgregarRegistrosForm from './pages/cliente/AgregarRegistrosForm';
 import EditarRegistroForm from './pages/cliente/editarRegistroForm';
+import HistorialPlantilla from './pages/cliente/HistorialPlantilla';
 
 import EvidenciasDetectiveCrud from './pages/detective/EvidenciasDetectiveCrud';
 import NavbarSidebarDetective from './pages/detective/NavbarSidebarDetective';
@@ -94,6 +95,7 @@ function App() {
             <Route path="/registros-crud" element={<RegistrosCrud />} />
             <Route path='/agregar-registros/:casoId' element={<AgregarRegistrosForm />} />
             <Route path='/editar-registros/:registroId' element={<EditarRegistroForm />} />
+            <Route path='Historial-caso' element={<HistorialPlantilla/>} />
 
           </Route>
 

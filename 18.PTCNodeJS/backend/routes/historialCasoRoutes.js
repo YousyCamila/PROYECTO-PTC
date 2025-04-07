@@ -192,7 +192,7 @@ router.post('/accion/automatica', historialCasoController.registrarAccionAutomat
 
 /**
  * @swagger
- * /api/historial/{idCaso}:
+ * /historiales/caso/{idCaso}:
  *   get:
  *     summary: Obtener historial completo por ID de caso.
  *     tags: [Historiales]
@@ -207,6 +207,6 @@ router.post('/accion/automatica', historialCasoController.registrarAccionAutomat
  *       200:
  *         description: Historial encontrado con éxito.
  */
-router.get('/:idCaso', historialCasoController.obtenerHistorialCompleto);
-
+router.get('/caso/:idCaso', historialCasoController.obtenerHistorialCompleto);
+    
 module.exports = router;
