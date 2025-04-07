@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val btnContratos = findViewById<Button>(R.id.btnContratos)
+       // val btnContratos = findViewById<Button>(R.id.btnContratos)
         val btnClientes = findViewById<Button>(R.id.btnClientes)
         val btnDetectives = findViewById<Button>(R.id.btnDetectives)
         val btnCasos = findViewById<Button>(R.id.btnCasos)
