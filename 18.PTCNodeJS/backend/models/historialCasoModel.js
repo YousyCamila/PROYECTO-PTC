@@ -82,7 +82,16 @@ const historialCasoSchema = new mongoose.Schema({
           enum: ['Evidencia', 'RegistroCaso', 'Contrato'],
           default: null
         },
-        usuario: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+        usuario: {
+          type: mongoose.Schema.Types.ObjectId,
+          refPath: 'acciones.usuarioTipo',
+          required: true
+        },
+        usuarioTipo: {
+          type: String,
+          enum: ['Cliente', 'Detective'],
+          required: true
+        },
         fecha: { type: Date, default: Date.now }
       }, { _id: false })
     ],

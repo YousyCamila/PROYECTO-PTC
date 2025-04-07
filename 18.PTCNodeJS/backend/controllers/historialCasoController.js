@@ -44,15 +44,37 @@ async function obtenerTodosLosHistoriales(req, res) {
 }
 
 // Agregar una acción al historial (manual)
-async function agregarAccion(req, res) {
+const agregarAccion = async (req, res) => {
     try {
-        const { idCaso, accion, detalles, usuarioId, documentoRelacionado, tipoDocumento } = req.body;
-        const historialCaso = await historialCasoLogic.agregarAccion({ idCaso, accion, detalles, usuarioId, documentoRelacionado, tipoDocumento });
-        res.status(200).json(historialCaso);
+      const {
+        idHistorial,
+        accion,
+        detalles,
+        usuarioId,
+        usuarioTipo,
+        documentoRelacionado,
+        tipoDocumento
+      } = req.body;
+  
+      const historialActualizado = await historialCasoLogic.agregarAccion({
+        idHistorial,
+        accion,
+        detalles,
+        usuarioId,
+        usuarioTipo,
+        documentoRelacionado,
+        tipoDocumento
+      });
+  
+      res.status(200).json({
+        mensaje: 'Acción registrada correctamente',
+        idHistorial: historialActualizado._id,
+        historial: historialActualizado
+      });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+      res.status(400).json({ error: error.message });
     }
-}
+  };
 
 // Registrar acción automáticamente (Evidencias o Reportes)
 async function registrarAccionAutomatica(req, res) {

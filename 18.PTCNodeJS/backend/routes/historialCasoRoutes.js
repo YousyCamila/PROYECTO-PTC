@@ -93,9 +93,9 @@ router.get('/relacionado/:idCaso', historialCasoController.obtenerInformacionRel
 
 /**
  * @swagger
- * /historiales/accion:
+ * /historiales/agregar-accion:
  *   post:
- *     summary: Agregar una acción al historial de un caso.
+ *     summary: Agrega una acción al historial del caso
  *     tags: [Historiales]
  *     requestBody:
  *       required: true
@@ -104,28 +104,62 @@ router.get('/relacionado/:idCaso', historialCasoController.obtenerInformacionRel
  *           schema:
  *             type: object
  *             required:
- *               - idCaso
+ *               - idHistorial
  *               - accion
  *               - detalles
  *               - usuarioId
+ *               - usuarioTipo
  *             properties:
- *               idCaso:
+ *               idHistorial:
  *                 type: string
+ *                 description: ID del historial al cual agregar la acción
  *               accion:
  *                 type: string
+ *                 enum:
+ *                   - Evidencia agregada
+ *                   - Evidencia eliminada
+ *                   - Reporte generado
+ *                   - Reporte modificado
+ *                   - Contrato creado
+ *                   - Contrato modificado
+ *                   - Contrato eliminado
+ *                   - Cambio de estado
+ *                   - Comentario agregado
+ *                   - Caso reasignado
+ *                   - Caso cerrado
+ *                   - Caso archivado
  *               detalles:
  *                 type: string
  *               usuarioId:
  *                 type: string
+ *               usuarioTipo:
+ *                 type: string
+ *                 enum: [Cliente, Detective]
  *               documentoRelacionado:
  *                 type: string
+ *                 nullable: true
  *               tipoDocumento:
  *                 type: string
+ *                 enum: [Evidencia, RegistroCaso, Contrato]
+ *                 nullable: true
  *     responses:
  *       200:
- *         description: Acción agregada con éxito.
+ *         description: Acción agregada correctamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 mensaje:
+ *                   type: string
+ *                 idHistorial:
+ *                   type: string
+ *                 historial:
+ *                   $ref: '#/components/schemas/HistorialCaso'
+ *       400:
+ *         description: Error al agregar la acción
  */
-router.post('/accion', historialCasoController.agregarAccion);
+router.post('/agregar-accion', historialCasoController.agregarAccion);
 
 /**
  * @swagger

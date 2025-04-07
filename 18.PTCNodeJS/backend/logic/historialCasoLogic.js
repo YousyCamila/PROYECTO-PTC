@@ -88,24 +88,42 @@ async function obtenerTodosLosHistoriales() {
 }
 
 // Registrar acción manual
-async function agregarAccion({ idCaso, accion, detalles, usuarioId, documentoRelacionado = null, tipoDocumento = null }) {
-    const historialCaso = await HistorialCaso.findOne({ idCaso });
-
-    if (!historialCaso) {
-        throw new Error('Historial no encontrado');
+const agregarAccion = async ({
+    idHistorial,
+    accion,
+    detalles,
+    usuarioId,
+    usuarioTipo,
+    documentoRelacionado = null,
+    tipoDocumento = null
+  }) => {
+    const historial = await HistorialCaso.findById(idHistorial);
+    if (!historial) throw new Error('Historial no encontrado');
+  
+    const caso = await Caso.findById(historial.idCaso);
+    if (!caso) throw new Error('Caso no encontrado');
+  
+    const esClienteValido = usuarioTipo === 'Cliente' && String(caso.idCliente) === String(usuarioId);
+    const esDetectiveValido = usuarioTipo === 'Detective' && String(caso.idDetective) === String(usuarioId);
+  
+    if (!esClienteValido && !esDetectiveValido) {
+      throw new Error('El usuario no está relacionado con el caso');
     }
-
+  
     historial.acciones.push({
-        accion,
-        detalles,
-        documentoRelacionado,
-        tipoDocumento,
-        usuario: usuarioId
+      accion,
+      detalles,
+      documentoRelacionado,
+      tipoDocumento,
+      usuario: usuarioId,
+      usuarioTipo,
+      fecha: new Date()
     });
+  
+    await historial.save();
+    return historial;
+  };
 
-    await historialCaso.save();
-    return historialCaso;
-}
 
 // Registrar acción automática (Evidencias o Reportes)
 async function registrarAccionAutomatica({ idCaso, descripcion, usuarioId }) {
