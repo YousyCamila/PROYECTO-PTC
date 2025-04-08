@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.aplicacionptc.Api.Retrofit
 import com.example.aplicacionptc.R
 import com.example.ptc_app.Models.Administrador.Caso.Caso
+import com.example.ptc_app.Models.Administrador.Cliente.Clientes
+import com.example.ptc_app.Models.Administrador.Detective.Detectives
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -48,19 +50,43 @@ class CrearCasoActivity : AppCompatActivity() {
 
     private fun crearCaso() {
         val nombreCaso = etNombreCaso.text.toString().trim()
-        val idCliente = etIdCliente.text.toString().trim()
-        val idDetective = etIdDetective.text.toString().trim()
+        val idClienteInput = etIdCliente.text.toString().trim()
+        val idDetectiveInput = etIdDetective.text.toString().trim()
         val activo = switchActivo.isChecked
 
-        if (nombreCaso.isEmpty() || idCliente.isEmpty() || idDetective.isEmpty()) {
+        if (nombreCaso.isEmpty() || idClienteInput.isEmpty() || idDetectiveInput.isEmpty()) {
             Toast.makeText(this, "Por favor completa todos los campos", Toast.LENGTH_SHORT).show()
             return
         }
 
+        // Se crean las instancias mínimas necesarias para Cliente y Detective
+        val cliente = Clientes(
+            id = idClienteInput,
+            tipoDocumento = "",
+            numeroDocumento = "",
+            nombres = "",
+            apellidos = "",
+            correo = "",
+            fechaNacimiento = "",
+            activo = true
+        )
+
+        val detective = Detectives(
+            id = idDetectiveInput,
+            tipoDocumento = "",
+            numeroDocumento = "",
+            nombres = "",
+            apellidos = "",
+            correo = "",
+            fechaNacimiento = "",
+            activo = true,
+            especialidad = emptyList()
+        )
+
         val nuevoCaso = Caso(
             nombreCaso = nombreCaso,
-            idCliente = idCliente,
-            idDetective = idDetective,
+            idCliente = cliente,
+            idDetective = detective,
             activo = activo
         )
 
@@ -81,5 +107,3 @@ class CrearCasoActivity : AppCompatActivity() {
         })
     }
 }
-
-

@@ -114,17 +114,21 @@ class GestionCasosActivity : AppCompatActivity() {
     }
 
     private fun desactivarCaso(caso: Caso, position: Int) {
-        AlertDialog.Builder(this)
-            .setTitle("Desactivar Caso")
-            .setMessage("¿Estás seguro de que deseas desactivar este caso?")
-            .setPositiveButton("Sí") { _, _ ->
-                caso.activo = false
-                listaCasos.removeAt(position)
-                adapter.notifyItemRemoved(position)
-                Toast.makeText(this, "Caso desactivado", Toast.LENGTH_SHORT).show()
+        controladorCaso.desactivarCaso(caso.id!!).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    listaCasos.removeAt(position)
+                    adapter.notifyItemRemoved(position)
+                    Toast.makeText(this@GestionCasosActivity, "Caso desactivado correctamente", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@GestionCasosActivity, "Error al desactivar caso", Toast.LENGTH_SHORT).show()
+                }
             }
-            .setNegativeButton("Cancelar", null)
-            .show()
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Toast.makeText(this@GestionCasosActivity, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     override fun onResume() {
