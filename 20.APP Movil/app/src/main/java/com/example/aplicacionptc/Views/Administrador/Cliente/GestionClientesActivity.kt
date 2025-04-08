@@ -3,11 +3,16 @@ package com.example.aplicacionptc.Views.Administrador.Cliente
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
+import android.text.SpannableString
+import android.text.Spanned
 import android.text.TextWatcher
+import android.text.style.StyleSpan
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -35,6 +40,8 @@ class GestionClientesActivity : AppCompatActivity() {
     private lateinit var etBuscarCliente: EditText
     private lateinit var btnBuscarCliente: Button
     private var listaClientesOriginal = mutableListOf<Clientes>()
+    private lateinit var tvTotalClientes: TextView
+    private lateinit var tvClientesActivos: TextView
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +54,8 @@ class GestionClientesActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        tvTotalClientes = findViewById(R.id.tvTotalClientes)
+        tvClientesActivos = findViewById(R.id.tvClientesActivos)
 
         etBuscarCliente = findViewById(R.id.etBuscarCliente)
 
@@ -80,9 +89,11 @@ class GestionClientesActivity : AppCompatActivity() {
         adapter = ClientesAdapter(
             listaClientes,
             onEditar = { cliente -> editarCliente(cliente) },
-            onEliminar = { cliente, position -> eliminarCliente(cliente, position) },
             onDetalles = { cliente -> verDetallesCliente(cliente) }
         )
+
+
+
 
         recyclerView.adapter = adapter
         btnCrearCliente.setOnClickListener {
@@ -91,6 +102,8 @@ class GestionClientesActivity : AppCompatActivity() {
 
         obtenerClientes()
     }
+
+
 
     private fun obtenerClientes() {
         controladorCliente.obtenerClientes().enqueue(object : Callback<List<Clientes>> {
@@ -103,6 +116,7 @@ class GestionClientesActivity : AppCompatActivity() {
                         listaClientesOriginal.addAll(it) // Guardamos la lista original
                     }
                     adapter.notifyDataSetChanged()
+                    actualizarContadores()
                 } else {
                     Toast.makeText(this@GestionClientesActivity, "Error al obtener clientes", Toast.LENGTH_SHORT).show()
                 }
@@ -165,12 +179,27 @@ class GestionClientesActivity : AppCompatActivity() {
         }
     }
 
+    private fun actualizarContadores() {
+        tvTotalClientes.text = listaClientes.size.toString()
+        val clientesActivos = listaClientes.count { it.activo == true }
+        tvClientesActivos.text = clientesActivos.toString()
+    }
+
     private fun verDetallesCliente(cliente: Clientes) {
-        val mensaje = """
-            Nombre: ${cliente.nombres}
-            ID: ${cliente.id}
-            Correo: ${cliente.correo}
-        """.trimIndent()
+        val estadoTexto = if (cliente.activo) "Activo" else "Inactivo"
+
+        val mensaje = SpannableString(
+            "Nombre: ${cliente.nombres} ${cliente.apellidos}\n" +
+                    "ID: ${cliente.id}\n" +
+                    "Correo: ${cliente.correo}\n" +
+                    "Estado: $estadoTexto"
+        )
+
+        // Aplicar negrita a las etiquetas
+        mensaje.setSpan(StyleSpan(Typeface.BOLD), 0, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE) // Nombre
+        mensaje.setSpan(StyleSpan(Typeface.BOLD), mensaje.indexOf("ID:"), mensaje.indexOf("ID:") + 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE) // ID
+        mensaje.setSpan(StyleSpan(Typeface.BOLD), mensaje.indexOf("Correo:"), mensaje.indexOf("Correo:") + 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE) // Correo
+        mensaje.setSpan(StyleSpan(Typeface.BOLD), mensaje.indexOf("Estado:"), mensaje.indexOf("Estado:") + 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE) // Estado
 
         AlertDialog.Builder(this)
             .setTitle("Detalles del Cliente")

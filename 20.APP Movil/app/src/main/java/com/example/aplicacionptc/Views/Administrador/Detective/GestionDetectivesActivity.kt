@@ -3,11 +3,16 @@ package com.example.aplicacionptc.Views.Administrador.Detective
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
+import android.text.SpannableString
+import android.text.Spanned
 import android.text.TextWatcher
+import android.text.style.StyleSpan
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -34,6 +39,8 @@ class GestionDetectivesActivity : AppCompatActivity() {
     private lateinit var etBuscarDetective: EditText
     private lateinit var btnBuscarDetective: Button
     private var listaDetectivesOriginal = mutableListOf<Detectives>()
+    private lateinit var tvTotalDetectives: TextView
+    private lateinit var tvDetectivesActivos: TextView
 
 
 
@@ -48,6 +55,9 @@ class GestionDetectivesActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        tvTotalDetectives= findViewById(R.id.tvTotalDetectives)
+        tvDetectivesActivos= findViewById(R.id.tvDetectivesActivos)
 
         etBuscarDetective = findViewById(R.id.etBuscarDetective)
 
@@ -79,7 +89,7 @@ class GestionDetectivesActivity : AppCompatActivity() {
             listaDetectives,
             onEditar = { position -> editarDetective(position) },
             onEliminar = { position -> eliminarDetective(position) },
-            onDetalles = { position -> verDetallesDetective(position) }
+            onDetalles = { detectives -> verDetallesDetective(detectives) }
         )
         recyclerView.adapter = adapter
 
@@ -93,7 +103,8 @@ class GestionDetectivesActivity : AppCompatActivity() {
 
     private fun cargarDetectives() {
         Retrofit.detectiveInstance.obtenerDetectives().enqueue(object : Callback<List<Detectives>> {
-            override fun onResponse(call: Call<List<Detectives>>, response: Response<List<Detectives>>) {
+            override fun onResponse(call: Call<List<Detectives>>, response: Response<List<Detectives>>)
+            {
                 if (response.isSuccessful) {
                     listaDetectives.clear()
                     listaDetectivesOriginal.clear() // Limpiar la lista original antes de llenarla
@@ -101,6 +112,7 @@ class GestionDetectivesActivity : AppCompatActivity() {
                     listaDetectives.addAll(detectives)
                     listaDetectivesOriginal.addAll(detectives) // Guardar la lista original
                     adapter.notifyDataSetChanged()
+                    actualizarContadores()
                 } else {
                     Toast.makeText(this@GestionDetectivesActivity, "Error al obtener detectives", Toast.LENGTH_SHORT).show()
                 }
@@ -169,13 +181,28 @@ class GestionDetectivesActivity : AppCompatActivity() {
         }
     }
 
-    private fun verDetallesDetective(posicion: Int) {
-        val detective = listaDetectives[posicion]
-        val mensaje = """
-            Nombre: ${detective.nombres}
-            ID: ${detective.id}
-            Correo: ${detective.correo}
-        """.trimIndent()
+    private fun actualizarContadores() {
+        tvTotalDetectives.text = listaDetectives.size.toString()
+        val detectivesActivos = listaDetectives.count { it.activo == true }
+        tvDetectivesActivos.text = detectivesActivos.toString()
+    }
+
+    private fun verDetallesDetective(detective: Detectives) {
+        val estadoTexto = if (detective.activo) "Activo" else "Inactivo"
+        val especialidadesTexto = detective.especialidad?.joinToString(", ") ?: "Ninguna"
+        val mensaje = SpannableString(
+        "Nombre: ${detective.nombres} ${detective.apellidos}\n"+
+        "ID: ${detective.id}\n"+
+        "Correo: ${detective.correo}\n"+
+        "Estado: $estadoTexto\n"+
+                "Especialidades: $especialidadesTexto"
+
+        )
+
+        mensaje.setSpan(StyleSpan(Typeface.BOLD), 0, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE) // Nombre
+        mensaje.setSpan(StyleSpan(Typeface.BOLD), mensaje.indexOf("ID:"), mensaje.indexOf("ID:") + 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE) // ID
+        mensaje.setSpan(StyleSpan(Typeface.BOLD), mensaje.indexOf("Correo:"), mensaje.indexOf("Correo:") + 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE) // Correo
+        mensaje.setSpan(StyleSpan(Typeface.BOLD), mensaje.indexOf("Estado:"), mensaje.indexOf("Estado:") + 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE) // Estado
 
         AlertDialog.Builder(this)
             .setTitle("Detalles del Detective")
@@ -183,6 +210,7 @@ class GestionDetectivesActivity : AppCompatActivity() {
             .setPositiveButton("Cerrar") { dialog, _ -> dialog.dismiss() }
             .show()
     }
+
 
     override fun onResume() {
         super.onResume()

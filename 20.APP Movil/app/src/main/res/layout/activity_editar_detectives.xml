@@ -115,18 +115,20 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:boxStrokeColor="@color/black"
-            app:hintTextColor="@color/gris">
+            android:hint="Estado (Activo/Inactivo)"
+            app:boxStrokeColor="@color/lila"
+            app:hintTextColor="@color/gris"
+            app:startIconTint="@color/lila">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <AutoCompleteTextView
                 android:id="@+id/edtActivo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Estado (Activo/Inactivo)"
-                android:inputType="text"/>
+                android:inputType="none"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -140,9 +142,12 @@
                 android:id="@+id/edtEspecialidad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Especialidad (separada por comas)"
-                android:inputType="text"/>
+                android:hint="Especialidades"
+                android:focusable="false"
+                android:clickable="true"
+                android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
