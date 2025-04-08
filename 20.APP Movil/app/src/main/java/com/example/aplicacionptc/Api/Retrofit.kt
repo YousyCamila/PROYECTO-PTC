@@ -1,6 +1,7 @@
 package com.example.aplicacionptc.Api
 
 import com.example.aplicacionptc.Controllers.Admistrador.Cliente.ControladorCliente
+import com.example.aplicacionptc.Controllers.Admistrador.Contrato.ControladorContrato
 import com.example.aplicacionptc.Controllers.Admistrador.Detective.ControladorDetective
 import com.example.aplicacionptc.Controllers.Admistrador.Usuario.AuthService
 import okhttp3.OkHttpClient
@@ -27,5 +28,9 @@ object Retrofit {
      }
     val detectiveInstance: ControladorDetective by lazy {
         retrofit.create(ControladorDetective::class.java)
+    }
+
+    val contratoInstance: ControladorContrato by lazy {
+        retrofit.create(ControladorContrato:: class.java)
     }
 }
