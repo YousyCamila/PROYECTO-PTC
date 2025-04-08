@@ -1,7 +1,6 @@
 package com.example.ptc_app.Models.Administrador.Cliente
 
-import Persona.Personas
-import com.example.ptc_app.Models.Administrador.Caso.Caso
+
 import com.google.gson.annotations.SerializedName
 
 

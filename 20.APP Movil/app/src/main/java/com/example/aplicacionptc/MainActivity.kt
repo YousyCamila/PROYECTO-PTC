@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.aplicacionptc.Api.Retrofit
 import com.example.aplicacionptc.Views.Administrador.Cliente.GestionClientesActivity
+import com.example.aplicacionptc.Views.Administrador.Contrato.HomeContratoActivity
 import com.example.aplicacionptc.Views.Administrador.Detective.GestionDetectivesActivity
 import retrofit2.Call
 import retrofit2.Callback
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-       // val btnContratos = findViewById<Button>(R.id.btnContratos)
+        val btnContratos = findViewById<Button>(R.id.btnContratos)
         val btnClientes = findViewById<Button>(R.id.btnClientes)
         val btnDetectives = findViewById<Button>(R.id.btnDetectives)
         val btnCasos = findViewById<Button>(R.id.btnCasos)
@@ -51,9 +52,9 @@ class MainActivity : AppCompatActivity() {
 //            startActivity(Intent(this, HomeCasoActivity::class.java))
 //        }
 //
-//        btnContratos.setOnClickListener {
-//            startActivity(Intent(this, HomeContratoActivity::class.java))
-//        }
+      btnContratos.setOnClickListener {
+           startActivity(Intent(this, HomeContratoActivity::class.java))
+    }
 
         // Cerrar sesión
         btnLogout.setOnClickListener {
