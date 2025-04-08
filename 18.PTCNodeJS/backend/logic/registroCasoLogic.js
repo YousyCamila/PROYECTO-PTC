@@ -1,7 +1,7 @@
 const RegistroCaso = require('../models/registroCasoModel');
 const Cliente = require('../models/ClienteModel');
 const Detective = require('../models/detectiveModel');
-const HistorialCaso = require('../models/HistorialModel');
+const HistorialCaso = require('../models/historialCasoModel');
 
 async function crearRegistroCaso(data) {
   try {

@@ -5,10 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    tools:context=".Auth.RegisterActivity">
 
-    <!-- Fondo con degradado -->
+    <!-- Fondo con diseño centrado -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,69 +22,66 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="30dp"
-            android:elevation="12dp"
-            app:cardCornerRadius="25dp"
+            android:elevation="10dp"
+            app:cardCornerRadius="20dp"
             android:background="#FFFFFF">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal">
-
-                <!-- Icono de Usuario -->
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:src="@android:drawable/ic_menu_myplaces"
-                    android:tint="@android:color/holo_blue_dark"
-                    android:layout_marginBottom="15dp"/>
+                android:orientation="vertical">
 
                 <!-- Título -->
                 <TextView
                     android:id="@+id/tvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Bienvenido"
-                    android:textSize="28sp"
+                    android:text="Crear Cuenta"
+                    android:textSize="26sp"
                     android:textStyle="bold"
                     android:textColor="#333333"
                     android:gravity="center"
-                    android:layout_marginBottom="20dp"/>
+                    android:layout_gravity="center_horizontal"
+                    android:paddingBottom="20dp"/>
 
-                <!-- Campo de Email con diseño flotante -->
-                <com.google.android.material.textfield.TextInputLayout
+                <!-- Campo de Nombre -->
+                <EditText
+                    android:id="@+id/etUsername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:boxStrokeColor="@android:color/holo_blue_dark"
-                    app:hintEnabled="true"
-                    android:layout_marginBottom="15dp">
+                    android:hint="Nombre Completo"
+                    android:inputType="textPersonName"
+                    android:padding="16dp"
+                    android:background="@android:drawable/editbox_background"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="15dp"/>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/emailEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Correo Electrónico"
-                        android:inputType="textEmailAddress"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Campo de Contraseña con diseño flotante -->
-                <com.google.android.material.textfield.TextInputLayout
+                <!-- Campo de Email -->
+                <EditText
+                    android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:boxStrokeColor="@android:color/holo_blue_dark"
-                    app:hintEnabled="true"
-                    android:layout_marginBottom="15dp">
+                    android:hint="Correo Electrónico"
+                    android:inputType="textEmailAddress"
+                    android:padding="16dp"
+                    android:background="@android:drawable/editbox_background"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="15dp"/>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/passwordEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Contraseña"
-                        android:inputType="textPassword"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-
+                <!-- Campo de Contraseña -->
+                <EditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Contraseña"
+                    android:inputType="textPassword"
+                    android:padding="16dp"
+                    android:background="@android:drawable/editbox_background"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="15dp"/>
 
                 <!-- Selector de Rol -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -104,37 +101,33 @@
                         android:focusable="false"
                         android:cursorVisible="false"
                         android:longClickable="false" />
-
                 </com.google.android.material.textfield.TextInputLayout>
 
 
-
-                <!-- Botón de Iniciar Sesión con Material Button -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/loginButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Iniciar Sesión"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:textColor="@android:color/white"
-                    app:cornerRadius="50dp"
-                    android:backgroundTint="@android:color/holo_blue_dark"
-                    app:rippleColor="@android:color/holo_blue_bright"
-                    android:layout_marginBottom="15dp"/>
-
-                <!-- Botón de Registro con Material Button -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/registerButton"
+                <!-- Botón de Registro -->
+                <Button
+                    android:id="@+id/btnRegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Registrarse"
                     android:textStyle="bold"
                     android:textSize="18sp"
                     android:textColor="@android:color/white"
-                    app:cornerRadius="50dp"
-                    android:backgroundTint="@android:color/holo_green_dark"
-                    app:rippleColor="@android:color/holo_green_light"/>
+                    android:backgroundTint="#4CAF50"
+                    android:padding="14dp"
+                    android:layout_marginBottom="15dp"/>
+
+                <!-- Botón de Volver al Login -->
+                <Button
+                    android:id="@+id/btnGoToLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Volver al Login"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="#3F51B5"
+                    android:padding="14dp"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>

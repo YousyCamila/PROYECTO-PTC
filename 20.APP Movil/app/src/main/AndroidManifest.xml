@@ -76,6 +76,11 @@
             android:name=".Views.Administrador.Caso.CrearCasoActivity"
             android:exported="false"/>
 
+        <activity android:name=".Views.Administrador.Usuario.HomeActivity"
+                  android:exported="false"/>
+
+        <activity android:name=".Auth.RegisterActivity"
+                  android:exported="false"/>
     </application>
 
 </manifest>
