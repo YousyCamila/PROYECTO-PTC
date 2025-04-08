@@ -1,1 +1,8 @@
 /build
+
+.gradle/
+*.lock
+*.bin
+echo ".idea/assetWizardSettings.xml" >> .gitignore
+
+
