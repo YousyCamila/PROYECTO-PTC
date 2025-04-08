@@ -1,1 +1,5 @@
 /build
+
+echo .gradle/ >> .gitignore
+git add .gitignore
+git commit -m "Ignorar .gradle para evitar conflictos"
