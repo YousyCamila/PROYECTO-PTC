@@ -19,21 +19,21 @@
     <string name="fechaCreacion">Fecha de creación: %s</string>
 
     <string-array name="especialidades_array">
-        <item>Cadena de Custodia</item>
-        <item>Investigación de Extorsión</item>
-        <item>Estudios de Seguridad</item>
-        <item>Investigación de Infidelidades</item>
-        <item>Investigación de Robos Empresariales</item>
-        <item>Antecedentes</item>
-        <item>Recuperación de Vehículos</item>
+        <item>cadenaCustodia</item>
+        <item>investigacionExtorsion</item>
+        <item>estudiosSeguridad</item>
+        <item>investigacionInfidelidades</item>
+        <item>investigacionRobosEmpresariales</item>
+        <item>antecedentes</item>
+        <item>recuperacionVehiculos</item>
     </string-array>
 
+    <string name="ver_detalles">Ver detalles del caso</string>
 
     <string-array name="tipos_documento_array">
         <item>Cédula</item>
         <item>Pasaporte</item>
     </string-array>
-
 
 </resources>
 
