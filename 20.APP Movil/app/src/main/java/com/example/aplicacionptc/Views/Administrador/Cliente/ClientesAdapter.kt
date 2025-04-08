@@ -11,15 +11,13 @@ import com.example.ptc_app.Models.Administrador.Cliente.Clientes
 
 class ClientesAdapter(
     private val clientes: MutableList<Clientes>,
-    private val onEditar: (Int) -> Unit,
-    private val onEliminar: (Int) -> Unit,
-    private val onDetalles: (Int) -> Unit
+    private val onEditar: (Clientes) -> Unit,
+    private val onDetalles: (Clientes) -> Unit
 ) : RecyclerView.Adapter<ClientesAdapter.ClienteViewHolder>() {
 
-    class ClienteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ClienteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val txtNombre: TextView = view.findViewById(R.id.txtNombreCliente)
         val btnEditar: Button = view.findViewById(R.id.btnEditar)
-        val btnEliminar: Button = view.findViewById(R.id.btnEliminar)
         val btnDetalles: Button = view.findViewById(R.id.btnDetalles)
     }
 
@@ -30,12 +28,17 @@ class ClientesAdapter(
 
     override fun onBindViewHolder(holder: ClienteViewHolder, position: Int) {
         val cliente = clientes[position]
-        holder.txtNombre.text = cliente.nombre
+        holder.txtNombre.text = "${cliente.nombres} ${cliente.apellidos ?: ""}".trim()
 
-        holder.btnEditar.setOnClickListener { onEditar(position) }
-        holder.btnEliminar.setOnClickListener { onEliminar(position) }
-        holder.btnDetalles.setOnClickListener { onDetalles(position) }
+        holder.btnEditar.setOnClickListener { onEditar(cliente) }
+        holder.btnDetalles.setOnClickListener { onDetalles(cliente) }
     }
 
     override fun getItemCount(): Int = clientes.size
+
+    fun actualizarLista(nuevaLista: List<Clientes>) {
+        clientes.clear()
+        clientes.addAll(nuevaLista)
+        notifyDataSetChanged()
+    }
 }

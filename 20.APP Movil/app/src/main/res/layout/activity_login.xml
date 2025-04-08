@@ -1,71 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity"
+    android:background="@android:color/white">
+
+    <!-- Fondo con degradado -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
-        tools:context=".LoginActivity">
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="20dp"
+        android:background="@android:color/white">
 
-    <!-- Título del Login -->
-    <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
+        <!-- Contenedor con sombra y bordes redondeados -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Iniciar Sesión"
-            android:textSize="26sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="80dp"/>
+            android:padding="30dp"
+            android:elevation="12dp"
+            app:cardCornerRadius="25dp"
+            android:background="#FFFFFF">
 
-    <!-- Campo de Usuario -->
-    <EditText
-            android:id="@+id/etUsername"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Usuario"
-            android:inputType="text"
-            android:padding="14dp"
-            android:background="@android:drawable/editbox_background"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="30dp"
-            android:layout_marginHorizontal="30dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
 
-    <!-- Campo de Contraseña -->
-    <EditText
-            android:id="@+id/etPassword"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Contraseña"
-            android:inputType="textPassword"
-            android:padding="14dp"
-            android:background="@android:drawable/editbox_background"
-            app:layout_constraintTop_toBottomOf="@id/etUsername"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="20dp"
-            android:layout_marginHorizontal="30dp"/>
+                <!-- Icono de Usuario -->
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@android:drawable/ic_menu_myplaces"
+                    android:tint="@android:color/holo_blue_dark"
+                    android:layout_marginBottom="15dp"/>
 
-    <!-- Botón de Inicio de Sesión -->
-    <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Iniciar Sesión"
-            android:textStyle="bold"
-            android:backgroundTint="@android:color/holo_blue_dark"
-            android:textColor="@android:color/white"
-            app:layout_constraintTop_toBottomOf="@id/etPassword"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="40dp"
-            android:layout_marginHorizontal="30dp"
-            app:layout_constraintHorizontal_bias="0.5"/>
+                <!-- Título -->
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bienvenido"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:textColor="#333333"
+                    android:gravity="center"
+                    android:layout_marginBottom="20dp"/>
 
+                <!-- Campo de Email con diseño flotante -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxStrokeColor="@android:color/holo_blue_dark"
+                    app:hintEnabled="true"
+                    android:layout_marginBottom="15dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/emailEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Correo Electrónico"
+                        android:inputType="textEmailAddress"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Campo de Contraseña con diseño flotante -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxStrokeColor="@android:color/holo_blue_dark"
+                    app:hintEnabled="true"
+                    android:layout_marginBottom="15dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/passwordEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Contraseña"
+                        android:inputType="textPassword"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                <!-- Selector de Rol -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxStrokeColor="#3F51B5"
+                    android:layout_marginBottom="20dp"
+                    app:endIconMode="dropdown_menu"> <!-- CORREGIDO -->
+
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/roleSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Selecciona tu Rol"
+                        android:padding="12dp"
+                        android:inputType="none"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:longClickable="false" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                <!-- Botón de Iniciar Sesión con Material Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/loginButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Iniciar Sesión"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/white"
+                    app:cornerRadius="50dp"
+                    android:backgroundTint="@android:color/holo_blue_dark"
+                    app:rippleColor="@android:color/holo_blue_bright"
+                    android:layout_marginBottom="15dp"/>
+
+                <!-- Botón de Registro con Material Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/registerButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Registrarse"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/white"
+                    app:cornerRadius="50dp"
+                    android:backgroundTint="@android:color/holo_green_dark"
+                    app:rippleColor="@android:color/holo_green_light"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

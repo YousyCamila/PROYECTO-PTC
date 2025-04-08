@@ -32,10 +32,16 @@ import MensajesRespondidos from './pages/administrador/GestionarSolicitudes/Mens
 import CasoDetailsMenu from './pages/cliente/CasoDetailsMenu';
 import EvidenciasCrud from './pages/cliente/EvidenciasCrud';
 import { AuthProvider } from './context/AuthContext';
+
+//Seccion para clientes
 import RegistrosCrud from './pages/cliente/RegistrosCrud';
 import ProtectedRoute from './components/ProtectedRoute';
 import AgregarRegistrosForm from './pages/cliente/AgregarRegistrosForm';
 import EditarRegistroForm from './pages/cliente/editarRegistroForm';
+
+//Historial 
+import HistorialCasoDetailsMenu from './pages/cliente/historial/HistorialCasoDetailsMenu';
+import HistorialPlantilla from './pages/cliente/HistorialPlantilla';
 
 import EvidenciasDetectiveCrud from './pages/detective/EvidenciasDetectiveCrud';
 import NavbarSidebarDetective from './pages/detective/NavbarSidebarDetective';
@@ -94,6 +100,8 @@ function App() {
             <Route path="/registros-crud" element={<RegistrosCrud />} />
             <Route path='/agregar-registros/:casoId' element={<AgregarRegistrosForm />} />
             <Route path='/editar-registros/:registroId' element={<EditarRegistroForm />} />
+            <Route path='Historial-caso' element={<HistorialPlantilla/>} />
+            <Route path='historial-details' element={<HistorialCasoDetailsMenu/>}/>
 
           </Route>
 

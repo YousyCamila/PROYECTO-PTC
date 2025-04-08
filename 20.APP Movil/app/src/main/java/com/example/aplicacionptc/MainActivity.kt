@@ -5,31 +5,23 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.aplicacionptc.Views.Administrador.Caso.HomeCasoActivity
+import com.example.aplicacionptc.Api.Retrofit
 import com.example.aplicacionptc.Views.Administrador.Cliente.GestionClientesActivity
-import com.example.aplicacionptc.Views.Administrador.Contrato.HomeContratoActivity
 import com.example.aplicacionptc.Views.Administrador.Detective.GestionDetectivesActivity
-
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val sharedPref = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
-        val isLoggedIn = sharedPref.getBoolean("isLoggedIn", false)
-
-        // Si el usuario no ha iniciado sesión, redirigirlo al login
-        if (!isLoggedIn) {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-            return
-        }
-
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
@@ -39,16 +31,13 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val btnContratos = findViewById<Button>(R.id.btnContratos)
+       // val btnContratos = findViewById<Button>(R.id.btnContratos)
         val btnClientes = findViewById<Button>(R.id.btnClientes)
-        val btnLogout = findViewById<Button>(R.id.btnLogout)
         val btnDetectives = findViewById<Button>(R.id.btnDetectives)
         val btnCasos = findViewById<Button>(R.id.btnCasos)
+        val btnLogout = findViewById<Button>(R.id.btnLogout)
 
-        btnContratos.setOnClickListener {
-            startActivity(Intent(this, HomeContratoActivity::class.java))
-        }
-
+        // Navegación
         btnClientes.setOnClickListener {
             startActivity(Intent(this, GestionClientesActivity::class.java))
         }
@@ -57,18 +46,45 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, GestionDetectivesActivity::class.java))
         }
 
-        btnCasos.setOnClickListener {
-            startActivity(Intent(this, HomeCasoActivity::class.java))
-        }
+        // Descomenta estos cuando estén listos
+//        btnCasos.setOnClickListener {
+//            startActivity(Intent(this, HomeCasoActivity::class.java))
+//        }
+//
+//        btnContratos.setOnClickListener {
+//            startActivity(Intent(this, HomeContratoActivity::class.java))
+//        }
 
+        // Cerrar sesión
         btnLogout.setOnClickListener {
-            // Cerrar sesión
-            sharedPref.edit().apply {
-                putBoolean("isLoggedIn", false) // Eliminar sesión
-                apply()
-            }
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
+            logoutUser()
         }
+    }
+
+
+
+
+
+
+    private fun logoutUser() {
+        val sharedPref = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE).edit()
+        sharedPref.clear()
+        sharedPref.apply()
+
+        Retrofit.authService.logout().enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                Toast.makeText(this@MainActivity, "Sesión cerrada", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Toast.makeText(this@MainActivity, "Error al cerrar sesión, pero serás redirigido", Toast.LENGTH_SHORT).show()
+            }
+        })
+        redirectToLogin()
+    }
+    private fun redirectToLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 }
