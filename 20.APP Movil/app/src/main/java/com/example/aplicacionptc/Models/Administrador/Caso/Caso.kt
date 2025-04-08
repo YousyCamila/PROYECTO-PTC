@@ -17,17 +17,17 @@ data class Caso(
     @SerializedName("idDetective")
     val idDetective: Detectives? = null, // opcional
 
-    @SerializedName("evidencias")
-    val evidencias: List<String>? = null, // opcional
+    //@SerializedName("evidencias")
+    //val evidencias: List<String>? = null, // opcional
 
-    @SerializedName("registroCasos")
-    val registroCasos: List<String>? = null, // opcional
+    //@SerializedName("registroCasos")
+    //val registroCasos: List<String>? = null, // opcional
 
-    @SerializedName("contratos")
-    val contratos: List<String>? = null, // opcional
+    //@SerializedName("contratos")
+    //val contratos: List<String>? = null, // opcional
 
-    @SerializedName("historial")
-    val historial: List<String>? = null, // opcional
+    //@SerializedName("historial")
+    //val historial: List<String>? = null, // opcional
 
     @SerializedName("activo")
     val activo: Boolean? = true // opcional con valor por defecto

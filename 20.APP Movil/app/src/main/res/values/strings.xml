@@ -30,5 +30,10 @@
 
     <string name="ver_detalles">Ver detalles del caso</string>
 
+    <string-array name="tipos_documento_array">
+        <item>Cédula</item>
+        <item>Pasaporte</item>
+    </string-array>
+
 </resources>
 

@@ -9,6 +9,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -34,13 +35,15 @@ class GestionCasosActivity : AppCompatActivity() {
     private lateinit var adapter: CasosAdapter
     val listaCasos = mutableListOf<Caso>()
     private var listaCasosOriginal = mutableListOf<Caso>()
+    private lateinit var btnVolverHome: ImageButton
+
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gestion_casos)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layoutGestionCasos)) { v, insets ->
             insets
         }
 
@@ -48,6 +51,7 @@ class GestionCasosActivity : AppCompatActivity() {
         btnBuscarCaso = findViewById(R.id.btnBuscarCaso)
         recyclerView = findViewById(R.id.recyclerCasos)
         btnCrearCaso = findViewById(R.id.btnCrearCaso)
+        btnVolverHome = findViewById(R.id.btnVolverHome)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -70,7 +74,7 @@ class GestionCasosActivity : AppCompatActivity() {
             startActivity(Intent(this, CrearCasoActivity::class.java))
         }
 
-        findViewById<MaterialButton>(R.id.btnVolverHome).setOnClickListener {
+        btnVolverHome.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }
     }

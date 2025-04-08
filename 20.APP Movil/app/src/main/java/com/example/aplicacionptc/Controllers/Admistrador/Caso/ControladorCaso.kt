@@ -6,18 +6,18 @@ import retrofit2.http.*
 
 interface ControladorCaso {
 
-    @GET("casos")
+    @GET("caso")
     fun obtenerCasos(): Call<List<Caso>>
 
-    @GET("casos/{id}")
+    @GET("caso/{id}")
     fun buscarCasoPorId(@Path("id") id: String): Call<Caso>
 
-    @POST("casos")
+    @POST("caso")
     fun crearCaso(@Body caso: Caso): Call<Caso>
 
-    @PUT("casos/{id}")
+    @PUT("caso/{id}")
     fun actualizarCaso(@Path("id") id: String, @Body caso: Caso): Call<Caso>
 
-    @PATCH("casos/{id}")
+    @PATCH("caso/{id}")
     fun desactivarCaso(@Path("id") id: String): Call<Void>
 }

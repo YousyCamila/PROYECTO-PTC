@@ -1,6 +1,5 @@
 package com.example.aplicacionptc.Controllers.Admistrador.Cliente
 
-
 import com.example.ptc_app.Models.Administrador.Cliente.Clientes
 import retrofit2.Call
 import retrofit2.http.*
