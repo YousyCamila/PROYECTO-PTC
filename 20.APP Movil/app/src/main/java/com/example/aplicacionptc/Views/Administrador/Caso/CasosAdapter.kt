@@ -24,9 +24,15 @@ class CasosAdapter(
 
     override fun onBindViewHolder(holder: CasoViewHolder, position: Int) {
         val caso = listaCasos[position]
+
         holder.txtNombreCaso.text = "Caso: ${caso.nombreCaso}"
-        holder.txtCliente.text = "Cliente: ${caso.idCliente}"
-        holder.txtDetective.text = "Detective: ${caso.idDetective}"
+
+        val nombreCliente = "${caso.idCliente?.nombres ?: "Desconocido"} ${caso.idCliente?.apellidos ?: ""}"
+        val nombreDetective = "${caso.idDetective?.nombres ?: "Desconocido"} ${caso.idDetective?.apellidos ?: ""}"
+
+        holder.txtCliente.text = "Cliente: $nombreCliente"
+        holder.txtDetective.text = "Detective: $nombreDetective"
+
 
         holder.btnVerDetalles.setOnClickListener {
             onVerDetalles(caso)
@@ -36,6 +42,7 @@ class CasosAdapter(
             onDesactivar(caso, position)
         }
     }
+
 
     override fun getItemCount(): Int = listaCasos.size
 
