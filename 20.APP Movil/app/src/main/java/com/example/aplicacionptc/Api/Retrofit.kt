@@ -1,5 +1,6 @@
 package com.example.aplicacionptc.Api
 
+import com.example.aplicacionptc.Controllers.Admistrador.Caso.ControladorCaso
 import com.example.aplicacionptc.Controllers.Admistrador.Cliente.ControladorCliente
 import com.example.aplicacionptc.Controllers.Admistrador.Contrato.ControladorContrato
 import com.example.aplicacionptc.Controllers.Admistrador.Detective.ControladorDetective
@@ -31,6 +32,11 @@ object Retrofit {
     }
 
     val contratoInstance: ControladorContrato by lazy {
-        retrofit.create(ControladorContrato:: class.java)
+        retrofit.create(ControladorContrato::class.java)
+    }
+
+    val casoInstance: ControladorCaso by lazy {
+        retrofit.create(ControladorCaso::class.java)
+
     }
 }
