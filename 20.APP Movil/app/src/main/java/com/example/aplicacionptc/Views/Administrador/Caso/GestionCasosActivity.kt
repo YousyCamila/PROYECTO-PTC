@@ -141,8 +141,6 @@ class GestionCasosActivity : AppCompatActivity() {
         }
     }
 
-
-
     override fun onResume() {
         super.onResume()
         obtenerCasos()

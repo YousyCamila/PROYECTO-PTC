@@ -30,8 +30,6 @@ class CasosAdapter(
         holder.txtCliente.text = "Cliente: ${caso.idCliente?.nombres ?: ""} ${caso.idCliente?.apellidos ?: ""}"
         holder.txtDetective.text = "Detective: ${caso.idDetective?.nombres ?: ""} ${caso.idDetective?.apellidos ?: ""}"
 
-
-        // Mostrar el estado según si el caso está activo o no
         if (caso.activo == false) {
             holder.btnDesactivar.text = "Desactivado"
             holder.btnDesactivar.isEnabled = false
@@ -42,18 +40,16 @@ class CasosAdapter(
             holder.btnDesactivar.isEnabled = true
             holder.btnDesactivar.setBackgroundColor(ContextCompat.getColor(context, R.color.error_red))
             holder.btnDesactivar.setIconResource(R.drawable.ic_block)
+
+            holder.btnDesactivar.setOnClickListener {
+                onDesactivar(caso, position)
+            }
         }
 
-        // Evento del botón
-        holder.btnDesactivar.setOnClickListener {
-            // Cambia el estado del caso
-            caso.activo = false
-            // Actualiza solo ese ítem
-            notifyItemChanged(position)
+        holder.btnVerDetalles.setOnClickListener {
+            onVerDetalles(caso)
         }
     }
-
-
 
     override fun getItemCount(): Int = listaCasos.size
 
