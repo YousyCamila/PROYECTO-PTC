@@ -145,7 +145,7 @@ router.put('/:id', casoController.actualizarCaso);
  *       500:
  *         description: Error al desactivar el caso.
  */
-router.delete('/:id', casoController.desactivarCaso);
+router.patch('/:id', casoController.desactivarCaso);
 
 /**
  * @swagger

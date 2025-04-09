@@ -118,22 +118,30 @@ class GestionCasosActivity : AppCompatActivity() {
     }
 
     private fun desactivarCaso(caso: Caso, position: Int) {
-        controladorCaso.desactivarCaso(caso.id!!).enqueue(object : Callback<Void> {
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                if (response.isSuccessful) {
-                    listaCasos.removeAt(position)
-                    adapter.notifyItemRemoved(position)
-                    Toast.makeText(this@GestionCasosActivity, "Caso desactivado correctamente", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this@GestionCasosActivity, "Error al desactivar caso", Toast.LENGTH_SHORT).show()
-                }
-            }
+        caso.id?.let {
+            controladorCaso.desactivarCaso(it).enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        // Actualiza el campo 'activo' del objeto en memoria
+                        listaCasos[position].activo = false
+                        adapter.notifyItemChanged(position) // Refresca solo ese ítem
 
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-                Toast.makeText(this@GestionCasosActivity, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
-            }
-        })
+                        Toast.makeText(this@GestionCasosActivity, "Caso desactivado correctamente", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this@GestionCasosActivity, "Error al desactivar caso", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Toast.makeText(this@GestionCasosActivity, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+        } ?: run {
+            Toast.makeText(this, "ID del caso no válido", Toast.LENGTH_SHORT).show()
+        }
     }
+
+
 
     override fun onResume() {
         super.onResume()

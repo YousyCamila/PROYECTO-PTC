@@ -16,6 +16,8 @@
     <color name="amarilloCla">#F8E96A</color>
     <color name="red">#FF0000</color>
     <color name="dark_red">#B71C1C</color> <!-- Rojo oscuro al presionar -->
+    <color name="gray">#9E9E9E</color>
+
 
     <color name="light_gray">#D3D3D3</color>
 
