@@ -35,5 +35,41 @@
     </string-array>
 
 
+    <string name="clausulas_predefinidas">
+        <![CDATA[
+<b>1. Objeto del Contrato</b><br/>
+La presente cláusula tiene por finalidad establecer que la Agencia de Investigación Privada prestará al Cliente los servicios de investigación acordados, incluyendo pero no limitándose a: seguimiento, vigilancia, recolección de información, verificación de datos y entrega de informes, todo dentro del marco legal vigente.<br/><br/>
+
+<b>2. Confidencialidad</b><br/>
+Ambas partes se obligan a mantener en estricta confidencialidad toda la información, documentación, resultados y comunicaciones que se deriven del presente contrato. Esta obligación subsistirá aún después de la finalización del servicio.<br/><br/>
+
+<b>3. Duración del Contrato</b><br/>
+El presente contrato tendrá vigencia desde la fecha de su firma hasta la conclusión de la investigación, sin necesidad de prórroga automática. La Agencia informará al Cliente sobre el cierre del caso mediante la entrega del informe final.<br/><br/>
+
+<b>4. Honorarios y Forma de Pago</b><br/>
+La tarifa por los servicios será la indicada en el contrato firmado entre las partes. El Cliente se obliga a efectuar el pago en los plazos y condiciones allí establecidas, y la Agencia se reserva el derecho de suspender el servicio en caso de incumplimiento.<br/><br/>
+
+<b>5. Informes de Avance</b><br/>
+La Agencia entregará al Cliente informes periódicos sobre el desarrollo de la investigación, de forma escrita o verbal, según se considere más apropiado para el caso. La frecuencia de dichos informes será determinada por la Agencia según las circunstancias.<br/><br/>
+
+<b>6. Legalidad de las Actuaciones</b><br/>
+Todas las acciones realizadas por la Agencia en cumplimiento del presente contrato estarán sujetas a la legislación vigente. La Agencia no aceptará bajo ninguna circunstancia solicitudes que impliquen la comisión de actos ilícitos.<br/><br/>
+
+<b>7. No Garantía de Resultados</b><br/>
+La Agencia se compromete a aplicar sus mejores esfuerzos profesionales en el desarrollo de la investigación, pero no garantiza un resultado específico ni la obtención de determinada información, debido a la naturaleza incierta de este tipo de servicios.<br/><br/>
+
+<b>8. Colaboración del Cliente</b><br/>
+El Cliente se compromete a colaborar activamente con la Agencia, proporcionando toda la información requerida para la correcta ejecución del servicio. La falta de colaboración podrá afectar el desarrollo y resultados del trabajo.<br/><br/>
+
+<b>9. Terminación del Contrato</b><br/>
+El contrato podrá darse por terminado en cualquier momento por cualquiera de las partes, mediante notificación escrita. En caso de terminación anticipada, se liquidarán los servicios efectivamente prestados hasta la fecha de finalización.<br/><br/>
+
+<b>10. Jurisdicción y Ley Aplicable</b><br/>
+Para todos los efectos legales derivados de este contrato, las partes se someten a la jurisdicción de los tribunales de la ciudad donde se encuentra registrada la Agencia, renunciando a cualquier otro fuero que pudiera corresponderles.
+]]>
+    </string>
+
+
+
 </resources>
 

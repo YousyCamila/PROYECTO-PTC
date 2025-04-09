@@ -1,10 +1,13 @@
 package com.example.aplicacionptc.Views.Administrador.Contrato
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.HtmlCompat
 import com.example.aplicacionptc.Api.Retrofit
 import com.example.aplicacionptc.Controllers.Admistrador.Contrato.ControladorContrato
 import com.example.aplicacionptc.Controllers.Admistrador.Cliente.ControladorCliente
@@ -13,9 +16,11 @@ import com.example.aplicacionptc.Models.Administrador.Contrato.Contrato
 import com.example.aplicacionptc.R
 import com.example.ptc_app.Models.Administrador.Cliente.Clientes
 import com.example.ptc_app.Models.Administrador.Detective.Detectives
+import com.google.android.material.textfield.TextInputEditText
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Calendar
 
 class CrearContratoActivity : AppCompatActivity() {
 
@@ -26,7 +31,9 @@ class CrearContratoActivity : AppCompatActivity() {
     private lateinit var descripcionEditText: EditText
     private lateinit var estadoEditText: EditText
     private lateinit var crearContratoButton: Button
-    private lateinit var clausulasEditText: EditText
+    private lateinit var clausulasEditText: TextInputEditText
+    private lateinit var tarifaEditText: EditText
+
 
 
     private var clientesList = listOf<Clientes>()
@@ -49,6 +56,56 @@ class CrearContratoActivity : AppCompatActivity() {
         estadoEditText = findViewById(R.id.editText_estado)
         crearContratoButton = findViewById(R.id.button_crear_contrato)
         clausulasEditText = findViewById(R.id.editText_clausulas)
+        clausulasEditText.setText(getString(R.string.clausulas_predefinidas))
+        tarifaEditText = findViewById(R.id.editText_tarifa)
+
+
+
+        clausulasEditText.movementMethod = ScrollingMovementMethod()
+        clausulasEditText.setText(HtmlCompat.fromHtml(getString(R.string.clausulas_predefinidas), HtmlCompat.FROM_HTML_MODE_LEGACY))
+        clausulasEditText.setMovementMethod(ScrollingMovementMethod.getInstance())
+        clausulasEditText.setVerticalScrollBarEnabled(true)
+        clausulasEditText.isVerticalScrollBarEnabled = true
+        clausulasEditText.setHorizontallyScrolling(false)
+        clausulasEditText.isEnabled = false       // Desactiva entrada de texto
+        clausulasEditText.isFocusable = false     // No permite enfocar (ni el cursor)
+        clausulasEditText.isClickable = false     // No permite interacción
+
+
+
+        val calendario = Calendar.getInstance()
+        val anio = calendario.get(Calendar.YEAR)
+        val mes = calendario.get(Calendar.MONTH)
+        val dia = calendario.get(Calendar.DAY_OF_MONTH)
+
+// Formatear la fecha como dd/MM/yyyy
+        val fechaActual = String.format("%02d/%02d/%04d", dia, mes + 1, anio)
+        fechaInicioEditText.setText(fechaActual)
+
+// Desactivar edición y clics
+        fechaInicioEditText.isEnabled = false       // No permite escribir
+        fechaInicioEditText.isFocusable = false     // No permite seleccionar
+        fechaInicioEditText.isClickable = false     // No permite abrir ningún DatePicker
+
+        fechaFinalEditText.setOnClickListener {
+            val calendario = Calendar.getInstance()
+            val anio = calendario.get(Calendar.YEAR)
+            val mes = calendario.get(Calendar.MONTH)
+            val dia = calendario.get(Calendar.DAY_OF_MONTH)
+
+            val datePicker = DatePickerDialog(this, { _, year, month, dayOfMonth ->
+                val fechaSeleccionada = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+
+                fechaFinalEditText.setText(fechaSeleccionada)
+            }, anio, mes, dia)
+
+            datePicker.show()
+        }
+
+        estadoEditText.setText("Activo")
+        estadoEditText.isEnabled = false
+        estadoEditText.isFocusable = false
+        estadoEditText.isClickable = false
 
 
         obtenerClientes()
@@ -111,7 +168,22 @@ class CrearContratoActivity : AppCompatActivity() {
         val fechaInicio = fechaInicioEditText.text.toString()
         val fechaFinal = fechaFinalEditText.text.toString()
         val descripcion = descripcionEditText.text.toString()
-        val tarifa = "200000" // Puedes reemplazar con un campo si quieres ingresarla desde el layout
+        val tarifaTexto = tarifaEditText.text.toString()
+
+        if (tarifaTexto.isBlank()) {
+            Toast.makeText(this, "La tarifa no puede estar vacía", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+// validación de número (opcional pero recomendada)
+        val tarifa = try {
+            tarifaTexto.toBigDecimal().toPlainString()
+        } catch (e: NumberFormatException) {
+            Toast.makeText(this, "Tarifa inválida", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+
         val estado = true
         val clausulas = clausulasEditText.text.toString()
 
@@ -135,7 +207,7 @@ class CrearContratoActivity : AppCompatActivity() {
                     Toast.makeText(this@CrearContratoActivity, "Contrato creado con éxito", Toast.LENGTH_SHORT).show()
                     finish()
                 } else {
-                    Toast.makeText(this@CrearContratoActivity, "Error al crear contrato", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CrearContratoActivity, "Error al crear contrato ${response.errorBody()?.string()}", Toast.LENGTH_SHORT).show()
                 }
             }
 

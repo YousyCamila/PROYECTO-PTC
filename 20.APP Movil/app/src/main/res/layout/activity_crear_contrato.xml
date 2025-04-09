@@ -74,6 +74,8 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="Cliente"
+                    android:textStyle="bold"
                     android:hint="Seleccionar Cliente">
 
                     <Spinner
@@ -97,30 +99,44 @@
 
                 <!-- Fecha Inicio -->
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilFechaNacimiento"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Fecha de Inicio"
-                    android:layout_marginTop="16dp">
+                    android:layout_marginBottom="24dp"
+                    android:hint="Fecha de inicio"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_calendar">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editText_fecha_inicio"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="date" />
+                        android:inputType="none"
+                        android:focusable="false"
+                        android:maxLines="1" />
+
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Fecha Final -->
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilFechaFinal"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Fecha de Finalización"
-                    android:layout_marginTop="16dp">
+                    android:layout_marginBottom="24dp"
+                    android:hint="Fecha de finalización"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_calendar">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editText_fecha_final"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="date" />
+                        android:inputType="none"
+                        android:focusable="false"
+                        android:maxLines="1" />
+
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Descripción -->
@@ -136,21 +152,54 @@
                         android:layout_height="wrap_content"
                         android:inputType="textMultiLine"
                         android:minLines="2" />
+
                 </com.google.android.material.textfield.TextInputLayout>
+
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Clausulas"
+                    android:hint="Cláusulas"
                     android:layout_marginTop="16dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editText_clausulas"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textMultiLine"
-                        android:minLines="2" />
+                        android:layout_height="180dp"
+                        android:inputType="none"
+                        android:gravity="top|start"
+                        android:scrollbars="vertical"
+                        android:overScrollMode="always"
+                        android:maxLines="10"
+
+                        android:background="@android:color/transparent"
+                        android:textColor="@android:color/black"
+                        android:padding="8dp"
+                        android:enabled="true"
+                        android:focusable="false"
+                        android:clickable="false" />
+
                 </com.google.android.material.textfield.TextInputLayout>
+
+
+                <!-- Tarifa -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_tarifa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="Tarifa"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editText_tarifa"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:maxLines="1"
+                        android:hint="Ingrese la tarifa del servicio" />
+                </com.google.android.material.textfield.TextInputLayout>
+
 
                 <!-- Estado (puede ocultarse si es fijo en true) -->
                 <com.google.android.material.textfield.TextInputLayout
