@@ -11,7 +11,7 @@ data class Detectives(
     val nombres: String,
     val apellidos: String,
     val correo: String,
-    val fechaNacimiento: String,
+    val fechaNacimiento: String? = null,
     val activo: Boolean,
     val especialidad: List<String>,  // Este es un campo nuevo para la especialidad
     //val casos: List<Caso>,           // Relación con los casos

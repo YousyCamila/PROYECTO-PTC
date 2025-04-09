@@ -3,6 +3,7 @@ package com.example.aplicacionptc.Views.Administrador.Caso
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -160,5 +161,6 @@ class GestionCasosActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         obtenerCasos()
+        Log.d("Lifecycle", "onResume llamado")
     }
 }

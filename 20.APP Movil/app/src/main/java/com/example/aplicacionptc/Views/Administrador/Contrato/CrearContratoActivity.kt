@@ -1,149 +1,219 @@
-//package com.example.aplicacionptc.Views.Administrador.Contrato
-//
-//import android.annotation.SuppressLint
-//import android.app.DatePickerDialog
-//import android.content.Intent
-//import android.os.Bundle
-//import android.widget.ArrayAdapter
-//import android.widget.Button
-//import android.widget.EditText
-//import android.widget.ImageButton
-//import android.widget.Toast
-//import androidx.activity.enableEdgeToEdge
-//import androidx.appcompat.app.AppCompatActivity
-//import androidx.core.view.ViewCompat
-//import androidx.core.view.WindowInsetsCompat
-//import com.example.aplicacionptc.Controllers.Admistrador.Contrato.ContratoController
-//import com.example.aplicacionptc.R
-//import com.example.ptc_app.Models.Administrador.Cliente.Clientes
-//import com.example.ptc_app.Models.Administrador.Contrato.ModelContrato
-//import com.example.ptc_app.Models.Administrador.Detective.Detectives
-//import com.google.android.material.button.MaterialButton
-//import com.google.android.material.textfield.MaterialAutoCompleteTextView
-//import java.text.SimpleDateFormat
-//import java.util.Calendar
-//import java.util.Date
-//import java.util.Locale
-//
-//class CrearContratoActivity : AppCompatActivity() {
-//
-//    @SuppressLint("MissingInflatedId", "WrongViewCast")
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
-//        setContentView(R.layout.activity_crear_contrato)
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
-//
-//        val spinnerCliente = findViewById<MaterialAutoCompleteTextView>(R.id.spinnerCliente)
-//        val spinnerDetective = findViewById<MaterialAutoCompleteTextView>(R.id.spinnerDetective)
-//
-//
-//        val etDescripcion = findViewById<EditText>(R.id.etDescripcion)
-//        val etFechaIni = findViewById<EditText>(R.id.etFechaIni)
-//        val etFechaFin = findViewById<EditText>(R.id.etFechaFin)
-//        val etClausulas = findViewById<EditText>(R.id.etClausulas)
-//        val etTarifa = findViewById<EditText>(R.id.etTarifa)
-//        val btnGuardarContrato = findViewById<MaterialButton>(R.id.btnGuardarContrato)
-//        val btnVolverHome = findViewById<ImageButton>(R.id.btnVolverHome)
-//
-//
-//        val adapterClientes = ArrayAdapter(
-//            this, android.R.layout.simple_dropdown_item_1line,
-//            Clientes.clientes.map { it.nombre }
-//        )
-//        spinnerCliente.setAdapter(adapterClientes)
-//
-//        val adapterDetectives = ArrayAdapter(
-//            this, android.R.layout.simple_dropdown_item_1line,
-//            Detectives.detectives.map { it.nombre }
-//        )
-//        spinnerDetective.setAdapter(adapterDetectives)
-//
-//
-//        val calendar = Calendar.getInstance()
-//        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-//        etFechaIni.setText(dateFormat.format(calendar.time))
-//        etFechaIni.isFocusable = false
-//        etFechaIni.isClickable = true
-//
-//        etFechaIni.setOnClickListener {
-//            val datePickerDialog = DatePickerDialog(this, { _, y, m, d ->
-//                etFechaIni.setText(String.format("%02d/%02d/%04d", d, m + 1, y))
-//            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
-//            datePickerDialog.show()
-//        }
-//
-//
-//        etFechaFin.isFocusable = false
-//        etFechaFin.isClickable = true
-//        etFechaFin.setOnClickListener {
-//            val datePickerDialog = DatePickerDialog(this, { _, y, m, d ->
-//                etFechaFin.setText(String.format("%02d/%02d/%04d", d, m + 1, y))
-//            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
-//            datePickerDialog.show()
-//        }
-//
-//
-//        btnGuardarContrato.setOnClickListener {
-//            val descripcion = etDescripcion.text.toString().trim()
-//            val fechaInicioStr = etFechaIni.text.toString().trim()
-//            val fechaCierreStr = etFechaFin.text.toString().trim()
-//            val clausulas = etClausulas.text.toString().trim()
-//            val tarifaStr = etTarifa.text.toString().trim()
-//
-//            if (descripcion.isEmpty() || fechaInicioStr.isEmpty() || fechaCierreStr.isEmpty() || clausulas.isEmpty() || tarifaStr.isEmpty()) {
-//                Toast.makeText(this, "Llene todos los campos, POR FAVOR", Toast.LENGTH_SHORT).show()
-//                return@setOnClickListener
-//            }
-//
-//            val formatoFecha = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-//            val fechaInicio = formatoFecha.parse(fechaInicioStr) ?: Date()
-//            val fechaCierre = formatoFecha.parse(fechaCierreStr) ?: Date()
-//            val tarifa = tarifaStr.toFloatOrNull() ?: 0f
-//
-//            val nombreCliente = spinnerCliente.text.toString()
-//            val clienteSeleccionado = Clientes.clientes.firstOrNull { it.nombre == nombreCliente }
-//
-//            val nombreDetective = spinnerDetective.text.toString()
-//            val detectiveSeleccionado = Detectives.detectives.firstOrNull { it.nombre == nombreDetective }
-//
-//            if (clienteSeleccionado == null || detectiveSeleccionado == null) {
-//                Toast.makeText(this, "Seleccione un cliente y un detective válidos", Toast.LENGTH_SHORT).show()
-//                return@setOnClickListener
-//            }
-//
-//            val nuevoContrato = ModelContrato(
-//                descripcionServicio = descripcion,
-//                fechaInicio = fechaInicio,
-//                fechaCierre = fechaCierre,
-//                clausulas = clausulas,
-//                tarifa = tarifa,
-//                estado = true,
-//                cliente = clienteSeleccionado,
-//                detective = detectiveSeleccionado
-//            )
-//
-//
-//            ContratoController.listaContratos.add(nuevoContrato)
-//
-//            Toast.makeText(this, "Contrato creado exitosamente", Toast.LENGTH_SHORT).show()
-//
-//
-//            etDescripcion.text.clear()
-//            etFechaIni.setText(dateFormat.format(Date()))
-//            etFechaFin.text.clear()
-//            etClausulas.text.clear()
-//            etTarifa.text.clear()
-//        }
-//
-//
-//        btnVolverHome.setOnClickListener {
-//            startActivity(Intent(this, HomeContratoActivity::class.java))
-//            finish()
-//        }
-//    }
-//}
+package com.example.aplicacionptc.Views.Administrador.Contrato
+
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
+import android.view.View
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.HtmlCompat
+import com.example.aplicacionptc.Api.Retrofit
+import com.example.aplicacionptc.Controllers.Admistrador.Contrato.ControladorContrato
+import com.example.aplicacionptc.Controllers.Admistrador.Cliente.ControladorCliente
+import com.example.aplicacionptc.Controllers.Admistrador.Detective.ControladorDetective
+import com.example.aplicacionptc.Models.Administrador.Contrato.Contrato
+import com.example.aplicacionptc.R
+import com.example.ptc_app.Models.Administrador.Cliente.Clientes
+import com.example.ptc_app.Models.Administrador.Detective.Detectives
+import com.google.android.material.textfield.TextInputEditText
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.Calendar
+
+class CrearContratoActivity : AppCompatActivity() {
+
+    private lateinit var clienteSpinner: Spinner
+    private lateinit var detectiveSpinner: Spinner
+    private lateinit var fechaInicioEditText: EditText
+    private lateinit var fechaFinalEditText: EditText
+    private lateinit var descripcionEditText: EditText
+    private lateinit var estadoEditText: EditText
+    private lateinit var crearContratoButton: Button
+    private lateinit var clausulasEditText: TextInputEditText
+    private lateinit var tarifaEditText: EditText
+
+
+
+    private var clientesList = listOf<Clientes>()
+    private var detectivesList = listOf<Detectives>()
+
+    private val apiClientes: ControladorCliente = Retrofit.clienteInstance
+    private val apiDetectives: ControladorDetective = Retrofit.detectiveInstance
+    private val apiContrato: ControladorContrato = Retrofit.contratoInstance
+
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_crear_contrato)
+
+        clienteSpinner = findViewById(R.id.spinner_cliente)
+        detectiveSpinner = findViewById(R.id.spinner_detective)
+        fechaInicioEditText = findViewById(R.id.editText_fecha_inicio)
+        fechaFinalEditText = findViewById(R.id.editText_fecha_final)
+        descripcionEditText = findViewById(R.id.editText_descripcion)
+        estadoEditText = findViewById(R.id.editText_estado)
+        crearContratoButton = findViewById(R.id.button_crear_contrato)
+        clausulasEditText = findViewById(R.id.editText_clausulas)
+        clausulasEditText.setText(getString(R.string.clausulas_predefinidas))
+        tarifaEditText = findViewById(R.id.editText_tarifa)
+
+
+
+        clausulasEditText.movementMethod = ScrollingMovementMethod()
+        clausulasEditText.setText(HtmlCompat.fromHtml(getString(R.string.clausulas_predefinidas), HtmlCompat.FROM_HTML_MODE_LEGACY))
+        clausulasEditText.setMovementMethod(ScrollingMovementMethod.getInstance())
+        clausulasEditText.setVerticalScrollBarEnabled(true)
+        clausulasEditText.isVerticalScrollBarEnabled = true
+        clausulasEditText.setHorizontallyScrolling(false)
+        clausulasEditText.isEnabled = false       // Desactiva entrada de texto
+        clausulasEditText.isFocusable = false     // No permite enfocar (ni el cursor)
+        clausulasEditText.isClickable = false     // No permite interacción
+
+
+
+        val calendario = Calendar.getInstance()
+        val anio = calendario.get(Calendar.YEAR)
+        val mes = calendario.get(Calendar.MONTH)
+        val dia = calendario.get(Calendar.DAY_OF_MONTH)
+
+// Formatear la fecha como dd/MM/yyyy
+        val fechaActual = String.format("%02d/%02d/%04d", dia, mes + 1, anio)
+        fechaInicioEditText.setText(fechaActual)
+
+// Desactivar edición y clics
+        fechaInicioEditText.isEnabled = false       // No permite escribir
+        fechaInicioEditText.isFocusable = false     // No permite seleccionar
+        fechaInicioEditText.isClickable = false     // No permite abrir ningún DatePicker
+
+        fechaFinalEditText.setOnClickListener {
+            val calendario = Calendar.getInstance()
+            val anio = calendario.get(Calendar.YEAR)
+            val mes = calendario.get(Calendar.MONTH)
+            val dia = calendario.get(Calendar.DAY_OF_MONTH)
+
+            val datePicker = DatePickerDialog(this, { _, year, month, dayOfMonth ->
+                val fechaSeleccionada = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+
+                fechaFinalEditText.setText(fechaSeleccionada)
+            }, anio, mes, dia)
+
+            datePicker.show()
+        }
+
+        estadoEditText.setText("Activo")
+        estadoEditText.isEnabled = false
+        estadoEditText.isFocusable = false
+        estadoEditText.isClickable = false
+
+
+        obtenerClientes()
+        obtenerDetectives()
+
+        crearContratoButton.setOnClickListener {
+            crearContrato()
+        }
+    }
+
+    private fun obtenerClientes() {
+        apiClientes.obtenerClientes().enqueue(object : Callback<List<Clientes>> {
+            override fun onResponse(call: Call<List<Clientes>>, response: Response<List<Clientes>>) {
+                if (response.isSuccessful) {
+                    clientesList = response.body() ?: emptyList()
+                    val nombresClientes = clientesList.map { it.nombres }
+                    val adapter = ArrayAdapter(this@CrearContratoActivity, android.R.layout.simple_spinner_item, nombresClientes)
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    clienteSpinner.adapter = adapter
+                } else {
+                    Toast.makeText(this@CrearContratoActivity, "Error al cargar clientes", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Clientes>>, t: Throwable) {
+                Toast.makeText(this@CrearContratoActivity, "Fallo: ${t.message}", Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    private fun obtenerDetectives() {
+        apiDetectives.obtenerDetectives().enqueue(object : Callback<List<Detectives>> {
+            override fun onResponse(call: Call<List<Detectives>>, response: Response<List<Detectives>>) {
+                if (response.isSuccessful) {
+                    detectivesList = response.body() ?: emptyList()
+                    val nombresDetectives = detectivesList.map { it.nombres }
+                    val adapter = ArrayAdapter(this@CrearContratoActivity, android.R.layout.simple_spinner_item, nombresDetectives)
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    detectiveSpinner.adapter = adapter
+                } else {
+                    Toast.makeText(this@CrearContratoActivity, "Error al cargar detectives", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Detectives>>, t: Throwable) {
+                Toast.makeText(this@CrearContratoActivity, "Fallo: ${t.message}", Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    private fun crearContrato() {
+        val clienteSeleccionado = clientesList.getOrNull(clienteSpinner.selectedItemPosition)
+        val detectiveSeleccionado = detectivesList.getOrNull(detectiveSpinner.selectedItemPosition)
+
+        if (clienteSeleccionado == null || detectiveSeleccionado == null) {
+            Toast.makeText(this, "Debes seleccionar un cliente y un detective", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val fechaInicio = fechaInicioEditText.text.toString()
+        val fechaFinal = fechaFinalEditText.text.toString()
+        val descripcion = descripcionEditText.text.toString()
+        val tarifaTexto = tarifaEditText.text.toString()
+
+        if (tarifaTexto.isBlank()) {
+            Toast.makeText(this, "La tarifa no puede estar vacía", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+// validación de número (opcional pero recomendada)
+        val tarifa = try {
+            tarifaTexto.toBigDecimal().toPlainString()
+        } catch (e: NumberFormatException) {
+            Toast.makeText(this, "Tarifa inválida", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+
+        val estado = true
+        val clausulas = clausulasEditText.text.toString()
+
+        val nuevoContrato = Contrato(
+            descripcionServicio = descripcion,
+            fechaInicio = fechaInicio,
+            fechaCierre = fechaFinal,
+            clausulas = clausulas,
+            tarifa = tarifa,
+            estado = estado,
+            idCliente = clienteSeleccionado.id,
+            nombreCliente = clienteSeleccionado.nombres,
+            idDetective = detectiveSeleccionado.id,
+            nombreDetective = detectiveSeleccionado.nombres
+        )
+
+
+        apiContrato.crearContrato(nuevoContrato).enqueue(object : Callback<Contrato> {
+            override fun onResponse(call: Call<Contrato>, response: Response<Contrato>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(this@CrearContratoActivity, "Contrato creado con éxito", Toast.LENGTH_SHORT).show()
+                    finish()
+                } else {
+                    Toast.makeText(this@CrearContratoActivity, "Error al crear contrato ${response.errorBody()?.string()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Contrato>, t: Throwable) {
+                Toast.makeText(this@CrearContratoActivity, "Fallo: ${t.message}", Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+}
