@@ -11,11 +11,11 @@
     <string name="volver">Volver</string>
 
 
-        <string name="nombre_caso">Caso: %s</string>
-        <string name="cliente">Cliente: %s</string>
-        <string name="detective">Detective: %s</string>
-        <string name="desactivar">Desactivar</string>
-        <string name="desactivado">Desactivado</string>
+    <string name="nombre_caso">Caso: %s</string>
+    <string name="cliente">Cliente: %s</string>
+    <string name="detective">Detective: %s</string>
+    <string name="desactivar">Desactivar</string>
+    <string name="desactivado">Desactivado</string>
     <string name="fechaCreacion">Fecha de creación: %s</string>
 
     <string-array name="especialidades_array">

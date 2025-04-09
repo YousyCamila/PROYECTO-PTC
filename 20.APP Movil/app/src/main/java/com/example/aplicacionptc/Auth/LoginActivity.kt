@@ -10,6 +10,7 @@ import com.example.aplicacionptc.Api.Retrofit
 import com.example.aplicacionptc.Auth.RegisterActivity
 import com.example.aplicacionptc.Models.Administrador.Usuario.AuthResponse
 import com.example.aplicacionptc.Models.Administrador.Usuario.User
+import com.example.aplicacionptc.Views.Detective.HomeDetectiveActivity
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import retrofit2.Call
 import retrofit2.Callback
@@ -60,6 +61,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+
     private fun loginUser(email: String, password: String, role: String) {
         if (!isValidEmail(email)) {
             Toast.makeText(this, "Correo inválido", Toast.LENGTH_SHORT).show()
@@ -89,10 +91,30 @@ class LoginActivity : AppCompatActivity() {
                     // Guardar sesión
                     saveSession(authResponse.accessToken, authResponse.role ?: "")
 
+                    val user = authResponse.user
+                    if (user != null) {
+                        val prefs = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE).edit()
+                        prefs.putString("username", user.username)
+                        prefs.putString("userEmail", user.email)
+                        prefs.putString("userRole", user.role)
+                        prefs.putString("userId", user.id)
+                        prefs.apply()
+                    }
+                    Log.d("UserData", "Usuario logueado: $user")
+
+
+
+
+
                     Log.d("LoginSuccess", "Token: ${authResponse.accessToken}, Role: ${authResponse.role}")
 
                     // Ir a HomeActivity
-                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    when (authResponse.role) {
+                        "administrador" -> startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        "detective" -> startActivity(Intent(this@LoginActivity, HomeDetectiveActivity::class.java))
+                        //"cliente" -> startActivity(Intent(this@LoginActivity, HomeClienteActivity::class.java))
+                        else -> Toast.makeText(this@LoginActivity, "Rol desconocido", Toast.LENGTH_SHORT).show()
+                    }
                     finish()
                 } else {
                     val errorMsg = response.errorBody()?.string() ?: "Error desconocido"
