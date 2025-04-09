@@ -6,6 +6,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.example.aplicacionptc.Api.Retrofit
+import com.example.aplicacionptc.Models.Administrador.Caso.CasoRequest
 import com.example.aplicacionptc.R
 import com.example.ptc_app.Models.Administrador.Caso.Caso
 import com.example.ptc_app.Models.Administrador.Cliente.Clientes
@@ -46,6 +47,24 @@ class CrearCasoActivity : AppCompatActivity() {
 
         btnVolver.setOnClickListener { finish() }
         btnGuardar.setOnClickListener { crearCaso() }
+
+        // Mostrar desplegable al enfocar los campos
+        autoCliente.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) (v as AutoCompleteTextView).showDropDown()
+        }
+
+        autoDetective.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) (v as AutoCompleteTextView).showDropDown()
+        }
+
+        // Mostrar desplegable al hacer clic también
+        autoCliente.setOnClickListener {
+            autoCliente.showDropDown()
+        }
+
+        autoDetective.setOnClickListener {
+            autoDetective.showDropDown()
+        }
 
         cargarClientes()
         cargarDetectives()
@@ -102,10 +121,10 @@ class CrearCasoActivity : AppCompatActivity() {
             return
         }
 
-        val nuevoCaso = Caso(
+        val nuevoCaso = CasoRequest(
             nombreCaso = nombreCaso,
-            idCliente = clienteSeleccionado,
-            idDetective = detectiveSeleccionado,
+            idCliente = clienteSeleccionado!!.id.toString(),
+            idDetective = detectiveSeleccionado!!.id.toString(),
             activo = activo
         )
 
@@ -121,7 +140,9 @@ class CrearCasoActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<Caso>, t: Throwable) {
-                Toast.makeText(this@CrearCasoActivity, "Error de red: ${t.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@CrearCasoActivity, "Caso creado exitosamente", Toast.LENGTH_SHORT).show()
+                setResult(Activity.RESULT_OK)
+                finish()
             }
         })
     }

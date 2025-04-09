@@ -80,7 +80,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add"
         android:contentDescription="@string/crear_caso"
-        app:tint="@android:color/white"
+        app:tint="@color/dark_blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="16dp"
