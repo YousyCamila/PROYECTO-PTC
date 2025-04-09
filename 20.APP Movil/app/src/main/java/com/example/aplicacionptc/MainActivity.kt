@@ -48,9 +48,9 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        btnCasos.setOnClickListener {
-            startActivity(Intent(this, GestionCasosActivity::class.java))
-        }
+        val intent = Intent(this, GestionCasosActivity::class.java)
+        startActivity(intent)
+
 
 //        btnContratos.setOnClickListener {
 //            startActivity(Intent(this, HomeContratoActivity::class.java))

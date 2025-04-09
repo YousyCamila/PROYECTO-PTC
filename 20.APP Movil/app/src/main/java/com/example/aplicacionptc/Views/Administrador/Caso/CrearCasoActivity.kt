@@ -121,12 +121,33 @@ class CrearCasoActivity : AppCompatActivity() {
             return
         }
 
+        val idCliente = clienteSeleccionado!!.id
+        val idDetective = detectiveSeleccionado!!.id
+
+        // Validar IDs tipo ObjectId de Mongo (24 caracteres hex)
+        val objectIdRegex = Regex("^[a-fA-F0-9]{24}$")
+
+        if (idCliente.isNullOrEmpty() || !objectIdRegex.matches(idCliente)) {
+            Toast.makeText(this, "ID del cliente no es válido", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (idDetective.isNullOrEmpty() || !objectIdRegex.matches(idDetective)) {
+            Toast.makeText(this, "ID del detective no es válido", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val nuevoCaso = CasoRequest(
             nombreCaso = nombreCaso,
-            idCliente = clienteSeleccionado!!.id.toString(),
-            idDetective = detectiveSeleccionado!!.id.toString(),
+            idCliente = idCliente,
+            idDetective = idDetective,
             activo = activo
         )
+
+        // Log del JSON que se enviará
+        val gson = com.google.gson.Gson()
+        val json = gson.toJson(nuevoCaso)
+        android.util.Log.d("CASO_JSON", json)
 
         controladorCaso.crearCaso(nuevoCaso).enqueue(object : Callback<Caso> {
             override fun onResponse(call: Call<Caso>, response: Response<Caso>) {
@@ -135,14 +156,13 @@ class CrearCasoActivity : AppCompatActivity() {
                     setResult(Activity.RESULT_OK)
                     finish()
                 } else {
-                    Toast.makeText(this@CrearCasoActivity, "Error al crear el caso", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CrearCasoActivity, "Error al crear el caso: ${response.code()}", Toast.LENGTH_LONG).show()
+                    android.util.Log.e("CASO_ERROR", response.errorBody()?.string() ?: "Error desconocido")
                 }
             }
 
             override fun onFailure(call: Call<Caso>, t: Throwable) {
-                Toast.makeText(this@CrearCasoActivity, "Caso creado exitosamente", Toast.LENGTH_SHORT).show()
-                setResult(Activity.RESULT_OK)
-                finish()
+                Toast.makeText(this@CrearCasoActivity, "Fallo en la conexión: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
