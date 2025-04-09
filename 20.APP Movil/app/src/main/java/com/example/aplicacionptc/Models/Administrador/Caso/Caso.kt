@@ -15,7 +15,7 @@ data class Caso(
     val idCliente: Clientes?,
 
     @SerializedName("idDetective")
-    val idDetective: Detectives? = null, // opcional
+    val idDetective: Detectives?, // opcional
 
     //@SerializedName("evidencias")
     //val evidencias: List<String>? = null, // opcional
@@ -30,5 +30,5 @@ data class Caso(
     //val historial: List<String>? = null, // opcional
 
     @SerializedName("activo")
-    val activo: Boolean? = true // opcional con valor por defecto
+    var activo: Boolean? = true // opcional con valor por defecto
 )

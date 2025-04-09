@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ptc_app.Models.Administrador.Caso.Caso
 import com.example.aplicacionptc.R
 import com.google.android.material.button.MaterialButton
+import androidx.core.content.ContextCompat
 
 class CasosAdapter(
     private val context: Context,
@@ -25,23 +26,33 @@ class CasosAdapter(
     override fun onBindViewHolder(holder: CasoViewHolder, position: Int) {
         val caso = listaCasos[position]
 
-        holder.txtNombreCaso.text = "Caso: ${caso.nombreCaso}"
-
-        val nombreCliente = "${caso.idCliente?.nombres ?: "Desconocido"} ${caso.idCliente?.apellidos ?: ""}"
-        val nombreDetective = "${caso.idDetective?.nombres ?: "Desconocido"} ${caso.idDetective?.apellidos ?: ""}"
-
-        holder.txtCliente.text = "Cliente: $nombreCliente"
-        holder.txtDetective.text = "Detective: $nombreDetective"
+        holder.txtNombreCaso.text = caso.nombreCaso
+        holder.txtCliente.text = "Cliente: ${caso.idCliente?.nombres ?: ""} ${caso.idCliente?.apellidos ?: ""}"
+        holder.txtDetective.text = "Detective: ${caso.idDetective?.nombres ?: ""} ${caso.idDetective?.apellidos ?: ""}"
 
 
-        holder.btnVerDetalles.setOnClickListener {
-            onVerDetalles(caso)
+        // Mostrar el estado según si el caso está activo o no
+        if (caso.activo == false) {
+            holder.btnDesactivar.text = "Desactivado"
+            holder.btnDesactivar.isEnabled = false
+            holder.btnDesactivar.setBackgroundColor(ContextCompat.getColor(context, R.color.gray))
+            holder.btnDesactivar.setIconResource(R.drawable.ic_block_gray)
+        } else {
+            holder.btnDesactivar.text = "Desactivar"
+            holder.btnDesactivar.isEnabled = true
+            holder.btnDesactivar.setBackgroundColor(ContextCompat.getColor(context, R.color.error_red))
+            holder.btnDesactivar.setIconResource(R.drawable.ic_block)
         }
 
+        // Evento del botón
         holder.btnDesactivar.setOnClickListener {
-            onDesactivar(caso, position)
+            // Cambia el estado del caso
+            caso.activo = false
+            // Actualiza solo ese ítem
+            notifyItemChanged(position)
         }
     }
+
 
 
     override fun getItemCount(): Int = listaCasos.size
