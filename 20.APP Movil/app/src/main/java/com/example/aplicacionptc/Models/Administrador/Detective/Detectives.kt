@@ -3,6 +3,7 @@ package com.example.ptc_app.Models.Administrador.Detective
 import Persona.Personas
 import com.example.aplicacionptc.Models.Administrador.Caso.CasoResumen
 import com.example.aplicacionptc.Models.Administrador.Contrato.Contrato
+import com.example.aplicacionptc.Models.Administrador.Contrato.ContratoResumen
 import com.example.ptc_app.Models.Administrador.Caso.Caso
 import com.google.gson.annotations.SerializedName
 
@@ -21,5 +22,5 @@ data class Detectives(
 // Relación con los casos
     //val historialCasos: List<HistorialCaso>, // Relación con el historial de casos
     //val registroCaso: List<RegistroCaso>, // Relación con el registro de casos
-    val contratos: List<Contrato> ? = null// Relación con los contratos
+    val contratos: List<ContratoResumen> ? = null// Relación con los contratos
 )

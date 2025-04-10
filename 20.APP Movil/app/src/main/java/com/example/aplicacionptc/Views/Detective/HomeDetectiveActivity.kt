@@ -8,10 +8,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.example.aplicacionptc.Api.Retrofit
 import com.example.aplicacionptc.Models.Administrador.Caso.CasoResumen
 import com.example.ptc_app.Models.Administrador.Caso.Caso
 import com.example.aplicacionptc.Models.Administrador.Contrato.Contrato
+import com.example.aplicacionptc.Models.Administrador.Contrato.ContratoResumen
 import com.example.ptc_app.Models.Administrador.Detective.Detectives
 import com.example.aplicacionptc.R
 import com.google.gson.Gson
@@ -26,8 +28,8 @@ class HomeDetectiveActivity : AppCompatActivity() {
     private lateinit var emailTextView: TextView
     private lateinit var rolTextView: TextView
     private lateinit var idTextView: TextView
-    private lateinit var casosLayout: LinearLayout
-    private lateinit var contratosLayout: LinearLayout
+    private lateinit var casosLayout: RecyclerView
+    private lateinit var contratosLayout: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,9 +75,10 @@ class HomeDetectiveActivity : AppCompatActivity() {
                     Toast.makeText(this@HomeDetectiveActivity, "Fallo de red: ${t.message}", Toast.LENGTH_SHORT).show()
                 }
             })
-        }}
+        }
+    }
 
-            // Obtener el detective por correo
+    // Obtener el detective por correo
     private fun obtenerDetectivePorCorreo(correo: String) {
         Log.d("HOME_DETECTIVE", "Llamando a la API para obtener detective con correo: $correo")
         val call = Retrofit.detectiveInstance.buscarDetectivePorCorreo(correo)
@@ -91,7 +94,8 @@ class HomeDetectiveActivity : AppCompatActivity() {
                         mostrarContratos(it.contratos ?: emptyList())
                     }
                 } else {
-                    Toast.makeText(this@HomeDetectiveActivity, "Error: Detective no encontrado", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@HomeDetectiveActivity, "Error: Detective no encontrado", Toast.LENGTH_SHORT)
+                        .show()
                     Log.e("HOME_DETECTIVE", "Error al obtener detective. Código: ${response.code()}")
                 }
             }
@@ -149,35 +153,27 @@ class HomeDetectiveActivity : AppCompatActivity() {
     }
 
 
-    // Mostrar los contratos asociados al detective
     @SuppressLint("SetTextI18n")
-    private fun mostrarContratos(contratos: List<Contrato>) {
+    private fun mostrarContratos(contratos: List<ContratoResumen>) {
         contratosLayout.removeAllViews()
 
         if (contratos.isEmpty()) {
-            val texto = TextView(this)
-            texto.text = "No hay contratos registrados."
+            val texto = TextView(this).apply {
+                text = "No hay contratos registrados."
+                textSize = 16f
+                setPadding(16, 16, 16, 16)
+            }
             contratosLayout.addView(texto)
         } else {
             for (contrato in contratos) {
-                val contratoView = TextView(this)
-                val estado = if (contrato.estado) {
-                    "Activo"
-                } else {
-                    "Finalizado"
-                }
-
-                contratoView.text = """
-                    • Servicio: ${contrato.descripcionServicio}
-                    Cliente: ${contrato.nombreCliente ?: "Desconocido"}
-                    Inicio: ${contrato.fechaInicio}
-                    Cierre: ${contrato.fechaCierre}
-                    Tarifa: ${contrato.tarifa}
-                    Estado: $estado
+                val contratoView = TextView(this).apply {
+                    text = """
+                    • Servicio: ${contrato.descripcionServicio ?: "Servicio no especificado"}
+                    ID: ${contrato.id ?: "ID no disponible"}
                 """.trimIndent()
-
-                contratoView.textSize = 16f
-                contratoView.setPadding(8, 8, 8, 16)
+                    textSize = 16f
+                    setPadding(8, 8, 8, 16)
+                }
                 contratosLayout.addView(contratoView)
             }
         }
