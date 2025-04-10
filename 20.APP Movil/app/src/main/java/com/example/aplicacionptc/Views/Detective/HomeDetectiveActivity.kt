@@ -2,14 +2,15 @@ package com.example.aplicacionptc.Views.Detective
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.example.aplicacionptc.Api.Retrofit
+import com.example.aplicacionptc.Controllers.Admistrador.Detective.ServiceDetective
 import com.example.aplicacionptc.Models.Administrador.Caso.CasoResumen
 import com.example.ptc_app.Models.Administrador.Caso.Caso
 import com.example.aplicacionptc.Models.Administrador.Contrato.Contrato
@@ -28,8 +29,8 @@ class HomeDetectiveActivity : AppCompatActivity() {
     private lateinit var emailTextView: TextView
     private lateinit var rolTextView: TextView
     private lateinit var idTextView: TextView
-    private lateinit var casosLayout: RecyclerView
-    private lateinit var contratosLayout: RecyclerView
+    private lateinit var casosLayout: LinearLayout
+    private lateinit var contratosLayout: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,6 +108,8 @@ class HomeDetectiveActivity : AppCompatActivity() {
         })
     }
 
+
+
     // Mostrar los datos del detective en la UI
     private fun mostrarInformacion(detective: Detectives) {
         val nombreCompleto = "${detective.nombres} ${detective.apellidos}"
@@ -130,24 +133,39 @@ class HomeDetectiveActivity : AppCompatActivity() {
             }
             casosLayout.addView(texto)
         } else {
-            for (caso in casos) {
-                Log.d("HOME_DETECTIVE", "Caso: $caso")
+            val serviceDetective = ServiceDetective()
 
-                val nombreCaso = caso.nombre ?: "Sin nombre"
-                val estado = caso.estado ?: "Activo"
-                val idCaso = caso.id ?: "Sin ID"
+            for (casoResumen in casos) {
+                val idCaso = casoResumen.id ?: continue
 
-                val casoView = TextView(this).apply {
-                    text = """
-                    Nombre del caso: $nombreCaso
-                    ID del caso: $idCaso
-                    Estado: $estado
-                """.trimIndent()
-                    textSize = 16f
-                    setPadding(16, 16, 16, 24)
+                serviceDetective.obtenerCasoYCliente(idCaso) { casoCompleto, clienteNombre ->
+                    if (casoCompleto != null && clienteNombre != null) {
+                        val textoFinal = """
+                        Nombre del caso: ${casoCompleto.nombreCaso}
+                        Cliente: $clienteNombre
+                        Estado: ${if (casoCompleto.activo == true) "Activo" else "Inactivo"}
+                    """.trimIndent()
+
+                        val casoView = TextView(this).apply {
+                            text = textoFinal
+                            textSize = 16f
+                            setPadding(16, 16, 16, 24)
+                            setOnClickListener {
+                                val intent = Intent(this@HomeDetectiveActivity, DetalleCasoActivity::class.java)
+                                intent.putExtra("casoJson", Gson().toJson(casoCompleto))
+                                intent.putExtra("clienteNombre", clienteNombre)
+                                startActivity(intent)
+                            }
+                        }
+
+
+                        runOnUiThread {
+                            casosLayout.addView(casoView)
+                        }
+                    } else {
+                        Log.e("HOME_DETECTIVE", "No se pudo cargar el caso o cliente.")
+                    }
                 }
-
-                casosLayout.addView(casoView)
             }
         }
     }
