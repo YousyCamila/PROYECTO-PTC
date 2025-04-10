@@ -23,7 +23,9 @@ class HomeContratoActivity : AppCompatActivity() {
         }
 
         val btncrearContrato = findViewById<Button>(R.id.btnCrearContrato)
+
         // val btnlistarContratos = findViewById<Button>(R.id.btnListarContratos)
+
         val volverDashboard = findViewById<Button>(R.id.btnVolverDashboard)
 
         btncrearContrato.setOnClickListener {
@@ -31,8 +33,9 @@ class HomeContratoActivity : AppCompatActivity() {
         }
 
         //btnlistarContratos.setOnClickListener {
+
         //  startActivity(Intent(this, ListarContratoActivity::class.java))
-        //}
+
 
         volverDashboard.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))

@@ -6,21 +6,23 @@ import com.example.aplicacionptc.Models.Administrador.Contrato.Contrato
 
 interface ControladorContrato {
 
-    @POST("contratos")
-    fun crearContrato(@Body contrato: Contrato): Call<Contrato>
 
-    @GET("contratos")
-    fun listarContratos(): Call<List<Contrato>>
+        @POST("contratos")
+        fun crearContrato(@Body contrato: Contrato): Call<Contrato>
 
-    @GET("contratos/{id}")
-    fun buscarContratoPorId(@Path("id") id: String): Call<Contrato>
+        @GET("contratos")
+        fun listarContratos(): Call<List<Contrato>>
 
-    @PUT("contratos/{id}")
-    fun actualizarContrato(@Path("id") id: String, @Body contrato: Contrato): Call<Contrato>
+        @GET("contratos/{id}")
+        fun buscarContratoPorId(@Path("id") id: String): Call<Contrato>
 
-    @PUT("contratos/{id}/desactivar")
-    fun desactivarContrato(@Path("id") id: String): Call<Void>
+        @PUT("contratos/{id}")
+        fun actualizarContrato(@Path("id") id: String, @Body contrato: Contrato): Call<Contrato>
 
-    @GET("contratos/detective/{id}")
-    fun listarContratosPorDetective(@Path("id") id: String): Call<List<Contrato>>
-}
+        @PUT("contratos/{id}/desactivar")
+        fun desactivarContrato(@Path("id") id: String): Call<Void>
+
+        @GET("contratos/detective/{id}")
+        fun listarContratosPorDetective(@Path("id") id: String): Call<List<Contrato>>
+    }
+

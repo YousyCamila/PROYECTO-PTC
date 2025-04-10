@@ -35,7 +35,6 @@ class CrearContratoActivity : AppCompatActivity() {
     private lateinit var tarifaEditText: EditText
 
 
-
     private var clientesList = listOf<Clientes>()
     private var detectivesList = listOf<Detectives>()
 
@@ -62,7 +61,12 @@ class CrearContratoActivity : AppCompatActivity() {
 
 
         clausulasEditText.movementMethod = ScrollingMovementMethod()
-        clausulasEditText.setText(HtmlCompat.fromHtml(getString(R.string.clausulas_predefinidas), HtmlCompat.FROM_HTML_MODE_LEGACY))
+        clausulasEditText.setText(
+            HtmlCompat.fromHtml(
+                getString(R.string.clausulas_predefinidas),
+                HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
+        )
         clausulasEditText.setMovementMethod(ScrollingMovementMethod.getInstance())
         clausulasEditText.setVerticalScrollBarEnabled(true)
         clausulasEditText.isVerticalScrollBarEnabled = true
@@ -70,7 +74,6 @@ class CrearContratoActivity : AppCompatActivity() {
         clausulasEditText.isEnabled = false       // Desactiva entrada de texto
         clausulasEditText.isFocusable = false     // No permite enfocar (ni el cursor)
         clausulasEditText.isClickable = false     // No permite interacción
-
 
 
         val calendario = Calendar.getInstance()
@@ -122,7 +125,8 @@ class CrearContratoActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     clientesList = response.body() ?: emptyList()
                     val nombresClientes = clientesList.map { it.nombres }
-                    val adapter = ArrayAdapter(this@CrearContratoActivity, android.R.layout.simple_spinner_item, nombresClientes)
+                    val adapter =
+                        ArrayAdapter(this@CrearContratoActivity, android.R.layout.simple_spinner_item, nombresClientes)
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     clienteSpinner.adapter = adapter
                 } else {
@@ -142,7 +146,11 @@ class CrearContratoActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     detectivesList = response.body() ?: emptyList()
                     val nombresDetectives = detectivesList.map { it.nombres }
-                    val adapter = ArrayAdapter(this@CrearContratoActivity, android.R.layout.simple_spinner_item, nombresDetectives)
+                    val adapter = ArrayAdapter(
+                        this@CrearContratoActivity,
+                        android.R.layout.simple_spinner_item,
+                        nombresDetectives
+                    )
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     detectiveSpinner.adapter = adapter
                 } else {
@@ -207,7 +215,11 @@ class CrearContratoActivity : AppCompatActivity() {
                     Toast.makeText(this@CrearContratoActivity, "Contrato creado con éxito", Toast.LENGTH_SHORT).show()
                     finish()
                 } else {
-                    Toast.makeText(this@CrearContratoActivity, "Error al crear contrato ${response.errorBody()?.string()}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@CrearContratoActivity,
+                        "Error al crear contrato ${response.errorBody()?.string()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 

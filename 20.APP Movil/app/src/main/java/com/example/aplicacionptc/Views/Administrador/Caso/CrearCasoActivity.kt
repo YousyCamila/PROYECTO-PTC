@@ -173,8 +173,8 @@ class CrearCasoActivity : AppCompatActivity() {
         val json = gson.toJson(nuevoCaso)
         Log.d("CASO_JSON", json)
 
-        controladorCaso.crearCaso(nuevoCaso).enqueue(object : Callback<Caso> {
-            override fun onResponse(call: Call<Caso>, response: Response<Caso>) {
+        controladorCaso.crearCaso(nuevoCaso).enqueue(object : Callback<CasoRequest> {
+            override fun onResponse(call: Call<CasoRequest>, response: Response<CasoRequest>) {
                 if (response.isSuccessful) {
                     Toast.makeText(this@CrearCasoActivity, "Caso creado exitosamente", Toast.LENGTH_SHORT).show()
                     Log.i("CrearCasoActivity", "Caso creado con éxito")
@@ -187,7 +187,7 @@ class CrearCasoActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<Caso>, t: Throwable) {
+            override fun onFailure(call: Call<CasoRequest>, t: Throwable) {
                 Toast.makeText(this@CrearCasoActivity, "Fallo en la conexión: ${t.message}", Toast.LENGTH_SHORT).show()
                 Log.e("CrearCasoActivity", "Fallo en la conexión al crear caso", t)
             }

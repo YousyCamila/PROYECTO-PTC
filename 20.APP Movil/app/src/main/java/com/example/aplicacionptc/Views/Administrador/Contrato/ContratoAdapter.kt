@@ -127,7 +127,7 @@ class ContratoAdapter(
                 contrato.descripcionServicio = inputDescripcion.text.toString()
                 contrato.clausulas = inputClausulas.text.toString()
                 contrato.fechaCierre = convertirFecha(inputFechaCierre.text.toString())
-                // contrato.tarifa = inputTarifa.text.toString()
+
                 contrato.estado = checkEstado.isChecked
                 notifyDataSetChanged()
 

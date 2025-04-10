@@ -12,9 +12,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.aplicacionptc.Api.Retrofit
 import com.example.aplicacionptc.Views.Administrador.Cliente.GestionClientesActivity
+import com.example.aplicacionptc.Views.Administrador.Contrato.HomeContratoActivity
 import com.example.aplicacionptc.Views.Administrador.Detective.GestionDetectivesActivity
 import com.example.aplicacionptc.Views.Administrador.Caso.GestionCasosActivity
-import com.example.aplicacionptc.Views.Administrador.Contrato.HomeContratoActivity
+
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         val btnContratos = findViewById<Button>(R.id.btnContratos)
         val btnClientes = findViewById<Button>(R.id.btnClientes)
         val btnDetectives = findViewById<Button>(R.id.btnDetectives)
@@ -48,6 +50,16 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        // Descomenta estos cuando estén listos
+//        btnCasos.setOnClickListener {
+//            startActivity(Intent(this, HomeCasoActivity::class.java))
+//        }
+//
+      btnContratos.setOnClickListener {
+           startActivity(Intent(this, HomeContratoActivity::class.java))
+    }
+
+
         btnCasos.setOnClickListener {
             startActivity(Intent(this, GestionCasosActivity::class.java))
         }
@@ -56,6 +68,7 @@ class MainActivity : AppCompatActivity() {
        btnContratos.setOnClickListener {
             startActivity(Intent(this, HomeContratoActivity::class.java))
        }
+
 
         // Cerrar sesión
         btnLogout.setOnClickListener {

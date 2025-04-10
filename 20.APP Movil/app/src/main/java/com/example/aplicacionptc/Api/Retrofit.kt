@@ -30,11 +30,14 @@ object Retrofit {
     val detectiveInstance: ControladorDetective by lazy {
         retrofit.create(ControladorDetective::class.java)
     }
-    val casoInstance: ControladorCaso by lazy {
-        retrofit.create(ControladorCaso::class.java)
-    }
 
     val contratoInstance: ControladorContrato by lazy {
         retrofit.create(ControladorContrato::class.java)
     }
+
+    val casoInstance: ControladorCaso by lazy {
+        retrofit.create(ControladorCaso::class.java)
+
+    }
+
 }

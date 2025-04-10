@@ -11,11 +11,11 @@
     <string name="volver">Volver</string>
 
 
-        <string name="nombre_caso">Caso: %s</string>
-        <string name="cliente">Cliente: %s</string>
-        <string name="detective">Detective: %s</string>
-        <string name="desactivar">Desactivar</string>
-        <string name="desactivado">Desactivado</string>
+    <string name="nombre_caso">Caso: %s</string>
+    <string name="cliente">Cliente: %s</string>
+    <string name="detective">Detective: %s</string>
+    <string name="desactivar">Desactivar</string>
+    <string name="desactivado">Desactivado</string>
     <string name="fechaCreacion">Fecha de creación: %s</string>
 
     <string-array name="especialidades_array">
@@ -34,7 +34,6 @@
         <item>Cédula</item>
         <item>Pasaporte</item>
     </string-array>
-
 
 
     <string name="clausulas_predefinidas">
@@ -70,6 +69,9 @@ El contrato podrá darse por terminado en cualquier momento por cualquiera de la
 Para todos los efectos legales derivados de este contrato, las partes se someten a la jurisdicción de los tribunales de la ciudad donde se encuentra registrada la Agencia, renunciando a cualquier otro fuero que pudiera corresponderles.
 ]]>
     </string>
+
+
+
 
 </resources>
 
