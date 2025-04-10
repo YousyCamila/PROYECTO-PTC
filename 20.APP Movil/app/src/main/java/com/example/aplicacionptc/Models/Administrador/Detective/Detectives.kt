@@ -1,6 +1,7 @@
 package com.example.ptc_app.Models.Administrador.Detective
 
 import Persona.Personas
+import com.example.aplicacionptc.Models.Administrador.Contrato.Contrato
 import com.example.ptc_app.Models.Administrador.Caso.Caso
 import com.google.gson.annotations.SerializedName
 
@@ -14,8 +15,8 @@ data class Detectives(
     val fechaNacimiento: String,
     val activo: Boolean,
     val especialidad: List<String>,  // Este es un campo nuevo para la especialidad
-    //val casos: List<Caso>,           // Relación con los casos
+    val casos: List<Caso>? = null,           // Relación con los casos
     //val historialCasos: List<HistorialCaso>, // Relación con el historial de casos
     //val registroCaso: List<RegistroCaso>, // Relación con el registro de casos
-    //val contratos: List<Contrato> // Relación con los contratos
+    val contratos: List<Contrato> ? = null// Relación con los contratos
 )

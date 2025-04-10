@@ -15,6 +15,10 @@ interface ControladorDetective {
     @GET("detectives/{id}")
     fun buscarDetectivePorId(@Path("id") id: String): Call<Detectives>
 
+    @GET("detectives/{correo}")
+    fun buscarDetectivePorCorreo(@Path("correo") correo: String): Call<Detectives>
+
+
     @POST("detectives")
     fun crearDetective(@Body detective: Detectives): Call<Detectives>
 

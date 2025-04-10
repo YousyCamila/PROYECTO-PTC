@@ -91,6 +91,7 @@ class LoginActivity : AppCompatActivity() {
                     // Guardar sesión
                     saveSession(authResponse.accessToken, authResponse.role ?: "")
 
+
                     val user = authResponse.user
                     if (user != null) {
                         val prefs = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE).edit()
@@ -98,10 +99,10 @@ class LoginActivity : AppCompatActivity() {
                         prefs.putString("userEmail", user.email)
                         prefs.putString("userRole", user.role)
                         prefs.putString("userId", user.id)
+
                         prefs.apply()
                     }
                     Log.d("UserData", "Usuario logueado: $user")
-
 
 
 
