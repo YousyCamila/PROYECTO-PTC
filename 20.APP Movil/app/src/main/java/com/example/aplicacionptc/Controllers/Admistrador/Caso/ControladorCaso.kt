@@ -14,7 +14,7 @@ interface ControladorCaso {
     fun buscarCasoPorId(@Path("id") id: String): Call<Caso>
 
     @POST("caso")
-    fun crearCaso(@Body caso: CasoRequest): Call<Caso>
+    fun crearCaso(@Body caso: CasoRequest): Call<CasoRequest>
 
     @PUT("caso/{id}")
     fun actualizarCaso(@Path("id") id: String, @Body caso: Caso): Call<Caso>

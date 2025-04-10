@@ -178,8 +178,8 @@ class CrearCasoActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     Toast.makeText(this@CrearCasoActivity, "Caso creado exitosamente", Toast.LENGTH_SHORT).show()
                     Log.i("CrearCasoActivity", "Caso creado con éxito")
-                    //setResult(Activity.RESULT_OK)
-                    //finish()
+                    setResult(Activity.RESULT_OK)
+                    finish()
                 } else {
                     val errorBody = response.errorBody()?.string()
                     Toast.makeText(this@CrearCasoActivity, "Error al crear el caso: ${response.code()}", Toast.LENGTH_LONG).show()
