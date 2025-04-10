@@ -1,12 +1,15 @@
 package com.example.aplicacionptc.Views.Detective
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ptc_app.Models.Administrador.Caso.Caso
 import com.example.aplicacionptc.R
+import com.example.aplicacionptc.Views.Administrador.Cliente.GestionClientesActivity
+import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 
 class DetalleCasoActivity : AppCompatActivity() {
@@ -24,7 +27,7 @@ class DetalleCasoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_caso_detalles)
 
         nombreCasoText = findViewById(R.id.nombreCasoText)
-        descripcionText = findViewById(R.id.descripcionText)
+
         estadoText = findViewById(R.id.estadoText)
         clienteText = findViewById(R.id.clienteText)
         btnVerEvidencias = findViewById(R.id.btnVerEvidencias)
@@ -46,5 +49,6 @@ class DetalleCasoActivity : AppCompatActivity() {
         btnVerRegistro.setOnClickListener {
             // Aquí puedes iniciar una actividad para ver el registro del caso
         }
+
     }
 }

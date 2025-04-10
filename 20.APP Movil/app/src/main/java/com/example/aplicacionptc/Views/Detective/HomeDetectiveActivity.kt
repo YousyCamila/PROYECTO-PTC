@@ -17,6 +17,8 @@ import com.example.aplicacionptc.Models.Administrador.Contrato.Contrato
 import com.example.aplicacionptc.Models.Administrador.Contrato.ContratoResumen
 import com.example.ptc_app.Models.Administrador.Detective.Detectives
 import com.example.aplicacionptc.R
+import com.example.aplicacionptc.Views.Administrador.Cliente.GestionClientesActivity
+import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
@@ -46,6 +48,8 @@ class HomeDetectiveActivity : AppCompatActivity() {
 
         val prefs = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
         val userEmail = prefs.getString("userEmail", null) // Si no hay correo, será null
+
+
 
         // Verifica si el correo está disponible
         if (userEmail != null) {
