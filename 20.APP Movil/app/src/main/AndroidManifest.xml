@@ -16,6 +16,9 @@
             android:theme="@style/Theme.AplicacionPTC"
             tools:targetApi="31">
         <activity
+                android:name=".Views.Detective.DetallesContratoActivity"
+                android:exported="false"/>
+        <activity
                 android:name=".Views.Detective.DetalleCasoActivity"
                 android:exported="false"/>
         <activity

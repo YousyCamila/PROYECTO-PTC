@@ -109,7 +109,6 @@ class HomeDetectiveActivity : AppCompatActivity() {
     }
 
 
-
     // Mostrar los datos del detective en la UI
     private fun mostrarInformacion(detective: Detectives) {
         val nombreCompleto = "${detective.nombres} ${detective.apellidos}"
