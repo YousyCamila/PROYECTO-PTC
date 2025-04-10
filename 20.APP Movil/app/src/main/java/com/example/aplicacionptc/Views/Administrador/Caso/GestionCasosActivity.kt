@@ -1,25 +1,22 @@
 package com.example.aplicacionptc.Views.Administrador.Caso
 
-import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aplicacionptc.Api.Retrofit
-import com.example.ptc_app.Models.Administrador.Caso.Caso
-import com.example.aplicacionptc.R
 import com.example.aplicacionptc.MainActivity
-import com.google.android.material.button.MaterialButton
+import com.example.aplicacionptc.R
+import com.example.ptc_app.Models.Administrador.Caso.Caso
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,51 +24,67 @@ import retrofit2.Response
 
 class GestionCasosActivity : AppCompatActivity() {
 
+    private val crearCasoLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            obtenerCasos()
+        }
+    }
+
     private val controladorCaso = Retrofit.casoInstance
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var btnCrearCaso: FloatingActionButton
     private lateinit var etBuscarCaso: EditText
     private lateinit var btnBuscarCaso: Button
-    private lateinit var adapter: CasosAdapter
-    val listaCasos = mutableListOf<Caso>()
-    private var listaCasosOriginal = mutableListOf<Caso>()
     private lateinit var btnVolverHome: ImageButton
 
+    private lateinit var adapter: CasosAdapter
+    private val listaCasos = mutableListOf<Caso>()
+    private val listaCasosOriginal = mutableListOf<Caso>()
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gestion_casos)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layoutGestionCasos)) { v, insets ->
-            insets
-        }
+        inicializarVista()
+        configurarRecyclerView()
+        configurarEventos()
 
+        obtenerCasos()
+    }
+
+    private fun inicializarVista() {
         etBuscarCaso = findViewById(R.id.etBuscarCaso)
         btnBuscarCaso = findViewById(R.id.btnBuscarCaso)
         recyclerView = findViewById(R.id.recyclerCasos)
         btnCrearCaso = findViewById(R.id.btnCrearCaso)
         btnVolverHome = findViewById(R.id.btnVolverHome)
 
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layoutGestionCasos)) { _, insets -> insets }
+    }
 
+    private fun configurarRecyclerView() {
+        recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = CasosAdapter(
             context = this,
             listaCasos = listaCasos,
-            onVerDetalles = { caso -> verDetallesCaso(caso) },
-            onDesactivar = { caso, position -> desactivarCaso(caso, position) }
+            onVerDetalles = { verDetallesCaso(it) },
+            onDesactivar = { caso, pos -> desactivarCaso(caso, pos) }
         )
-
         recyclerView.adapter = adapter
+    }
 
+    private fun configurarEventos() {
         btnBuscarCaso.setOnClickListener {
-            filtrarCasos(etBuscarCaso.text.toString().trim())
+            val texto = etBuscarCaso.text.toString().trim()
+            filtrarCasos(texto)
         }
 
-        obtenerCasos()
-
         btnCrearCaso.setOnClickListener {
-            startActivity(Intent(this, CrearCasoActivity::class.java))
+            val intent = Intent(this, CrearCasoActivity::class.java)
+            crearCasoLauncher.launch(intent)
         }
 
         btnVolverHome.setOnClickListener {
@@ -83,68 +96,71 @@ class GestionCasosActivity : AppCompatActivity() {
         controladorCaso.obtenerCasos().enqueue(object : Callback<List<Caso>> {
             override fun onResponse(call: Call<List<Caso>>, response: Response<List<Caso>>) {
                 if (response.isSuccessful) {
-                    listaCasos.clear()
-                    response.body()?.let {
-                        listaCasos.addAll(it)
-                        listaCasosOriginal.addAll(it)
+                    response.body()?.let { casos ->
+                        listaCasos.clear()
+                        listaCasosOriginal.clear()
+                        listaCasos.addAll(casos)
+                        listaCasosOriginal.addAll(casos)
+                        adapter.notifyDataSetChanged()
                     }
-                    adapter.notifyDataSetChanged()
                 } else {
-                    Toast.makeText(this@GestionCasosActivity, "Error al obtener casos", Toast.LENGTH_SHORT).show()
+                    mostrarMensaje("Error al obtener casos")
                 }
             }
 
             override fun onFailure(call: Call<List<Caso>>, t: Throwable) {
-                Toast.makeText(this@GestionCasosActivity, "Fallo en la conexión: ${t.message}", Toast.LENGTH_SHORT).show()
+                mostrarMensaje("Fallo en la conexión: ${t.message}")
             }
         })
     }
 
     private fun filtrarCasos(textoBuscar: String) {
-        val casosFiltrados = if (textoBuscar.isEmpty()) {
+        val resultados = if (textoBuscar.isEmpty()) {
             listaCasosOriginal
         } else {
-            listaCasosOriginal.filter { it.nombreCaso.contains(textoBuscar, ignoreCase = true) }
+            listaCasosOriginal.filter {
+                it.nombreCaso.contains(textoBuscar, ignoreCase = true)
+            }
         }
         listaCasos.clear()
-        listaCasos.addAll(casosFiltrados)
+        listaCasos.addAll(resultados)
         adapter.notifyDataSetChanged()
     }
 
     private fun verDetallesCaso(caso: Caso) {
-        val intent = Intent(this, DetallesCasoActivity::class.java)
-        intent.putExtra("CASO_ID", caso.id)
+        val intent = Intent(this, DetallesCasoActivity::class.java).apply {
+            putExtra("CASO_ID", caso.id)
+        }
         startActivity(intent)
     }
 
     private fun desactivarCaso(caso: Caso, position: Int) {
-        caso.id?.let {
-            controladorCaso.desactivarCaso(it).enqueue(object : Callback<Void> {
+        caso.id?.let { casoId ->
+            controladorCaso.desactivarCaso(casoId).enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
-                        // Actualiza el campo 'activo' del objeto en memoria
                         listaCasos[position].activo = false
-                        adapter.notifyItemChanged(position) // Refresca solo ese ítem
-
-                        Toast.makeText(this@GestionCasosActivity, "Caso desactivado correctamente", Toast.LENGTH_SHORT).show()
+                        adapter.notifyItemChanged(position)
+                        mostrarMensaje("Caso desactivado correctamente")
                     } else {
-                        Toast.makeText(this@GestionCasosActivity, "Error al desactivar caso", Toast.LENGTH_SHORT).show()
+                        mostrarMensaje("Error al desactivar caso")
                     }
                 }
 
                 override fun onFailure(call: Call<Void>, t: Throwable) {
-                    Toast.makeText(this@GestionCasosActivity, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
+                    mostrarMensaje("Error de conexión: ${t.message}")
                 }
             })
-        } ?: run {
-            Toast.makeText(this, "ID del caso no válido", Toast.LENGTH_SHORT).show()
-        }
+        } ?: mostrarMensaje("ID del caso no válido")
     }
 
-
+    private fun mostrarMensaje(mensaje: String) {
+        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
+    }
 
     override fun onResume() {
         super.onResume()
         obtenerCasos()
+        Log.d("Lifecycle", "onResume llamado")
     }
 }

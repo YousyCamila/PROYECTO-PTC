@@ -149,7 +149,7 @@ class EditarClienteActivity : AppCompatActivity() {
                 nombres = nombre.toUpperCaseSafe(),
                 apellidos = apellidos.toUpperCaseSafe(),
                 correo = correo,
-                fechaNacimiento = "", // si tienes este dato en otro lado, pásalo
+                //fechaNacimiento = "", // si tienes este dato en otro lado, pásalo
                 activo = etActivo.text.toString().equals("Activo", ignoreCase = true)
             )
 

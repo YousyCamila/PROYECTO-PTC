@@ -6,6 +6,7 @@ import com.example.aplicacionptc.Models.Administrador.Contrato.Contrato
 
 interface ControladorContrato {
 
+
         @POST("contratos")
         fun crearContrato(@Body contrato: Contrato): Call<Contrato>
 

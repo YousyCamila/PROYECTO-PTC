@@ -11,7 +11,7 @@ data class Clientes(
     val nombres: String,
     val apellidos: String,
     val correo: String,
-    val fechaNacimiento: String,
+    val fechaNacimiento: String? = null,
     var activo: Boolean
 )
 

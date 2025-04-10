@@ -38,8 +38,7 @@ const casoSchema = new mongoose.Schema({
   historial: [{ // Nueva referencia para los contratos
     type: mongoose.Schema.Types.ObjectId,
     ref: 'HistorialCaso',
-    unique: true,
-    sparse: true 
+    default: null 
   }],
   activo: { type: Boolean, default: true },
 }, { timestamps: true });

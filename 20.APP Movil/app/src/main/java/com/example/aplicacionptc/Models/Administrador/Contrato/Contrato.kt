@@ -15,4 +15,3 @@ data class Contrato(
     val historial: List<HistorialDesactivacion>? = null
 )
 
-

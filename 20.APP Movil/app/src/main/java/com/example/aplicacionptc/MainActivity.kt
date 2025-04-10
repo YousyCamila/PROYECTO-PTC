@@ -15,6 +15,7 @@ import com.example.aplicacionptc.Views.Administrador.Cliente.GestionClientesActi
 import com.example.aplicacionptc.Views.Administrador.Contrato.HomeContratoActivity
 import com.example.aplicacionptc.Views.Administrador.Detective.GestionDetectivesActivity
 import com.example.aplicacionptc.Views.Administrador.Caso.GestionCasosActivity
+
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -63,9 +64,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, GestionCasosActivity::class.java))
         }
 
-//        btnContratos.setOnClickListener {
-//            startActivity(Intent(this, HomeContratoActivity::class.java))
-//        }
+
+       btnContratos.setOnClickListener {
+            startActivity(Intent(this, HomeContratoActivity::class.java))
+       }
 
 
         // Cerrar sesión

@@ -5,225 +5,225 @@
                                                      android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/lila">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/lila">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:elevation="4dp">
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="4dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/btnVolverHome"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Volver"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_arrow_back" />
+                        android:id="@+id/btnVolverHome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Volver"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_arrow_back" />
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Crear Contrato"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Crear Contrato"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp">
-
-            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="24dp">
+                android:layout_margin="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
 
-                <TextView
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Información del Contrato"
-                    android:textColor="@color/lila"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="16dp" />
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Información del Contrato"
+                        android:textColor="@color/lila"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="16dp" />
 
                 <!-- Cliente -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Cliente"
-                    android:textStyle="bold"
-                    android:hint="Seleccionar Cliente">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Cliente"
+                        android:textStyle="bold"
+                        android:hint="Seleccionar Cliente">
 
                     <Spinner
-                        android:id="@+id/spinner_cliente"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                            android:id="@+id/spinner_cliente"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Detective -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Seleccionar Detective"
-                    android:layout_marginTop="16dp">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Seleccionar Detective"
+                        android:layout_marginTop="16dp">
 
                     <Spinner
-                        android:id="@+id/spinner_detective"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                            android:id="@+id/spinner_detective"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Fecha Inicio -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilFechaNacimiento"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:hint="Fecha de inicio"
-                    app:endIconMode="custom"
-                    app:endIconDrawable="@drawable/ic_calendar">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editText_fecha_inicio"
+                        android:id="@+id/tilFechaNacimiento"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="none"
-                        android:focusable="false"
-                        android:maxLines="1" />
+                        android:layout_marginBottom="24dp"
+                        android:hint="Fecha de inicio"
+                        app:endIconMode="custom"
+                        app:endIconDrawable="@drawable/ic_calendar">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editText_fecha_inicio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:focusable="false"
+                            android:maxLines="1" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Fecha Final -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilFechaFinal"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:hint="Fecha de finalización"
-                    app:endIconMode="custom"
-                    app:endIconDrawable="@drawable/ic_calendar">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editText_fecha_final"
+                        android:id="@+id/tilFechaFinal"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="none"
-                        android:focusable="false"
-                        android:maxLines="1" />
+                        android:layout_marginBottom="24dp"
+                        android:hint="Fecha de finalización"
+                        app:endIconMode="custom"
+                        app:endIconDrawable="@drawable/ic_calendar">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editText_fecha_final"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:focusable="false"
+                            android:maxLines="1" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Descripción -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Descripción del Servicio"
-                    android:layout_marginTop="16dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editText_descripcion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textMultiLine"
-                        android:minLines="2" />
+                        android:hint="Descripción del Servicio"
+                        android:layout_marginTop="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editText_descripcion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textMultiLine"
+                            android:minLines="2" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Cláusulas"
-                    android:layout_marginTop="16dp">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Cláusulas"
+                        android:layout_marginTop="16dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editText_clausulas"
-                        android:layout_width="match_parent"
-                        android:layout_height="180dp"
-                        android:inputType="none"
-                        android:gravity="top|start"
-                        android:scrollbars="vertical"
-                        android:overScrollMode="always"
-                        android:maxLines="10"
+                            android:id="@+id/editText_clausulas"
+                            android:layout_width="match_parent"
+                            android:layout_height="180dp"
+                            android:inputType="none"
+                            android:gravity="top|start"
+                            android:scrollbars="vertical"
+                            android:overScrollMode="always"
+                            android:maxLines="10"
 
-                        android:background="@android:color/transparent"
-                        android:textColor="@android:color/black"
-                        android:padding="8dp"
-                        android:enabled="true"
-                        android:focusable="false"
-                        android:clickable="false" />
+                            android:background="@android:color/transparent"
+                            android:textColor="@android:color/black"
+                            android:padding="8dp"
+                            android:enabled="true"
+                            android:focusable="false"
+                            android:clickable="false" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
 
                 <!-- Tarifa -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/til_tarifa"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:hint="Tarifa"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editText_tarifa"
+                        android:id="@+id/til_tarifa"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:maxLines="1"
-                        android:hint="Ingrese la tarifa del servicio" />
+                        android:layout_marginTop="16dp"
+                        android:hint="Tarifa"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editText_tarifa"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:maxLines="1"
+                            android:hint="Ingrese la tarifa del servicio" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
                 <!-- Estado (puede ocultarse si es fijo en true) -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Estado"
-                    android:layout_marginTop="16dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editText_estado"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text" />
+                        android:hint="Estado"
+                        android:layout_marginTop="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editText_estado"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Botón -->
                 <Button
-                    android:id="@+id/button_crear_contrato"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Crear Contrato"
-                    android:layout_marginTop="24dp"
-                    android:backgroundTint="@color/lila"
-                    android:textColor="@android:color/white" />
+                        android:id="@+id/button_crear_contrato"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Crear Contrato"
+                        android:layout_marginTop="24dp"
+                        android:backgroundTint="@color/lila"
+                        android:textColor="@android:color/white" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </androidx.core.widget.NestedScrollView>
