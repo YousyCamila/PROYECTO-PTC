@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.aplicacionptc.Api.Retrofit
+import com.example.aplicacionptc.Models.Administrador.Caso.CasoResumen
 import com.example.ptc_app.Models.Administrador.Caso.Caso
 import com.example.aplicacionptc.Models.Administrador.Contrato.Contrato
 import com.example.ptc_app.Models.Administrador.Detective.Detectives
@@ -113,7 +114,7 @@ class HomeDetectiveActivity : AppCompatActivity() {
     }
 
     // Mostrar los casos asociados al detective
-    private fun mostrarCasos(casos: List<Caso>) {
+    private fun mostrarCasos(casos: List<CasoResumen>) {
         Log.d("HOME_DETECTIVE", "Casos recibidos: ${casos.size}")
         casosLayout.removeAllViews()
 
@@ -128,24 +129,13 @@ class HomeDetectiveActivity : AppCompatActivity() {
             for (caso in casos) {
                 Log.d("HOME_DETECTIVE", "Caso: $caso")
 
-                val nombreCaso = caso.nombreCaso
-
-                val clienteNombre = caso.idCliente?.let {
-                    val nombres = it.nombres ?: ""
-                    val apellidos = it.apellidos ?: ""
-                    val idCliente = it.id ?: "sin ID"
-                    "$nombres $apellidos (ID: $idCliente)"
-                } ?: "Cliente desconocido"
-
-                val idCaso = caso.id
-                val estado = if (caso.activo == true) "Activo" else "Inactivo"
+                val nombreCaso = caso.nombre ?: "Sin nombre"
+                val estado = caso.estado ?: "Activo"
+                val idCaso = caso.id ?: "Sin ID"
 
                 val casoView = TextView(this).apply {
-                    Log.d("HOME_DETECTIVE", "Cliente del caso: ${Gson().toJson(caso.idCliente)}")
-
                     text = """
                     Nombre del caso: $nombreCaso
-                    Cliente: $clienteNombre
                     ID del caso: $idCaso
                     Estado: $estado
                 """.trimIndent()
@@ -157,7 +147,6 @@ class HomeDetectiveActivity : AppCompatActivity() {
             }
         }
     }
-
 
 
     // Mostrar los contratos asociados al detective
