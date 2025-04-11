@@ -105,6 +105,24 @@ app:layout_constraintStart_toStartOf="parent"
 app:layout_constraintEnd_toEndOf="parent"
 android:layout_marginTop="12dp" />
 
+    <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEvidencias"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Gestión de Evidencias"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#2563EB"
+            app:icon="@drawable/baseline_evidence_24"
+            app:iconTint="@android:color/white"
+            app:iconPadding="12dp"
+            app:cornerRadius="24dp"
+            android:padding="16dp"
+            app:layout_constraintTop_toBottomOf="@id/btnCasos"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="12dp" />
+
+
     <!-- Botón Logout -->
 <com.google.android.material.button.MaterialButton
 android:id="@+id/btnLogout"

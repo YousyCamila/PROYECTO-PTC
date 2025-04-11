@@ -5,6 +5,7 @@ import com.example.aplicacionptc.Controllers.Admistrador.Cliente.ControladorClie
 import com.example.aplicacionptc.Controllers.Admistrador.Contrato.ControladorContrato
 import com.example.aplicacionptc.Controllers.Admistrador.Detective.ControladorDetective
 import com.example.aplicacionptc.Controllers.Admistrador.Usuario.AuthService
+import com.example.aplicacionptc.Controllers.Cliente.Evidencias.ControladorEvidencia
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -36,5 +37,9 @@ object Retrofit {
 
     val contratoInstance: ControladorContrato by lazy {
         retrofit.create(ControladorContrato::class.java)
+    }
+
+    val evidenciaInstance: ControladorEvidencia by lazy {
+        retrofit.create(ControladorEvidencia::class.java)
     }
 }

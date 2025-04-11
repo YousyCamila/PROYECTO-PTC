@@ -15,6 +15,7 @@ import com.example.aplicacionptc.Views.Administrador.Cliente.GestionClientesActi
 import com.example.aplicacionptc.Views.Administrador.Detective.GestionDetectivesActivity
 import com.example.aplicacionptc.Views.Administrador.Caso.GestionCasosActivity
 import com.example.aplicacionptc.Views.Administrador.Contrato.HomeContratoActivity
+import com.example.aplicacionptc.Views.Cliente.Evidencias.GestionarEvidenciasClienteActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         val btnDetectives = findViewById<Button>(R.id.btnDetectives)
         val btnCasos = findViewById<Button>(R.id.btnCasos)
         val btnLogout = findViewById<Button>(R.id.btnLogout)
+        val btnEvidencias = findViewById<Button>(R.id.btnEvidencias)
 
         // Navegación
         btnClientes.setOnClickListener {
@@ -56,6 +58,10 @@ class MainActivity : AppCompatActivity() {
        btnContratos.setOnClickListener {
             startActivity(Intent(this, HomeContratoActivity::class.java))
        }
+
+        btnEvidencias.setOnClickListener {
+            startActivity(Intent(this, GestionarEvidenciasClienteActivity::class.java ))
+        }
 
         // Cerrar sesión
         btnLogout.setOnClickListener {

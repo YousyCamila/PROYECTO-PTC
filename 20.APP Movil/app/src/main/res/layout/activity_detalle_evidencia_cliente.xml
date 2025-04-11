@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:padding="16dp">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <!-- Botón Volver -->
+        <ImageButton
+                android:id="@+id/btnVolver"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@null"
+                android:src="@drawable/ic_back"
+                android:contentDescription="Volver" />
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Detalle de Evidencia"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_marginBottom="16dp" />
+
+        <!-- Fecha -->
+        <TextView
+                android:id="@+id/tvFecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fecha:"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_marginBottom="8dp" />
+
+        <!-- Tipo -->
+        <TextView
+                android:id="@+id/tvTipo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tipo:"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_marginBottom="8dp" />
+
+        <!-- Caso -->
+        <TextView
+                android:id="@+id/tvCaso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ID Caso:"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_marginBottom="8dp" />
+
+        <!-- Descripción -->
+        <TextView
+                android:id="@+id/tvDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Descripción:"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_marginBottom="16dp" />
+
+        <!-- Archivo (imagen, ícono PDF o video) -->
+        <ImageView
+                android:id="@+id/imgArchivo"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/placeholder"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_image_rounded" />
+
+        <!-- Botón Abrir archivo -->
+        <Button
+                android:id="@+id/btnAbrirArchivo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Abrir archivo"
+                android:visibility="gone"
+                android:backgroundTint="@color/verde"
+                android:textColor="@color/white"
+                android:layout_marginBottom="16dp" />
+
+        <!-- ProgressBar -->
+        <ProgressBar
+                android:id="@+id/progressBarDetalle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+    </LinearLayout>
+</ScrollView>

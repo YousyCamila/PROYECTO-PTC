@@ -19,6 +19,7 @@
     <color name="gray">#9E9E9E</color>
     <color name="dark_background">#121212</color>
 
+
     <color name="light_gray">#D3D3D3</color>
     <color name="dark_gray">#1A1A1A</color>
     <color name="tech_blue">#1473E6</color>
@@ -27,6 +28,7 @@
     <color name="dark_grayy">#424242</color>
     <color name="error_red">#D32F2F</color>
     <color name="background_color">#F3F3F3</color>
+
 
     <color name="primary">#1976D2</color>
     <color name="primaryColor">#6200EE</color>
