@@ -3,6 +3,8 @@ package com.example.aplicacionptc.Views.Administrador.Caso
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -28,7 +30,7 @@ class GestionCasosActivity : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            obtenerCasos()
+            obtenerCasos(forzar = true)
         }
     }
 
@@ -44,6 +46,8 @@ class GestionCasosActivity : AppCompatActivity() {
     private val listaCasos = mutableListOf<Caso>()
     private val listaCasosOriginal = mutableListOf<Caso>()
 
+    private var primeraCargaRealizada = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gestion_casos)
@@ -52,7 +56,10 @@ class GestionCasosActivity : AppCompatActivity() {
         configurarRecyclerView()
         configurarEventos()
 
-        obtenerCasos()
+        if (!primeraCargaRealizada) {
+            obtenerCasos(forzar = true)
+            primeraCargaRealizada = true
+        }
     }
 
     private fun inicializarVista() {
@@ -78,6 +85,11 @@ class GestionCasosActivity : AppCompatActivity() {
 
     private fun configurarEventos() {
         btnBuscarCaso.setOnClickListener {
+            btnBuscarCaso.isEnabled = false
+            Handler(Looper.getMainLooper()).postDelayed({
+                btnBuscarCaso.isEnabled = true
+            }, 800)
+
             val texto = etBuscarCaso.text.toString().trim()
             filtrarCasos(texto)
         }
@@ -92,7 +104,12 @@ class GestionCasosActivity : AppCompatActivity() {
         }
     }
 
-    private fun obtenerCasos() {
+    private fun obtenerCasos(forzar: Boolean = false) {
+        if (listaCasosOriginal.isNotEmpty() && !forzar) {
+            Log.d("GestionCasos", "Usando lista cacheada")
+            return
+        }
+
         controladorCaso.obtenerCasos().enqueue(object : Callback<List<Caso>> {
             override fun onResponse(call: Call<List<Caso>>, response: Response<List<Caso>>) {
                 if (response.isSuccessful) {
@@ -122,6 +139,7 @@ class GestionCasosActivity : AppCompatActivity() {
                 it.nombreCaso.contains(textoBuscar, ignoreCase = true)
             }
         }
+
         listaCasos.clear()
         listaCasos.addAll(resultados)
         adapter.notifyDataSetChanged()
@@ -160,7 +178,7 @@ class GestionCasosActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        obtenerCasos()
         Log.d("Lifecycle", "onResume llamado")
+        // No volvemos a llamar a obtenerCasos aquí para evitar recarga innecesaria
     }
 }
