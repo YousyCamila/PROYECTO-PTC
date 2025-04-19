@@ -10,6 +10,8 @@ import {
   CircularProgress,
 } from '@mui/material';
 import HistorialPlantilla from '../HistorialPlantilla';
+import NovedadesHistorial from './NovedadesHistorial';
+
 
 const HistorialCasoDetailsMenu = ({ caso, onClose }) => {
   const [view, setView] = useState('resumen');
@@ -78,13 +80,13 @@ const HistorialCasoDetailsMenu = ({ caso, onClose }) => {
             {/* Aquí podrías agregar un componente tipo <InformacionGeneral historial={historial} /> si existe */}
           </Box>
         );
-      case 'novedades':
-        return (
-          <Box>
-            <Typography variant="h6" gutterBottom>Novedades del Caso</Typography>
-            {/* Aquí podrías agregar un componente tipo <NovedadesHistorial historial={historial} /> si existe */}
-          </Box>
-        );
+        case 'novedades':
+          return (
+            <NovedadesHistorial
+              historial={historial}
+              onActualizar={fetchHistorial}
+            />
+          );
       case 'historial':
         return (
           <Box>

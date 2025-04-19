@@ -71,26 +71,30 @@ async function crearHistorial({ idCaso, nombreCliente = '', descripcionObjetivo 
   
 // Obtener un historial completo por ID de caso
 async function obtenerHistorialCompleto(idCaso) {
-    const historialCaso = await HistorialCaso.findOne({ idCaso })
+    try {
+      const historialCaso = await HistorialCaso.findOne({ idCaso })
         .populate({
-            path: 'idCaso',
-            populate: [
-                { path: 'idCliente' },
-                { path: 'idDetective' },
-                { path: 'evidencias' },
-                { path: 'registroCasos' },
-                { path: 'contratos' }
-            ]
+          path: 'idCaso',
+          select: 'nombreCaso idCliente idDetective evidencias registroCasos contratos',
+          populate: [
+            { path: 'idCliente', select: 'nombres apellidos correo tipoDocumento numeroDocumento' },
+            { path: 'idDetective', select: 'nombres apellidos correo especialidad' },
+            { path: 'evidencias', select: 'descripcion fechaEvidencia tipoEvidencia' },
+            { path: 'registroCasos', select: 'descripcion' },
+            { path: 'contratos', select: 'descripcionServicio estado' }
+          ]
         })
-        .populate('acciones.usuario')
-        .populate('novedades.usuario');
-    
-    if (!historialCaso) {
-        throw new Error('Historial no encontrado');
+        .populate({
+          path: 'acciones.usuario',
+          select: 'nombres apellidos correo tipoDocumento numeroDocumento'
+        });
+  
+      return historialCaso;
+    } catch (error) {
+      throw new Error('Error al obtener el historial del caso: ' + error.message);
     }
-    
-    return historialCaso;
-}
+  }
+
 
 // Obtener historial por su ID
 async function obtenerHistorialPorId(historialId) {

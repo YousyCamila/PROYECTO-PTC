@@ -42,6 +42,8 @@ import EditarRegistroForm from './pages/cliente/editarRegistroForm';
 //Historial 
 import HistorialCasoDetailsMenu from './pages/cliente/historial/HistorialCasoDetailsMenu';
 import HistorialPlantilla from './pages/cliente/HistorialPlantilla';
+import NovedadesHistorial from './pages/cliente/historial/NovedadesHistorial';
+import useDatosRelacionadosDesdeCasos from './pages/cliente/historial/useDatosRelacionadosDesdeCasos';
 
 import EvidenciasDetectiveCrud from './pages/detective/EvidenciasDetectiveCrud';
 import NavbarSidebarDetective from './pages/detective/NavbarSidebarDetective';
@@ -102,6 +104,8 @@ function App() {
             <Route path='/editar-registros/:registroId' element={<EditarRegistroForm />} />
             <Route path='Historial-caso' element={<HistorialPlantilla/>} />
             <Route path='historial-details' element={<HistorialCasoDetailsMenu/>}/>
+            <Route path='novedades-historial' element={<NovedadesHistorial/>}/>
+            <Route path='cargar-datos' element={<useDatosRelacionadosDesdeCasos/>}/>
 
           </Route>
 
