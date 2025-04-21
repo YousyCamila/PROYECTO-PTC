@@ -9,8 +9,10 @@ import {
   Divider,
   CircularProgress,
 } from '@mui/material';
-import HistorialPlantilla from '../HistorialPlantilla';
+import HistorialPlantilla from './HistorialPlantilla';
 import NovedadesHistorial from './NovedadesHistorial';
+import InformacionHistorial from './InformacionHistorial';
+import GestionarHistorial from './GestionarHistorial';
 
 
 const HistorialCasoDetailsMenu = ({ caso, onClose }) => {
@@ -19,7 +21,6 @@ const HistorialCasoDetailsMenu = ({ caso, onClose }) => {
   const [loadingHistorial, setLoadingHistorial] = useState(false);
 
   const handleViewResumen = () => setView('resumen');
-  const handleViewInformacion = () => setView('informacion');
   const handleViewNovedades = () => setView('novedades');
   const handleViewHistorial = () => {
     setView('historial');
@@ -68,16 +69,9 @@ const HistorialCasoDetailsMenu = ({ caso, onClose }) => {
       case 'resumen':
         return (
           <Box>
-            <Typography variant="h6" gutterBottom>Resumen del Historial</Typography>
+            <Typography variant="h6" gutterBottom>Información general del Historial</Typography>
             <Divider sx={{ mb: 2 }} />
-            <HistorialPlantilla historial={historial} />
-          </Box>
-        );
-      case 'informacion':
-        return (
-          <Box>
-            <Typography variant="h6" gutterBottom>Información General del Historial</Typography>
-            {/* Aquí podrías agregar un componente tipo <InformacionGeneral historial={historial} /> si existe */}
+            <InformacionHistorial historial={historial} />
           </Box>
         );
         case 'novedades':
@@ -92,7 +86,7 @@ const HistorialCasoDetailsMenu = ({ caso, onClose }) => {
           <Box>
             <Typography variant="h6" gutterBottom>Historial Completo del Caso</Typography>
             <Divider sx={{ mb: 2 }} />
-            <HistorialPlantilla historial={historial} />
+            <GestionarHistorial historial={historial} />
           </Box>
         );
       default:
@@ -107,16 +101,13 @@ const HistorialCasoDetailsMenu = ({ caso, onClose }) => {
         <Box sx={{ width: '250px', backgroundColor: '#005f91', color: '#ffffff', padding: 3, boxShadow: 3 }}>
           <Typography variant="h5" sx={{ mb: 4, fontWeight: 'bold' }}>Historial del Caso</Typography>
           <Button fullWidth variant="contained" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91' }} onClick={handleViewResumen}>
-            Resumen
-          </Button>
-          <Button fullWidth variant="outlined" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91' }} onClick={handleViewInformacion}>
-            Información General
+            Información general
           </Button>
           <Button fullWidth variant="outlined" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91' }} onClick={handleViewNovedades}>
-            Novedades
+            Auditoria
           </Button>
           <Button fullWidth variant="outlined" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91' }} onClick={handleViewHistorial}>
-            Ver Historial del Caso
+            Gestionar Historial
           </Button>
           <Divider sx={{ my: 2, borderColor: '#ffffff' }} />
           <Button fullWidth variant="outlined" sx={{ backgroundColor: '#ffffff', color: '#005f91' }} onClick={fetchHistorial}>

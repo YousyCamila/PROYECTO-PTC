@@ -23,27 +23,30 @@ import CrearContrato from './pages/administrador/gestionContrato/crearContrato';
 import DetallesContrato from './pages/administrador/gestionContrato/detallesContrato';
 import EditarContrato from './pages/administrador/gestionContrato/editarContrato';
 import MenuCliente from './pages/cliente/clienteMenu';
-import AgregarEvidencia from './pages/cliente/agregarEvidencia';
+import AgregarEvidencia from './pages/cliente/caso/evidencias/agregarEvidencia';
 import DetectiveMenu from './pages/detective/detectiveMenu';
 import Servicios from './pages/servicios/servicios';
 import Contactanos from './pages/contactanos/contactanos';
 import ResponderSolicitudes from './pages/administrador/GestionarSolicitudes/ResponderSolicitudes';
 import MensajesRespondidos from './pages/administrador/GestionarSolicitudes/MensajesRespondidos';
-import CasoDetailsMenu from './pages/cliente/CasoDetailsMenu';
-import EvidenciasCrud from './pages/cliente/EvidenciasCrud';
+
+import EvidenciasCrud from './pages/cliente/caso/evidencias/EvidenciasCrud';
 import { AuthProvider } from './context/AuthContext';
 
 //Seccion para clientes
-import RegistrosCrud from './pages/cliente/RegistrosCrud';
+import RegistrosCrud from './pages/cliente/caso/registros/RegistrosCrud';
 import ProtectedRoute from './components/ProtectedRoute';
-import AgregarRegistrosForm from './pages/cliente/AgregarRegistrosForm';
-import EditarRegistroForm from './pages/cliente/editarRegistroForm';
+import AgregarRegistrosForm from './pages/cliente/caso/registros/AgregarRegistrosForm';
+import EditarRegistroForm from './pages/cliente/caso/registros/editarRegistroForm';
+import CasoDetailsMenu from './pages/cliente/caso/CasoDetailsMenu';
 
 //Historial 
 import HistorialCasoDetailsMenu from './pages/cliente/historial/HistorialCasoDetailsMenu';
-import HistorialPlantilla from './pages/cliente/HistorialPlantilla';
+import HistorialPlantilla from './pages/cliente/historial/HistorialPlantilla';
 import NovedadesHistorial from './pages/cliente/historial/NovedadesHistorial';
-import useDatosRelacionadosDesdeCasos from './pages/cliente/historial/useDatosRelacionadosDesdeCasos';
+import useDatosRelacionadosDesdeCasos from './pages/cliente/historial/useDatosRelacionadosDesdeCasos'
+import InformacionHistorial from './pages/cliente/historial/InformacionHistorial';
+import GestionarHistorial from './pages/cliente/historial/GestionarHistorial';
 
 import EvidenciasDetectiveCrud from './pages/detective/EvidenciasDetectiveCrud';
 import NavbarSidebarDetective from './pages/detective/NavbarSidebarDetective';
@@ -106,7 +109,8 @@ function App() {
             <Route path='historial-details' element={<HistorialCasoDetailsMenu/>}/>
             <Route path='novedades-historial' element={<NovedadesHistorial/>}/>
             <Route path='cargar-datos' element={<useDatosRelacionadosDesdeCasos/>}/>
-
+            <Route path='informacion-general' element={<InformacionHistorial/>}/>
+            <Route path='Gestionar-historial' element={<GestionarHistorial/>}/>
           </Route>
 
           {/* Rutas protegidas - solo para detectives */}

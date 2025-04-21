@@ -2,6 +2,7 @@ const HistorialCaso = require('../models/historialCasoModel');
 const Caso = require('../models/casoModel');
 const Evidencia = require('../models/evidenciaModel');
 const User = require('../models/UsuarioModel');
+const RegistroCaso = require('../models/registroCasoModel');
 
 
 /**

@@ -99,7 +99,7 @@ const NovedadesHistorial = ({ historial, onActualizar }) => {
 
   return (
     <Box>
-      <Typography variant="h6" gutterBottom>Novedades del Caso</Typography>
+      <Typography variant="h6" gutterBottom>Auditorias del Caso</Typography>
       <Divider sx={{ mb: 2 }} />
 
       <Typography variant="subtitle1" sx={{ mt: 2, fontWeight: 'bold' }}>📌 Acciones registradas:</Typography>
