@@ -10,9 +10,9 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import EvidenciasCrud from './EvidenciasCrud';
-import RegistrosCrud from './RegistrosCrud';
-import HistorialPlantilla from './HistorialPlantilla';
+import HistorialPlantilla from '../historial/HistorialPlantilla';
+import EvidenciasCrud from './evidencias/EvidenciasCrud';
+import RegistrosCrud from './registros/RegistrosCrud';
 
 const CasoDetailsMenu = ({ caso, onClose }) => {
   const [view, setView] = useState('details');

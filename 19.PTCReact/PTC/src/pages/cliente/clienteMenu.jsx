@@ -18,9 +18,8 @@ import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import NavbarSidebarCliente from './NavbarSidebarCliente';
-import CasoDetailsMenu from './CasoDetailsMenu';
+import CasoDetailsMenu from './caso/CasoDetailsMenu';
 import HistorialCasoDetailsMenu from './historial/HistorialCasoDetailsMenu';
-import HistoryIcon from '@mui/icons-material/History';
 import ArticleIcon from '@mui/icons-material/Article';
 
 

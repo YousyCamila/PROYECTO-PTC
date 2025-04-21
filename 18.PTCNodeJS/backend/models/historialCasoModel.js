@@ -60,7 +60,6 @@ const historialCasoSchema = new mongoose.Schema({
     fechaCierre: { type: Date },
     resultadoFinal: {
       type: String,
-      enum: ['Éxito', 'Fracaso', 'Pendiente'],
       default: 'Pendiente'
     }
   },
