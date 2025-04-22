@@ -1,15 +1,14 @@
 import { jsPDF } from 'jspdf';
-import 'jspdf-autotable'; // Para tablas más avanzadas
+import 'jspdf-autotable';
 
 const generarPDF = (formData) => {
-
   // Obtener la fecha del día de hoy
   const fechaHoy = new Date();
-  const dia = fechaHoy.getDate().toString().padStart(2, '0'); // Día con dos dígitos
-  const mes = (fechaHoy.getMonth() + 1).toString().padStart(2, '0'); // Mes con dos dígitos
+  const dia = fechaHoy.getDate().toString().padStart(2, '0');
+  const mes = (fechaHoy.getMonth() + 1).toString().padStart(2, '0');
   const año = fechaHoy.getFullYear();
 
-  // Formatear la fecha en el formato deseado (ejemplo: "12 de diciembre de 2024")
+  // Formatear la fecha en el formato deseado
   const fechaFormateada = `${dia} de ${getMesNombre(mes)} de ${año}`;
 
   // Función para obtener el nombre del mes
@@ -21,285 +20,347 @@ const generarPDF = (formData) => {
     return meses[mes - 1];
   }
 
+  // Crear nuevo documento PDF
   const doc = new jsPDF();
+  
+  // Constantes de diseño
+  const MARGIN = 20;
+  const MAX_WIDTH = doc.internal.pageSize.width - (MARGIN * 2);
+  const PAGE_HEIGHT = doc.internal.pageSize.height;
+  const LINE_HEIGHT = 7;
+  
+  // Paleta de colores
+  const COLORS = {
+    PRIMARY: [25, 55, 102],    // Azul oscuro más profesional
+    SECONDARY: [70, 130, 180], // Azul acero (para detalles)
+    ACCENT: [192, 192, 192],   // Gris plateado
+    TEXT: [50, 50, 50],        // Casi negro (más suave que negro puro)
+    LIGHT_TEXT: [255, 255, 255] // Blanco
+  };
+  
+  // Configuración de fuentes y tamaños
+  const FONTS = {
+    HEADER: { size: 16, style: 'bold' },
+    SUBHEADER: { size: 14, style: 'bold' },
+    SECTION: { size: 12, style: 'bold' },
+    NORMAL: { size: 11, style: 'normal' },
+    SMALL: { size: 10, style: 'normal' }
+  };
 
-  const maxWidth = 170; // Ancho máximo de texto para el PDF, ajustado al margen
-
-
-  // Página inicial
-  doc.addPage('a4');
-
-  // Colores
-  const DARK_BLUE = [0, 51, 102];
-  const GRAY = [100, 100, 100];
-
-  // Título del contrato
-  doc.setFillColor(...DARK_BLUE);
-  doc.rect(10, 10, 190, 15, 'F');
-  doc.setTextColor(255, 255, 255);
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(16);
-  doc.text('CONTRATO DE SERVICIOS DE DETECTIVES PRIVADOS', 105, 20, { align: 'center' });
-
-  // Restablecer color de texto
-  doc.setTextColor(0, 0, 0);
+  // Función para agregar encabezado
+  function addHeader(text) {
+    // Encabezado con degradado
+    doc.setFillColor(...COLORS.PRIMARY);
+    doc.rect(0, 0, doc.internal.pageSize.width, 30, 'F');
+    
+    // Línea decorativa
+    doc.setFillColor(...COLORS.SECONDARY);
+    doc.rect(0, 30, doc.internal.pageSize.width, 3, 'F');
+    
+    // Texto de encabezado
+    doc.setFont('helvetica', FONTS.HEADER.style);
+    doc.setFontSize(FONTS.HEADER.size);
+    doc.setTextColor(...COLORS.LIGHT_TEXT);
+    doc.text(text, doc.internal.pageSize.width / 2, 19, { align: 'center' });
+  }
 
   // Función para agregar los encabezados de las secciones
-  function addSectionHeader(doc, text, yPosition) {
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(14);
-    doc.setTextColor(...DARK_BLUE);
-    doc.text(text, 20, yPosition);
-    doc.setTextColor(0, 0, 0);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(12);
+  function addSectionHeader(text, yPosition) {
+    doc.setFont('helvetica', FONTS.SUBHEADER.style);
+    doc.setFontSize(FONTS.SUBHEADER.size);
+    doc.setTextColor(...COLORS.PRIMARY);
+    doc.text(text, MARGIN, yPosition);
+    
+    // Línea bajo el título de sección
+    doc.setDrawColor(...COLORS.SECONDARY);
+    doc.setLineWidth(0.5);
+    doc.line(MARGIN, yPosition + 1, doc.internal.pageSize.width - MARGIN, yPosition + 1);
+    
+    doc.setTextColor(...COLORS.TEXT);
+    doc.setFont('helvetica', FONTS.NORMAL.style);
+    doc.setFontSize(FONTS.NORMAL.size);
+    
+    return yPosition + 8;
   }
 
   // Función para verificar el espacio y cambiar de página si es necesario
-  function checkPageOverflow(doc, yPosition) {
-    if (yPosition > 270) { // Si el texto está cerca del final de la página (ajustar según el tamaño de la página)
-      doc.addPage(); // Agregar nueva página
-      yPosition = 20; // Reiniciar la posición en la nueva página
+  function checkPageOverflow(yPosition, buffer = 15) {
+    if (yPosition > PAGE_HEIGHT - buffer) {
+      doc.addPage();
+      yPosition = 40; // Iniciar la nueva página con margen
     }
     return yPosition;
   }
 
-  function ajustarTexto(doc, texto, yPosition, maxWidth) {
-    const lineHeight = 8; // Altura de la línea de texto (ajusta según sea necesario)
-    const lines = doc.splitTextToSize(texto, maxWidth); // Divide el texto en líneas que quepan en el ancho
-
-    // Verifica si el texto se desborda hacia abajo
-    if (yPosition + lines.length * lineHeight > doc.internal.pageSize.height - 20) { // 20 es el margen inferior
-      doc.addPage(); // Si el texto no cabe, agrega una nueva página
-      yPosition = 20; // Reinicia la posición Y en la nueva página
+  // Función para ajustar texto con varias líneas
+  function ajustarTexto(texto, yPosition, maxWidth) {
+    const lines = doc.splitTextToSize(texto, maxWidth);
+    
+    // Verificar si el texto se desborda
+    if (yPosition + (lines.length * LINE_HEIGHT) > PAGE_HEIGHT - MARGIN) {
+      doc.addPage();
+      addHeader('CONTRATO DE SERVICIOS DE DETECTIVES PRIVADOS - CONTINUACIÓN');
+      yPosition = 40;
     }
-
-    // Dibuja las líneas de texto en el documento
+    
+    // Dibujar las líneas
     lines.forEach((line, index) => {
-      doc.text(line, 20, yPosition + index * lineHeight); // Dibuja cada línea a la posición correspondiente
+      doc.text(line, MARGIN, yPosition + (index * LINE_HEIGHT));
     });
-
-    return yPosition + lines.length * lineHeight; // Devuelve la nueva posición Y después del texto
+    
+    return yPosition + (lines.length * LINE_HEIGHT) + 5; // Agregar espacio adicional
   }
 
+  // Función para agregar elementos con viñetas
+  function addBulletItem(title, content, yPosition) {
+    // Viñeta personalizada
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...COLORS.SECONDARY);
+    doc.text('•', MARGIN, yPosition);
+    
+    // Título
+    doc.setTextColor(...COLORS.PRIMARY);
+    doc.text(` ${title}:`, MARGIN + 5, yPosition);
+    
+    // Contenido
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(...COLORS.TEXT);
+    doc.text(content, MARGIN + 35, yPosition);
+    
+    return yPosition + LINE_HEIGHT + 3;
+  }
+
+  // Función para agregar firma
+  function addSignature(role, name, date, yPosition) {
+    // Línea de firma con estilo
+    doc.setDrawColor(...COLORS.ACCENT);
+    doc.setLineWidth(0.5);
+    const lineLength = 120;
+    const startX = MARGIN + 30;
+    
+    // Bloque de firma
+    doc.setFillColor(248, 248, 255); // Color de fondo muy suave
+    doc.roundedRect(MARGIN - 5, yPosition - 5, 180, 35, 3, 3, 'F');
+    
+    // Información de firma
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...COLORS.PRIMARY);
+    doc.text(`${role}:`, MARGIN, yPosition);
+    
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(...COLORS.TEXT);
+    doc.text(`Nombre: ${name}`, MARGIN + 5, yPosition + 7);
+    
+    doc.text('Firma:', MARGIN + 5, yPosition + 14);
+    doc.line(startX, yPosition + 14, startX + lineLength, yPosition + 14);
+    
+    // Fecha con estilo
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(FONTS.SMALL.size);
+    doc.text(`Fecha: ${date}`, MARGIN + 5, yPosition + 21);
+    
+    doc.setFontSize(FONTS.NORMAL.size);
+    doc.setFont('helvetica', 'normal');
+    
+    return yPosition + 35;
+  }
+
+  // Crear primera página con encabezado elegante
+  addHeader('CONTRATO DE SERVICIOS DE DETECTIVES PRIVADOS');
+  
+  // Posición inicial después del encabezado
+  let yPosition = 50;
+  
   // Información general
+  doc.setFont('helvetica', FONTS.NORMAL.style);
+  doc.setFontSize(FONTS.NORMAL.size);
+  doc.setTextColor(...COLORS.TEXT);
+  
+  // Fecha con estilo
+  doc.setFont('helvetica', 'italic');
+  doc.text(`En Bogotá DC, a ${fechaFormateada}`, doc.internal.pageSize.width / 2, yPosition, { align: 'center' });
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(12);
-  let yPosition = 40;
-
-  doc.text(`En Bogotá DC, a ${fechaFormateada}`, 105, yPosition, { align: 'center' });
-
-  yPosition += 20;
-
+  
+  yPosition += 15;
+  
   // Datos de La Agencia
   doc.setFont('helvetica', 'bold');
-  doc.text('ENTRE:', 20, yPosition);
-  yPosition += 8;
-
+  doc.setTextColor(...COLORS.PRIMARY);
+  doc.text('ENTRE:', MARGIN, yPosition);
   doc.setFont('helvetica', 'normal');
+  doc.setTextColor(...COLORS.TEXT);
+  yPosition += 8;
+  
   const agenciaTexto = `La Agencia de Detectives PTC, con domicilio en Carrera 17 #79-04, representada por Jeison Villamil, con documento de identidad 1134894848, en adelante referida como "La Agencia".`;
-  const agenciaTextoDividido = doc.splitTextToSize(agenciaTexto, 170); // Ajustar según el margen
-  yPosition = checkPageOverflow(doc, yPosition);
-  doc.text(agenciaTextoDividido, 20, yPosition);
-  yPosition += agenciaTextoDividido.length * 9;
-
+  yPosition = ajustarTexto(agenciaTexto, yPosition, MAX_WIDTH);
+  
   // Datos del Cliente
+  yPosition = checkPageOverflow(yPosition);
   doc.setFont('helvetica', 'bold');
-  doc.text('Cliente:', 20, yPosition);
-  yPosition += 8;
-
+  doc.setTextColor(...COLORS.PRIMARY);
+  doc.text('Cliente:', MARGIN, yPosition);
   doc.setFont('helvetica', 'normal');
+  doc.setTextColor(...COLORS.TEXT);
+  yPosition += 8;
+  
   const clienteTexto = `${formData.cliente.nombres} ${formData.cliente.apellidos}, con documento de identidad ${formData.cliente.numeroDocumento}, en adelante referido como "El Cliente".`;
-  const clienteTextoDividido = doc.splitTextToSize(clienteTexto, 170);
-  yPosition = checkPageOverflow(doc, yPosition);
-  doc.text(clienteTextoDividido, 20, yPosition);
-  yPosition += clienteTextoDividido.length * 10;
-
+  yPosition = ajustarTexto(clienteTexto, yPosition, MAX_WIDTH);
+  
   // Datos del Detective
+  yPosition = checkPageOverflow(yPosition);
   doc.setFont('helvetica', 'bold');
-  doc.text('Detective:', 20, yPosition);
-  yPosition += 8;
-
+  doc.setTextColor(...COLORS.PRIMARY);
+  doc.text('Detective:', MARGIN, yPosition);
   doc.setFont('helvetica', 'normal');
+  doc.setTextColor(...COLORS.TEXT);
+  yPosition += 8;
+  
   const detectiveTexto = `${formData.detective.nombres} ${formData.detective.apellidos}, con documento de identidad ${formData.detective.numeroDocumento}, especialidad ${formData.detective.especialidad}, en adelante referido como "El Detective".`;
-  const detectiveTextoDividido = doc.splitTextToSize(detectiveTexto, 170);
-  yPosition = checkPageOverflow(doc, yPosition);
-  doc.text(detectiveTextoDividido, 20, yPosition);
-  yPosition += detectiveTextoDividido.length * 10;
-
-  // Cláusula 1: Objeto del Contrato
-  addSectionHeader(doc, '1. Objeto del Contrato', yPosition);
-  yPosition += 8;
-  doc.setFont('helvetica', 'normal');
-
+  yPosition = ajustarTexto(detectiveTexto, yPosition, MAX_WIDTH);
+  
+  // Sección 1: Objeto del Contrato
+  yPosition = checkPageOverflow(yPosition);
+  yPosition = addSectionHeader('1. Objeto del Contrato', yPosition);
+  
   const objetoContrato = "La Agencia se compromete a prestar los servicios de investigación y detección privados a El Cliente, conforme a las especificaciones detalladas en el presente contrato.";
-  const objetoContratoDividido = doc.splitTextToSize(objetoContrato, 170); // Ajustar el tamaño según el margen
-  yPosition = checkPageOverflow(doc, yPosition);
-  doc.text(objetoContratoDividido, 20, yPosition);
-  yPosition += objetoContratoDividido.length * 10;
-  yPosition = checkPageOverflow(doc, yPosition);
-
-  // Cláusula 2: Descripción del Servicio
-  addSectionHeader(doc, '2. Descripción del Servicio', yPosition);
-  yPosition += 8;
+  yPosition = ajustarTexto(objetoContrato, yPosition, MAX_WIDTH);
+  
+  // Sección 2: Descripción del Servicio
+  yPosition = checkPageOverflow(yPosition);
+  yPosition = addSectionHeader('2. Descripción del Servicio', yPosition);
+  
   const textoInvestigaciones = "La Agencia se encargará de realizar investigaciones privadas en el tipo de investigación: fraude, seguimientos, investigaciones familiares, etc. que el cliente necesite. Las especificaciones del servicio se detallan a continuación:";
-  const textoInvestigacionesDividido = doc.splitTextToSize(textoInvestigaciones, 170);
-  yPosition = checkPageOverflow(doc, yPosition);
-  doc.text(textoInvestigacionesDividido, 20, yPosition);
-  yPosition += textoInvestigacionesDividido.length * 8;
-  yPosition = checkPageOverflow(doc, yPosition);
-
+  yPosition = ajustarTexto(textoInvestigaciones, yPosition, MAX_WIDTH);
+  
+  yPosition = checkPageOverflow(yPosition);
+  yPosition = addBulletItem("Descripción del servicio", formData.descripcionServicio, yPosition);
+  yPosition = addBulletItem("Fecha de inicio", formData.fechaInicio, yPosition);
+  yPosition = addBulletItem("Fecha de finalización", formData.fechaCierre, yPosition);
+  
+  // Sección 3: Tarifas y Honorarios
+  yPosition = checkPageOverflow(yPosition);
+  yPosition = addSectionHeader('3. Tarifas y Honorarios', yPosition);
+  
+  const textoTarifas = "El Cliente acuerda pagar a La Agencia una tarifa acordada, en concepto de la modalidad de pago acordada.";
+  yPosition = ajustarTexto(textoTarifas, yPosition, MAX_WIDTH);
+  
+  yPosition = checkPageOverflow(yPosition);
+  yPosition = addBulletItem("Tarifa total", `$${formData.tarifa}`, yPosition);
+  
   doc.setFont('helvetica', 'bold');
-  doc.text("• Descripción del servicio:", 20, yPosition);
-  yPosition += 8;
+  doc.setTextColor(...COLORS.SECONDARY);
+  doc.text('El pago deberá realizarse de la siguiente manera:', MARGIN, yPosition);
   doc.setFont('helvetica', 'normal');
-  doc.text(`${formData.descripcionServicio}`, 30, yPosition);
-  yPosition += 10;
-  yPosition = checkPageOverflow(doc, yPosition);
-
+  doc.setTextColor(...COLORS.TEXT);
+  yPosition += 8;
+  
+  yPosition = addBulletItem("Tipo de tarifa", formData.tipoTarifa, yPosition);
+  yPosition = addBulletItem("Método de pago", formData.metodoPago, yPosition);
+  
+  // Sección 4: Obligaciones de las Partes
+  yPosition = checkPageOverflow(yPosition);
+  yPosition = addSectionHeader('4. Obligaciones de las Partes', yPosition);
+  
+  const textoObligaciones = "La Agencia se obliga a realizar las investigaciones de forma profesional, diligente, objetiva y ajustada a la legalidad colombiana. El Cliente deberá colaborar con la información necesaria para el cumplimiento del servicio, y se abstendrá de interferir en el desarrollo de las actividades asignadas al detective.";
+  yPosition = ajustarTexto(textoObligaciones, yPosition, MAX_WIDTH);
+  
+  // Sección 5: Confidencialidad
+  yPosition = checkPageOverflow(yPosition);
+  yPosition = addSectionHeader('5. Confidencialidad', yPosition);
+  
+  const textoConfidencialidad = "Toda la información intercambiada, recolectada o producida durante la vigencia del contrato será tratada como confidencial. Ninguna de las partes podrá divulgarla sin autorización escrita de la otra, salvo requerimiento legal de autoridad competente.";
+  yPosition = ajustarTexto(textoConfidencialidad, yPosition, MAX_WIDTH);
+  
+  // Sección 6: Duración y Terminación
+  yPosition = checkPageOverflow(yPosition);
+  yPosition = addSectionHeader('6. Duración y Terminación', yPosition);
+  
+  const textoDuracion = "El presente contrato inicia en la fecha establecida en este documento y finaliza en la fecha acordada. Cualquiera de las partes podrá terminarlo de manera anticipada con preaviso escrito de cinco (5) días hábiles. Si el Cliente termina el contrato sin justa causa, deberá pagar los costos generados hasta la fecha de terminación.";
+  yPosition = ajustarTexto(textoDuracion, yPosition, MAX_WIDTH);
+  
+  // Sección 7: Responsabilidad
+  yPosition = checkPageOverflow(yPosition);
+  yPosition = addSectionHeader('7. Responsabilidad', yPosition);
+  
+  const textoResponsabilidad = "La Agencia responderá únicamente por los actos realizados en el ejercicio de su labor profesional conforme a la legislación colombiana. No responderá por actos u omisiones imputables al Cliente ni por resultados que dependan de terceros o situaciones imprevisibles.";
+  yPosition = ajustarTexto(textoResponsabilidad, yPosition, MAX_WIDTH);
+  
+  // Sección 8: Legislación Aplicable y Jurisdicción
+  yPosition = checkPageOverflow(yPosition);
+  yPosition = addSectionHeader('8. Legislación Aplicable y Jurisdicción', yPosition);
+  
+  const textoLegislacion = "Este contrato se rige por las leyes de la República de Colombia, en especial lo dispuesto en el Código Civil, Código de Comercio, Ley 1801 de 2016 (Código Nacional de Policía) y normas sobre vigilancia y seguridad privada. Cualquier diferencia será resuelta por los jueces civiles de Bogotá D.C.";
+  yPosition = ajustarTexto(textoLegislacion, yPosition, MAX_WIDTH);
+  
+  // Sección 9: Aceptación del Contrato
+  yPosition = checkPageOverflow(yPosition);
+  yPosition = addSectionHeader('9. Aceptación del Contrato', yPosition);
+  
+  const textoAceptacion = "Las partes manifiestan que han leído y entendido cada una de las cláusulas aquí descritas, por lo cual lo suscriben en señal de aceptación, reconociendo su validez legal conforme a las normas vigentes en Colombia.";
+  yPosition = ajustarTexto(textoAceptacion, yPosition, MAX_WIDTH);
+  
+  // Sección de Firmas
+  yPosition = checkPageOverflow(yPosition, 45);
+  yPosition = addSectionHeader('FIRMAS', yPosition);
+  yPosition += 5;
+  
+  const signatures = [
+    { role: 'Representante de La Agencia', name: 'Jeison Villamil', date: formData.fechaFirmaAgencia },
+    { role: 'Cliente', name: `${formData.cliente.nombres} ${formData.cliente.apellidos}`, date: formData.fechaFirmaCliente },
+    { role: 'Detective', name: `${formData.detective.nombres} ${formData.detective.apellidos}`, date: formData.fechaFirmaDetective }
+  ];
+  
+  signatures.forEach(sig => {
+    yPosition = checkPageOverflow(yPosition, 40);
+    yPosition = addSignature(sig.role, sig.name, sig.date, yPosition);
+  });
+  
+  // Información de Contacto en un pie de página elegante
+  doc.setFillColor(...COLORS.PRIMARY);
+  doc.rect(0, PAGE_HEIGHT - 30, doc.internal.pageSize.width, 30, 'F');
+  
   doc.setFont('helvetica', 'bold');
-  doc.text("• Fecha de inicio:", 20, yPosition);
-  yPosition += 8;
+  doc.setFontSize(FONTS.SECTION.size);
+  doc.setTextColor(...COLORS.LIGHT_TEXT);
+  doc.text('INFORMACIÓN DE CONTACTO', doc.internal.pageSize.width / 2, PAGE_HEIGHT - 20, { align: 'center' });
+  
   doc.setFont('helvetica', 'normal');
-  doc.text(` ${formData.fechaInicio}`, 30, yPosition);
-  yPosition += 10;
-  yPosition = checkPageOverflow(doc, yPosition);
-
-  doc.setFont('helvetica', 'bold');
-  doc.text("• Fecha de finalización:", 20, yPosition);
-  yPosition += 8;
-  doc.setFont('helvetica', 'normal');
-  doc.text(` ${formData.fechaCierre}`, 30, yPosition);
-  yPosition += 10;
-  yPosition = checkPageOverflow(doc, yPosition);
-
-  // Cláusula 4: Obligaciones de las Partes
-addSectionHeader(doc, '4. Obligaciones de las Partes', yPosition);
-yPosition += 8;
-yPosition = ajustarTexto(doc, `
-La Agencia se obliga a realizar las investigaciones de forma profesional, diligente, objetiva y ajustada a la legalidad colombiana. El Cliente deberá colaborar con la información necesaria para el cumplimiento del servicio, y se abstendrá de interferir en el desarrollo de las actividades asignadas al detective.
-`, yPosition, maxWidth);
-
-// Cláusula 5: Confidencialidad
-addSectionHeader(doc, '5. Confidencialidad', yPosition);
-yPosition += 8;
-yPosition = ajustarTexto(doc, `
-Toda la información intercambiada, recolectada o producida durante la vigencia del contrato será tratada como confidencial. Ninguna de las partes podrá divulgarla sin autorización escrita de la otra, salvo requerimiento legal de autoridad competente.
-`, yPosition, maxWidth);
-
-// Cláusula 6: Duración y Terminación
-addSectionHeader(doc, '6. Duración y Terminación', yPosition);
-yPosition += 8;
-yPosition = ajustarTexto(doc, `
-El presente contrato inicia en la fecha establecida en este documento y finaliza en la fecha acordada. Cualquiera de las partes podrá terminarlo de manera anticipada con preaviso escrito de cinco (5) días hábiles. Si el Cliente termina el contrato sin justa causa, deberá pagar los costos generados hasta la fecha de terminación.
-`, yPosition, maxWidth);
-
-// Cláusula 7: Responsabilidad
-addSectionHeader(doc, '7. Responsabilidad', yPosition);
-yPosition += 8;
-yPosition = ajustarTexto(doc, `
-La Agencia responderá únicamente por los actos realizados en el ejercicio de su labor profesional conforme a la legislación colombiana. No responderá por actos u omisiones imputables al Cliente ni por resultados que dependan de terceros o situaciones imprevisibles.
-`, yPosition, maxWidth);
-
-// Cláusula 8: Legislación Aplicable y Jurisdicción
-addSectionHeader(doc, '8. Legislación Aplicable y Jurisdicción', yPosition);
-yPosition += 8;
-yPosition = ajustarTexto(doc, `
-Este contrato se rige por las leyes de la República de Colombia, en especial lo dispuesto en el Código Civil, Código de Comercio, Ley 1801 de 2016 (Código Nacional de Policía) y normas sobre vigilancia y seguridad privada. Cualquier diferencia será resuelta por los jueces civiles de Bogotá D.C.
-`, yPosition, maxWidth);
-
-
-addSectionHeader(doc, '9. Aceptación del Contrato', yPosition);
-yPosition += 8;
-yPosition = ajustarTexto(doc, `
-Las partes manifiestan que han leído y entendido cada una de las cláusulas aquí descritas, por lo cual lo suscriben en señal de aceptación, reconociendo su validez legal conforme a las normas vigentes en Colombia.
-`, yPosition, maxWidth);
-
-
-  // Sección de Tarifas y Honorarios
-addSectionHeader(doc, '3. Tarifas y Honorarios', yPosition);
-yPosition += 8;
-
-
-const texto = "El Cliente acuerda pagar a La Agencia una tarifa acordada, en concepto de la modalidad de pago acordada.";
-yPosition = ajustarTexto(doc, texto, yPosition, maxWidth);
-
-yPosition = checkPageOverflow(doc, yPosition); // Verificar si se necesita pasar a una nueva página
-doc.setFont('helvetica', 'bold');
-doc.text('• Tarifa total:', 20, yPosition);
-yPosition += 8;
-doc.setFont('helvetica', 'normal');
-doc.text(`$${formData.tarifa}`, 30, yPosition);
-yPosition += 10;
-yPosition = checkPageOverflow(doc, yPosition);
-
-yPosition = checkPageOverflow(doc, yPosition); // Verificar si se necesita pasar a una nueva página
-doc.setFont('helvetica', 'bold');
-doc.text('El pago deberá realizarse de la siguiente manera:', 20, yPosition);
-yPosition += 8;
-
-yPosition = checkPageOverflow(doc, yPosition); // Verificar si se necesita pasar a una nueva página
-doc.setFont('helvetica', 'bold');
-doc.text('• Tipo de tarifa:', 20, yPosition);
-yPosition += 8;
-doc.setFont('helvetica', 'normal');
-doc.text(`${formData.tipoTarifa}`, 30, yPosition);
-yPosition += 10;
-yPosition = checkPageOverflow(doc, yPosition);
-
-yPosition = checkPageOverflow(doc, yPosition); // Verificar si se necesita pasar a una nueva página
-doc.setFont('helvetica', 'bold');
-doc.text('• Método de pago:', 20, yPosition);
-yPosition += 8;
-doc.setFont('helvetica', 'normal');
-doc.text(`${formData.metodoPago}`, 30, yPosition);
-yPosition += 10;
-yPosition = checkPageOverflow(doc, yPosition);
-
-yPosition = checkPageOverflow(doc, yPosition); // Verificar si se necesita pasar a una nueva página
-
-// Sección de Firmas
-addSectionHeader(doc, 'FIRMAS', yPosition);
-yPosition += 15;
-
-const signatures = [
-  { role: 'Representante de La Agencia', name: 'Jeison Villamil', date: formData.fechaFirmaAgencia },
-  { role: 'Cliente', name: `${formData.cliente.nombres} ${formData.cliente.apellidos}`, date: formData.fechaFirmaCliente },
-  { role: 'Detective', name: `${formData.detective.nombres} ${formData.detective.apellidos}`, date: formData.fechaFirmaDetective }
-];
-
-signatures.forEach(sig => {
-  doc.text(`${sig.role}:`, 20, yPosition);
-  yPosition += 7;
-  doc.text(`Nombre: ${sig.name}`, 20, yPosition);
-  yPosition += 7;
-  doc.text('Firma: ___________________________', 20, yPosition);
-  yPosition += 7;
-  doc.text(`Fecha: ${sig.date}`, 20, yPosition);
-  yPosition += 15;
-  yPosition = checkPageOverflow(doc, yPosition);
-});
-
-// Información de Contacto
-addSectionHeader(doc, 'INFORMACIÓN DE CONTACTO', yPosition);
-yPosition += 10;
-doc.text('Dirección: Carrera 15 #79-10', 20, yPosition);
-yPosition += 7;
-doc.text('Teléfono: 350 5090145', 20, yPosition);
-yPosition += 7;
-doc.text('Email: ptcinvestigationprivatetec@gmail.com', 20, yPosition);
-  // Generar el PDF final
+  doc.setFontSize(FONTS.SMALL.size);
+  const contactInfo = 'Dirección: Carrera 15 #79-10 | Teléfono: 350 5090145 | Email: ptcinvestigationprivatetec@gmail.com';
+  doc.text(contactInfo, doc.internal.pageSize.width / 2, PAGE_HEIGHT - 10, { align: 'center' });
+  
+  // Agregar numeración a las páginas
+  const totalPages = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= totalPages; i++) {
+    doc.setPage(i);
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(8);
+    doc.setTextColor(...COLORS.ACCENT);
+    doc.text(`Página ${i} de ${totalPages}`, doc.internal.pageSize.width - 25, PAGE_HEIGHT - 35);
+  }
+  
+  // Guardar el PDF
   doc.save('Contrato_DetDetective.pdf');
-
+  
   return (
     <div>
-      <button onClick={() => generarPDF()}>Generar PDF</button>
+      <button 
+        style={{ 
+          backgroundColor: '#1a3766', 
+          color: 'white', 
+          padding: '10px 20px', 
+          border: 'none', 
+          borderRadius: '5px', 
+          cursor: 'pointer',
+          fontWeight: 'bold',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+        }} 
+        onClick={() => generarPDF()}
+      >
+        Generar Contrato PDF
+      </button>
     </div>
   );
 };
 
 export default generarPDF;
-
-
-
-
