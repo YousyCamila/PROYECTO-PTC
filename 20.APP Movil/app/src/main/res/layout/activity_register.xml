@@ -106,16 +106,15 @@
 
                 <!-- Botón de Registro -->
                 <Button
-                    android:id="@+id/btnRegister"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Registrarse"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:textColor="@android:color/white"
-                    android:backgroundTint="#4CAF50"
-                    android:padding="14dp"
-                    android:layout_marginBottom="15dp"/>
+                        android:id="@+id/btnRegister"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Registrarse"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        app:rippleColor="@color/azulOz" android:backgroundTint="#2E43AF"
+                        android:padding="14dp"
+                        android:layout_marginBottom="15dp"/>
 
                 <!-- Botón de Volver al Login -->
                 <Button
@@ -126,7 +125,7 @@
                     android:textStyle="bold"
                     android:textSize="18sp"
                     android:textColor="@android:color/white"
-                    android:backgroundTint="#3F51B5"
+                    android:backgroundTint="#2196F3"
                     android:padding="14dp"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

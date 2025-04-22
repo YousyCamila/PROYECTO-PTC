@@ -10,8 +10,9 @@ import com.example.aplicacionptc.Api.Retrofit
 import com.example.aplicacionptc.Auth.RegisterActivity
 import com.example.aplicacionptc.Models.Administrador.Usuario.AuthResponse
 import com.example.aplicacionptc.Models.Administrador.Usuario.User
-import com.example.aplicacionptc.Views.Detective.HomeDetectiveActivity
+import com.example.aplicacionptc.Views.Clientes.HomeClientesActivity
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.example.aplicacionptc.Views.Detectives.HomeDetectiveActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -113,7 +114,7 @@ class LoginActivity : AppCompatActivity() {
                     when (authResponse.role) {
                         "administrador" -> startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                         "detective" -> startActivity(Intent(this@LoginActivity, HomeDetectiveActivity::class.java))
-                        //"cliente" -> startActivity(Intent(this@LoginActivity, HomeClienteActivity::class.java))
+                        "cliente" -> startActivity(Intent(this@LoginActivity, HomeClientesActivity::class.java))
                         else -> Toast.makeText(this@LoginActivity, "Rol desconocido", Toast.LENGTH_SHORT).show()
                     }
                     finish()
