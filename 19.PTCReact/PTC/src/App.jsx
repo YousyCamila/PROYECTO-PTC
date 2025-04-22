@@ -30,6 +30,7 @@ import Contactanos from './pages/contactanos/contactanos';
 import ResponderSolicitudes from './pages/administrador/GestionarSolicitudes/ResponderSolicitudes';
 import MensajesRespondidos from './pages/administrador/GestionarSolicitudes/MensajesRespondidos';
 
+
 import EvidenciasCrud from './pages/cliente/caso/evidencias/EvidenciasCrud';
 import { AuthProvider } from './context/AuthContext';
 
@@ -42,19 +43,22 @@ import CasoDetailsMenu from './pages/cliente/caso/CasoDetailsMenu';
 
 //Historial 
 import HistorialCasoDetailsMenu from './pages/cliente/historial/HistorialCasoDetailsMenu';
-import HistorialPlantilla from './pages/cliente/historial/HistorialPlantilla';
-import NovedadesHistorial from './pages/cliente/historial/NovedadesHistorial';
-import useDatosRelacionadosDesdeCasos from './pages/cliente/historial/useDatosRelacionadosDesdeCasos'
+import NovedadesHistorial from './pages/detective/auditoria/NovedadesHistorial'
 import InformacionHistorial from './pages/cliente/historial/InformacionHistorial';
 import GestionarHistorial from './pages/cliente/historial/GestionarHistorial';
 
-import EvidenciasDetectiveCrud from './pages/detective/EvidenciasDetectiveCrud';
+//Seccion para detectives 
+
+//Historial 
+import HistorialCasoDetailsMenuDetective from './pages/detective/historial/HistorialCasoDetailsMenuDetective'
+import GestionarHistorialDetective from './pages/detective/historial/GestionarHistorialDetective';
+import EvidenciasCrudDetective from './pages/detective/caso/evidencia/EvidenciasCrudDetective';
+
 import NavbarSidebarDetective from './pages/detective/NavbarSidebarDetective';
-import DetectiveCasoDetailsMenu from './pages/detective/DetectiveCasoDetailsMenu';
-import RegistrosCrudDetective from './pages/detective/RegistrosCrudDetective';
-import AgregarEvidenciaDetective from './pages/detective/agregarEvidenciaDetective';
-import AgregarRegistroFormDetective from './pages/detective/AgregarRegistrosFormDetective';
-import EditarRegistroFormDetective from './pages/detective/editarRegistroFormDetective';
+import DetectiveCasoDetailsMenu from './pages/detective/caso/DetectiveCasoDetailsMenu';
+import AgregarEvidenciaDetective from './pages/detective/caso/evidencia/agregarEvidenciaDetective';
+import AgregarRegistroFormDetective from './pages/detective/caso/registros/AgregarRegistrosFormDetective';
+
 
 function App() {
   return (
@@ -68,7 +72,9 @@ function App() {
           <Route path="/register" element={<Register />} />
         
           <Route path="/servicios" element={<Servicios />} />
-         
+          
+          <Route path="/agregar-evidencia/:casoId" element={<AgregarEvidencia />} />
+          <Route path="/evidencias-crud" element={<EvidenciasCrud />} />
 
           {/* Rutas protegidas - solo para administradores */}
           <Route element={<ProtectedRoute roles={['administrador']} />}>
@@ -97,18 +103,15 @@ function App() {
           </Route>
 
           {/* Rutas protegidas - solo para clientes */}
-          <Route element={<ProtectedRoute roles={['cliente']} />}>
+          <Route element={<ProtectedRoute roles={['cliente','detective']} />}>
             <Route path="/cliente-menu" element={<MenuCliente />} />
             <Route path="/caso-details" element={<CasoDetailsMenu />} />
-            <Route path="/evidencias-crud" element={<EvidenciasCrud />} />
-            <Route path="/agregar-evidencia/:casoId" element={<AgregarEvidencia />} />
+            
             <Route path="/registros-crud" element={<RegistrosCrud />} />
             <Route path='/agregar-registros/:casoId' element={<AgregarRegistrosForm />} />
             <Route path='/editar-registros/:registroId' element={<EditarRegistroForm />} />
-            <Route path='Historial-caso' element={<HistorialPlantilla/>} />
             <Route path='historial-details' element={<HistorialCasoDetailsMenu/>}/>
             <Route path='novedades-historial' element={<NovedadesHistorial/>}/>
-            <Route path='cargar-datos' element={<useDatosRelacionadosDesdeCasos/>}/>
             <Route path='informacion-general' element={<InformacionHistorial/>}/>
             <Route path='Gestionar-historial' element={<GestionarHistorial/>}/>
           </Route>
@@ -116,13 +119,14 @@ function App() {
           {/* Rutas protegidas - solo para detectives */}
           <Route element={<ProtectedRoute roles={['detective']} />}>
             <Route path="/detective-menu" element={<DetectiveMenu />} />
-            <Route path="/agregar-evidencia/:casoId" element={<AgregarEvidenciaDetective />} />
-            <Route path="/EvidenciasDetectiveCrud" element={<EvidenciasDetectiveCrud/>}/>
+            <Route path="/agregar-evidencia-detective/:casoId" element={<AgregarEvidenciaDetective />} />
             <Route path="/NavbarSidebarDetective" element={<NavbarSidebarDetective/>}/>
             <Route path= "/DetectiveCasoDetailsMenu" element= {<DetectiveCasoDetailsMenu/>}/>
             <Route path="/AgregarRegistroFormDetective" element= {<AgregarRegistroFormDetective/>}/>
-            <Route path="/EditarRegistroFromDetective" element= {<EditarRegistroFormDetective/>}/>
-            <Route path="/RegistrosCrudDetective" element = {<RegistrosCrudDetective/>}/>
+            <Route path="HistorialCasoDetailsMenuDetective" element = {<HistorialCasoDetailsMenuDetective/>}/>
+            <Route path="Gestion-historial-detective" element = {<GestionarHistorialDetective/>}/>
+            <Route path="Gestion-evidencias-detective" element = {<EvidenciasCrudDetective/>}/>
+            
 
           </Route>
         </Routes>

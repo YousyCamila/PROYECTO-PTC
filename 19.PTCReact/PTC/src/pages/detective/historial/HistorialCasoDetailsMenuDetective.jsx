@@ -9,12 +9,14 @@ import {
   Divider,
   CircularProgress,
 } from '@mui/material';
-import NovedadesHistorial from '../../detective/auditoria/NovedadesHistorial';
-import InformacionHistorial from './InformacionHistorial';
-import GestionarHistorial from './GestionarHistorial';
+import NovedadesHistorial from '../auditoria/NovedadesHistorial';
+//import InformacionHistorial from './InformacionHistorial';
+//import GestionarHistorial from './GestionarHistorial';
+import GestionarHistorialDetective from './GestionarHistorialDetective';
+import InformacionHistorial from '../../cliente/historial/InformacionHistorial';
 
 
-const HistorialCasoDetailsMenu = ({ caso, onClose }) => {
+const HistorialCasoDetailsMenuDetective = ({ caso, onClose }) => {
   const [view, setView] = useState('resumen');
   const [historial, setHistorial] = useState(null);
   const [loadingHistorial, setLoadingHistorial] = useState(false);
@@ -85,7 +87,7 @@ const HistorialCasoDetailsMenu = ({ caso, onClose }) => {
           <Box>
             <Typography variant="h6" gutterBottom>Historial Completo del Caso</Typography>
             <Divider sx={{ mb: 2 }} />
-            <GestionarHistorial historial={historial} />
+            <GestionarHistorialDetective historial={historial} />
           </Box>
         );
       default:
@@ -127,4 +129,4 @@ const HistorialCasoDetailsMenu = ({ caso, onClose }) => {
   );
 };
 
-export default HistorialCasoDetailsMenu;
+export default HistorialCasoDetailsMenuDetective;

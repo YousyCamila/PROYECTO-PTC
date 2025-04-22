@@ -18,7 +18,9 @@ import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import NavbarSidebarDetective from './NavbarSidebarDetective';
-import DetectiveCasoDetailsMenu from './DetectiveCasoDetailsMenu';
+import DetectiveCasoDetailsMenu from './caso/DetectiveCasoDetailsMenu';
+import HistorialCasoDetailsMenuDetective from './historial/HistorialCasoDetailsMenuDetective';
+import ArticleIcon from '@mui/icons-material/Article'; 
 
 const DetectiveMenu = () => {
   const { user } = useContext(AuthContext); // Contexto de autenticación
@@ -26,6 +28,7 @@ const DetectiveMenu = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false); // Estado para el Snackbar
   const [snackbarMessage, setSnackbarMessage] = useState(''); // Mensaje del Snackbar
   const [selectedCaso, setSelectedCaso] = useState(null); // Caso seleccionado para detalles
+  const [selectedHistorialCaso, setSelectedHistorialCaso] = useState(null);
   const navigate = useNavigate();
 
   const email = localStorage.getItem('email_detective'); // Email del cliente
@@ -73,6 +76,10 @@ const DetectiveMenu = () => {
     setSelectedCaso(caso); // Guardar el caso seleccionado
   };
 
+  const handleOpenHistorialCaso = (caso) => {
+    setSelectedHistorialCaso(caso);
+  };
+
   return (
     <Box
       sx={{
@@ -112,7 +119,7 @@ const DetectiveMenu = () => {
           gutterBottom
           sx={{ textAlign: 'center', color: '#000000' }}
         >
-          Casos Asociados al Detective 
+          Casos Asociados al Detective
         </Typography>
 
         {/* Tabla de casos */}
@@ -124,7 +131,7 @@ const DetectiveMenu = () => {
                   Nombre del Caso
                 </TableCell>
                 <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
-                  Detective Asignado
+                  Cliente Asignado
                 </TableCell>
                 <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#005f91', color: 'white' }}>
                   Estado
@@ -140,8 +147,8 @@ const DetectiveMenu = () => {
                   <TableRow key={caso._id}>
                     <TableCell>{caso.nombreCaso}</TableCell>
                     <TableCell>
-                      {caso.idDetective
-                        ? `${caso.idDetective.nombres} ${caso.idDetective.apellidos}`
+                      {caso.idCliente
+                        ? `${caso.idCliente.nombres} ${caso.idCliente.apellidos}`
                         : 'Detective no asignado'}
                     </TableCell>
                     <TableCell>{caso.activo ? 'Activo' : 'Inactivo'}</TableCell>
@@ -151,13 +158,18 @@ const DetectiveMenu = () => {
                           <MenuOpenIcon color="secondary" />
                         </IconButton>
                       </Tooltip>
+                      <Tooltip title="Ver historial del caso" arrow>
+                        <IconButton onClick={() => handleOpenHistorialCaso(caso)}>
+                          <ArticleIcon  color="primary" />
+                        </IconButton>
+                      </Tooltip>
                     </TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
                   <TableCell colSpan={4} sx={{ textAlign: 'center' }}>
-                    No hay casos asociados para este Detective.
+                    No hay casos asociados para este cliente.
                   </TableCell>
                 </TableRow>
               )}
@@ -176,6 +188,9 @@ const DetectiveMenu = () => {
 
       {/* Menú de detalles del caso */}
       {selectedCaso && <DetectiveCasoDetailsMenu caso={selectedCaso} onClose={() => setSelectedCaso(null)} />}
+
+      {selectedHistorialCaso && ( <HistorialCasoDetailsMenuDetective caso={selectedHistorialCaso} onClose={() => setSelectedHistorialCaso(null)} /> )}
+
     </Box>
   );
 };

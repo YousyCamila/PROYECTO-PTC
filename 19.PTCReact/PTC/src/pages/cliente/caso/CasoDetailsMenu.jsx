@@ -10,7 +10,6 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import HistorialPlantilla from '../historial/HistorialPlantilla';
 import EvidenciasCrud from './evidencias/EvidenciasCrud';
 import RegistrosCrud from './registros/RegistrosCrud';
 
