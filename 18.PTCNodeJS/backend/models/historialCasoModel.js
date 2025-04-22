@@ -75,7 +75,7 @@ const historialCasoSchema = new mongoose.Schema({
           ]
         },
         detalles: { type: String, required: true },
-        documentoRelacionado: { type: mongoose.Schema.Types.ObjectId, refPath: 'tipoDocumento' },
+        documentoRelacionado: { type: mongoose.Schema.Types.ObjectId, refPath: 'acciones.tipoDocumento' },
         tipoDocumento: {
           type: String,
           enum: ['Evidencia', 'RegistroCaso', 'Contrato'],
