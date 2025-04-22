@@ -9,10 +9,8 @@ import {
   Divider,
   CircularProgress,
 } from '@mui/material';
-import NovedadesHistorial from '../../detective/auditoria/NovedadesHistorial';
+import VerAuditoria from './auditoria/VerAuditoria';
 import InformacionHistorial from './InformacionHistorial';
-import GestionarHistorial from './GestionarHistorial';
-
 
 const HistorialCasoDetailsMenu = ({ caso, onClose }) => {
   const [view, setView] = useState('resumen');
@@ -21,10 +19,6 @@ const HistorialCasoDetailsMenu = ({ caso, onClose }) => {
 
   const handleViewResumen = () => setView('resumen');
   const handleViewNovedades = () => setView('novedades');
-  const handleViewHistorial = () => {
-    setView('historial');
-    fetchHistorial();
-  };
 
   useEffect(() => {
     fetchHistorial();
@@ -73,20 +67,12 @@ const HistorialCasoDetailsMenu = ({ caso, onClose }) => {
             <InformacionHistorial historial={historial} />
           </Box>
         );
-        case 'novedades':
-          return (
-            <NovedadesHistorial
-              historial={historial}
-              onActualizar={fetchHistorial}
-            />
-          );
-      case 'historial':
+      case 'novedades':
         return (
-          <Box>
-            <Typography variant="h6" gutterBottom>Historial Completo del Caso</Typography>
-            <Divider sx={{ mb: 2 }} />
-            <GestionarHistorial historial={historial} />
-          </Box>
+          <VerAuditoria
+            historial={historial}
+            onActualizar={fetchHistorial}
+          />
         );
       default:
         return <Typography>Selecciona una vista válida.</Typography>;
@@ -104,13 +90,6 @@ const HistorialCasoDetailsMenu = ({ caso, onClose }) => {
           </Button>
           <Button fullWidth variant="outlined" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91' }} onClick={handleViewNovedades}>
             Auditoria
-          </Button>
-          <Button fullWidth variant="outlined" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91' }} onClick={handleViewHistorial}>
-            Gestionar Historial
-          </Button>
-          <Divider sx={{ my: 2, borderColor: '#ffffff' }} />
-          <Button fullWidth variant="outlined" sx={{ backgroundColor: '#ffffff', color: '#005f91' }} onClick={fetchHistorial}>
-            Recargar Historial
           </Button>
         </Box>
 

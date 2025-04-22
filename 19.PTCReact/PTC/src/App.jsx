@@ -47,6 +47,7 @@ import HistorialCasoDetailsMenu from './pages/cliente/historial/HistorialCasoDet
 import NovedadesHistorial from './pages/detective/auditoria/NovedadesHistorial'
 import InformacionHistorial from './pages/cliente/historial/InformacionHistorial';
 import GestionarHistorial from './pages/cliente/historial/GestionarHistorial';
+import VerAuditoria from './pages/cliente/historial/auditoria/VerAuditoria';
 
 //Seccion para detectives 
 
@@ -127,6 +128,8 @@ function App() {
             
             <Route path='informacion-general' element={<InformacionHistorial/>}/>
             <Route path='Gestionar-historial' element={<GestionarHistorial/>}/>
+            <Route path='ver-auditorias' element={<VerAuditoria/>}/>
+
           </Route>
 
           {/* Rutas protegidas - solo para detectives */}
