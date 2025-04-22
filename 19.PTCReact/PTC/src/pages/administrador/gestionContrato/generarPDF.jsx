@@ -23,6 +23,9 @@ const generarPDF = (formData) => {
 
   const doc = new jsPDF();
 
+  const maxWidth = 170; // Ancho máximo de texto para el PDF, ajustado al margen
+
+
   // Página inicial
   doc.addPage('a4');
 
@@ -170,11 +173,54 @@ const generarPDF = (formData) => {
   yPosition += 10;
   yPosition = checkPageOverflow(doc, yPosition);
 
+  // Cláusula 4: Obligaciones de las Partes
+addSectionHeader(doc, '4. Obligaciones de las Partes', yPosition);
+yPosition += 8;
+yPosition = ajustarTexto(doc, `
+La Agencia se obliga a realizar las investigaciones de forma profesional, diligente, objetiva y ajustada a la legalidad colombiana. El Cliente deberá colaborar con la información necesaria para el cumplimiento del servicio, y se abstendrá de interferir en el desarrollo de las actividades asignadas al detective.
+`, yPosition, maxWidth);
+
+// Cláusula 5: Confidencialidad
+addSectionHeader(doc, '5. Confidencialidad', yPosition);
+yPosition += 8;
+yPosition = ajustarTexto(doc, `
+Toda la información intercambiada, recolectada o producida durante la vigencia del contrato será tratada como confidencial. Ninguna de las partes podrá divulgarla sin autorización escrita de la otra, salvo requerimiento legal de autoridad competente.
+`, yPosition, maxWidth);
+
+// Cláusula 6: Duración y Terminación
+addSectionHeader(doc, '6. Duración y Terminación', yPosition);
+yPosition += 8;
+yPosition = ajustarTexto(doc, `
+El presente contrato inicia en la fecha establecida en este documento y finaliza en la fecha acordada. Cualquiera de las partes podrá terminarlo de manera anticipada con preaviso escrito de cinco (5) días hábiles. Si el Cliente termina el contrato sin justa causa, deberá pagar los costos generados hasta la fecha de terminación.
+`, yPosition, maxWidth);
+
+// Cláusula 7: Responsabilidad
+addSectionHeader(doc, '7. Responsabilidad', yPosition);
+yPosition += 8;
+yPosition = ajustarTexto(doc, `
+La Agencia responderá únicamente por los actos realizados en el ejercicio de su labor profesional conforme a la legislación colombiana. No responderá por actos u omisiones imputables al Cliente ni por resultados que dependan de terceros o situaciones imprevisibles.
+`, yPosition, maxWidth);
+
+// Cláusula 8: Legislación Aplicable y Jurisdicción
+addSectionHeader(doc, '8. Legislación Aplicable y Jurisdicción', yPosition);
+yPosition += 8;
+yPosition = ajustarTexto(doc, `
+Este contrato se rige por las leyes de la República de Colombia, en especial lo dispuesto en el Código Civil, Código de Comercio, Ley 1801 de 2016 (Código Nacional de Policía) y normas sobre vigilancia y seguridad privada. Cualquier diferencia será resuelta por los jueces civiles de Bogotá D.C.
+`, yPosition, maxWidth);
+
+
+addSectionHeader(doc, '9. Aceptación del Contrato', yPosition);
+yPosition += 8;
+yPosition = ajustarTexto(doc, `
+Las partes manifiestan que han leído y entendido cada una de las cláusulas aquí descritas, por lo cual lo suscriben en señal de aceptación, reconociendo su validez legal conforme a las normas vigentes en Colombia.
+`, yPosition, maxWidth);
+
+
   // Sección de Tarifas y Honorarios
 addSectionHeader(doc, '3. Tarifas y Honorarios', yPosition);
 yPosition += 8;
 
-const maxWidth = 180; // Ancho máximo permitido para el texto (ajústalo según los márgenes)
+
 const texto = "El Cliente acuerda pagar a La Agencia una tarifa acordada, en concepto de la modalidad de pago acordada.";
 yPosition = ajustarTexto(doc, texto, yPosition, maxWidth);
 
@@ -253,3 +299,7 @@ doc.text('Email: ptcinvestigationprivatetec@gmail.com', 20, yPosition);
 };
 
 export default generarPDF;
+
+
+
+
