@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef  } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
 import {
   Box,
   Typography,
@@ -66,6 +66,8 @@ const NovedadesHistorial = ({ historial, onActualizar }) => {
         );
 
         const data = await response.json();
+
+        console.log(data.idCaso.registroCasos);
 
         if (!data || !data.idCaso) {
           console.error("No se encontró el idCaso en la respuesta:", data);
@@ -184,8 +186,16 @@ const NovedadesHistorial = ({ historial, onActualizar }) => {
                 <Typography variant="body2">
                   <strong>Detalles:</strong> {accion.detalles}
                 </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  📄 Documento relacionado: {accion.tipoDocumento} -{" "}
+                  {accion.documentoRelacionado.descripcion}
+                </Typography>
                 <Typography variant="body2">
                   <strong>Tipo Usuario:</strong> {accion.usuarioTipo}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  👤 Usuario: {accion.usuario?.nombres}{" "}
+                  {accion.usuario?.apellidos}
                 </Typography>
                 <Typography variant="body2">
                   <strong>Fecha:</strong>{" "}

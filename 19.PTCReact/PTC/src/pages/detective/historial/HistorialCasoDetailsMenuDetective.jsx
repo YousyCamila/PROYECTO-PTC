@@ -9,16 +9,24 @@ import {
   Divider,
   CircularProgress,
 } from '@mui/material';
-import VerAuditoria from './auditoria/VerAuditoria';
-import InformacionHistorial from './InformacionHistorial';
+import NovedadesHistorial from '../auditoria/NovedadesHistorial';
+//import InformacionHistorial from './InformacionHistorial';
+//import GestionarHistorial from './GestionarHistorial';
+import GestionarHistorialDetective from './GestionarHistorialDetective';
+import InformacionHistorial from '../../cliente/historial/InformacionHistorial';
 
-const HistorialCasoDetailsMenu = ({ caso, onClose }) => {
+
+const HistorialCasoDetailsMenuDetective = ({ caso, onClose }) => {
   const [view, setView] = useState('resumen');
   const [historial, setHistorial] = useState(null);
   const [loadingHistorial, setLoadingHistorial] = useState(false);
 
   const handleViewResumen = () => setView('resumen');
   const handleViewNovedades = () => setView('novedades');
+  const handleViewHistorial = () => {
+    setView('historial');
+    fetchHistorial();
+  };
 
   useEffect(() => {
     fetchHistorial();
@@ -67,12 +75,20 @@ const HistorialCasoDetailsMenu = ({ caso, onClose }) => {
             <InformacionHistorial historial={historial} />
           </Box>
         );
-      case 'novedades':
+        case 'novedades':
+          return (
+            <NovedadesHistorial
+              historial={historial}
+              onActualizar={fetchHistorial}
+            />
+          );
+      case 'historial':
         return (
-          <VerAuditoria
-            historial={historial}
-            onActualizar={fetchHistorial}
-          />
+          <Box>
+            <Typography variant="h6" gutterBottom>Historial Completo del Caso</Typography>
+            <Divider sx={{ mb: 2 }} />
+            <GestionarHistorialDetective historial={historial} />
+          </Box>
         );
       default:
         return <Typography>Selecciona una vista válida.</Typography>;
@@ -91,6 +107,13 @@ const HistorialCasoDetailsMenu = ({ caso, onClose }) => {
           <Button fullWidth variant="outlined" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91' }} onClick={handleViewNovedades}>
             Auditoria
           </Button>
+          <Button fullWidth variant="outlined" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91' }} onClick={handleViewHistorial}>
+            Gestionar Historial
+          </Button>
+          <Divider sx={{ my: 2, borderColor: '#ffffff' }} />
+          <Button fullWidth variant="outlined" sx={{ backgroundColor: '#ffffff', color: '#005f91' }} onClick={fetchHistorial}>
+            Recargar Historial
+          </Button>
         </Box>
 
         {/* Área de contenido dinámico */}
@@ -106,4 +129,4 @@ const HistorialCasoDetailsMenu = ({ caso, onClose }) => {
   );
 };
 
-export default HistorialCasoDetailsMenu;
+export default HistorialCasoDetailsMenuDetective;

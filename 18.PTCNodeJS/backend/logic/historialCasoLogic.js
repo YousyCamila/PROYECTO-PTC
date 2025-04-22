@@ -88,6 +88,10 @@ async function obtenerHistorialCompleto(idCaso) {
         .populate({
           path: 'acciones.usuario',
           select: 'nombres apellidos correo tipoDocumento numeroDocumento'
+        })
+        .populate({
+          path: 'acciones.documentoRelacionado',
+          select: 'descripcion'
         });
   
       return historialCaso;

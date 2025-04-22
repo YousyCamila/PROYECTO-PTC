@@ -10,7 +10,6 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import HistorialPlantilla from '../historial/HistorialPlantilla';
 import EvidenciasCrud from './evidencias/EvidenciasCrud';
 import RegistrosCrud from './registros/RegistrosCrud';
 
@@ -24,31 +23,6 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
   const handleViewEvidencias = () => setView('evidencias');
   const handleViewContrato = () => setView('contrato');
   const handleViewRegistros = () => setView('registros');
-  const handleViewHistorial = () => {
-    setView('historial');
-    fetchHistorial();
-  };
-
-  const fetchHistorial = async () => {
-    if (!caso || !caso._id) return;
-    setLoadingHistorial(true);
-    try {
-      const response = await fetch(`http://localhost:3000/api/historiales/caso/${caso._id}`);
-      console.log('🔍 ID del caso para historial:', caso._id);
-      const data = await response.json();
-      if (response.ok) {
-        setHistorial(data);
-      } else {
-        console.error('Error al obtener historial:', data.message);
-        setHistorial(null);
-      }
-    } catch (err) {
-      console.error('Error al obtener historial:', err);
-      setHistorial(null);
-    } finally {
-      setLoadingHistorial(false);
-    }
-  };
 
   const renderContent = () => {
     switch (view) {
@@ -84,15 +58,7 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
             <RegistrosCrud casoId={caso._id} />
           </Box>
         );
-      case 'historial':
-        if (loadingHistorial) {
-          return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', my: 3 }}>
-              <CircularProgress />
-            </Box>
-          );
-        }
-        return <HistorialPlantilla historial={historial} />;
+
       default:
         return (
           <Box sx={{ px: 2 }}>
@@ -131,9 +97,6 @@ const CasoDetailsMenu = ({ caso, onClose }) => {
           </Button>
           <Button fullWidth variant="outlined" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91' }} onClick={handleViewRegistros}>
             Ver Registros del Caso
-          </Button>
-          <Button fullWidth variant="outlined" sx={{ mb: 2, backgroundColor: '#ffffff', color: '#005f91' }} onClick={handleViewHistorial}>
-            Ver Historial del Caso
           </Button>
         </Box>
 
