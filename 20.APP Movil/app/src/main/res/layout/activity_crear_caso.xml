@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:background="@color/blancoHueso">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <!-- Botón Volver -->
+        <ImageButton
+                android:id="@+id/btnVolver"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_arrow_back"
+                android:contentDescription="Volver"
+                app:tint="@color/azulOz" />
+
+        <TextView
+                android:id="@+id/tvTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Crear Caso"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp" />
+
+        <!-- Nombre del caso -->
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:boxBackgroundColor="@color/background_color"
+                app:boxStrokeColor="@color/tech_blue"
+                app:boxStrokeWidthFocused="2dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusBottomEnd="8dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etNombreCaso"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre del caso"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/light_gray" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Cliente -->
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:boxBackgroundColor="@color/background_color"
+                app:boxStrokeColor="@color/blancoHueso"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/autoCliente"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Seleccionar cliente"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/light_gray"
+                    android:popupBackground="@color/blancoHueso" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Detective -->
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:boxBackgroundColor="@color/background_color"
+                app:boxStrokeColor="@color/blancoHueso"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/autoDetective"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Seleccionar detective"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/light_gray"
+                    android:popupBackground="@color/blancoHueso" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Estado -->
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="16dp">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Activo"
+                    android:textColor="@color/black"
+                    android:layout_marginEnd="8dp" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchActivo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:thumbTint="@color/tech_blue"
+                    android:trackTint="@color/light_gray" />
+        </LinearLayout>
+
+        <!-- Botón Guardar -->
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGuardar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Guardar caso"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/tech_blue"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="32dp"
+                app:cornerRadius="12dp"
+                android:padding="12dp" />
+
+    </LinearLayout>
+</ScrollView>

@@ -1,13 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Container,
-  TextField,
-  Typography,
+import React, { useState, useEffect } from 'react';
+import { 
+  Box, 
+  Typography, 
+  Container, 
+  Grid, 
+  TextField, 
+  Button, 
+  Paper, 
+  FormControlLabel, 
+  Switch, 
+  IconButton 
 } from '@mui/material';
-import Swal from 'sweetalert2';
+import { 
+  Save as SaveIcon, 
+  ArrowBack as ArrowBackIcon, 
+  Brightness4 as Brightness4Icon, 
+  Brightness7 as Brightness7Icon 
+} from '@mui/icons-material';
+import { motion } from 'framer-motion';
 import { useParams, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import NavbarSidebar from '../NavbarSidebar';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const EditarContrato = () => {
   const { id } = useParams(); // Obtener el ID del contrato de la URL
@@ -24,35 +38,36 @@ const EditarContrato = () => {
     idDetective: '', // Guardar el ID del detective, solo lectura
   });
 
-  // Fetch del contrato por ID
+  const [darkMode, setDarkMode] = useState(false);
+
+  const theme = createTheme({
+    palette: {
+      mode: darkMode ? 'dark' : 'light',
+    },
+  });
+
   useEffect(() => {
     const fetchContrato = async () => {
       try {
         const response = await fetch(`http://localhost:3000/api/contratos/${id}`);
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`Error: ${response.status}`);
         const data = await response.json();
-
-        // Verifica si se encontró el contrato y establece los datos en el formulario
-        if (data) {
-          setFormData({
-            descripcionServicio: data.descripcionServicio,
-            fechaInicio: new Date(data.fechaInicio).toISOString().split('T')[0],
-            fechaCierre: new Date(data.fechaCierre).toISOString().split('T')[0],
-            clausulas: data.clausulas || '',
-            tarifa: data.tarifa,
-            estado: data.estado,
-            idCliente: data.idCliente._id, // Guarda solo el ID del cliente
-            idDetective: data.idDetective ? data.idDetective._id : '', // Guarda solo el ID del detective
-          });
-        }
+        
+        setFormData({
+          descripcionServicio: data.descripcionServicio,
+          fechaInicio: new Date(data.fechaInicio).toISOString().split('T')[0],
+          fechaCierre: new Date(data.fechaCierre).toISOString().split('T')[0],
+          clausulas: data.clausulas || '',
+          tarifa: data.tarifa,
+          estado: data.estado,
+          idCliente: data.idCliente._id,
+          idDetective: data.idDetective ? data.idDetective._id : '',
+        });
       } catch (error) {
-        console.error('Error fetching contrato:', error);
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'No se pudo cargar la información del contrato: ' + error.message,
+          text: 'No se pudo cargar la información del contrato.',
         });
       }
     };
@@ -60,17 +75,14 @@ const EditarContrato = () => {
     fetchContrato();
   }, [id]);
 
-  // Manejar los cambios en los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Enviar el formulario para actualizar el contrato
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Convertir la tarifa a número (asegurarse de que sea un número)
     const numericTarifa = parseFloat(formData.tarifa);
     if (isNaN(numericTarifa)) {
       Swal.fire({
@@ -84,9 +96,7 @@ const EditarContrato = () => {
     try {
       const response = await fetch(`http://localhost:3000/api/contratos/${id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           descripcionServicio: formData.descripcionServicio,
           fechaInicio: formData.fechaInicio,
@@ -94,7 +104,6 @@ const EditarContrato = () => {
           clausulas: formData.clausulas,
           tarifa: numericTarifa,
           estado: formData.estado,
-          // No incluir idCliente ni idDetective aquí
         }),
       });
 
@@ -104,7 +113,7 @@ const EditarContrato = () => {
           title: 'Contrato actualizado',
           text: 'El contrato se ha actualizado exitosamente.',
         });
-        navigate('/gestionar-contratos'); // Redirigir a la lista de contratos
+        navigate('/gestionar-contratos');
       } else {
         const data = await response.json();
         Swal.fire({
@@ -114,7 +123,6 @@ const EditarContrato = () => {
         });
       }
     } catch (error) {
-      console.error('Error al actualizar contrato:', error);
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -124,127 +132,162 @@ const EditarContrato = () => {
   };
 
   return (
-    <Box
-      sx={{
-        width: '100vw',
-        height: '100vh',
-        background: 'linear-gradient(to right, #0077b6, #00b4d8)',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Container
-        maxWidth="sm"
+    <ThemeProvider theme={theme}>
+      <Box 
         sx={{
-          backgroundColor: 'white',
-          padding: 4,
-          borderRadius: 2,
-          boxShadow: 3,
+          minHeight: '100vh',
+          background: darkMode ? '#121212' : 'linear-gradient(135deg, #1a237e 0%, #5c6bc0 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingTop: 8,
         }}
       >
-        <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#0077b6' }}>
-          Editar Información del Contrato
-        </Typography>
+        <NavbarSidebar />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Container maxWidth="md">
+            <Paper 
+              elevation={12} 
+              sx={{ 
+                borderRadius: 4, 
+                padding: 4, 
+                background: darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.95)',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 3 }}>
+                <Typography variant="h4" color={darkMode ? 'white' : 'primary'} fontWeight="bold">
+                  Editar Contrato
+                </Typography>
+              </Box>
 
-        <form onSubmit={handleSubmit}>
-          <TextField
-            fullWidth
-            label="Descripción del Servicio"
-            name="descripcionServicio"
-            margin="normal"
-            value={formData.descripcionServicio}
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            fullWidth
-            label="Fecha de Inicio"
-            type="date"
-            name="fechaInicio"
-            margin="normal"
-            value={formData.fechaInicio}
-            onChange={handleChange}
-            required
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-          <TextField
-            fullWidth
-            label="Fecha de Cierre"
-            type="date"
-            name="fechaCierre"
-            margin="normal"
-            value={formData.fechaCierre}
-            onChange={handleChange}
-            required
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-          <TextField
-            fullWidth
-            label="Cláusulas"
-            name="clausulas"
-            margin="normal"
-            value={formData.clausulas}
-            onChange={handleChange}
-          />
-          <TextField
-            fullWidth
-            label="Tarifa"
-            name="tarifa"
-            type="number"
-            margin="normal"
-            value={formData.tarifa}
-            onChange={handleChange}
-            required
-          />
+              <form onSubmit={handleSubmit}>
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Descripción del Servicio"
+                      name="descripcionServicio"
+                      value={formData.descripcionServicio}
+                      onChange={handleChange}
+                      variant="outlined"
+                      required
+                    />
+                  </Grid>
 
-          {/* Mostrar Cliente y Detective */}
-          <TextField
-            fullWidth
-            label="ID Cliente"
-            margin="normal"
-            value={formData.idCliente} // Mostrar el ID del cliente
-            InputProps={{
-              readOnly: true, // Campo solo lectura
-            }}
-          />
-          <TextField
-            fullWidth
-            label="ID Detective (opcional)"
-            margin="normal"
-            value={formData.idDetective} // Mostrar el ID del detective
-            InputProps={{
-              readOnly: true, // Campo solo lectura
-            }}
-          />
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      label="Fecha de Inicio"
+                      type="date"
+                      name="fechaInicio"
+                      value={formData.fechaInicio}
+                      onChange={handleChange}
+                      variant="outlined"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      required
+                    />
+                  </Grid>
 
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, backgroundColor: '#0077b6', '&:hover': { backgroundColor: '#005f91' } }}
-          >
-            Guardar Cambios
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={() => navigate(-1)} // Navegar hacia atrás
-            sx={{
-              color: '#0077b6',
-              borderColor: '#0077b6',
-              mt: 2,
-              '&:hover': { backgroundColor: '#e0e0e0' },
-            }}
-          >
-            Volver
-          </Button>
-        </form>
-      </Container>
-    </Box>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      label="Fecha de Cierre"
+                      type="date"
+                      name="fechaCierre"
+                      value={formData.fechaCierre}
+                      onChange={handleChange}
+                      variant="outlined"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      required
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Cláusulas"
+                      name="clausulas"
+                      value={formData.clausulas}
+                      onChange={handleChange}
+                      variant="outlined"
+                      multiline
+                      rows={4}
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Tarifa"
+                      name="tarifa"
+                      value={formData.tarifa}
+                      onChange={handleChange}
+                      variant="outlined"
+                      type="number"
+                      required
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={formData.estado}
+                          onChange={(e) => setFormData(prev => ({ ...prev, estado: e.target.checked }))}
+                          color="primary"
+                        />
+                      }
+                      label="Contrato Activo"
+                    />
+                  </Grid>
+                </Grid>
+
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 3 }}>
+                  <Button 
+                    variant="outlined" 
+                    startIcon={<ArrowBackIcon />} 
+                    onClick={() => navigate(-1)}
+                    color="primary"
+                  >
+                    Cancelar
+                  </Button>
+
+                  <Button 
+                    type="submit" 
+                    variant="contained" 
+                    startIcon={<SaveIcon />} 
+                    color="primary"
+                  >
+                    Guardar cambios
+                  </Button>
+                </Box>
+              </form>
+
+              <IconButton 
+                sx={{
+                  position: 'absolute', 
+                  top: 16, 
+                  right: 16, 
+                  backgroundColor: darkMode ? '#424242' : '#f0f0f0',
+                }}
+                onClick={() => setDarkMode(!darkMode)}
+              >
+                {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+              </IconButton>
+            </Paper>
+          </Container>
+        </motion.div>
+      </Box>
+    </ThemeProvider>
   );
 };
 

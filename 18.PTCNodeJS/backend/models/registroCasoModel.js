@@ -14,7 +14,7 @@ const registroCasoSchema = new mongoose.Schema({
   },
   estadoRegistro: {
     type: String,
-    enum: ['Comenzando', 'En Progreso', 'Finalizando'], // Valores permitidos
+    enum: ['Comenzando', 'En Progreso', 'Finalizando'],
     required: true
   },
   seguimientoPorcentaje: {
@@ -28,12 +28,12 @@ const registroCasoSchema = new mongoose.Schema({
   idCliente: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Cliente',
-    required: true
+
   },
   idDetective: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Detective',
-    required: true
+
   }
 },
 { timestamps: true });

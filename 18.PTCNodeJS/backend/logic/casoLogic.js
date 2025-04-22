@@ -1,17 +1,19 @@
 const Caso = require('../models/casoModel');
-const Cliente = require('../models/clienteModel'); // Asegúrate de importar el modelo Cliente
+const Cliente = require('../models/clienteModel');
 const Detective = require('../models/detectiveModel');
+
+
 
 async function crearCaso(datos) {
   // Verificar que el nombre del caso esté permitido
   const nombresPermitidos = [
-    'cadenaCustodia',
-    'investigacionExtorsion',
-    'estudiosSeguridad',
-    'investigacionInfidelidades',
-    'investigacionRobosEmpresariales',
-    'antecedentes',
-    'recuperacionVehiculos'
+    'Cadena de custodia',
+    'Investigación de extorsión',
+    'Estudios de seguridad',
+    'Investigación de infidelidades',
+    'Investigación de robos empresariales',
+    'Antecedentes',
+    'Recuperación de vehículos'
   ];
   
   if (!nombresPermitidos.includes(datos.nombreCaso)) {
@@ -46,16 +48,91 @@ async function crearCaso(datos) {
   return caso;
 }
 
-async function obtenerCasosPorClienteId(idCliente) {
+/**
+ * Obtener los casos asociados a un cliente por su ID.
+ * @param {string} idCliente - El ID del cliente.
+ * @returns {Promise<Array>} - Lista de casos asociados al cliente.
+ */
+const obtenerCasosPorClienteId = async (idCliente) => {
   try {
-      const casos = await Caso.find({ idCliente }); // Busca los casos asociados al cliente
-      return casos; // Devuelve los casos encontrados
+    const casos = await Caso.find({ idCliente: idCliente.trim() })
+      .populate({
+        path: 'idDetective',
+        select: 'nombre apellido1',
+      })
+      .populate({
+        path: 'evidencias',
+        select: 'descripcion tipoEvidencia archivo.ruta',
+      });
+    return casos;
   } catch (error) {
-      throw new Error('Error al obtener los casos: ' + error.message); // Manejo de errores
+    throw new Error('Error al obtener casos por ID de cliente: ' + error.message);
+  }
+};
+
+
+/**
+ * Obtener casos asociados a un cliente por correo electrónico.
+ * @param {string} emailCliente - Correo electrónico del cliente.
+ * @returns {Promise<Array>} Lista de casos asociados al cliente.
+ */
+const obtenerCasosPorEmailCliente = async (emailCliente) => {
+  try {
+    // Buscar al cliente por su email
+    const cliente = await Cliente.findOne({ correo: emailCliente });
+
+    if (!cliente) {
+      throw new Error(`No se encontró un cliente con el email: ${emailCliente}`);
+    }
+
+    const casos = await Caso.find({ idCliente: cliente._id })
+      .populate('idDetective')
+      .populate('evidencias')
+      .populate('registroCasos')
+      .populate('contratos')
+      .populate ('idCliente');
+
+    return {
+      casos,
+      contratos: cliente.contratos || [],
+      registros: cliente.registroCaso || [],
+    };
+  } catch (error) {
+    throw new Error(`Error al obtener datos por email: ${error.message}`);
+  }
+};
+
+/**
+ * Obtener casos asociados a un detective por correo electrónico.
+ * @param {string} emailDetective - Correo electrónico del detective.
+ * @returns {Promise<Array>} Lista de casos asociados al detective.
+ */
+
+const obtenerCasosPorEmailDetective = async (emailDetective) => {
+  try {
+    // Buscar al detective por su email
+    const detective = await Detective.findOne({ correo: emailDetective });
+
+    if (!detective) {
+      throw new Error(`No se encontró el detective con el email: ${emailDetective}`);
+    }
+
+    const casos = await Caso.find({ idDetective: detective._id })
+      .populate('idDetective')
+      .populate('evidencias')
+      .populate('registroCasos')
+      .populate('contratos')
+      .populate ('idCliente'); // Traer también los contratos
+
+    return {
+      casos,
+      contratos: detective.contratos || [],
+      registros: detective.registroCaso || [],
+    };
+  } catch (error) {
+    throw new Error(`Error al obtener datos por email: ${error.message}`);
   }
 }
-
-
 
 // Listar Casos
 async function listarCasos() {
@@ -104,4 +181,6 @@ module.exports = {
   actualizarCaso,
   desactivarCaso,
   obtenerCasosPorClienteId,
+  obtenerCasosPorEmailCliente,
+  obtenerCasosPorEmailDetective
 };

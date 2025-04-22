@@ -33,7 +33,7 @@ const registroCasoController = require('../controllers/registroCasoController');
  *         estadoRegistro:
  *           type: string
  *           description: Estado del registro
- *           example: "En progreso"
+ *           example: "En Progreso"
  *         seguimientoPorcentaje:
  *           type: number
  *           format: decimal
@@ -68,11 +68,12 @@ const registroCasoController = require('../controllers/registroCasoController');
  *     responses:
  *       201:
  *         description: El registro de caso ha sido creado exitosamente.
+ *       400:
+ *         description: Error de validación en los datos proporcionados.
  *       500:
  *         description: Error interno del servidor.
  */
 router.post('/', registroCasoController.crearRegistroCaso);
-
 /**
  * @swagger
  * /registros-caso:
@@ -184,5 +185,36 @@ router.put('/:id/desactivar', registroCasoController.desactivarRegistroCaso);
  *         description: Error interno del servidor.
  */
 router.put('/:id/finalizar', registroCasoController.finalizarRegistroCaso);
+
+/**
+ * @swagger
+ * /registros-caso/caso/{casoId}:
+ *   get:
+ *     summary: Obtener registros de caso por ID del caso
+ *     tags: [Registros de Caso]
+ *     parameters:
+ *       - in: path
+ *         name: casoId
+ *         schema:
+ *           type: string
+ *           required: true
+ *         description: ID del caso para buscar registros asociados.
+ *     responses:
+ *       200:
+ *         description: Lista de registros de caso asociados al ID del caso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/RegistroCaso'
+ *       400:
+ *         description: El ID del caso no es válido.
+ *       404:
+ *         description: No se encontraron registros para el caso especificado.
+ *       500:
+ *         description: Error interno del servidor al buscar los registros.
+ */
+router.get('/caso/:casoId', registroCasoController.obtenerRegistrosPorCasoId);
 
 module.exports = router;

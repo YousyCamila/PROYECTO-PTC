@@ -18,11 +18,7 @@ const contratoSchema = new mongoose.Schema({
     type: String
   },
   tarifa: {
-    type: mongoose.Types.Decimal128,
-    required: true,
-    set: function(value) {
-      return mongoose.Types.Decimal128.fromString(value.toString().replace(/\./g, '').replace(',', '.'));
-    }
+    type: String
   },
   estado: {
     type: Boolean,
@@ -34,9 +30,18 @@ const contratoSchema = new mongoose.Schema({
     ref: 'Cliente',
     required: true
   },
+
+  nombreCliente: {
+    type: String,
+    required: false, // Asegúrate de capturar este dato al crear un caso
+  },
   idDetective: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Detective'
+  },
+  nombreDetective: {
+    type: String,
+    default: null, // Puede ser opcional si el detective no está asignado al inicio
   },
   historial: [{
     fechaDesactivacion: { type: Date, default: Date.now },

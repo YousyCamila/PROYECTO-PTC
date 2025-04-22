@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const formularioController = require('../controllers/formularioController');
 
-// Crear un nuevo formulario
 /**
  * @swagger
  * /formularios:
@@ -16,16 +15,25 @@ const formularioController = require('../controllers/formularioController');
  *           schema:
  *             type: object
  *             properties:
- *               clienteId:
+ *               nombre:
  *                 type: string
- *                 example: "651edc5565bfc2a7f8e98345"
- *               tipo:
+ *                 example: "Juan Perez"
+ *               numeroCelular:
  *                 type: string
- *                 example: "Solicitud de información"
- *               fecha:
+ *                 example: "1234567890"
+ *               descripcion:
+ *                 type: string
+ *                 example: "Solicitud de información sobre servicios"
+ *               fechaEnvio:
  *                 type: string
  *                 format: date
  *                 example: "2024-09-01"
+ *               idCliente:
+ *                 type: string
+ *                 example: "651edc5565bfc2a7f8e98345"
+ *               correoCliente:
+ *                 type: string
+ *                 example: "juan.perez@example.com"
  *     responses:
  *       201:
  *         description: Formulario creado exitosamente
@@ -34,7 +42,70 @@ const formularioController = require('../controllers/formularioController');
  */
 router.post('/', formularioController.crearFormulario);
 
-// Obtener todos los formularios
+/**
+ * @swagger
+ * /formularios/respondidos:
+ *   get:
+ *     summary: Listar formularios respondidos
+ *     tags: ["Formularios"]
+ *     responses:
+ *       200:
+ *         description: Lista de formularios respondidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     example: "651edc5565bfc2a7f8e98345"
+ *                   nombre:
+ *                     type: string
+ *                     example: "Juan Perez"
+ *                   respuesta:
+ *                     type: string
+ *                     example: "Gracias por su consulta."
+ *                   correoCliente:
+ *                     type: string
+ *                     example: "juan.perez@example.com"
+ */
+router.get('/respondidos', formularioController.obtenerFormulariosRespondidos);
+
+/**
+ * @swagger
+ * /formularios/{id}/responder:
+ *   post:
+ *     summary: Responder a un formulario
+ *     tags: ["Formularios"]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del formulario que se va a responder
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               respuesta:
+ *                 type: string
+ *                 example: "Gracias por su consulta. Nos comunicaremos pronto."
+ *     responses:
+ *       200:
+ *         description: Respuesta enviada exitosamente
+ *       404:
+ *         description: Formulario no encontrado
+ *       500:
+ *         description: Error al enviar la respuesta
+ */
+router.post('/:id/responder', formularioController.responderFormulario);
+
 /**
  * @swagger
  * /formularios:
@@ -54,20 +125,25 @@ router.post('/', formularioController.crearFormulario);
  *                   id:
  *                     type: string
  *                     example: "651edc5565bfc2a7f8e98345"
- *                   clienteId:
+ *                   nombre:
  *                     type: string
- *                     example: "651edc5565bfc2a7f8e98345"
- *                   tipo:
+ *                     example: "Juan Perez"
+ *                   numeroCelular:
  *                     type: string
- *                     example: "Solicitud de información"
- *                   fecha:
+ *                     example: "1234567890"
+ *                   descripcion:
+ *                     type: string
+ *                     example: "Solicitud de información sobre servicios"
+ *                   fechaEnvio:
  *                     type: string
  *                     format: date
  *                     example: "2024-09-01"
+ *                   correoCliente:
+ *                     type: string
+ *                     example: "juan.perez@example.com"
  */
-router.get('/', formularioController.listarFormularios);
+router.get('/', formularioController.obtenerFormularios);
 
-// Obtener un formulario por ID
 /**
  * @swagger
  * /formularios/{id}:
@@ -78,9 +154,9 @@ router.get('/', formularioController.listarFormularios);
  *       - in: path
  *         name: id
  *         required: true
+ *         description: ID del formulario
  *         schema:
  *           type: string
- *         description: Identificador único del formulario.
  *     responses:
  *       200:
  *         description: Formulario encontrado
@@ -89,7 +165,6 @@ router.get('/', formularioController.listarFormularios);
  */
 router.get('/:id', formularioController.obtenerFormularioPorId);
 
-// Actualizar un formulario por ID
 /**
  * @swagger
  * /formularios/{id}:
@@ -100,9 +175,9 @@ router.get('/:id', formularioController.obtenerFormularioPorId);
  *       - in: path
  *         name: id
  *         required: true
+ *         description: ID del formulario a actualizar
  *         schema:
  *           type: string
- *         description: Identificador único del formulario.
  *     requestBody:
  *       required: true
  *       content:
@@ -110,11 +185,12 @@ router.get('/:id', formularioController.obtenerFormularioPorId);
  *           schema:
  *             type: object
  *             properties:
- *               tipo:
+ *               nombre:
  *                 type: string
- *               fecha:
+ *                 example: "Juan Perez"
+ *               descripcion:
  *                 type: string
- *                 format: date
+ *                 example: "Solicitud de información actualizada"
  *     responses:
  *       200:
  *         description: Formulario actualizado exitosamente
@@ -123,7 +199,6 @@ router.get('/:id', formularioController.obtenerFormularioPorId);
  */
 router.put('/:id', formularioController.actualizarFormulario);
 
-// Eliminar un formulario por ID
 /**
  * @swagger
  * /formularios/{id}:
@@ -134,9 +209,9 @@ router.put('/:id', formularioController.actualizarFormulario);
  *       - in: path
  *         name: id
  *         required: true
+ *         description: ID del formulario a eliminar
  *         schema:
  *           type: string
- *         description: Identificador único del formulario.
  *     responses:
  *       200:
  *         description: Formulario eliminado exitosamente
@@ -144,5 +219,6 @@ router.put('/:id', formularioController.actualizarFormulario);
  *         description: Formulario no encontrado
  */
 router.delete('/:id', formularioController.eliminarFormulario);
+
 
 module.exports = router;

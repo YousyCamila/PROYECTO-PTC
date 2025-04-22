@@ -1,4 +1,6 @@
 const registroCasoService = require('../logic/registroCasoLogic');
+const RegistroCaso = require('../models/registroCasoModel');
+const mongoose = require('mongoose');
 
 // Crear un nuevo registro de caso
 const crearRegistroCaso = async (req, res) => {
@@ -64,6 +66,33 @@ const finalizarRegistroCaso = async (req, res) => {
   }
 };
 
+// Obtener registros por ID del caso
+const obtenerRegistrosPorCasoId = async (req, res) => {
+  try {
+    const casoId = req.params.casoId.trim(); // Limpiar espacios en blanco
+
+    // Verificar si el ID es válido
+    if (!mongoose.Types.ObjectId.isValid(casoId)) {
+      console.error('El ID del caso no es válido:', casoId);
+      return res.status(400).json({ message: 'El ID del caso no es válido.' });
+    }
+
+    // Buscar registros asociados al caso
+    const registros = await RegistroCaso.find({ idCasos: casoId }).populate('idCliente idDetective idCasos');
+
+    // Si no hay registros
+    if (!registros.length) {
+      return res.status(404).json({ message: 'No se encontraron registros para este caso.' });
+    }
+
+    // Responder con los registros encontrados
+    res.status(200).json(registros);
+  } catch (error) {
+    console.error('Error al obtener registros por ID del caso:', error.message);
+    res.status(500).json({ message: 'Error interno al obtener registros.', error: error.message });
+  }
+};
+
 module.exports = {
   crearRegistroCaso,
   listarRegistroCasos,
@@ -71,4 +100,5 @@ module.exports = {
   actualizarRegistroCaso,
   desactivarRegistroCaso,
   finalizarRegistroCaso,
+  obtenerRegistrosPorCasoId,
 };

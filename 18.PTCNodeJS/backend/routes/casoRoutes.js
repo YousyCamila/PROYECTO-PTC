@@ -1,4 +1,3 @@
-// routes/casoRoutes.js
 const express = require('express');
 const router = express.Router();
 const casoController = require('../controllers/casoController');
@@ -79,7 +78,7 @@ router.get('/', casoController.listarCasos);
  *       500:
  *         description: Error al buscar el caso.
  */
-router.get('/:id', casoController.buscarCasoPorId);
+router.get('/:id',casoController.buscarCasoPorId);
 
 /**
  * @swagger
@@ -146,32 +145,134 @@ router.put('/:id', casoController.actualizarCaso);
  *       500:
  *         description: Error al desactivar el caso.
  */
-router.delete('/:id', casoController.desactivarCaso);
-
+router.patch('/:id', casoController.desactivarCaso);
 
 /**
  * @swagger
- * /caso/cliente-casos/{id}:
+ * /caso/cliente/{id}:
  *   get:
- *     summary: Obtener casos por ID del cliente
+ *     summary: Obtener todos los casos asociados a un cliente específico
  *     tags: [Casos]
  *     parameters:
  *       - in: path
  *         name: id
+ *         required: true
  *         schema:
  *           type: string
- *         required: true
  *         description: ID del cliente
  *     responses:
  *       200:
- *         description: Casos encontrados
+ *         description: Lista de casos asociados al cliente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     description: ID del caso
+ *                   nombreCaso:
+ *                     type: string
+ *                     description: Nombre del caso
+ *                   idDetective:
+ *                     type: string
+ *                     description: ID del detective asignado
+ *                   evidencias:
+ *                     type: array
+ *                     items:
+ *                       type: string
+ *                   activo:
+ *                     type: boolean
+ *       400:
+ *         description: ID de cliente no válida
  *       404:
- *         description: No se encontraron casos
+ *         description: Cliente no encontrado
  *       500:
  *         description: Error interno del servidor
  */
-router.get('/cliente-casos/:id', casoController.obtenerCasosPorClienteId);
+router.get('/cliente/:id', casoController.obtenerCasosPorClienteId);
+
+/**
+ * @swagger
+ * /caso/cliente/email/{email}:
+ *   get:
+ *     summary: Obtener casos, contratos y registros asociados a un cliente por su correo electrónico.
+ *     tags: [Casos]
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Correo electrónico del cliente.
+ *     responses:
+ *       200:
+ *         description: Lista de casos, contratos y registros asociados al cliente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 casos:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                 contratos:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                 registros:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *       404:
+ *         description: No se encontraron datos para el cliente especificado.
+ *       500:
+ *         description: Error interno del servidor.
+ */
+router.get('/cliente/email/:email', casoController.obtenerCasosPorEmailCliente);
 
 
+/**
+ * @swagger
+ * /caso/detective/email/{email}:
+ *   get:
+ *     summary: Obtener casos, contratos y registros asociados a un detective por su correo electrónico.
+ *     tags: [Casos]
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Correo electrónico del detective.
+ *     responses:
+ *       200:
+ *         description: Lista de casos, contratos y registros asociados al detective.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 casos:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                 contratos:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                 registros:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *       404:
+ *         description: No se encontraron datos para el detective especificado.
+ *       500:
+ *         description: Error interno del servidor.
+ */
+router.get('/detective/email/:email', casoController.obtenerCasosPorEmailDetective);
 
 module.exports = router;

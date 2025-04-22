@@ -1,5 +1,9 @@
 const casosService = require('../logic/casoLogic');
-const clienteLogic = require ('../logic/clienteLogic');
+const clienteService = require('../logic/clienteLogic'); // Importa el servicio de cliente para verificar su existencia
+const mongoose = require('mongoose'); // Importa mongoose
+const Cliente = require('../models/clienteModel');
+const Detective = require('../models/detectiveModel');
+const Caso = require('../models/casoModel');
 
 // Crear un nuevo caso
 const crearCaso = async (req, res) => {
@@ -11,22 +15,72 @@ const crearCaso = async (req, res) => {
   }
 };
 
+/**
+ * Controlador para obtener los casos por ID de cliente.
+ * @param {Request} req - La solicitud HTTP.
+ * @param {Response} res - La respuesta HTTP.
+ */
 const obtenerCasosPorClienteId = async (req, res) => {
-  const idCliente = req.params.id; // Obtén el ID del cliente de los parámetros de la ruta
   try {
-      const casos = await clienteLogic.obtenerCasosPorClienteId(idCliente); // Llama a la función del servicio
-      if (!casos || casos.length === 0) {
-          return res.status(404).json({ message: 'No se encontraron casos para este cliente.' });
-      }
-      res.status(200).json(casos); // Devuelve los casos encontrados
+    const idCliente = req.params.id.trim();
+   
+    
+    const casos = await casosService.obtenerCasosPorClienteId(idCliente);
+    
+    if (casos.length === 0) {
+      return res.status(404).json({ message: "No se encontraron casos para el cliente especificado." });
+    }
+    
+    res.status(200).json(casos);
   } catch (error) {
-      console.error('Error al obtener los casos:', error); // Log para depuración
-      res.status(500).json({ error: 'Error interno del servidor: ' + error.message });
+    console.error("Error al obtener casos por ID de cliente:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
+/**
+ * Controlador para obtener casos, contratos y registros asociados al cliente por email.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
+const obtenerCasosPorEmailCliente = async (req, res) => {
+  const { email } = req.params;
 
+  try {
+    const data = await casosService.obtenerCasosPorEmailCliente(email);
 
+    if (!data.casos.length) {
+      return res.status(404).json({ message: 'No se encontraron casos para el cliente especificado.' });
+    }
+
+    res.status(200).json(data);
+  } catch (error) {
+    console.error(`Error al obtener casos por email: ${error.message}`);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
+
+/**
+ * Controlador para obtener casos, contratos y registros asociados al cliente por email.
+ * @param {Request} req - Objeto de solicitud HTTP.
+ * @param {Response} res - Objeto de respuesta HTTP.
+ */
+const obtenerCasosPorEmailDetective = async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    const data = await casosService.obtenerCasosPorEmailDetective(email);
+
+    if (!data.casos.length) {
+      return res.status(404).json({ message: 'No se encontraron casos para el detective especificado.' });
+    }
+
+    res.status(200).json(data);
+  } catch (error) {
+    console.error(`Error al obtener casos por email: ${error.message}`);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
 
 // Listar todos los casos
 const listarCasos = async (req, res) => {
@@ -79,4 +133,6 @@ module.exports = {
   actualizarCaso,
   desactivarCaso,
   obtenerCasosPorClienteId,
+  obtenerCasosPorEmailCliente,
+  obtenerCasosPorEmailDetective
 };

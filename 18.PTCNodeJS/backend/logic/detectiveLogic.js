@@ -19,7 +19,7 @@ async function crearDetective(datos) {
 }
 
 async function listarDetectives() {
-  const detectives = await Detective.find({ activo: true });
+  const detectives = await Detective.find();
   if (detectives.length === 0) {
     throw new Error('No hay detectives registrados actualmente.');
   }
@@ -45,7 +45,7 @@ async function buscarDetectivePorCorreo(correo) {
 async function actualizarDetective(id, datos) {
   const detective = await Detective.findById(id);
 
-  if (!detective || !detective.activo) {
+  if (!detective ) {
     throw new Error('El detective que intenta actualizar no existe o ha sido desactivado.');
   }
 
@@ -70,19 +70,28 @@ async function actualizarDetective(id, datos) {
 }
 
 async function desactivarDetective(id) {
-  const detective = await Detective.findById(id);
-  
-  // Verifica si el detective existe y si está activo
-  if (!detective || !detective.activo) {
-    throw new Error('El detective que intenta desactivar no existe o ya ha sido desactivado.');
-  }
+  try {
+    // Buscar detective por ID
+    const detective = await Detective.findById(id);
 
-  // Cambia el estado a inactivo
-  detective.activo = false; 
-  
-  // Guarda los cambios y retorna el resultado
-  return await detective.save();
+    if (!detective) {
+      throw new Error("El detective no existe.");
+    }
+    if (!detective.activo) {
+      throw new Error("El detective ya está desactivado.");
+    }
+
+    // Actualizar estado
+    detective.activo = false;
+    await detective.save();
+
+    return detective; // Retorna el detective actualizado
+  } catch (error) {
+    console.error("Error en servicioDetective:", error);
+    throw error; // Lanza el error para ser manejado por el controlador
+  }
 }
+
 
 
 module.exports = {

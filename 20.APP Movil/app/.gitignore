@@ -1,0 +1,12 @@
+/build
+
+
+.gradle/
+*.lock
+*.bin
+echo ".idea/assetWizardSettings.xml" >> .gitignore
+
+echo .gradle/ >> .gitignore
+git add .gitignore
+git commit -m "Ignorar .gradle para evitar conflictos"
+

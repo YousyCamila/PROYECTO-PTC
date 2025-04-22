@@ -1,9 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const dotenv = require('dotenv'); // Para manejar variables de entorno
-const connectDB = require('./configDB/db'); // Conexión a la base de datos
+const dotenv = require('dotenv');
+const connectDB = require('./configDb/db'); // Conexión a la base de datos
 const { swaggerUi, swaggerSpec } = require('./swagger/swagger'); // Configuración de Swagger
+const cookieParser = require('cookie-parser'); // Para manejar cookies
+const path = require('path');
+
 
 dotenv.config(); // Carga las variables del archivo .env
 
@@ -16,13 +19,13 @@ const detectiveRoutes = require('./routes/detectiveRoutes');
 const evidenciaRoutes = require('./routes/evidenciaRoutes');
 const facturaRoutes = require('./routes/facturaRoutes');
 const formularioRoutes = require('./routes/formularioRoutes');
-const historialRoutes = require('./routes/historialRoutes');
-const casoRoutes = require ('./routes/casoRoutes');
+const historialCasoRoutes = require('./routes/historialCasoRoutes');
+const casoRoutes = require('./routes/casoRoutes');
 const registroCasoRoutes = require('./routes/registroCasoRoutes');
 const registroMantenimientoRoutes = require('./routes/registroMantenimientoRoutes');
 const rolRoutes = require('./routes/rolRoutes');
 const tipoEvidenciaRoutes = require('./routes/tipoEvidenciaRoutes');
-const usuarioRoutes = require('./routes/usuarioRoutes');
+const usuarioRoutes = require('./routes/usuarioRoutes'); // Asegúrate de que esta línea esté solo una vez
 
 // Conectar a MongoDB
 connectDB();
@@ -32,14 +35,17 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser()); // Middleware para manejar cookies
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Configuración de CORS
 const corsOptions = {
-    origin: '*', // Ajusta esto con los dominios permitidos de tu frontend
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    origin: 'http://localhost:5173', // Cambia esto al dominio de tu frontend
+    methods: ['GET', 'POST', 'PUT','PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true, // Permitir el envío de cookies y encabezados de autenticación
 };
 app.use(cors(corsOptions));
+
 
 // Rutas de Swagger para documentación
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -53,15 +59,16 @@ app.use('/api/detectives', detectiveRoutes);
 app.use('/api/evidencias', evidenciaRoutes);
 app.use('/api/facturas', facturaRoutes);
 app.use('/api/formularios', formularioRoutes);
-app.use('/api/historiales', historialRoutes);
+app.use('/api/historiales', historialCasoRoutes);
 app.use('/api/caso', casoRoutes);
 app.use('/api/registros-caso', registroCasoRoutes);
 app.use('/api/registros-mantenimiento', registroMantenimientoRoutes);
 app.use('/api/roles', rolRoutes);
 app.use('/api/tipos-evidencia', tipoEvidenciaRoutes);
 app.use('/api/usuario', usuarioRoutes);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-const port = 3000; // Establece el puerto directamente en el código
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);
