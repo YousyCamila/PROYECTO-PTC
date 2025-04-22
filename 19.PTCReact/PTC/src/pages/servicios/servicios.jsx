@@ -1,4 +1,5 @@
 import React from 'react';
+
 import './servicios.css';
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import SecurityIcon from '@mui/icons-material/Security';
@@ -8,8 +9,9 @@ import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import PeopleIcon from '@mui/icons-material/People';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import SearchIcon from '@mui/icons-material/Search';
+import { useNavigate } from 'react-router-dom';
 
-const Servicios = () => {
+const Servicios = () => {  
   return (
     <>
       {/* NAVBAR IGUAL QUE HOME */}
@@ -32,7 +34,7 @@ const Servicios = () => {
 
         <div className="services-content">
           {/* ───────── TARJETAS ───────── */}
-          {[
+          {[ 
             {
               icon: <SecurityIcon className="icon" />,
               title: 'Agencia de Investigación Criminal',
@@ -102,7 +104,16 @@ const Servicios = () => {
               {icon}
               <h3>{title}</h3>
               {desc.map((d) => <p key={d}>{d}</p>)}
-              <Button variant="contained" size="small" sx={{ mt: 1, backgroundColor: '#0077b6', '&:hover': { backgroundColor: '#005b96' } }}>
+              <Button
+                variant="contained"
+                size="small"
+                sx={{
+                  mt: 1,
+                  backgroundColor: '#0077b6',
+                  '&:hover': { backgroundColor: '#005b96' },
+                }}
+                href={`/contactanos?servicio=${title}`} // Redirige a Contactanos con el servicio como parámetro
+              >
                 Solicitar
               </Button>
             </div>
