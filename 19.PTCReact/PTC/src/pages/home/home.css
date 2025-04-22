@@ -176,3 +176,17 @@ body {
     color: #003f88;
   }
   
+  /* === animación de carrusel de texto en la sección Welcome === */
+@keyframes fadeSwap {
+    0%   { opacity: 0; transform: translateY(20px); }
+    10%  { opacity: 1; transform: translateY(0); }
+    90%  { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-20px); }
+  }
+  
+  .welcome-carousel {
+    font-weight: bold;
+    color: #003f88;
+    animation: fadeSwap 3.5s ease-in-out infinite;
+  }
+  
