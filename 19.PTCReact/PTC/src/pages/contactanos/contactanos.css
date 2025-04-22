@@ -1,92 +1,73 @@
-/* ---------- LAYOUT ---------- */
 .main-container {
-    min-height: 100vh;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-  }
-  
-  /* fondo suave coherente */
-  .content-container {
+}
+
+.content-container {
     flex-grow: 1;
     display: flex;
-    background: radial-gradient(circle at top left, #e3f6ff 0%, #ffffff 60%);
-    padding: 48px 5vw;
-    gap: 40px;
-    flex-wrap: wrap;
-  }
-  
-  /* ---------- FORM ---------- */
-  .form-container {
-    background: #ffffff;
-    padding: 40px 32px;
-    border-radius: 20px;
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-    max-width: 540px;
-  }
-  
-  .title {
-    color: #003f88;
-    font-weight: 800;
-    text-align: center;
-    margin-bottom: 12px;
-    font-size: 2rem;
-  }
-  
-  .contact-divider {
-    display: block;
-    width: 60px;
-    height: 4px;
-    background: #0077b6;
-    border-radius: 2px;
-    margin: 0 auto 32px;
-  }
-  
-  /* botones coherentes */
-  .submit-button {
-    margin-top: 28px;
-    background: #0077b6;
-  }
-  .submit-button:hover {
-    background: #005b96;
-  }
-  
-  /* ---------- INSTRUCCIONES ---------- */
-  .instructions-container {
-    flex: 1;
-    background: #f8fbff;
-    border: 1px solid #0077b63b;
-    border-radius: 20px;
-    padding: 40px 32px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-    min-width: 300px;
-  }
-  
-  .instructions-container h1,
-  .instructions-container h5 {
-    color: #003f88;
-  }
-  
-  /* ---------- ICONOS SOCIALES ---------- */
-  .instructions-container a svg {
-    color: #0077b6;
-    transition: transform 0.3s;
-  }
-  .instructions-container a:hover svg {
-    transform: scale(1.2);
-  }
-  
-  /* ---------- FOOTER ---------- */
-  .footer {
-    background: #000;
+    background: linear-gradient(to right, #ffffff, #ffffff);
+    justify-content: space-between;
+    padding: 32px;
+}
+
+.form-container {
+    background-color: rgb(255, 255, 255);
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 3px 3px 8px rgb(0, 0, 0);
+    opacity: 0;
+    animation: fadeIn 1s forwards 0.5s; /* Animación de aparición suave */
+}
+
+.title {
+    color: #00113d;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeIn 1s forwards 1s; /* Animación de aparición suave */
+}
+
+.submit-button {
+    margin-top: 24px;
+    background-color: #ffffff;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #03a7ff;
+    transform: scale(1.05); /* Efecto de expansión al pasar el mouse */
+}
+
+.instructions-container {
+    flex-grow: 1;
+    padding: 32px;
+    color: #000000;
+    background: rgba(255, 255, 255, 0.869);
+    border-radius: 16px;
+    margin-left: 16px;
+    opacity: 0;
+    animation: fadeIn 1s forwards 1.5s; /* Animación de aparición suave */
+}
+
+.footer {
+    background-color: #000;
     color: #fff;
     text-align: center;
-    padding: 20px 0;
-  }
-  .footer-text { margin-top: 12px; }
-  
-  /* ---------- RESPONSIVE ---------- */
-  @media (max-width: 768px) {
-    .content-container { padding: 32px 5vw; }
-    .form-container   { max-width: 100%; }
-  }
-  
+    padding: 5px 0;
+}
+
+.footer-text {
+    margin-top: 16px;
+}
+
+/* Animación de desvanecimiento */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
