@@ -3,10 +3,12 @@ package com.example.aplicacionptc
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -81,6 +83,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     private fun logoutUser() {
         val sharedPref = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE).edit()
         sharedPref.clear()

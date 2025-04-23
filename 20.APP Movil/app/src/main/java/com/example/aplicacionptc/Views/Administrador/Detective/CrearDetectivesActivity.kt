@@ -23,6 +23,7 @@ import com.example.aplicacionptc.Validaciones.Validaciones
 import com.example.aplicacionptc.Validaciones.Validaciones.esCedulaValida
 import com.example.aplicacionptc.Validaciones.Validaciones.esEmailValido
 import com.example.aplicacionptc.Validaciones.Validaciones.esMayorDeEdad
+import com.example.aplicacionptc.Validaciones.Validaciones.esMayrDeEdad
 import com.example.aplicacionptc.Validaciones.Validaciones.esNombreValido
 import com.example.aplicacionptc.Validaciones.Validaciones.toUpperCaseSafe
 
@@ -91,7 +92,7 @@ class CrearDetectivesActivity : AppCompatActivity() {
             val dia = calendario.get(Calendar.DAY_OF_MONTH)
 
             val datePicker = DatePickerDialog(this, { _, year, month, dayOfMonth ->
-                val fechaSeleccionada = String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year)
+                val fechaSeleccionada = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
                 edtFechaNacimiento.setText(fechaSeleccionada)
             }, anio, mes, dia)
 
@@ -128,7 +129,7 @@ class CrearDetectivesActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (!fechaNacimiento.esMayorDeEdad()) {
+            if (!Validaciones.esMayrDeEdad(fechaNacimiento)) {
                 edtFechaNacimiento.error = "Debe ser mayor de edad"
                 return@setOnClickListener
             }
