@@ -1,114 +1,110 @@
-/* servicios.css */
-
-/* Estructura principal */
+/* ---------- SECCIÓN PRINCIPAL ---------- */
 .services-section {
-    padding: 5px 220px;
-    background-color: #f7f7f7;
-    /* Color gris muy claro */
-}
-
-.services-title {
-    margin-bottom: 40px;
-}
-
-.services-title h1 {
-    font-size: 4.5rem;
-    color: #333;
-}
-
-/* Contenido de los servicios */
-.services-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 4fr));
-    gap: 20px;
-    justify-items: center;
-    /* Asegurar que todo esté centrado */
-}
-
-.service-container {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 25px;
-    /* Aumentar padding */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    /* Sombra más suave */
-    transition: transform 0.3s ease;
-    margin-bottom: 25px;
-    /* Espacio extra entre tarjetas */
+    padding: 120px 10vw;
+    background: radial-gradient(circle at top right, #cceffc 0%, #f7f7f7 60%);
+  }
+  
+  /* ---------- TÍTULO + DIVIDER ---------- */
+  .services-title {
     text-align: center;
-    /* Centrar el contenido dentro de las tarjetas */
-}
-
-.service-container:hover {
-    transform: translateY(10px);
-}
-
-/* Estilo de los textos */
-.service-container h3 {
-    color: #1d3557;
-    margin-bottom: 10px;
-}
-
-.service-container p {
-    color: #666;
-    margin-bottom: 15px;
-}
-
-ul {
-    list-style-type: none;
-    /* Eliminar viñetas */
-    padding: 0;
-    margin-left: 0;
-    color: #666;
-}
-
-ul li {
-    margin-bottom: 8px;
-}
-
-/* Iconos */
-.icon {
-    font-size: 40px;
-    color: #1d3557;
-    margin-bottom: 20px;
-    /* Aumentar espacio debajo del icono */
-}
-
-/* Estilo del footer */
-.footer {
-    background-color: #000;
-    color: #fff;
-    padding: 20px 0;
-    text-align: center;
-    margin-top: 40px;
-}
-
-.footer h4 {
+    margin-bottom: 60px;
+  }
+  
+  .services-title h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    color: #003f88;
+    font-weight: 800;
     margin: 0;
-}
-
-.footer-text {
-    font-size: 0.9rem;
-}
-
-/* Adaptabilidad para dispositivos móviles */
-@media (max-width: 768px) {
-    .services-section {
-        padding: 30px 10px;
+  }
+  
+  .services-divider {
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: #0077b6;
+    border-radius: 2px;
+    margin: 24px auto 0;
+  }
+  
+  /* ---------- GRID ---------- */
+  .services-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+    perspective: 800px;
+  }
+  
+  /* ---------- TARJETAS ---------- */
+  .service-container {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 40px 30px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    transform-style: preserve-3d;
+  }
+  
+  .service-container:hover {
+    transform: translateY(-12px) rotateX(4deg);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  }
+  
+  /* ---------- ICONOS ---------- */
+  .icon {
+    font-size: 64px;
+    color: #0077b6;
+    margin-bottom: 20px;
+    animation: pulse 3s infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.12); }
+  }
+  
+  /* ---------- TIPOGRAFÍA ---------- */
+  .service-container h3 {
+    color: #003f88;
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+  
+  .service-container p {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+  
+  /* ---------- ANIMACIÓN DE ENTRADA ---------- */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(40px);
+    animation: rise 0.8s forwards;
+  }
+  
+  @keyframes rise {
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
-
-    .services-title h1 {
-        font-size: 2rem;
-    }
-
-    .services-content {
-        grid-template-columns: 1fr;
-        gap: 15px;
-        /* Ajustar el espacio entre las tarjetas en móviles */
-    }
-
-    .service-container {
-        margin-bottom: 20px;
-        /* Menos margen entre tarjetas en pantallas pequeñas */
-    }
-}
+  }
+  
+  /* Cascada de entrada */
+  .fade-in:nth-child(1) { animation-delay: .1s; }
+  .fade-in:nth-child(2) { animation-delay: .2s; }
+  .fade-in:nth-child(3) { animation-delay: .3s; }
+  .fade-in:nth-child(4) { animation-delay: .4s; }
+  .fade-in:nth-child(5) { animation-delay: .5s; }
+  .fade-in:nth-child(6) { animation-delay: .6s; }
+  .fade-in:nth-child(7) { animation-delay: .7s; }
+  .fade-in:nth-child(8) { animation-delay: .8s; }
+  
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 768px) {
+    .services-section { padding: 80px 5vw; }
+    .service-container { padding: 30px 24px; }
+    .icon { font-size: 56px; }
+  }
+  
