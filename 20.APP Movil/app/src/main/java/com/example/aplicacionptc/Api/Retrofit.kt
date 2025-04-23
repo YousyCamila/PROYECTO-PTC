@@ -12,6 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object Retrofit {
     private const val BASE_URL = "http://10.0.2.2:3000/api/"
 
+    private const val SPRING_BASE_URL = "http://10.0.2.2:8080/api/"
 
     private val retrofit: Retrofit  by lazy {
         Retrofit.Builder()
@@ -19,6 +20,14 @@ object Retrofit {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
+    private val springRetrofit: Retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl(SPRING_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
 
     val authService: AuthService by lazy {
         retrofit.create(AuthService::class.java)
@@ -39,5 +48,10 @@ object Retrofit {
         retrofit.create(ControladorCaso::class.java)
 
     }
+
+    val clienteSpringInstance: ControladorCliente by lazy {
+        springRetrofit.create(ControladorCliente::class.java)
+    }
+
 
 }

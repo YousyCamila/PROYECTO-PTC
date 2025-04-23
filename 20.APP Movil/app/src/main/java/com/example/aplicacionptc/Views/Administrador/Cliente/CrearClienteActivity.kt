@@ -45,6 +45,9 @@ class CrearClienteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_crear_cliente)
+        // Inicializa clienteSpringInstance para compatibilidad con servicios de Spring Boot
+        val dummySpringCall = Retrofit.clienteSpringInstance
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
