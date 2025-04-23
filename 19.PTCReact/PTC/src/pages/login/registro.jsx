@@ -14,10 +14,10 @@ import {
   Snackbar,
   Alert,
   Tooltip,
+  Paper,
 } from "@mui/material";
-import { ArrowBack, PersonAdd } from "@mui/icons-material";
+import { ArrowBack, PersonAdd, Visibility, VisibilityOff } from "@mui/icons-material";
 import { motion } from "framer-motion";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Swal from "sweetalert2";
 
 const Register = () => {
@@ -123,7 +123,7 @@ const Register = () => {
       sx={{
         width: "100vw",
         height: "100vh",
-        backgroundColor: "white",
+        background: "linear-gradient(135deg, #e0f7fa, #ffffff)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -131,22 +131,19 @@ const Register = () => {
         padding: "20px",
       }}
     >
-      {/* NavBar */}
+      {/* Estética navbar */}
       <Box
         sx={{
           width: "100%",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          background: "linear-gradient(to left, rgba(0, 0, 139, 1), rgba(0, 0, 0, 0.911), rgba(0, 0, 139, 1))",
+          background: "#0077b6",
           color: "white",
-          padding: "10px 20px",
+          padding: "12px 24px",
+          boxShadow: "0px 2px 8px rgba(0,0,0,0.15)",
           position: "absolute",
           top: 0,
-          left: 0,
-          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
-          borderRadius: "0 0 10px 10px",
-          zIndex: 1000,
         }}
       >
         <Tooltip title="Volver">
@@ -154,8 +151,6 @@ const Register = () => {
             onClick={() => navigate("/login")}
             sx={{
               color: "white",
-              display: "flex",
-              alignItems: "center",
               "&:hover": {
                 backgroundColor: "rgba(255, 255, 255, 0.2)",
               },
@@ -164,7 +159,15 @@ const Register = () => {
             <ArrowBack />
           </IconButton>
         </Tooltip>
-        <Typography variant="h6" sx={{ flexGrow: 1, textAlign: "center" }}>
+        <Typography
+          variant="h6"
+          sx={{
+            flexGrow: 1,
+            textAlign: "center",
+            fontWeight: "bold",
+            letterSpacing: 1,
+          }}
+        >
           PTC - Registro
         </Typography>
       </Box>
@@ -178,10 +181,10 @@ const Register = () => {
         <Container
           maxWidth="sm"
           sx={{
-            backgroundColor: "white",
+            backgroundColor: "#ffffff",
             padding: 4,
-            borderRadius: 4,
-            boxShadow: "0 6px 15px rgba(0, 0, 0, 0.2)",
+            borderRadius: "16px",
+            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
             marginTop: 10,
           }}
         >
@@ -189,36 +192,38 @@ const Register = () => {
             variant="h4"
             component="h1"
             gutterBottom
-            sx={{ textAlign: "center", color: "#003366", marginBottom: 4 }}
+            sx={{
+              textAlign: "center",
+              marginTop: '50px',
+              color: "#003366",
+              fontWeight: "bold",
+              marginBottom: 4,
+              
+            }}
           >
-            Registrarse
+            Crear cuenta
           </Typography>
 
           <form onSubmit={register}>
             <TextField
               fullWidth
-              label="Nombre Completo"
+              label="Nombre completo"
               margin="normal"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               required
-              sx={{
-                marginBottom: "16px",
-                input: { color: "#003366" },
-              }}
+              helperText="Por favor, ingresa tu nombre completo"
+              sx={{ marginBottom: 2 }}
             />
             <TextField
               fullWidth
-              label="Correo"
+              label="Correo electrónico"
               margin="normal"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
               helperText="Por favor, ingresa tu correo electrónico"
-              sx={{
-                marginBottom: "16px",
-                input: { color: "#003366" },
-              }}
+              sx={{ marginBottom: 2 }}
             />
             <TextField
               fullWidth
@@ -228,11 +233,8 @@ const Register = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              helperText="Ingresa tu contraseña"
-              sx={{
-                marginBottom: "16px",
-                input: { color: "#003366" },
-              }}
+              helperText="Ingresa una contraseña segura"
+              sx={{ marginBottom: 2 }}
               InputProps={{
                 endAdornment: (
                   <IconButton
@@ -246,17 +248,14 @@ const Register = () => {
             />
             <TextField
               fullWidth
-              label="Confirmar Contraseña"
+              label="Confirmar contraseña"
               type={showConfirmPassword ? "text" : "password"}
               margin="normal"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
               helperText="Confirma tu contraseña"
-              sx={{
-                marginBottom: "16px",
-                input: { color: "#003366" },
-              }}
+              sx={{ marginBottom: 2 }}
               InputProps={{
                 endAdornment: (
                   <IconButton
@@ -268,7 +267,7 @@ const Register = () => {
                 ),
               }}
             />
-            <FormControl fullWidth margin="normal" sx={{ marginBottom: "16px" }}>
+            <FormControl fullWidth margin="normal" sx={{ marginBottom: 2 }}>
               <InputLabel id="role-label">Rol</InputLabel>
               <Select
                 labelId="role-label"
@@ -290,15 +289,12 @@ const Register = () => {
             {showVerification && (
               <TextField
                 fullWidth
-                label="Código de Verificación"
+                label="Código de verificación"
                 margin="normal"
                 value={verificationCode}
                 onChange={(e) => setVerificationCode(e.target.value)}
                 required
-                sx={{
-                  marginBottom: "16px",
-                  input: { color: "#003366" },
-                }}
+                sx={{ marginBottom: 2 }}
               />
             )}
 
@@ -309,15 +305,13 @@ const Register = () => {
               sx={{
                 mt: 2,
                 mb: 2,
-                backgroundColor: "#003366",
+                backgroundColor: "#0077b6",
                 color: "white",
-                "&:hover": { backgroundColor: "#002244" },
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
+                fontWeight: "bold",
+                "&:hover": { backgroundColor: "#005f87" },
               }}
             >
-              <PersonAdd /> Registrarse
+              Registrarse
             </Button>
           </form>
         </Container>
@@ -325,17 +319,10 @@ const Register = () => {
 
       <Snackbar
         open={showSnackbar}
-        autoHideDuration={3000}
+        autoHideDuration={6000}
         onClose={() => setShowSnackbar(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <Alert
-          onClose={() => setShowSnackbar(false)}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          {snackbarMessage}
-        </Alert>
+        <Alert severity="success">{snackbarMessage}</Alert>
       </Snackbar>
     </Box>
   );
