@@ -20,12 +20,12 @@ import {
   Tooltip,
 } from "@mui/material";
 
-import { 
-  ArrowBack, 
-  Login as LoginIcon, 
+import {
+  ArrowBack,
+  Login as LoginIcon,
   PersonAdd,
-  Visibility, 
-  VisibilityOff 
+  Visibility,
+  VisibilityOff,
 } from "@mui/icons-material";
 
 import { motion } from "framer-motion";
@@ -36,7 +36,7 @@ const Login = () => {
   const [role, setRole] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
-  
+
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
@@ -54,12 +54,9 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Llama al método login con el token completo
         login(data.accessToken);
-
-        // Redirige según el rol
         const decodedToken = jwt_decode(data.accessToken);
-        switch(decodedToken.role) {
+        switch (decodedToken.role) {
           case "administrador":
             navigate("/admin-menu");
             break;
@@ -72,8 +69,6 @@ const Login = () => {
           default:
             navigate("/");
         }
-
-        // Opcional: mostrar snackbar de éxito
         setShowSnackbar(true);
       } else {
         Swal.fire({
@@ -97,7 +92,7 @@ const Login = () => {
       sx={{
         width: "100vw",
         height: "100vh",
-        backgroundColor: "white",
+        background: "linear-gradient(135deg, #e0f7fa, #ffffff)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -105,18 +100,19 @@ const Login = () => {
         padding: "20px",
       }}
     >
-      {/* NavBar */}
+      {/* Estética navbar */}
       <Box
         sx={{
           width: "100%",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          background: "linear-gradient(to left, rgba(0, 0, 139, 1), rgba(0, 0, 0, 0.911), rgba(0, 0, 139, 1))",
+          background: "#0077b6",
           color: "white",
-          padding: "10px 20px",
+          padding: "12px 24px",
+          boxShadow: "0px 2px 8px rgba(0,0,0,0.15)",
           position: "absolute",
-          top: "10px",
+          top: 0,
         }}
       >
         <Tooltip title="Volver">
@@ -124,8 +120,6 @@ const Login = () => {
             onClick={() => navigate("/")}
             sx={{
               color: "white",
-              display: "flex",
-              alignItems: "center",
               "&:hover": {
                 backgroundColor: "rgba(255, 255, 255, 0.2)",
               },
@@ -134,7 +128,15 @@ const Login = () => {
             <ArrowBack />
           </IconButton>
         </Tooltip>
-        <Typography variant="h6" sx={{ flexGrow: 1, textAlign: "center" }}>
+        <Typography
+          variant="h6"
+          sx={{
+            flexGrow: 1,
+            textAlign: "center",
+            fontWeight: "bold",
+            letterSpacing: 1,
+          }}
+        >
           PTC - Iniciar Sesión
         </Typography>
       </Box>
@@ -148,10 +150,10 @@ const Login = () => {
         <Container
           maxWidth="sm"
           sx={{
-            backgroundColor: "white",
+            backgroundColor: "#ffffff",
             padding: 4,
-            borderRadius: 2,
-            boxShadow: 3,
+            borderRadius: "16px",
+            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
             marginTop: 10,
           }}
         >
@@ -159,7 +161,12 @@ const Login = () => {
             variant="h4"
             component="h1"
             gutterBottom
-            sx={{ textAlign: "center", color: "#003366", marginBottom: 4 }}
+            sx={{
+              textAlign: "center",
+              color: "#003366",
+              fontWeight: "bold",
+              marginBottom: 4,
+            }}
           >
             Iniciar sesión
           </Typography>
@@ -173,10 +180,7 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
               helperText="Por favor, ingresa tu correo electrónico"
-              sx={{
-                marginBottom: "16px",
-                input: { color: "#003366" },
-              }}
+              sx={{ marginBottom: 2 }}
             />
             <TextField
               fullWidth
@@ -187,10 +191,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               helperText="Ingresa tu contraseña"
-              sx={{
-                marginBottom: "16px",
-                input: { color: "#003366" },
-              }}
+              sx={{ marginBottom: 2 }}
               InputProps={{
                 endAdornment: (
                   <IconButton
@@ -202,7 +203,7 @@ const Login = () => {
                 ),
               }}
             />
-            <FormControl fullWidth margin="normal" sx={{ marginBottom: "16px" }}>
+            <FormControl fullWidth margin="normal" sx={{ marginBottom: 2 }}>
               <InputLabel id="role-label">Rol</InputLabel>
               <Select
                 labelId="role-label"
@@ -223,9 +224,10 @@ const Login = () => {
               sx={{
                 mt: 2,
                 mb: 2,
-                backgroundColor: "#003366",
+                backgroundColor: "#0077b6",
                 color: "white",
-                "&:hover": { backgroundColor: "#002244" },
+                fontWeight: "bold",
+                "&:hover": { backgroundColor: "#005f87" },
                 display: "flex",
                 alignItems: "center",
                 gap: 1,
@@ -239,9 +241,10 @@ const Login = () => {
               variant="outlined"
               sx={{
                 mb: 2,
-                color: "#003366",
-                borderColor: "#003366",
-                "&:hover": { backgroundColor: "#e0e0e0" },
+                color: "#0077b6",
+                borderColor: "#0077b6",
+                fontWeight: "bold",
+                "&:hover": { backgroundColor: "#e0f2f1" },
                 display: "flex",
                 alignItems: "center",
                 gap: 1,

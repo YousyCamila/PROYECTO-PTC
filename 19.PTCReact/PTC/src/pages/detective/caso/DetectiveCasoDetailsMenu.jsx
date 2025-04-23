@@ -9,8 +9,12 @@ import {
   Divider,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import EvidenciasDetectiveCrud from './EvidenciasDetectiveCrud';
-import RegistrosCrudDetective from './RegistrosCrudDetective';
+import RegistrosCrud from '../../cliente/caso/registros/RegistrosCrud';
+import AgregarEvidencia from '../../cliente/caso/evidencias/agregarEvidencia';
+import EvidenciasCrud from '../../cliente/caso/evidencias/EvidenciasCrud';
+
+import EvidenciasCrudDetective from './evidencia/EvidenciasCrudDetective';
+
 
 const DetectiveCasoDetailsMenu = ({ caso, onClose }) => {
   const [view, setView] = useState('details'); // Para cambiar entre vistas: detalles, evidencias, contrato, registros
@@ -30,7 +34,7 @@ const DetectiveCasoDetailsMenu = ({ caso, onClose }) => {
             <Typography variant="h6" gutterBottom>
               Evidencias del Caso
             </Typography>
-            <EvidenciasDetectiveCrud casoId={caso._id} />
+            <EvidenciasCrudDetective casoId={caso._id} />
           </Box>
         );
       case 'contrato':
@@ -59,7 +63,7 @@ const DetectiveCasoDetailsMenu = ({ caso, onClose }) => {
             <Typography variant="h6" gutterBottom>
               Registros del Caso
             </Typography>
-            <RegistrosCrudDetective casoId={caso._id} />
+            <RegistrosCrud casoId={caso._id} />
           </Box>
         );
       default:

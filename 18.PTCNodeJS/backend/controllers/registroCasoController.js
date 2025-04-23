@@ -82,7 +82,6 @@ const obtenerRegistrosPorCasoId = async (req, res) => {
 
     // Si no hay registros
     if (!registros.length) {
-      console.warn('No se encontraron registros para este caso:', casoId);
       return res.status(404).json({ message: 'No se encontraron registros para este caso.' });
     }
 

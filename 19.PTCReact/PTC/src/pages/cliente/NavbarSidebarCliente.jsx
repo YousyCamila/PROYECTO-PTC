@@ -53,7 +53,7 @@ const NavbarSidebarCliente = ({ nombreCliente = 'Cliente' }) => {
             sx={{
                 width: '100%',
                 height: '10vh',
-                background: '#4892d4',
+                background: 'linear-gradient(135deg, #4892d4 0%, #0077b6 100%)',
                 display: 'flex',
                 alignItems: 'center',
                 paddingX: 2,

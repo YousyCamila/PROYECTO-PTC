@@ -1,174 +1,170 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Toolbar,
   Typography,
   Button,
+  LinearProgress,
   Container,
-  Box,
   Grid,
-  Card,
-  CardMedia,
-  CardContent,
-} from '@mui/material';
-import Carousel from 'react-material-ui-carousel';
-import { styled } from '@mui/system';
-import { LinearProgress } from '@mui/material';
+  Paper,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Box,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import SecurityIcon from "@mui/icons-material/Security";
+import GroupIcon from "@mui/icons-material/Group";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import { FaShieldAlt } from "react-icons/fa";
+import "./Home.css";
 
-const services = [
-  {
-    title: "Cadena de Custodia",
-    description: "Garantizamos la preservación de la evidencia en investigaciones.",
-    img: "https://www.precintia.com/wp-content/uploads/2020/09/cadena-custodia-precintia.jpg",
-  },
-  {
-    title: "Investigación de Extorsión",
-    description: "Servicios especializados para combatir la extorsión.",
-    img: "https://keepcoding.io/wp-content/uploads/2024/06/extorsion-en-ciberseguridad-que-es.jpg",
-  },
-  {
-    title: "Estudios de Seguridad",
-    description: "Evaluaciones exhaustivas para garantizar su seguridad.",
-    img: "https://www.asis.org.pe/media/k2/items/cache/85b62d4a27ea43297eb1ab349b6e06c6_XL.jpg",
-  },
-  {
-    title: "Investigación de Infidelidades",
-    description: "Investigaciones discretas y profesionales.",
-    img: "https://www.ctxdetectives.com/wp-content/uploads/2018/01/detective-infidelidades.jpg",
-  },
-  {
-    title: "Investigación de Robos Empresariales",
-    description: "Soluciones para la prevención de robos en su empresa.",
-    img: "https://investigacioncriminal.es/wp-content/uploads/2023/02/auditoria.jpg",
-  },
-];
+/* ================= COMPONENTES AUXILIARES ================= */
+const AnimatedProgressBar = ({ value }) => {
+  const [progress, setProgress] = useState(0);
 
-const reasons = [
-  "25 años de experiencia en el sector.",
-  "Equipo profesional y altamente capacitado.",
-  "Tecnología de punta en nuestras investigaciones.",
-  "Confidencialidad garantizada en todos los procesos.",
-  "Resultados comprobados y casos de éxito.",
-];
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((old) => Math.min(old + value / 30, value));
+    }, 30);
+    return () => clearInterval(timer);
+  }, [value]);
 
-const StyledCard = styled(Card)(({ theme }) => ({
-  transition: 'transform 0.3s, background-color 0.3s',
-  '&:hover': {
-    transform: 'scale(1.05)',
-    backgroundColor: '#FFFFFFE0',
-  },
-}));
-
-const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
-  borderRadius: '16px 16px 0 0', // Bordes redondeados en la parte superior
-  height: '400px',
-}));
-
-const StyledCardContent = styled(CardContent)(({ theme }) => ({
-  backgroundColor: 'transparent', // Fondo transparente
-  borderRadius: '0 0 16px 16px', // Bordes redondeados en la parte inferior
-  position: 'relative',
-  zIndex: 1, // Asegura que el contenido esté por encima de la imagen
-  padding: theme.spacing(2),
-}));
-
-
-const StyledStatCard = styled(Card)(({ theme }) => ({
-  transition: 'transform 0.3s, box-shadow 0.3s',
-  '&:hover': {
-    transform: 'translateY(-10px)',
-    boxShadow: '0 10px 20px rgba(0,0,0,0.2)',
-  },
-}));
-
-const Home = () => {
   return (
-    <Box sx={{ width: '100%', background: 'linear-gradient(to bottom, #000000FF, #0056E0FF)', color: '#fff' }}>
-      <AppBar position="static" sx={{ background: 'linear-gradient(to left, rgba(12, 9, 218, 0.598), rgba(0, 0, 0, 0.911), rgba(12, 9, 218, 0.598))' }}>
+    <div className="progress-container">
+      <Typography variant="h6" className="progress-value">{`${Math.round(progress)}%`}</Typography>
+      <LinearProgress
+        variant="determinate"
+        value={progress}
+        sx={{
+          height: 8,
+          borderRadius: 4,
+          backgroundColor: "#e0e0e0",
+          "& .MuiLinearProgress-bar": {
+            backgroundColor: "#0077b6",
+          },
+        }}
+      />
+    </div>
+  );
+};
+
+/* ==================== HOME ==================== */
+const Home = () => {
+  /* ---- carrusel de mensajes de bienvenida ---- */
+  const messages = [
+    "¡Bienvenidos a PTC!",
+    "Tu seguridad, nuestra prioridad",
+    "25 años de experiencia a tu servicio",
+    "Confidencialidad y resultados óptimos",
+  ];
+  const [index, setIndex] = useState(0);
+  const current = messages[index];
+
+  useEffect(() => {
+    const id = setInterval(() => setIndex((i) => (i + 1) % messages.length), 3500);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <div>
+      {/* ---------- NAVBAR ---------- */}
+      <AppBar position="fixed" sx={{ backgroundColor: "#0077b6" }}>
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             PTC
           </Typography>
-          <Button color="inherit" href="/servicios">
-            Servicios
-          </Button>
-          <Button color="inherit" href="/contactanos">
-            Contáctanos
-          </Button>
-          <Button color="inherit" href="/login">
-            Inicio de Sesión
-          </Button>
+          <Button color="inherit" href="/servicios">Servicios</Button>
+          <Button color="inherit" href="/contactanos">Contáctanos</Button>
+          <Button color="inherit" href="/login">Inicio de Sesión</Button>
         </Toolbar>
       </AppBar>
 
-      <Container sx={{ mt: 4 }}>
-        <Carousel>
-          {services.map((service, i) => (
-            <Box key={i}>
-              <StyledCard sx={{ maxWidth: '100%', borderRadius: 2 }}>
-                <StyledCardMedia
-                  component="img"
-                  alt={service.title}
-                  image={service.img}
-                />
-                <StyledCardContent>
-                  <Typography variant="h5" align="center">{service.title}</Typography>
-                  <Typography variant="body2" align="center">{service.description}</Typography>
-                </StyledCardContent>
-              </StyledCard>
-            </Box>
+      {/* ---------- WELCOME ---------- */}
+      <Box className="welcome-section">
+        <FaShieldAlt className="welcome-icon" />
+        <Typography variant="h3" className="welcome-carousel">
+          {current}
+        </Typography>
+      </Box>
+
+      {/* ---------- QUIÉNES SOMOS ---------- */}
+      <Container className="section quienes-somos">
+        <Typography variant="h4" className="section-title">¿Quiénes Somos?</Typography>
+        <div className="section-divider" />
+        <Typography variant="body1" className="section-description">
+          Somos una agencia de investigación privada con 25 años de experiencia en delitos de alto impacto. Ofrecemos servicios
+          con altos estándares de confidencialidad, profesionalismo y eficacia.
+        </Typography>
+        <Grid container spacing={4} className="progress-grid">
+          {[
+            { v: 75, t: "Crímenes resueltos con efectividad en tiempo récord." },
+            { v: 100, t: "Asesorías legales por abogados especializados." },
+            { v: 98, t: "Investigaciones con resultados óptimos." },
+          ].map(({ v, t }) => (
+            <Grid item xs={12} md={4} key={t}>
+              <Paper className="progress-card fade-in">
+                <AnimatedProgressBar value={v} />
+                <Typography className="progress-text">{t}</Typography>
+              </Paper>
+            </Grid>
           ))}
-        </Carousel>
+        </Grid>
       </Container>
 
-      <Box sx={{ p: 12, backgroundColor: '#ffffff', color: '#000', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Typography variant="h3" align="center" sx={{ mb: 3, fontWeight: 'bold' }}>¿Quiénes Somos?</Typography>
-        <Typography variant="body1" align="center" sx={{ mt: 2, fontSize: '1.2rem', lineHeight: 1.6, maxWidth: '800px' }}>
-          Agencia de investigación privada con énfasis en delitos de alto impacto, 25 años de experiencia y reconocimiento a nivel nacional e internacional. Personal capacitado, profesionales en cada área. Especialistas en criminalística y manejo de cadena de custodia. Un amplio portafolio de servicios y la garantía de dar absoluta reserva en cada proceso.
-        </Typography>
-
-        <Grid container spacing={4} sx={{ mt: 6 }}>
-          {[
-            { percentage: 75, text: "Crimenes resueltos con mayor efectividad en tiempo record" },
-            { percentage: 100, text: "Asesorías Legales. Abogados Especializados en todo tipo de Derecho." },
-            { percentage: 98, text: "Delitos de alto impacto con resultados óptimos. Gracias a nuestra investigación." }
-          ].map((stat, index) => (
-            <Grid item xs={12} md={4} key={index}>
-              <StyledStatCard>
-                <CardContent>
-                  <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 2 }}>
-                    {stat.percentage}%
-                  </Typography>
-                  <LinearProgress variant="determinate" value={stat.percentage} sx={{ mb: 2, height: 10 }} />
-                  <Typography variant="body1">{stat.text}</Typography>
-                </CardContent>
-              </StyledStatCard>
-            </Grid>
-          ))}
+      {/* ---------- PILARES ---------- */}
+      <Container className="section pilares">
+        <Typography variant="h4" className="section-title">Nuestros Pilares</Typography>
+        <Grid container spacing={4} justifyContent="center">
+          <Grid item xs={12} md={4}>
+            <Paper className="pillar-card">
+              <SecurityIcon className="pillar-icon" />
+              <Typography variant="h6">Experiencia</Typography>
+              <Typography>Más de dos décadas resolviendo casos complejos y delicados.</Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Paper className="pillar-card">
+              <GroupIcon className="pillar-icon" />
+              <Typography variant="h6">Profesionales</Typography>
+              <Typography>Equipo de expertos en investigación, derecho y criminología.</Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Paper className="pillar-card">
+              <TrendingUpIcon className="pillar-icon" />
+              <Typography variant="h6">Resultados</Typography>
+              <Typography>Altas tasas de éxito en cada investigación realizada.</Typography>
+            </Paper>
+          </Grid>
         </Grid>
-      </Box>
+      </Container>
 
-      <Box sx={{ p: 4, backgroundColor: '#EBECECFF', color: '#000' }}>
-        <Typography variant="h4" align="center" sx={{ fontWeight: 'bold' }}>¿Por Qué Elegirnos?</Typography>
-        <Grid container spacing={4} justifyContent="center" sx={{ mt: 2 }}>
-          {reasons.map((reason, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <StyledCard sx={{ textAlign: 'center', padding: 2 }}>
-                <CardContent>
-                  <Typography variant="h5">{`#${index + 1}`}</Typography>
-                  <Typography variant="body2" sx={{ mt: 1 }}>{reason}</Typography>
-                </CardContent>
-              </StyledCard>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-
-      <footer style={{ backgroundColor: '#000000FF', color: '#fff', textAlign: 'center', padding: '5px 0' }}>
-        <Typography variant="h5">PTC</Typography>
-        <Typography variant="body2" sx={{ mt: 2 }}>© 2024 PTC. Todos los derechos reservados.</Typography>
-      </footer>
-    </Box>
+      {/* ---------- FAQ ---------- */}
+      <Container className="section faqs">
+        <Typography variant="h4" className="section-title">Preguntas Frecuentes</Typography>
+        {[
+          {
+            q: "¿Cómo podemos contactarlos?",
+            a: "Puedes contactarnos a través de la sección Contáctanos, donde encontrarás un formulario de contacto, números telefónicos y otros medios para comunicarte con nosotros.",
+          },
+          {
+            q: "¿La información es confidencial?",
+            a: "Totalmente. Garantizamos absoluta confidencialidad y seguridad en cada caso.",
+          },
+          {
+            q: "¿Tienen cobertura nacional?",
+            a: "Sí, contamos con cobertura en todo el territorio nacional.",
+          },
+        ].map(({ q, a }) => (
+          <Accordion key={q}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}> <Typography>{q}</Typography> </AccordionSummary>
+            <AccordionDetails> <Typography>{a}</Typography> </AccordionDetails>
+          </Accordion>
+        ))}
+      </Container>
+    </div>
   );
 };
 
