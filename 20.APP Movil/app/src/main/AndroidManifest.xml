@@ -22,7 +22,10 @@
                 android:name=".Views.Detective.DetalleCasoActivity"
                 android:exported="false"/>
         <activity
-                android:name=".Views.Detective.HomeDetectiveActivity"
+                android:name=".Views.Detectives.HomeDetectiveActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".Views.Clientes.HomeClientesActivity"
                 android:exported="false"/>
         <activity
                 android:name=".Views.Administrador.Detective.EditarDetectivesActivity"
@@ -91,6 +94,8 @@
         <activity
                 android:name=".Auth.RegisterActivity"
                 android:exported="false"/>
+
+
     </application>
 
 </manifest>

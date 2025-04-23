@@ -2,32 +2,42 @@ const RegistroCaso = require('../models/registroCasoModel');
 const Cliente = require('../models/ClienteModel');
 const Detective = require('../models/detectiveModel');
 const HistorialCaso = require('../models/historialCasoModel');
+const Caso = require('../models/casoModel')
 
 async function crearRegistroCaso(data) {
   try {
-    // Eliminar campos vacíos
-    if (!data.idCliente) {
-      delete data.idCliente;
-    }
-    if (!data.idDetective) {
-      delete data.idDetective;
-    }
+    if (!data.idCliente) delete data.idCliente;
+    if (!data.idDetective) delete data.idDetective;
 
     const registroCaso = new RegistroCaso(data);
     await registroCaso.save();
 
-    // Vincular el caso con cliente y detective si existen
     const promises = [];
+
     if (data.idCliente) {
       promises.push(
-        Cliente.findByIdAndUpdate(data.idCliente, { $push: { casos: registroCaso._id } })
+        Cliente.findByIdAndUpdate(data.idCliente, {
+          $push: { casos: registroCaso._id }
+        })
       );
     }
+
     if (data.idDetective) {
       promises.push(
-        Detective.findByIdAndUpdate(data.idDetective, { $push: { casos: registroCaso._id } })
+        Detective.findByIdAndUpdate(data.idDetective, {
+          $push: { casos: registroCaso._id }
+        })
       );
     }
+
+    if (data.idCasos) {
+      promises.push(
+        Caso.findByIdAndUpdate(data.idCasos, {
+          $push: { registroCasos: registroCaso._id }
+        })
+      );
+    }
+
     await Promise.all(promises);
 
     return registroCaso;
@@ -35,6 +45,7 @@ async function crearRegistroCaso(data) {
     throw new Error(`Error al crear el registro de caso: ${error.message}`);
   }
 }
+
 
 
 // Finalizar el contrato del registro de caso y moverlo al historial
