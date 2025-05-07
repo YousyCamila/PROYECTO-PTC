@@ -26,14 +26,14 @@ const Contactanos = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const validarCorreo = correo => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(correo);
+  const validarCorreo = correo => /\S+@\S+\.\S+/.test(correo);
   const validarNumeroCelular = numero => /^[0-9]{10}$/.test(numero);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validarCorreo(formData.correoCliente)) {
-      return Swal.fire('Error', 'El correo no tiene un formato válido.', 'error');
+      return Swal.fire('Error', 'El correo no tiene un formato inválido.', 'error');
     }
     if (!validarNumeroCelular(formData.numeroCelular)) {
       return Swal.fire('Error', 'El número de celular debe tener 10 dígitos y solo contener números.', 'error');
