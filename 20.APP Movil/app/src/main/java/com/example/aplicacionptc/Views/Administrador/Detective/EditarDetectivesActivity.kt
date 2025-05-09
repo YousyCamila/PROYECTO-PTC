@@ -3,6 +3,7 @@ package com.example.aplicacionptc.Views.Administrador.Detective
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
@@ -29,12 +30,10 @@ class EditarDetectivesActivity : AppCompatActivity() {
     private lateinit var etNombre: EditText
     private lateinit var etApellidos: EditText
     private lateinit var etId: EditText
-    private lateinit var etTelefono: EditText
     private lateinit var etCorreo: EditText
     private lateinit var etTipoDocumento: EditText
     private lateinit var etNumeroDocumento: EditText
     private lateinit var etActivo: AutoCompleteTextView
-
     private lateinit var especialidadesArray: Array<String>
     private lateinit var seleccionadas: BooleanArray
     private val listaEspecialidadesSeleccionadas = mutableListOf<String>()
@@ -224,7 +223,7 @@ class EditarDetectivesActivity : AppCompatActivity() {
             nombres = nombre.toUpperCaseSafe(),
             apellidos = apellidos.toUpperCaseSafe(),
             correo = correo,
-            fechaNacimiento = "",  // Si no se usa, déjalo vacío o usa el anterior
+            //fechaNacimiento = null,
             activo = etActivo.text.toString().equals("Activo", ignoreCase = true),
             especialidad = etEspecialidad.text.toString().split(",").map { it.trim() }
         )
@@ -238,7 +237,9 @@ class EditarDetectivesActivity : AppCompatActivity() {
                             .show()
                         finish()
                     } else {
-                        Toast.makeText(this@EditarDetectivesActivity, "Error al actualizar", Toast.LENGTH_SHORT).show()
+                        val errorBody = response.errorBody()?.string()
+                        Log.e("Error API", errorBody ?: "error desconocido")
+                        Toast.makeText(this@EditarDetectivesActivity, "Error: $errorBody", Toast.LENGTH_SHORT).show()
                     }
                 }
 

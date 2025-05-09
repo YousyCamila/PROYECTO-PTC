@@ -38,5 +38,19 @@ object Validaciones {
         } catch (e: Exception) {
             false
         }
+
+
+    }
+    fun esMayrDeEdad(fechaNacimiento: String): Boolean {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val fechaNac = sdf.parse(fechaNacimiento)
+        val calendar = Calendar.getInstance()
+        val edad = calendar.get(Calendar.YEAR) - (fechaNac?.let {
+            val birth = Calendar.getInstance()
+            birth.time = it
+            birth.get(Calendar.YEAR)
+        } ?: 0)
+
+        return edad >= 18
     }
 }

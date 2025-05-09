@@ -82,8 +82,9 @@ class CrearContratoActivity : AppCompatActivity() {
         val dia = calendario.get(Calendar.DAY_OF_MONTH)
 
 // Formatear la fecha como dd/MM/yyyy
-        val fechaActual = String.format("%02d/%02d/%04d", dia, mes + 1, anio)
+        val fechaActual = String.format("%04d-%02d-%02d", anio, mes + 1, dia)
         fechaInicioEditText.setText(fechaActual)
+
 
 // Desactivar edición y clics
         fechaInicioEditText.isEnabled = false       // No permite escribir
@@ -98,6 +99,7 @@ class CrearContratoActivity : AppCompatActivity() {
 
             val datePicker = DatePickerDialog(this, { _, year, month, dayOfMonth ->
                 val fechaSeleccionada = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+
 
                 fechaFinalEditText.setText(fechaSeleccionada)
             }, anio, mes, dia)

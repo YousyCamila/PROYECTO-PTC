@@ -165,7 +165,7 @@ const ClienteCSS = () => {
               .map((det, idx) => (
                 <Chip
                   key={idx}
-                  avatar={<Avatar>{det.nombre1[0]}</Avatar>}
+                  avatar={<Avatar>{det.nombre1?.[0] || ''}</Avatar>}
                   label={`${det.nombre1} ${det.apellido1}`}
                   variant="outlined"
                   size="small"

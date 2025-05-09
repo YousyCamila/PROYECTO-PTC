@@ -18,20 +18,26 @@
     padding: 32px;
     border-radius: 16px;
     box-shadow: 3px 3px 8px rgb(0, 0, 0);
+    opacity: 0;
+    animation: fadeIn 1s forwards 0.5s; /* Animación de aparición suave */
 }
 
 .title {
     color: #00113d;
     margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeIn 1s forwards 1s; /* Animación de aparición suave */
 }
 
 .submit-button {
     margin-top: 24px;
     background-color: #ffffff;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .submit-button:hover {
     background-color: #03a7ff;
+    transform: scale(1.05); /* Efecto de expansión al pasar el mouse */
 }
 
 .instructions-container {
@@ -41,6 +47,8 @@
     background: rgba(255, 255, 255, 0.869);
     border-radius: 16px;
     margin-left: 16px;
+    opacity: 0;
+    animation: fadeIn 1s forwards 1.5s; /* Animación de aparición suave */
 }
 
 .footer {
@@ -52,4 +60,14 @@
 
 .footer-text {
     margin-top: 16px;
+}
+
+/* Animación de desvanecimiento */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }

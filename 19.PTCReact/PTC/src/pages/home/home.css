@@ -1,79 +1,192 @@
-.detectives-section {
+/* Home.css */
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+  }
+  
+  /* ---------------- WELCOME SECTION (NO TOCAR) ---------------- */
+  .welcome-section {
+    background: linear-gradient(to bottom, #ffffff, #cceffc);
+    padding: 140px 20px 120px;
     text-align: center;
-    padding: 60px 20px;
-    background-color: rgba(247, 7, 7, 0.3);
-    /* Ajusté la opacidad del fondo */
-}
-
-.detectives-title h1 {
-    font-size: 3.5em;
-    /* Aumenté el tamaño de la fuente */
-    font-weight: bold;
-    margin-bottom: 40px;
-    /* Aumenté el margen inferior */
-    color: #222;
-    /* Cambié el color a un tono más oscuro */
-}
-
-.detectives-content {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    /* Cambié a 'center' para mejor alineación */
-    flex-wrap: wrap;
-    margin-top: 20px;
-}
-
-.detective-box {
-    flex: 1;
-    max-width: 320px;
-    /* Aumenté el ancho máximo */
-    padding: 20px;
-    margin: 15px;
-    /* Ajusté el margen */
-    text-align: center;
-    background-color: #f9f9f9;
-    /* Cambié a un color de fondo más claro */
-    border-radius: 12px;
-    /* Bordes más redondeados */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    /* Sombra más sutil */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    /* Añadí transición para la sombra */
-}
-
-.detective-box:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.131);
-    /* Sombra más intensa al pasar el ratón */
-}
-
-.detective-box h2 {
-    font-size: 2.5em;
-    /* Aumenté el tamaño del título */
+    min-height: 200px;
+  }
+  
+  .welcome-icon {
+    font-size: 60px;
+    color: #0077b6;
+    margin-bottom: 20px;
+    animation: bounce 2s infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  .welcome-title {
     font-weight: bold;
+    color: #003f88;
+    margin-bottom: 10px;
+    animation: fadeInDown 1s ease-in-out;
+  }
+  
+  .welcome-subtitle {
+    font-size: 18px;
+    color: #005b96;
+    margin-bottom: 30px;
+    animation: fadeInUp 1.2s ease-in-out;
+  }
+  
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+  }
+  
+  /* ---------------- SECCIÓN GENÉRICA ---------------- */
+  .section {
+    padding: 100px 20px;
+    text-align: center;
+  }
+  
+  .quienes-somos .section-title.MuiTypography-root {
+    font-size: 42px !important;
+    color: #003f88 !important;
+    margin-bottom: 10px;
+    font-weight: 700;
+    animation: fadeInDown 1s ease-in-out;
+  }
+  
+  .quienes-somos .section-description.MuiTypography-root {
+    max-width: 850px;
+    margin: 0 auto 60px auto;
+    font-size: 18px;
+    line-height: 1.7;
+    color: #444 !important;
+    animation: fadeInUp 1.2s ease-in-out;
+  }
+  
+  .quienes-somos .progress-card.MuiPaper-root {
+    background: #ffffff;
+    padding: 40px 30px;
+    border-radius: 20px;
+    width: 320px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .quienes-somos .progress-card.MuiPaper-root:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  
+  .progress-text {
+    font-size: 16px;
+    color: #444;
+    margin-top: 12px;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  /* ---------------- PILARES (NO TOCAR) ---------------- */
+  .pillar-card {
+    padding: 40px 30px;
+    border-radius: 12px;
+    height: 100%;
+    text-align: center;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+  }
+  
+  .pillar-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .pillar-icon {
+    font-size: 50px;
+    color: #0077b6;
     margin-bottom: 15px;
-    /* Ajusté el margen inferior */
-    color: #333;
-    /* Color más oscuro para el título */
-}
-
-.detective-box p {
-    font-size: 1.1em;
-    /* Aumenté el tamaño de la fuente del párrafo */
-    color: #ffffff;
-    /* Cambié el color a un tono más gris */
-}
-
-.carousel {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
-    /* Aumenté la opacidad del fondo */
-    margin-top: 90px;
-    /* Mantuve el margen superior */
-}
-
-.carousel-item img {
-    height: 500px;
-    object-fit: cover;
-    border-radius: 16px;
-    /* Bordes redondeados para las imágenes del carrusel */
-}
+    animation: pulse 2s infinite;
+  }
+  
+  /* ---------------- FAQ (NO TOCAR) ---------------- */
+  .faq-section {
+    margin-top: 40px;
+    text-align: left;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .MuiAccordion-root {
+    margin-bottom: 16px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .MuiAccordionSummary-content {
+    font-weight: bold;
+    color: #003f88;
+  }
+  
+  /* === animación de carrusel de texto en la sección Welcome === */
+@keyframes fadeSwap {
+    0%   { opacity: 0; transform: translateY(20px); }
+    10%  { opacity: 1; transform: translateY(0); }
+    90%  { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-20px); }
+  }
+  
+  .welcome-carousel {
+    font-weight: bold;
+    color: #003f88;
+    animation: fadeSwap 3.5s ease-in-out infinite;
+  }
+  

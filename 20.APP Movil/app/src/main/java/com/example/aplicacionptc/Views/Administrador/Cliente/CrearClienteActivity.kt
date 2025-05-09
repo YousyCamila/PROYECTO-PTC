@@ -24,7 +24,7 @@ import android.widget.AutoCompleteTextView
 import java.util.Calendar
 import com.example.aplicacionptc.Validaciones.Validaciones
 import com.example.aplicacionptc.Validaciones.Validaciones.esEmailValido
-import com.example.aplicacionptc.Validaciones.Validaciones.esMayorDeEdad
+import com.example.aplicacionptc.Validaciones.Validaciones.esMayrDeEdad
 import com.example.aplicacionptc.Validaciones.Validaciones.esNombreValido
 import com.example.aplicacionptc.Validaciones.Validaciones.toUpperCaseSafe
 
@@ -45,6 +45,9 @@ class CrearClienteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_crear_cliente)
+        // Inicializa clienteSpringInstance para compatibilidad con servicios de Spring Boot
+        val dummySpringCall = Retrofit.clienteSpringInstance
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -80,12 +83,13 @@ class CrearClienteActivity : AppCompatActivity() {
             val dia = calendario.get(Calendar.DAY_OF_MONTH)
 
             val datePicker = DatePickerDialog(this, { _, year, month, dayOfMonth ->
-                val fechaSeleccionada = String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year)
+                val fechaSeleccionada = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
                 etFechaNacimiento.setText(fechaSeleccionada)
             }, anio, mes, dia)
 
             datePicker.show()
         }
+
 
         // Botón de volver a la gestión de clientes
         val btnVolverGestion = findViewById<MaterialButton>(R.id.btnVolverGestion)
@@ -128,7 +132,7 @@ class CrearClienteActivity : AppCompatActivity() {
             esValido = false
         }
 
-        if (!fechaNacimiento.esMayorDeEdad()) {
+        if (!Validaciones.esMayrDeEdad(fechaNacimiento)) {
             etFechaNacimiento.error = "Debes ser mayor de 18 años."
             esValido = false
         }
