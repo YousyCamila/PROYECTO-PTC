@@ -207,6 +207,7 @@ const Register = () => {
           <form onSubmit={register}>
             <TextField
               fullWidth
+              id="fullName-input"
               label="Nombre completo"
               margin="normal"
               value={fullName}
@@ -217,6 +218,7 @@ const Register = () => {
             />
             <TextField
               fullWidth
+              id="correo"
               label="Correo electrónico"
               margin="normal"
               value={email}
@@ -227,6 +229,7 @@ const Register = () => {
             />
             <TextField
               fullWidth
+              id="Contra"
               label="Contraseña"
               type={showPassword ? "text" : "password"}
               margin="normal"
@@ -248,6 +251,7 @@ const Register = () => {
             />
             <TextField
               fullWidth
+              id="confiContra"
               label="Confirmar contraseña"
               type={showConfirmPassword ? "text" : "password"}
               margin="normal"
@@ -270,6 +274,7 @@ const Register = () => {
             <FormControl fullWidth margin="normal" sx={{ marginBottom: 2 }}>
               <InputLabel id="role-label">Rol</InputLabel>
               <Select
+              id="role-select"
                 labelId="role-label"
                 value={role}
                 onChange={(e) => {
@@ -289,6 +294,7 @@ const Register = () => {
             {showVerification && (
               <TextField
                 fullWidth
+                id="CodigoVeri"
                 label="Código de verificación"
                 margin="normal"
                 value={verificationCode}
@@ -299,6 +305,7 @@ const Register = () => {
             )}
 
             <Button
+            id="Registrarse"
               type="submit"
               fullWidth
               variant="contained"
