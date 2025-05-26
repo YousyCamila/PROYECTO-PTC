@@ -168,6 +168,7 @@ const ResponderSolicitudes = () => {
               <TableRow>
                 <TableCell sx={{ fontWeight: 600 }}>Nombre</TableCell>
                 <TableCell sx={{ fontWeight: 600 }}>Correo</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>Numero de celular</TableCell>
                 <TableCell sx={{ fontWeight: 600 }}>Descripción</TableCell>
                 <TableCell sx={{ fontWeight: 600 }}>Fecha de Envío</TableCell>
                 <TableCell>
@@ -190,6 +191,7 @@ const ResponderSolicitudes = () => {
                 <TableRow key={formulario._id}>
                   <TableCell>{formulario.nombre}</TableCell>
                   <TableCell>{formulario.correoCliente}</TableCell>
+                  <TableCell>{formulario.numeroCelular}</TableCell>
                   <TableCell>{formulario.descripcion}</TableCell>
                   <TableCell>{new Date(formulario.fechaEnvio).toLocaleDateString()}</TableCell>
                   <TableCell>

@@ -81,6 +81,7 @@ const MensajesRespondidos = () => {
               <TableRow>
                 <TableCell>Nombre</TableCell>
                 <TableCell>Correo</TableCell>
+                <TableCell>Numero de Celular</TableCell>
                 <TableCell>Descripcion</TableCell>
                 <TableCell>Respuesta</TableCell>
               </TableRow>
@@ -91,6 +92,7 @@ const MensajesRespondidos = () => {
                   <TableRow key={mensaje._id}>
                     <TableCell>{mensaje.nombre}</TableCell>
                     <TableCell>{mensaje.correoCliente}</TableCell>
+                    <TableCell>{mensaje.numeroCelular}</TableCell>
                     <TableCell>{mensaje.descripcion}</TableCell>
                     <TableCell>{mensaje.respuesta}</TableCell>
                   </TableRow>
