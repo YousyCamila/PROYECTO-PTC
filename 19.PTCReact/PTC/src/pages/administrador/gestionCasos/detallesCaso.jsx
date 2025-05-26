@@ -142,8 +142,7 @@ const DetallesCaso = () => {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Typography variant="body1">
-                      <strong>Detective:</strong>{' '}
-                      {caso.detective ? `${caso.idDetective.nombres} ${caso.idDetective.apellidos}` : 'No asignado'}
+                      <strong>Detective:</strong>{caso.idDetective.nombres} {caso.idDetective.apellidos}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>

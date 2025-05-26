@@ -174,6 +174,7 @@ const Login = () => {
           <form onSubmit={handleLogin}>
             <TextField
               fullWidth
+              id= "corr-select"
               label="Correo"
               margin="normal"
               value={email}
@@ -184,6 +185,7 @@ const Login = () => {
             />
             <TextField
               fullWidth
+              id= "cont-select"
               label="Contraseña"
               type={showPassword ? "text" : "password"}
               margin="normal"
