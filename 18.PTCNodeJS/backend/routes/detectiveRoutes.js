@@ -98,7 +98,7 @@ router.get('/:id', detectiveController.buscarDetectivePorId);
  *       404:
  *         description: Detective no encontrado
  */
-router.get('/:correo', detectiveController.buscarDetectivePorCorreo);
+router.get('correo/:correo', detectiveController.buscarDetectivePorCorreo);
 
 /**
  * @swagger

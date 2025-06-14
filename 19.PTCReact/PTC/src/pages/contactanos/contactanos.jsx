@@ -26,7 +26,7 @@ const Contactanos = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const validarCorreo = correo => /\S+@\S+\.\S+/.test(correo);
+const validarCorreo = correo => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(correo);
   const validarNumeroCelular = numero => /^[0-9]{10}$/.test(numero);
 
   const handleSubmit = async (e) => {

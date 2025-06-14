@@ -89,10 +89,17 @@ const login = async (req, res) => {
 
     res.status(200).json({
       accessToken,
-      message: 'Inicio de sesión exitoso',
-      userId: user._id,
       role: user.role,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        casos: user.casos, // array de casos poblados
+        contratos: user.contratos, 
+      }
     });
+    
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al iniciar sesión' });

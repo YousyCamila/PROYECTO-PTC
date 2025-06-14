@@ -42,6 +42,8 @@ async function buscarDetectivePorCorreo(correo) {
   return detective;
 }
 
+
+
 async function actualizarDetective(id, datos) {
   const detective = await Detective.findById(id);
 
