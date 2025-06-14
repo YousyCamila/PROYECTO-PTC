@@ -28,7 +28,7 @@ const PersonaSchema = new mongoose.Schema({
   },
   fechaNacimiento: {
     type: Date,
-    required: true
+    required: false
   }
 }, 
 {timestamps: true});
