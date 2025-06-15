@@ -20,6 +20,7 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import { FaShieldAlt } from "react-icons/fa";
 import "./Home.css";
 
+
 /* ================= COMPONENTES AUXILIARES ================= */
 const AnimatedProgressBar = ({ value }) => {
   const [progress, setProgress] = useState(0);
