@@ -1,5 +1,5 @@
 const RegistroCaso = require('../models/registroCasoModel');
-const Cliente = require('../models/ClienteModel');
+const Cliente = require('../models/clienteModel');
 const Detective = require('../models/detectiveModel');
 const HistorialCaso = require('../models/historialCasoModel');
 const Caso = require('../models/casoModel')
