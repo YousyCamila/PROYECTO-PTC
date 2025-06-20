@@ -71,6 +71,6 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
-    console.log(`Servidor corriendo en http://localhost:${port}`);
+    console.log(`Servidor corriendo en http://localhost:${port}/api-docs`);
     console.log('API REST ejecutándose correctamente...');
 });
