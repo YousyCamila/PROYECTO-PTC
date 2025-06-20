@@ -43,7 +43,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://proyecto-ptc.onrender.com/api/usuario/login", {
+      const response = await fetch("https://6h1lz96w-3000.use2.devtunnels.ms//api/usuario/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
