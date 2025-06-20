@@ -39,7 +39,7 @@ app.use(cookieParser()); // Middleware para manejar cookies
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const corsOptions = {
-    origin: 'http://localhost:5173', // Cambia esto al dominio de tu frontend
+    origin: 'https://6h1lz96w-5173.use2.devtunnels.ms', // Cambia esto al dominio de tu frontend
     methods: ['GET', 'POST', 'PUT','PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true, // Permitir el envío de cookies y encabezados de autenticación
