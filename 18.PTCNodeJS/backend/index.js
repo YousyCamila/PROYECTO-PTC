@@ -68,7 +68,7 @@ app.use('/api/tipos-evidencia', tipoEvidenciaRoutes);
 app.use('/api/usuario', usuarioRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-const port = process.env.PORT || 5173;
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}/api-docs`);
