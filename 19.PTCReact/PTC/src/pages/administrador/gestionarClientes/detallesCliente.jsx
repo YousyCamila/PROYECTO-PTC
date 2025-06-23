@@ -36,7 +36,7 @@ const DetallesCliente = () => {
   // Fetch cliente details from the API
   const fetchCliente = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/clientes/${id}`);
+      const response = await fetch(`https://proyecto-ptc.onrender.com/api/clientes/${id}`);
       const data = await response.json();
 
       if (response.ok) {

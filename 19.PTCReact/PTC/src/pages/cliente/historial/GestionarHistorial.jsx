@@ -110,7 +110,7 @@ const GestionarHistorial = ({ historial, onEditar }) => {
     if (editMode) {
       try {
         const response = await axios.put(
-          `http://localhost:3000/api/historiales/editar/${editableHistorial._id}`,
+          `https://proyecto-ptc.onrender.com/api/historiales/editar/${editableHistorial._id}`,
           editableHistorial
         );
         if (onEditar) onEditar(response.data);

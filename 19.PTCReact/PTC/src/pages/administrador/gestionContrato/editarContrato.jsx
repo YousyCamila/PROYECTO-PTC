@@ -49,7 +49,7 @@ const EditarContrato = () => {
   useEffect(() => {
     const fetchContrato = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/contratos/${id}`);
+        const response = await fetch(`https://proyecto-ptc.onrender.com/api/contratos/${id}`);
         if (!response.ok) throw new Error(`Error: ${response.status}`);
         const data = await response.json();
         
@@ -94,7 +94,7 @@ const EditarContrato = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/contratos/${id}`, {
+      const response = await fetch(`https://proyecto-ptc.onrender.com/api/contratos/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

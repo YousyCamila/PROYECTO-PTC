@@ -55,9 +55,9 @@ const ClienteCSS = () => {
     setLoading(true);
     try {
       const [detectivesRes, clientesRes, casosRes] = await Promise.all([
-        fetch('http://localhost:3000/api/detectives'),
-        fetch('http://localhost:3000/api/clientes'),
-        fetch('http://localhost:3000/api/caso')
+        fetch('https://proyecto-ptc.onrender.com/api/detectives'),
+        fetch('https://proyecto-ptc.onrender.com/api/clientes'),
+        fetch('https://proyecto-ptc.onrender.com/api/caso')
       ]);
 
       const [detectives, clientes, casos] = await Promise.all([

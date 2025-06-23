@@ -33,7 +33,7 @@ const EditarCliente = () => {
   useEffect(() => {
     const fetchCliente = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/clientes/${id}`);
+        const response = await fetch(`https://proyecto-ptc.onrender.com/api/clientes/${id}`);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
 
@@ -74,7 +74,7 @@ const EditarCliente = () => {
     };
 
     try {
-      const response = await fetch(`http://localhost:3000/api/clientes/${id}`, {
+      const response = await fetch(`https://proyecto-ptc.onrender.com/api/clientes/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedFormData),

@@ -27,7 +27,7 @@ const EvidenciasCrud = ({ casoId }) => {
   const navigate = useNavigate();
 
   // URL base del backend
-  const backendUrl = 'http://localhost:3000';
+  const backendUrl = 'https://proyecto-ptc.onrender.com';
 
   // Fetch evidencias al cargar el componente
   useEffect(() => {

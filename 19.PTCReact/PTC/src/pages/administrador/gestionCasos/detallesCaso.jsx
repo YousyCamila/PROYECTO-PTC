@@ -35,7 +35,7 @@ const DetallesCaso = () => {
 
   const fetchCaso = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/caso/${id}`);
+      const response = await fetch(`https://proyecto-ptc.onrender.com/api/caso/${id}`);
       const data = await response.json();
 
       if (response.ok) {

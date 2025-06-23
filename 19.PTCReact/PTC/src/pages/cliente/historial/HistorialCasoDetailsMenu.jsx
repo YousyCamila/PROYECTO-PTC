@@ -28,7 +28,7 @@ const HistorialCasoDetailsMenu = ({ caso, onClose }) => {
     if (!caso || !caso._id) return;
     setLoadingHistorial(true);
     try {
-      const response = await fetch(`http://localhost:3000/api/historiales/caso/${caso._id}`);
+      const response = await fetch(`https://proyecto-ptc.onrender.com/api/historiales/caso/${caso._id}`);
       console.log('📘 Obteniendo historial del caso:', caso._id);
       const data = await response.json();
       if (response.ok) {

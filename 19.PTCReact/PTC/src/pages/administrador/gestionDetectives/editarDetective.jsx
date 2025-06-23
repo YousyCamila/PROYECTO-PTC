@@ -64,7 +64,7 @@ const EditarDetective = () => {
   useEffect(() => {
     const fetchDetective = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/detectives/${id}`);
+        const response = await fetch(`https://proyecto-ptc.onrender.com/api/detectives/${id}`);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
 
@@ -108,7 +108,7 @@ const EditarDetective = () => {
     };
 
     try {
-      const response = await fetch(`http://localhost:3000/api/detectives/${id}`, {
+      const response = await fetch(`https://proyecto-ptc.onrender.com/api/detectives/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedFormData),

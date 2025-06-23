@@ -38,8 +38,8 @@ const AgregarRegistroFormDetective = () => {
     const fetchData = async () => {
       try {
         const [clientesResponse, detectivesResponse] = await Promise.all([
-          fetch('http://localhost:3000/api/clientes'),
-          fetch('http://localhost:3000/api/detectives'),
+          fetch('https://proyecto-ptc.onrender.com/api/clientes'),
+          fetch('https://proyecto-ptc.onrender.com/api/detectives'),
         ]);
 
         if (clientesResponse.ok && detectivesResponse.ok) {
@@ -78,7 +78,7 @@ const AgregarRegistroFormDetective = () => {
     console.log("Datos enviados al backend:", payload);
 
     try {
-      const response = await fetch('http://localhost:3000/api/registros-caso', {
+      const response = await fetch('https://proyecto-ptc.onrender.com/api/registros-caso', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

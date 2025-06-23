@@ -138,9 +138,9 @@ const AdminMenu = () => {
     const fetchData = async () => {
       try {
         const [casosResponse, clientesResponse, detectivesResponse] = await Promise.all([
-          fetch('http://localhost:3000/api/caso').then(res => res.json()),
-          fetch('http://localhost:3000/api/clientes').then(res => res.json()),
-          fetch('http://localhost:3000/api/detectives').then(res => res.json())
+          fetch('https://proyecto-ptc.onrender.com/api/caso').then(res => res.json()),
+          fetch('https://proyecto-ptc.onrender.com/api/clientes').then(res => res.json()),
+          fetch('https://proyecto-ptc.onrender.com/api/detectives').then(res => res.json())
         ]);
 
         setCasos(casosResponse);

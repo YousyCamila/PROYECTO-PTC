@@ -115,7 +115,7 @@ const GestionarDetectives = () => {
 
   const fetchDetectives = useCallback(async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/detectives");
+      const response = await fetch("https://proyecto-ptc.onrender.com/api/detectives");
       const data = await response.json();
       setDetectives(data);
       setFilteredDetectives(data);
@@ -184,7 +184,7 @@ const GestionarDetectives = () => {
 
     if (confirm.isConfirmed) {
       try {
-        const response = await fetch(`http://localhost:3000/api/detectives/${detectiveId}`, {
+        const response = await fetch(`https://proyecto-ptc.onrender.com/api/detectives/${detectiveId}`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',

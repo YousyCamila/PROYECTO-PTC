@@ -40,7 +40,7 @@ const validarCorreo = correo => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}
     }
 
     try {
-      const res = await fetch('http://localhost:3000/api/formularios', {
+      const res = await fetch('https://proyecto-ptc.onrender.com/api/formularios', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

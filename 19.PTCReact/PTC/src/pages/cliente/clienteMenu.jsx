@@ -107,7 +107,7 @@ const ClienteMenu = () => {
     const navigate = useNavigate();
 
     const email = localStorage.getItem('email_cliente');
-    const API_URL = 'http://localhost:3000/api';
+    const API_URL = 'https://proyecto-ptc.onrender.com/api';
 
     useEffect(() => {
         if (email) fetchCasos(email);

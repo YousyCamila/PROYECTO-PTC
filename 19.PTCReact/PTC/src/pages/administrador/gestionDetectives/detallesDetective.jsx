@@ -36,7 +36,7 @@ const DetallesDetective = () => {
   // Fetch detective details from the API
   const fetchDetective = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/detectives/${id}`);
+      const response = await fetch(`https://proyecto-ptc.onrender.com/api/detectives/${id}`);
       const data = await response.json();
 
       if (response.ok) {

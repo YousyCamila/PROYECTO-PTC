@@ -34,7 +34,7 @@ const ResponderSolicitudes = () => {
     // Cargar formularios
     const fetchFormularios = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/formularios');
+        const response = await fetch('https://proyecto-ptc.onrender.com/api/formularios');
         const data = await response.json();
         const formData = data
           .filter((form) => !form.respondido)  // Filtra solo los formularios pendientes
@@ -64,7 +64,7 @@ const ResponderSolicitudes = () => {
 
   const handleResponder = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/formularios/${id}/responder`, {
+      const response = await fetch(`https://proyecto-ptc.onrender.com/api/formularios/${id}/responder`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

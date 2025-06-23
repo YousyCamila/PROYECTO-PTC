@@ -60,8 +60,8 @@ const CrearContrato = () => {
       setLoading(true);
       try {
         const [clientesResponse, detectivesResponse] = await Promise.all([
-          fetch("http://localhost:3000/api/clientes"),
-          fetch("http://localhost:3000/api/detectives"),
+          fetch("https://proyecto-ptc.onrender.com/api/clientes"),
+          fetch("https://proyecto-ptc.onrender.com/api/detectives"),
         ]);
   
         if (!clientesResponse.ok || !detectivesResponse.ok) {

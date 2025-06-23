@@ -18,7 +18,7 @@ const VerAuditoria = ({ historial }) => {
     const obtenerDocumentos = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/historiales/caso/${historial.idCaso._id}`,
+          `https://proyecto-ptc.onrender.com/api/historiales/caso/${historial.idCaso._id}`,
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },

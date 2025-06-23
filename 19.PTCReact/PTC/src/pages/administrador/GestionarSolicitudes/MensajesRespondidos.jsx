@@ -24,7 +24,7 @@ const MensajesRespondidos = () => {
   useEffect(() => {
     const fetchMensajes = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/formularios/respondidos'); // Nueva ruta
+        const response = await fetch('https://proyecto-ptc.onrender.com/api/formularios/respondidos'); // Nueva ruta
         const data = await response.json();
         setMensajes(data);
         setOpenSnackbar(true); // Mostrar snackbar al cargar correctamente

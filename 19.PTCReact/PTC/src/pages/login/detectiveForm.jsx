@@ -71,7 +71,7 @@ const DetectiveForm = () => {
         apellidos: formData.apellidos.toUpperCase(),
       };
 
-      const response = await fetch('http://localhost:3000/api/detectives', {
+      const response = await fetch('https://proyecto-ptc.onrender.com/api/detectives', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

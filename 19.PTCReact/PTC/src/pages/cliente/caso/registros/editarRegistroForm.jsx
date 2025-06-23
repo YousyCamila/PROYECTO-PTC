@@ -37,7 +37,7 @@ const EditarRegistroForm = () => {
   useEffect(() => {
     const fetchRegistro = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/registros-caso/${registroId}`);
+        const response = await fetch(`https://proyecto-ptc.onrender.com/api/registros-caso/${registroId}`);
         if (response.ok) {
           const data = await response.json();
           setFormData({
@@ -61,8 +61,8 @@ const EditarRegistroForm = () => {
     const fetchData = async () => {
       try {
         const [clientesResponse, detectivesResponse] = await Promise.all([
-          fetch('http://localhost:3000/api/clientes'),
-          fetch('http://localhost:3000/api/detectives'),
+          fetch('https://proyecto-ptc.onrender.com/api/clientes'),
+          fetch('https://proyecto-ptc.onrender.com/api/detectives'),
         ]);
 
         if (clientesResponse.ok && detectivesResponse.ok) {
@@ -92,7 +92,7 @@ const EditarRegistroForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:3000/api/registros-caso/${registroId}`, {
+      const response = await fetch(`https://proyecto-ptc.onrender.com/api/registros-caso/${registroId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

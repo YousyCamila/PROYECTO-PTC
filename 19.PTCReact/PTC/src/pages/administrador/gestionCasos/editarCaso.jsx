@@ -60,7 +60,7 @@ const EditarCaso = () => {
   useEffect(() => {
     const fetchCaso = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/caso/${id}`);
+        const response = await fetch(`https://proyecto-ptc.onrender.com/api/caso/${id}`);
         if (!response.ok) throw new Error(`Error: ${response.status}`);
         const data = await response.json();
 
@@ -94,7 +94,7 @@ const EditarCaso = () => {
     console.log(formData); // Verifica los datos enviados
   
     try {
-      const response = await fetch(`http://localhost:3000/api/caso/${id}`, {
+      const response = await fetch(`https://proyecto-ptc.onrender.com/api/caso/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

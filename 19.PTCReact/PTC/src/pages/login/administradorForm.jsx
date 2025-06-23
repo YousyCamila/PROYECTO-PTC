@@ -71,7 +71,7 @@ const AdministradorForm = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/api/administradors", {
+      const response = await fetch("https://proyecto-ptc.onrender.com/api/administradors", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

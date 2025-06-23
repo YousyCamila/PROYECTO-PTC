@@ -73,7 +73,7 @@ const agregarEvidenciaDetective = () => {
     if (formData.archivo) data.append('archivo', formData.archivo);
 
     try {
-      const response = await fetch('http://localhost:3000/api/evidencias/upload', {
+      const response = await fetch('https://proyecto-ptc.onrender.com/api/evidencias/upload', {
         method: 'POST',
         body: data,
       });

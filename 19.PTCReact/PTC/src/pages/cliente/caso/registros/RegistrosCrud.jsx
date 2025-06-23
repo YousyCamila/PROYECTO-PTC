@@ -27,7 +27,7 @@ const RegistrosCrud = ({ casoId }) => {
   const [selectedRegistro, setSelectedRegistro] = useState(null);
   const navigate = useNavigate();
 
-  const backendUrl = 'http://localhost:3000';
+  const backendUrl = 'https://proyecto-ptc.onrender.com';
 
   // Fetch registros al cargar el componente
   useEffect(() => {

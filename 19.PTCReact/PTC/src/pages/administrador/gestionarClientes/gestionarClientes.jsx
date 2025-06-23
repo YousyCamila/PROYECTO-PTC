@@ -135,7 +135,7 @@ const GestionarClientes = () => {
 
   const fetchClientes = useCallback(async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/clientes");
+      const response = await fetch("https://proyecto-ptc.onrender.com/api/clientes");
       const data = await response.json();
       setClientes(data);
       setFilteredClientes(data);
@@ -197,7 +197,7 @@ const GestionarClientes = () => {
     if (confirm.isConfirmed) {
       try {
         // Cambiar el método de DELETE a PATCH para actualizar el estado del cliente
-        const response = await fetch(`http://localhost:3000/api/clientes/${clienteId}`, {
+        const response = await fetch(`https://proyecto-ptc.onrender.com/api/clientes/${clienteId}`, {
           method: 'PATCH', // Cambiado a PATCH para actualización
           headers: {
             'Content-Type': 'application/json',

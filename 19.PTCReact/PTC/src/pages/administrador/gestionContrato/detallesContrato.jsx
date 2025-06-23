@@ -33,7 +33,7 @@ const DetallesContrato = () => {
 
   const fetchContrato = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/contratos/${id}`);
+      const response = await fetch(`https://proyecto-ptc.onrender.com/api/contratos/${id}`);
       const data = await response.json();
 
       if (response.ok) {
@@ -57,7 +57,7 @@ const DetallesContrato = () => {
 
   const fetchCliente = async (idCliente) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/clientes/${idCliente}`);
+      const response = await fetch(`https://proyecto-ptc.onrender.com/api/clientes/${idCliente}`);
       const data = await response.json();
 
       if (response.ok) {
@@ -72,7 +72,7 @@ const DetallesContrato = () => {
 
   const fetchDetective = async (idDetective) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/detectives/${idDetective}`);
+      const response = await fetch(`https://proyecto-ptc.onrender.com/api/detectives/${idDetective}`);
       const data = await response.json();
 
       if (response.ok) {

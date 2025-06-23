@@ -74,8 +74,8 @@ const CrearCaso = () => {
   const fetchClientesYDetectives = async () => {
     try {
       const [clientesRes, detectivesRes] = await Promise.all([
-        fetch('http://localhost:3000/api/clientes'),
-        fetch('http://localhost:3000/api/detectives'),
+        fetch('https://proyecto-ptc.onrender.com/api/clientes'),
+        fetch('https://proyecto-ptc.onrender.com/api/detectives'),
       ]);
       const clientesData = await clientesRes.json();
       const detectivesData = await detectivesRes.json();
@@ -137,7 +137,7 @@ const CrearCaso = () => {
     };
   
     try {
-      const response = await fetch('http://localhost:3000/api/caso', {
+      const response = await fetch('https://proyecto-ptc.onrender.com/api/caso', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

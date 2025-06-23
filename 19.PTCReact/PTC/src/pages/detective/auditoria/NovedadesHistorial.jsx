@@ -58,7 +58,7 @@ const NovedadesHistorial = ({ historial, onActualizar }) => {
     const obtenerDatosRelacionados = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/historiales/caso/${historial.idCaso._id}`,
+          `https://proyecto-ptc.onrender.com/api/historiales/caso/${historial.idCaso._id}`,
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },
@@ -119,7 +119,7 @@ const NovedadesHistorial = ({ historial, onActualizar }) => {
 
     try {
       const res = await fetch(
-        `http://localhost:3000/api/historiales/agregar-accion`,
+        `https://proyecto-ptc.onrender.com/api/historiales/agregar-accion`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

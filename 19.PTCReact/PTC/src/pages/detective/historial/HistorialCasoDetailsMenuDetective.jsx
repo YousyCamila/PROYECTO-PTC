@@ -43,7 +43,7 @@ const HistorialCasoDetailsMenuDetective = ({ caso, onClose }) => {
         if (!caso || !caso._id) return;
         setLoadingHistorial(true);
         try {
-            const response = await fetch(`http://localhost:3000/api/historiales/caso/${caso._id}`);
+            const response = await fetch(`https://proyecto-ptc.onrender.com/api/historiales/caso/${caso._id}`);
             console.log('📘 Obteniendo historial del caso:', caso._id);
             const data = await response.json();
             if (response.ok) {
@@ -74,7 +74,7 @@ const HistorialCasoDetailsMenuDetective = ({ caso, onClose }) => {
         if (!caso || !caso._id) return;
         setIsCreatingHistorial(true);
         try {
-            const response = await axios.post('http://localhost:3000/api/historiales', {
+            const response = await axios.post('https://proyecto-ptc.onrender.com/api/historiales', {
                 idCaso: caso._id,
                 nombreCliente: nuevoNombreHistorial, // Usamos el nombre ingresado
             });

@@ -102,7 +102,7 @@ const DetectiveMenu = () => {
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
     const email = localStorage.getItem('email_detective');
-    const API_URL = 'http://localhost:3000/api';
+    const API_URL = 'https://proyecto-ptc.onrender.com/api';
 
     const [casos, setCasos] = useState([]);
     const [loading, setLoading] = useState(true);

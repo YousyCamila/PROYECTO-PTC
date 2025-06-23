@@ -91,7 +91,7 @@ const GestionarCasos = () => {
 
   const fetchCasos = useCallback(async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/caso");
+      const response = await fetch("https://proyecto-ptc.onrender.com/api/caso");
       const data = await response.json();
       setCasos(data);
       setFilteredCasos(data);
@@ -134,7 +134,7 @@ const GestionarCasos = () => {
 
     if (confirm.isConfirmed) {
       try {
-        await fetch(`http://localhost:3000/api/caso/${casoId}`, { method: 'DELETE' });
+        await fetch(`https://proyecto-ptc.onrender.com/api/caso/${casoId}`, { method: 'DELETE' });
         fetchCasos();
         Swal.fire('Desactivado!', 'El caso ha sido desactivado.', 'success');
       } catch (error) {

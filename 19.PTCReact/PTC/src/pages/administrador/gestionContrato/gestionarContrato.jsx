@@ -112,7 +112,7 @@ const GestionarContratos = () => {
 
   const fetchContratos = useCallback(async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/contratos");
+      const response = await fetch("https://proyecto-ptc.onrender.com/api/contratos");
       const data = await response.json();
       setContratos(data);
       setFilteredContratos(data);
@@ -157,7 +157,7 @@ const GestionarContratos = () => {
 
     if (confirm.isConfirmed) {
       try {
-        const response = await fetch(`http://localhost:3000/api/contratos/${contratoId}`, {
+        const response = await fetch(`https://proyecto-ptc.onrender.com/api/contratos/${contratoId}`, {
           method: 'DELETE',
         });
 
