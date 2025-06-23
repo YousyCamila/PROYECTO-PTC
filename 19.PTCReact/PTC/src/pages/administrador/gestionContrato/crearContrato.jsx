@@ -156,7 +156,7 @@ const CrearContrato = () => {
     if (!validateForm()) return;
   
     try {
-      const response = await fetch('http://localhost:3000/api/contratos', {
+      const response = await fetch('https://proyecto-ptc.onrender.com/api/contratos', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
