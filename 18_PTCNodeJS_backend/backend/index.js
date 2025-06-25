@@ -41,7 +41,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 const corsOptions = {
     origin: [
         'https://mcwbts7x-5173.use2.devtunnels.ms/',
-        'https://6h1lz96w-5173.use2.devtunnels.ms'
+        'https://6h1lz96w-5173.use2.devtunnels.ms',
+        'https://mcwbts7x-5173.use2.devtunnels.ms'
     ],
     methods: ['GET', 'POST', 'PUT','PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
