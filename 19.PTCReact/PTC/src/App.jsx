@@ -139,7 +139,7 @@ function App() {
             <Route path="/NavbarSidebarDetective" element={<NavbarSidebarDetective/>}/>
             <Route path= "/DetectiveCasoDetailsMenu" element= {<DetectiveCasoDetailsMenu/>}/>
             <Route path="/AgregarRegistroFormDetective" element= {<AgregarRegistroFormDetective/>}/>
-            <Route path="/HistorialCasoDetailsMenuDetective" element = {<HistorialCasoDetailsMenuDetective/>}/>
+            <Route path="HistorialCasoDetailsMenuDetective" element = {<HistorialCasoDetailsMenuDetective/>}/>
             <Route path="Gestion-historial-detective" element = {<GestionarHistorialDetective/>}/>
             <Route path="Gestion-evidencias-detective" element = {<EvidenciasCrudDetective/>}/>   
 
