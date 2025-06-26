@@ -39,11 +39,7 @@ app.use(cookieParser()); // Middleware para manejar cookies
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const corsOptions = {
-    origin: [
-        'https://mcwbts7x-5173.use2.devtunnels.ms/',
-        'https://6h1lz96w-5173.use2.devtunnels.ms',
-        'https://mcwbts7x-5173.use2.devtunnels.ms'
-    ],
+origin: '*',
     methods: ['GET', 'POST', 'PUT','PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true, // Permitir el envío de cookies y encabezados de autenticación
