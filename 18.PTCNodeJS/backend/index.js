@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser'); // Para manejar cookies
 const path = require('path');
 
 
-dotenv.config(); // Carga las variables del archivo .env
+dotenv.config(); 
 
 // Importar las rutas
 const administradorRoutes = require('./routes/administradorRoutes');

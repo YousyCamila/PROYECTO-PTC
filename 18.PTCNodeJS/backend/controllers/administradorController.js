@@ -54,5 +54,5 @@ module.exports = {
   listarAdministradores,
   buscarAdministradorPorCorreo,
   actualizarAdministrador,
-  desactivarAdministrador // Cambiado aquí
+  desactivarAdministrador 
 };

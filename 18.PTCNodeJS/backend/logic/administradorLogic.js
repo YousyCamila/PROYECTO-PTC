@@ -2,7 +2,7 @@
 const Administrador = require('../models/administradorModel');
 
 async function crearAdministrador(datos) {
-  // Verificar si el correo ya existe
+  
   const adminExistenteCorreo = await Administrador.findOne({ correo: datos.correo });
   if (adminExistenteCorreo) {
     throw new Error(`El correo ${datos.correo} ya está registrado.`);

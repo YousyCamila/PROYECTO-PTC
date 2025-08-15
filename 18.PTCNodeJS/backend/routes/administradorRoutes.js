@@ -4,7 +4,7 @@ const administradorController = require('../controllers/administradorController'
 const  authenticateToken = require ('../middleware/authenticateToken');
 const  authorizeRole = require ('../middleware/authorizeRole');
 
-
+//hola
 
 /**
  * @swagger

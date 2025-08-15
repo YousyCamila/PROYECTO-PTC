@@ -9,6 +9,5 @@ const administradorSchema = new mongoose.Schema({
 {timestamps : true});
 administradorSchema.add(personaSchema);
 
-// Crea el modelo de Administrador
 const Administrador = mongoose.model('Administrador', administradorSchema);
 module.exports = Administrador;
